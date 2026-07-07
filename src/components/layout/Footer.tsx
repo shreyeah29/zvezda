@@ -55,11 +55,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/film" className="text-sm text-cream/70 hover:text-cream" data-cursor="VIEW">
-                  Film
-                </Link>
-              </li>
-              <li>
                 <Link href="/gallery" className="text-sm text-cream/70 hover:text-cream" data-cursor="VIEW">
                   Gallery
                 </Link>

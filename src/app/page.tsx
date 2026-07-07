@@ -2,14 +2,7 @@
 
 import { useState } from "react";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
-import { Navigation } from "@/components/layout/Navigation";
-import { CustomCursor } from "@/components/layout/CustomCursor";
-import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import { Footer } from "@/components/layout/Footer";
-import { HeroScene } from "@/components/scenes/HeroScene";
-import { TypographyScene, FabricScene } from "@/components/scenes/EditorialScenes";
-import { HorizontalRunway } from "@/components/scenes/HorizontalRunway";
-import { DesignerStory, ShopTeaser, FilmTeaser } from "@/components/scenes/StoryScenes";
+import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
 
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
@@ -17,22 +10,7 @@ export default function HomePage() {
   return (
     <>
       {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
-      {loaded && (
-        <SmoothScroll>
-          <CustomCursor />
-          <Navigation />
-          <main>
-            <HeroScene />
-            <TypographyScene />
-            <FabricScene />
-            <HorizontalRunway />
-            <FilmTeaser />
-            <DesignerStory />
-            <ShopTeaser />
-          </main>
-          <Footer />
-        </SmoothScroll>
-      )}
+      {loaded && <HomeHeroVideo />}
     </>
   );
 }

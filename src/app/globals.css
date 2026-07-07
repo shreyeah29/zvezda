@@ -37,11 +37,14 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+  }
+
+  body.has-custom-cursor {
     cursor: none;
   }
 
-  a,
-  button {
+  body.has-custom-cursor a,
+  body.has-custom-cursor button {
     cursor: none;
   }
 

@@ -9,14 +9,11 @@ import { Footer } from "@/components/layout/Footer";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { MaskReveal } from "@/components/ui/MaskReveal";
 import { products } from "@/data/products";
-import { filmAssets } from "@/data/film";
 
-const galleryImages = [
-  ...filmAssets.filter((a) => a.type === "image").map((a) => ({ src: a.src, alt: a.caption ?? "Editorial" })),
-  ...products.flatMap((p) =>
-    p.gallery.slice(0, 2).map((src) => ({ src, alt: p.name }))
-  ),
-];
+const galleryImages = products.flatMap((p) => [
+  { src: p.hero, alt: p.name },
+  ...p.gallery.slice(0, 1).map((src) => ({ src, alt: p.name })),
+]);
 
 export default function GalleryPage() {
   const [loaded, setLoaded] = useState(false);

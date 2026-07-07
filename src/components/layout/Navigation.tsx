@@ -8,7 +8,6 @@ import { collections } from "@/data/collections";
 
 const links = [
   { href: "/", label: "Home" },
-  { href: "/film", label: "Film" },
   { href: "/shop", label: "Shop" },
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
