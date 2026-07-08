@@ -25,6 +25,7 @@ export type DomeGalleryProps = {
   openedImageBorderRadius?: string;
   grayscale?: boolean;
   allowPageScroll?: boolean;
+  onImageClick?: (payload: { src: string; alt: string }) => void;
 };
 
 type DomeItem = {
@@ -148,6 +149,7 @@ export default function DomeGallery({
   openedImageBorderRadius = "30px",
   grayscale = true,
   allowPageScroll = false,
+  onImageClick,
 }: DomeGalleryProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
@@ -655,9 +657,18 @@ export default function DomeGallery({
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+
+      if (onImageClick) {
+        const parent = event.currentTarget.parentElement;
+        const src = parent?.dataset.src || event.currentTarget.querySelector("img")?.getAttribute("src") || "";
+        const alt = event.currentTarget.querySelector("img")?.getAttribute("alt") || "";
+        if (src) onImageClick({ src, alt });
+        return;
+      }
+
       openItemFromElement(event.currentTarget);
     },
-    [openItemFromElement]
+    [onImageClick, openItemFromElement]
   );
 
   const onTilePointerUp = useCallback(
@@ -667,9 +678,18 @@ export default function DomeGallery({
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+
+      if (onImageClick) {
+        const parent = event.currentTarget.parentElement;
+        const src = parent?.dataset.src || event.currentTarget.querySelector("img")?.getAttribute("src") || "";
+        const alt = event.currentTarget.querySelector("img")?.getAttribute("alt") || "";
+        if (src) onImageClick({ src, alt });
+        return;
+      }
+
       openItemFromElement(event.currentTarget);
     },
-    [openItemFromElement]
+    [onImageClick, openItemFromElement]
   );
 
   useEffect(() => {

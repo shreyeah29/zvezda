@@ -46,7 +46,7 @@ export default function HomePage() {
       {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
       {loaded && (
         <SmoothScroll>
-          <main className="snap-y snap-proximity md:snap-mandatory">
+          <main className="snap-y snap-proximity">
             <HomeHeroVideo />
             <HomeDomeGallery />
             <ImageScroller className="snap-start snap-always" />

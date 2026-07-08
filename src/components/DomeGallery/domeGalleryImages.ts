@@ -1,5 +1,5 @@
 import { collections } from "@/data/collections";
-import { products } from "@/data/products";
+import { getProductsByCollection, products, type Product } from "@/data/products";
 import type { DomeGalleryImage } from "@/components/DomeGallery/DomeGallery";
 
 export function getDomeGalleryImages(): DomeGalleryImage[] {
@@ -25,4 +25,19 @@ export function getDomeGalleryImages(): DomeGalleryImage[] {
   }
 
   return images;
+}
+
+export function getProductByImageSrc(src: string): Product | null {
+  const directMatch = products.find(
+    (product) =>
+      product.hero === src || product.detail === src || product.gallery.includes(src)
+  );
+  if (directMatch) return directMatch;
+
+  const collection = collections.find(
+    (entry) => entry.hero === src || entry.cover === src
+  );
+  if (!collection) return null;
+
+  return getProductsByCollection(collection.slug)[0] ?? null;
 }
