@@ -45,16 +45,24 @@ const HomeEditorialMarquee = dynamic(
   { ssr: false }
 );
 
-const HomeCollectionCanvas = dynamic(
+const HomePillCarousel = dynamic(
   () =>
-    import("@/components/home/HomeCollectionCanvas").then((mod) => ({
-      default: mod.HomeCollectionCanvas,
+    import("@/components/home/HomePillCarousel").then((mod) => ({
+      default: mod.HomePillCarousel,
     })),
   { ssr: false }
 );
 
 const ImageScroller = dynamic(
   () => import("@/components/ImageScroller/ImageScroller"),
+  { ssr: false }
+);
+
+const HomeInstagramStrip = dynamic(
+  () =>
+    import("@/components/home/HomeInstagramStrip").then((mod) => ({
+      default: mod.HomeInstagramStrip,
+    })),
   { ssr: false }
 );
 
@@ -92,8 +100,9 @@ export default function HomePage() {
             <HomeAtelierManifesto />
             <HomeMoodBoard />
             <HomeEditorialMarquee />
-            <HomeCollectionCanvas />
+            <HomePillCarousel />
             <ImageScroller />
+            <HomeInstagramStrip />
             <Footer />
           </main>
         </SmoothScroll>

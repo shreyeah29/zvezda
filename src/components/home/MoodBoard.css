@@ -11,9 +11,9 @@
   inset: 0;
   background-image: url("/assets/images/film/HSP_4096.jpg");
   background-size: cover;
-  background-position: center 30%;
-  opacity: 0.1;
-  filter: saturate(0.7) blur(2px);
+  background-position: center 28%;
+  opacity: 0.32;
+  filter: saturate(0.85) blur(3px);
   pointer-events: none;
 }
 
@@ -21,12 +21,14 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(10, 10, 10, 0.9) 0%,
-    rgba(10, 10, 10, 0.35) 50%,
-    rgba(10, 10, 10, 0.9) 100%
-  );
+  background:
+    radial-gradient(circle at 50% 45%, rgba(10, 10, 10, 0.25) 0%, rgba(10, 10, 10, 0.7) 70%),
+    linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.85) 0%,
+      rgba(10, 10, 10, 0.3) 50%,
+      rgba(10, 10, 10, 0.85) 100%
+    );
 }
 
 .mood-board__stage {

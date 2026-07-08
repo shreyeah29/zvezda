@@ -50,27 +50,29 @@ export function HomeHeroVideo() {
 
   return (
     <section
-      className="viewport-fill relative h-screen w-full snap-start snap-always overflow-hidden bg-ink"
+      className="viewport-fill relative block h-screen w-full snap-start snap-always overflow-hidden bg-ink"
       aria-label="Hero"
     >
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${HERO_POSTER})` }}
-        aria-hidden="true"
-      />
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={HERO_POSTER}
-        className="absolute inset-0 h-full w-full object-cover object-center"
-      >
-        <source src={videos.hero} type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/15 via-transparent to-ink/25" />
+      <div className="absolute inset-0 h-full w-full">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${HERO_POSTER})` }}
+          aria-hidden="true"
+        />
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={HERO_POSTER}
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        >
+          <source src={videos.hero} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-transparent to-ink/40" />
+      </div>
 
       <header className="absolute top-0 right-0 left-0 z-20 flex items-start justify-end px-6 py-8 md:px-12">
         <Link
@@ -81,14 +83,31 @@ export function HomeHeroVideo() {
         </Link>
       </header>
 
-      <div className="pointer-events-none absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3">
-        <span className="editorial-spacing text-[9px] text-cream/45">Scroll</span>
+      <motion.button
+        type="button"
+        onClick={() =>
+          window.scrollTo({ top: window.innerHeight, left: 0, behavior: "smooth" })
+        }
+        className="group pointer-events-auto absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 1 }}
+        aria-label="Scroll to explore"
+      >
+        <span className="editorial-spacing text-[11px] text-cream/85 transition-colors group-hover:text-cream">
+          Scroll to explore
+        </span>
         <motion.span
-          className="block h-10 w-px origin-top bg-cream/35"
-          animate={{ scaleY: [1, 0.45, 1], opacity: [0.35, 0.85, 0.35] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
+          className="flex h-11 w-6 items-start justify-center rounded-full border border-cream/40 p-1.5"
+          aria-hidden="true"
+        >
+          <motion.span
+            className="block h-2 w-1 rounded-full bg-cream/90"
+            animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.span>
+      </motion.button>
     </section>
   );
 }

@@ -1,0 +1,287 @@
+.pill-carousel {
+  position: relative;
+  min-height: 94vh;
+  width: 100%;
+  overflow: hidden;
+  background: #070707;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pill-carousel__ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 62% 40%, rgba(196, 165, 116, 0.1) 0%, transparent 48%),
+    radial-gradient(circle at 30% 78%, rgba(74, 82, 64, 0.12) 0%, transparent 45%),
+    linear-gradient(180deg, #050505 0%, #0c0b0a 55%, #050505 100%);
+}
+
+.pill-carousel__eyebrow {
+  position: absolute;
+  top: clamp(2rem, 5vh, 3.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  font-size: 10px;
+  color: rgba(196, 165, 116, 0.8);
+}
+
+/* ---- 3D cascade stage ---- */
+.pill-carousel__stage {
+  position: relative;
+  width: clamp(220px, 24vw, 300px);
+  height: min(74vh, 620px);
+  margin: 0 auto;
+  perspective: 1600px;
+}
+
+.pill-carousel__card {
+  position: absolute;
+  width: 100%;
+  height: 62%;
+  will-change: transform, opacity, filter;
+}
+
+.pill-carousel__card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 150px;
+  overflow: hidden;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.35s ease;
+}
+
+.pill-carousel__card:hover .pill-carousel__card-inner {
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.6);
+}
+
+.pill-carousel__card.is-center .pill-carousel__card-inner {
+  border: 5px solid rgba(245, 240, 232, 0.92);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 60px rgba(196, 165, 116, 0.14);
+}
+
+.pill-carousel__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ---- floating pill CTA above the center card ---- */
+.pill-carousel__pill {
+  position: absolute;
+  top: calc(19% - 58px);
+  left: 50%;
+  z-index: 100;
+}
+
+.pill-carousel__pill a {
+  display: inline-block;
+  background: #f5f0e8;
+  color: #0a0a0a;
+  padding: 12px 26px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.pill-carousel__pill a:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+}
+
+.pill-carousel__pill-arrow {
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #f5f0e8;
+}
+
+/* ---- editorial meta ---- */
+.pill-carousel__meta {
+  position: absolute;
+  left: clamp(1.5rem, 5vw, 4.5rem);
+  bottom: clamp(2rem, 8vh, 5rem);
+  z-index: 70;
+  max-width: min(30rem, 40vw);
+  pointer-events: none;
+}
+
+.pill-carousel__meta a {
+  pointer-events: auto;
+}
+
+.pill-carousel__meta-label {
+  font-size: 10px;
+  color: rgba(196, 165, 116, 0.85);
+  margin: 0 0 1rem;
+}
+
+.pill-carousel__name {
+  font-family: var(--font-editorial), var(--font-display), serif;
+  font-size: clamp(2.5rem, 5.5vw, 4.75rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #f5f0e8;
+  margin: 0 0 1.1rem;
+}
+
+.pill-carousel__desc {
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  line-height: 1.7;
+  color: rgba(245, 240, 232, 0.6);
+  margin: 0 0 1.9rem;
+  max-width: 34ch;
+}
+
+.pill-carousel__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  pointer-events: auto;
+}
+
+.pill-carousel__btn {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.75);
+  border-bottom: 1px solid rgba(245, 240, 232, 0.25);
+  padding-bottom: 0.35rem;
+  transition: color 0.35s ease, border-color 0.35s ease;
+}
+
+.pill-carousel__btn:hover {
+  color: #f5f0e8;
+  border-color: #c4a574;
+}
+
+.pill-carousel__btn--primary {
+  color: #0a0a0a;
+  background: #f5f0e8;
+  border: none;
+  border-radius: 50px;
+  padding: 0.85rem 1.75rem;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.pill-carousel__btn--primary:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+  color: #0a0a0a;
+}
+
+.pill-carousel__price {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(245, 240, 232, 0.45);
+}
+
+/* ---- controls ---- */
+.pill-carousel__controls {
+  position: absolute;
+  right: clamp(1.5rem, 5vw, 4.5rem);
+  bottom: clamp(2rem, 8vh, 5rem);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.pill-carousel__counter {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(245, 240, 232, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+.pill-carousel__counter i {
+  color: rgba(245, 240, 232, 0.3);
+  font-style: normal;
+  margin: 0 0.35rem;
+}
+
+.pill-carousel__arrows {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.pill-carousel__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 240, 232, 0.2);
+  color: rgba(245, 240, 232, 0.75);
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+}
+
+.pill-carousel__arrow:hover {
+  border-color: #c4a574;
+  color: #f5f0e8;
+  background: rgba(196, 165, 116, 0.12);
+}
+
+@media (max-width: 900px) {
+  .pill-carousel {
+    min-height: auto;
+    padding: 7rem 0 3rem;
+    gap: 2rem;
+  }
+
+  .pill-carousel__stage {
+    width: clamp(180px, 52vw, 240px);
+    height: 48vh;
+  }
+
+  .pill-carousel__meta {
+    position: static;
+    max-width: none;
+    padding: 0 1.5rem;
+    text-align: center;
+  }
+
+  .pill-carousel__desc {
+    max-width: none;
+  }
+
+  .pill-carousel__actions {
+    justify-content: center;
+  }
+
+  .pill-carousel__controls {
+    position: static;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill-carousel__card {
+    transition: none !important;
+  }
+}
