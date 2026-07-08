@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -19,14 +20,23 @@ export const metadata: Metadata = {
     "An immersive luxury fashion house. Editorial collections, couture craftsmanship, cinematic storytelling.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body className="bg-ink text-cream antialiased">{children}</body>
+    <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
+      <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
+        <div className="viewport-fixed pointer-events-none -z-50 bg-ink" aria-hidden="true" />
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }

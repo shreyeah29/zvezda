@@ -1,8 +1,22 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
 import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
+
+const SmoothScroll = dynamic(
+  () =>
+    import("@/components/layout/SmoothScroll").then((mod) => ({
+      default: mod.SmoothScroll,
+    })),
+  { ssr: false }
+);
+
+const ImageScroller = dynamic(
+  () => import("@/components/ImageScroller/ImageScroller"),
+  { ssr: false }
+);
 
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
@@ -10,7 +24,12 @@ export default function HomePage() {
   return (
     <>
       {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
-      {loaded && <HomeHeroVideo />}
+      {loaded && (
+        <SmoothScroll>
+          <HomeHeroVideo />
+          <ImageScroller />
+        </SmoothScroll>
+      )}
     </>
   );
 }

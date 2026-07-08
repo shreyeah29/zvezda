@@ -2,11 +2,7 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { usePrefersReducedMotion } from "./usePrefersReducedMotion";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export function useLenis() {
   const reduced = usePrefersReducedMotion();
@@ -14,22 +10,39 @@ export function useLenis() {
   useEffect(() => {
     if (reduced) return;
 
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
+    let lenis: Lenis | undefined;
+    let rafId = 0;
+    let mounted = true;
 
-    lenis.on("scroll", ScrollTrigger.update);
+    void (async () => {
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
 
-    const raf = (time: number) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-    requestAnimationFrame(raf);
+      if (!mounted) return;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      lenis = new Lenis({
+        duration: 1.4,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+
+      lenis.on("scroll", ScrollTrigger.update);
+
+      const raf = (time: number) => {
+        lenis?.raf(time);
+        rafId = requestAnimationFrame(raf);
+      };
+      rafId = requestAnimationFrame(raf);
+    })();
 
     return () => {
-      lenis.destroy();
+      mounted = false;
+      cancelAnimationFrame(rafId);
+      lenis?.destroy();
     };
   }, [reduced]);
 }

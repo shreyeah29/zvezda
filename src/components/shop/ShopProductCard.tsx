@@ -23,13 +23,10 @@ export const ShopProductCard = forwardRef<HTMLDivElement, ShopProductCardProps>(
           zIndex: index === 0 ? 5 : 1,
         }}
       >
-        {/* White card background — dissolved in phase 2 */}
         <div
           data-card-bg
           className="absolute inset-0 rounded-2xl bg-white shadow-[0_24px_80px_rgba(0,0,0,0.18)] md:rounded-3xl"
         />
-
-        {/* Image mask wrapper — clip-path animated in phase 2 */}
         <div
           data-card-mask
           className="absolute inset-3 overflow-hidden rounded-xl md:inset-4 md:rounded-2xl"

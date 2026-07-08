@@ -1,34 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { setVideoPath, getSet } from "@/data/sets";
-import { brand } from "@/data/brand";
-
-const heroSet = getSet(3)!;
+import { videos } from "@/data/brand";
 
 export function HomeHeroVideo() {
-  const heroVideo = setVideoPath(heroSet)!;
-
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-ink">
+    <div className="viewport-fill relative h-screen w-full overflow-hidden bg-ink">
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover object-center"
       >
-        <source src={heroVideo} type="video/mp4" />
+        <source src={videos.hero} type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-transparent to-ink/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/15 via-transparent to-ink/25" />
 
-      <header className="absolute top-0 right-0 left-0 z-10 flex items-center justify-between px-6 py-8 md:px-12">
-        <Link
-          href="/"
-          className="font-display text-xl tracking-[0.4em] text-cream md:text-2xl"
-        >
-          {brand.name}
-        </Link>
+      <header className="absolute top-0 right-0 left-0 z-20 flex items-start justify-end px-6 py-8 md:px-12">
         <Link
           href="/shop"
           className="editorial-spacing text-[10px] text-cream/70 transition-colors hover:text-cream"

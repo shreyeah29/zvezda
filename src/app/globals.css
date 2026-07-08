@@ -10,6 +10,9 @@
   --color-olive: #4a5240;
   --color-gold: #c4a574;
   --color-muted: #8a8580;
+
+  /* Fix 100vh gap on macOS / mobile browsers */
+  --height-screen: 100dvh;
 }
 
 @layer base {
@@ -21,6 +24,10 @@
     background: var(--color-ink);
     color: var(--color-cream);
     scroll-behavior: auto;
+    height: 100%;
+    min-height: 100%;
+    /* Safari / embedded browsers — fill visible viewport */
+    min-height: -webkit-fill-available;
   }
 
   html.lenis,
@@ -34,9 +41,25 @@
 
   body {
     margin: 0;
+    height: 100%;
+    min-height: 100%;
+    min-height: 100svh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    background: var(--color-ink);
+  }
+
+  /* Bleed past viewport edges — covers sub-pixel gaps on macOS Chrome */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -2px;
+    z-index: -9999;
+    background: var(--color-ink);
+    pointer-events: none;
   }
 
   body.has-custom-cursor {
@@ -75,6 +98,40 @@
   .gpu {
     transform: translateZ(0);
     will-change: transform, opacity;
+  }
+
+  /* Fallback — ensure h-screen never uses legacy 100vh */
+  .h-screen {
+    height: 100svh;
+    height: 100dvh;
+    height: 100lvh;
+  }
+
+  .min-h-screen {
+    min-height: 100svh;
+    min-height: 100dvh;
+    min-height: 100lvh;
+  }
+
+  .max-h-screen {
+    max-height: 100svh;
+    max-height: 100dvh;
+    max-height: 100lvh;
+  }
+
+  /* Fixed full-bleed layers — lvh covers the largest possible viewport (no bottom gap) */
+  .viewport-fill {
+    min-height: 100lvh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+  }
+
+  .viewport-fixed {
+    position: fixed;
+    inset: -2px;
+    width: auto;
+    height: auto;
+    min-height: 100lvh;
   }
 }
 

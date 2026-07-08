@@ -14,6 +14,6 @@ export const brand = {
 } as const;
 
 export const videos = {
-  hero: "/assets/videos/GardenSolo1.mp4",
+  hero: "/assets/videos/RedDressSolo.mp4",
   garden: "/assets/videos/GardenSolo3.mp4",
 } as const;

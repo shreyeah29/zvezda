@@ -1,122 +1,119 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProduct, formatPrice } from "@/data/products";
+import { getProduct, getProductsByCollection, type Product } from "@/data/products";
 import { getCollection } from "@/data/collections";
-import { LoadingScreen } from "@/components/layout/LoadingScreen";
-import { Navigation } from "@/components/layout/Navigation";
-import { CustomCursor } from "@/components/layout/CustomCursor";
-import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import { Footer } from "@/components/layout/Footer";
-import { TextReveal } from "@/components/ui/TextReveal";
-import { MaskReveal } from "@/components/ui/MaskReveal";
-import { EditorialImage } from "@/components/ui/EditorialImage";
+import { brand } from "@/data/brand";
+import { ProductGalleryLayout } from "@/components/product/ProductGalleryLayout";
+import { CARD_RADIUS } from "@/lib/motion/MotionUtilities";
+
+function RelatedCard({ product }: { product: Product }) {
+  return (
+    <Link href={`/products/${product.slug}`} className="group block shrink-0">
+      <div
+        className="overflow-hidden border border-cream/12 bg-zinc-950 transition-colors group-hover:border-cream/25"
+        style={{ width: 140, borderRadius: CARD_RADIUS * 0.6 }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={product.hero}
+          alt={product.name}
+          className="aspect-[3/4] w-full object-cover object-top"
+        />
+      </div>
+      <p className="editorial-spacing mt-3 text-[8px] text-cream/40">{product.collectionLabel}</p>
+      <p className="mt-1 font-display text-sm text-cream">{product.name}</p>
+    </Link>
+  );
+}
+
+function uniqueImages(images: string[]) {
+  return [...new Set(images.filter(Boolean))];
+}
 
 export function ProductClient({ slug }: { slug: string }) {
-  const [loaded, setLoaded] = useState(false);
   const product = getProduct(slug);
-
   if (!product) notFound();
 
   const collection = getCollection(product.collection);
+  const hasVideo = Boolean(product.video);
+
+  const allImages = useMemo(
+    () => uniqueImages([product.hero, product.detail, ...product.gallery]),
+    [product]
+  );
+
+  const related = getProductsByCollection(product.collection)
+    .filter((p) => p.slug !== slug)
+    .slice(0, 4);
 
   return (
-    <>
-      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
-      {loaded && (
-        <SmoothScroll>
-          <CustomCursor />
-          <Navigation />
-          <main>
-            <section className="relative h-screen w-full overflow-hidden">
-              {product.video ? (
-                <video autoPlay muted loop playsInline className="h-full w-full object-cover">
-                  <source src={product.video} type="video/mp4" />
-                </video>
-              ) : (
-                <EditorialImage
-                  src={product.hero}
-                  alt={product.name}
-                  priority
-                  className="h-full w-full"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/20" />
-            </section>
+    <div className="min-h-screen bg-ink">
+      {/* Nav */}
+      <header className="fixed top-0 z-50 flex w-full items-center justify-between px-6 py-5 md:px-10">
+        <Link href="/" className="font-display text-lg tracking-[0.35em] text-cream">
+          {brand.name}
+        </Link>
+        <Link
+          href="/shop"
+          className="editorial-spacing text-[9px] text-cream/50 transition-colors hover:text-cream"
+        >
+          ← Collection
+        </Link>
+      </header>
 
-            <section className="px-6 py-32 md:px-12">
-              <div className="mx-auto max-w-4xl">
-                <p className="editorial-spacing text-[10px] text-muted">
-                  {collection?.title ?? product.collectionLabel}
-                </p>
-                <TextReveal
-                  as="h1"
-                  className="font-display mt-6 text-6xl font-light text-cream md:text-8xl"
-                >
-                  {product.name}
-                </TextReveal>
-                <TextReveal
-                  as="p"
-                  className="mt-12 text-xl leading-relaxed text-cream/70"
-                  split="lines"
-                  delay={0.2}
-                >
-                  {product.story}
-                </TextReveal>
-              </div>
-            </section>
-
-            <section className="px-6 py-16 md:px-12">
-              <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
-                <MaskReveal
-                  src={product.detail}
-                  alt={`${product.name} fabric detail`}
-                  direction="up"
-                  className="aspect-square w-full"
-                />
-                <div className="flex flex-col justify-center">
-                  <p className="editorial-spacing mb-4 text-[10px] text-muted">Fabric</p>
-                  <p className="text-lg leading-relaxed text-cream/70">{product.fabric}</p>
-                </div>
-              </div>
-            </section>
-
-            <section className="px-6 py-16 md:px-12">
-              <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-2">
-                {product.gallery.map((img, i) => (
-                  <MaskReveal
-                    key={img}
-                    src={img}
-                    alt={`${product.name} — look ${i + 1}`}
-                    direction={i % 2 === 0 ? "left" : "right"}
-                    className="aspect-[3/4] w-full"
-                  />
-                ))}
-              </div>
-            </section>
-
-            <section className="border-t border-cream/10 px-6 py-32 md:px-12">
-              <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-                <p className="editorial-spacing text-[10px] text-muted">Acquire</p>
-                <p className="font-display mt-8 text-5xl text-cream md:text-6xl">
-                  {formatPrice(product.price, product.currency)}
-                </p>
-                <p className="mt-6 max-w-md text-sm text-cream/50">
-                  Made to order. Allow 6–8 weeks for atelier completion. Complimentary worldwide shipping.
-                </p>
-                <button
-                  className="editorial-spacing mt-12 border border-cream/30 px-12 py-4 text-[10px] text-cream transition-all hover:border-cream hover:bg-cream hover:text-ink"
-                  data-cursor="SHOP"
-                >
-                  Request Piece
-                </button>
-              </div>
-            </section>
-          </main>
-          <Footer />
-        </SmoothScroll>
+      {/* Video hero — full screen, scroll down to shop layout */}
+      {hasVideo && (
+        <section className="relative h-screen w-full">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+          >
+            <source src={product.video} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/30" />
+          <p className="editorial-spacing absolute bottom-8 left-1/2 -translate-x-1/2 text-[9px] text-cream/50">
+            Scroll to explore
+          </p>
+        </section>
       )}
-    </>
+
+      {/* Gallery + details — AROKA-style layout */}
+      <section className={hasVideo ? "" : "pt-20"}>
+        <ProductGalleryLayout
+          product={product}
+          images={allImages}
+          collectionTitle={collection?.title}
+        />
+      </section>
+
+      {/* Related */}
+      {related.length > 0 && (
+        <section className="border-t border-cream/10 px-6 py-16 md:px-10 md:py-24">
+          <div className="mx-auto max-w-6xl">
+            <p className="editorial-spacing mb-8 text-[9px] text-cream/40">From the Collection</p>
+            <div className="flex gap-6 overflow-x-auto pb-4">
+              {related.map((p) => (
+                <RelatedCard key={p.slug} product={p} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <footer className="border-t border-cream/10 px-6 py-12 text-center md:px-10">
+        <Link
+          href="/shop"
+          className="editorial-spacing text-[9px] text-cream/40 transition-colors hover:text-cream"
+        >
+          Back to Collection
+        </Link>
+      </footer>
+    </div>
   );
 }

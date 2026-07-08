@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { brand } from "@/data/brand";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { collections } from "@/data/collections";
 
 const links = [
@@ -19,13 +20,7 @@ export function Navigation() {
   return (
     <>
       <header className="fixed top-0 right-0 left-0 z-50 flex items-center justify-between px-6 py-8 md:px-12">
-        <Link
-          href="/"
-          className="font-display text-xl tracking-[0.4em] text-cream md:text-2xl"
-          data-cursor="HOME"
-        >
-          {brand.name}
-        </Link>
+        <BrandLogo variant="nav" />
 
         <button
           onClick={() => setOpen(true)}

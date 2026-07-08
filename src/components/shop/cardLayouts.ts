@@ -1,4 +1,4 @@
-/** Final settled positions for the five hero cards — each with unique transform values */
+/** Final settled positions for the five hero cards */
 export type CardLayout = {
   translateX: number;
   translateY: number;
@@ -15,7 +15,6 @@ export const CARD_LAYOUTS: CardLayout[] = [
   { translateX: 540, translateY: 50, rotate: 16, scale: 0.76, zIndex: 1 },
 ];
 
-/** Off-screen starting positions before scroll animation */
 export const CARD_ENTRY: Pick<CardLayout, "translateX" | "translateY" | "rotate" | "scale">[] = [
   { translateX: 0, translateY: 0, rotate: 0, scale: 1 },
   { translateX: -900, translateY: 80, rotate: -22, scale: 0.7 },
@@ -24,7 +23,6 @@ export const CARD_ENTRY: Pick<CardLayout, "translateX" | "translateY" | "rotate"
   { translateX: 1100, translateY: 100, rotate: 28, scale: 0.62 },
 ];
 
-/** Scale card offsets for smaller viewports */
 export function getResponsiveLayouts() {
   if (typeof window === "undefined") return CARD_LAYOUTS;
   const w = window.innerWidth;
