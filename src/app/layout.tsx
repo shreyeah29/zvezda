@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Instrument_Serif, Inter } from "next/font/google";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import "./globals.css";
 
@@ -12,6 +12,13 @@ const display = Cormorant_Garamond({
 const body = Inter({
   subsets: ["latin"],
   variable: "--font-body",
+});
+
+const editorial = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-editorial",
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -32,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${editorial.variable} h-full`}>
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <div className="viewport-fixed pointer-events-none -z-50 bg-ink" aria-hidden="true" />
         <MotionProvider>{children}</MotionProvider>

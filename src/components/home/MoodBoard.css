@@ -6,8 +6,32 @@
   overflow: hidden;
 }
 
+.mood-board__backdrop {
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/images/film/HSP_4096.jpg");
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0.1;
+  filter: saturate(0.7) blur(2px);
+  pointer-events: none;
+}
+
+.mood-board__backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.9) 0%,
+    rgba(10, 10, 10, 0.35) 50%,
+    rgba(10, 10, 10, 0.9) 100%
+  );
+}
+
 .mood-board__stage {
   position: relative;
+  z-index: 2;
   width: min(1400px, calc(100% - 3rem));
   height: 100%;
   margin: 0 auto;

@@ -63,6 +63,7 @@ export function HomeMoodBoard() {
 
   return (
     <section ref={sectionRef} className="mood-board snap-none" aria-label="Interactive mood board">
+      <div className="mood-board__backdrop" aria-hidden="true" />
       <div ref={stageRef} className="mood-board__stage">
         {items.map((item, index) => {
           const isHovered = hoveredId === item.id;

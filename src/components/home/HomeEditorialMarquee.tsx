@@ -59,6 +59,18 @@ export function HomeEditorialMarquee() {
 
   return (
     <section ref={sectionRef} className="editorial-marquee snap-none" aria-label="Editorial marquee">
+      <video
+        className="editorial-marquee__video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      >
+        <source src="/assets/videos/film/GardenTrio.mp4" type="video/mp4" />
+      </video>
+      <div className="editorial-marquee__scrim" aria-hidden="true" />
       <div className="editorial-marquee__track">
         <MarqueeRow />
         <MarqueeRow />
