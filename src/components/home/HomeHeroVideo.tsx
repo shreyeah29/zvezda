@@ -4,17 +4,26 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { videos } from "@/data/brand";
 
+const HERO_POSTER = "/assets/images/products/set-12/HSP_5750.jpg";
+
 export function HomeHeroVideo() {
   return (
     <section
       className="viewport-fill relative h-screen w-full snap-start snap-always overflow-hidden bg-ink"
       aria-label="Hero"
     >
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${HERO_POSTER})` }}
+        aria-hidden="true"
+      />
       <video
         autoPlay
         muted
         loop
         playsInline
+        preload="auto"
+        poster={HERO_POSTER}
         className="absolute inset-0 h-full w-full object-cover object-center"
       >
         <source src={videos.hero} type="video/mp4" />

@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import type { ScrollerItem } from "@/components/ImageScroller/types";
 import { scrollToPosition } from "@/lib/lenisInstance";
-import { SCROLLER_TRIGGER_ID } from "@/hooks/useScrollProgress";
 
 type ProgressIndicatorProps = {
   items: ScrollerItem[];
@@ -13,20 +12,12 @@ type ProgressIndicatorProps = {
 };
 
 async function scrollToIndex(index: number, itemCount: number) {
-  const [{ ScrollTrigger }] = await Promise.all([import("gsap/ScrollTrigger")]);
-  const trigger = ScrollTrigger.getById(SCROLLER_TRIGGER_ID);
-
-  if (trigger && itemCount > 1) {
-    const progress = index / (itemCount - 1);
-    const target = trigger.start + progress * (trigger.end - trigger.start);
-    scrollToPosition(target);
-    return;
-  }
-
   const container = document.querySelector("[data-scroller-container]");
   if (!container) return;
   const top = container.getBoundingClientRect().top + window.scrollY;
-  scrollToPosition(top + index * window.innerHeight);
+  const maxDistance = Math.max((container as HTMLElement).offsetHeight - window.innerHeight, 1);
+  const progress = itemCount <= 1 ? 0 : index / (itemCount - 1);
+  scrollToPosition(top + progress * maxDistance);
 }
 
 /** Framer-style vertical thumbnail string — sits on the side */
@@ -36,7 +27,8 @@ export function ProgressIndicator({
   exactIndex,
   progress,
 }: ProgressIndicatorProps) {
-  const nearestIndex = Math.min(Math.max(Math.round(exactIndex), 0), items.length - 1);
+  const nearestIndex =
+    items.length > 0 ? Math.min(Math.max(Math.round(exactIndex), 0), items.length - 1) : activeIndex;
 
   return (
     <div className="absolute top-1/2 right-4 z-30 -translate-y-1/2 md:right-8 lg:right-10">

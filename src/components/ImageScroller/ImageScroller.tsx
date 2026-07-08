@@ -8,7 +8,7 @@ type ImageScrollerProps = {
   className?: string;
 };
 
-/** Full-screen pinned video scroller with side thumbnail string */
+/** Full-screen sticky video scroller with side thumbnail string */
 export function ImageScroller({ className = "" }: ImageScrollerProps) {
   const {
     containerRef,
@@ -31,7 +31,7 @@ export function ImageScroller({ className = "" }: ImageScrollerProps) {
       style={{ height: `${scrollHeightVh}vh` }}
       aria-label="Collection video scroller"
     >
-      <div ref={stickyRef} className="relative h-screen w-full overflow-hidden bg-ink">
+      <div ref={stickyRef} className="sticky top-0 h-screen w-full overflow-hidden bg-ink">
         {/* Full-screen video stack */}
         <div className="absolute inset-0">
           {items.map((item, index) => {

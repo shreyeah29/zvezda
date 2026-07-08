@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useEffect } from "react";
+import { useMemo, useRef } from "react";
 import { products } from "@/data/products";
 import { productToScrollerItem, type ScrollerItem } from "@/components/ImageScroller/types";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -39,13 +39,6 @@ export function useScroller(options: UseScrollerOptions = {}) {
 
   const scrollHeightVh = Math.max((items.length - 1) * 100 + 100, 100);
   const progress = items.length <= 1 ? 0 : exactIndex / (items.length - 1);
-
-  useEffect(() => {
-    if (items.length <= 1) return;
-    void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-      requestAnimationFrame(() => ScrollTrigger.refresh());
-    });
-  }, [items.length]);
 
   return {
     containerRef,
