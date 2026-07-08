@@ -3,7 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { getGridMotionSlots, type GridMotionItem } from "@/components/GridMotionReveal/gridMotionData";
-import { initGridMotionAnimation } from "@/components/GridMotionReveal/gridMotionAnimation";
+import {
+  initGridMotionAnimation,
+  measureScalerNaturalSize,
+  prepareScalerImage,
+} from "@/components/GridMotionReveal/gridMotionAnimation";
 import TextVideoMask from "@/components/TextVideoMask/TextVideoMask";
 import { videos } from "@/data/brand";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -51,19 +55,26 @@ export function GridMotionReveal() {
     if (!image || !firstSection || layers.length === 0) return;
 
     let cleanup: (() => void) | undefined;
-    let frameId = 0;
+    let cancelled = false;
 
-    const setup = () => {
-      cleanup?.();
-      cleanup = initGridMotionAnimation({ image, firstSection, layers });
-    };
+    void (async () => {
+      await prepareScalerImage(image);
+      if (cancelled) return;
 
-    frameId = requestAnimationFrame(() => {
-      frameId = requestAnimationFrame(setup);
-    });
+      const { width: naturalWidth, height: naturalHeight } = measureScalerNaturalSize(image);
+      if (cancelled || naturalWidth === 0 || naturalHeight === 0) return;
+
+      cleanup = initGridMotionAnimation({
+        image,
+        firstSection,
+        layers,
+        naturalWidth,
+        naturalHeight,
+      });
+    })();
 
     return () => {
-      cancelAnimationFrame(frameId);
+      cancelled = true;
       cleanup?.();
     };
   }, [reducedMotion, slots]);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useLayoutEffect, useState } from "react";
 
 type TextVideoMaskFont = {
   fontSize?: string;
@@ -26,6 +26,11 @@ export type TextVideoMaskProps = {
   className?: string;
 };
 
+function computeDisplayFontSize() {
+  if (typeof window === "undefined") return 120;
+  return Math.max(64, Math.min(window.innerWidth * 0.12, 192));
+}
+
 export default function TextVideoMask({
   useVideoFile = true,
   videoFile = "https://framerusercontent.com/assets/MLWPbW1dUQawJLhhun3dBwpgJak.mp4",
@@ -42,15 +47,31 @@ export default function TextVideoMask({
   const maskId = useId().replace(/:/g, "");
   const videoSource = useVideoFile ? videoFile : videoUrl;
   const lines = text.split("\n");
-  const fontSize = font?.fontSize || "48px";
+  const [fontSize, setFontSize] = useState(120);
+  const [viewport, setViewport] = useState({ width: 1200, height: 800 });
+
+  useLayoutEffect(() => {
+    const update = () => {
+      setFontSize(computeDisplayFontSize());
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
   const fontFamily = font?.fontFamily || "Inter, sans-serif";
   const fontWeight = font?.fontWeight || 700;
   const fontStyle = font?.fontStyle || "normal";
   const letterSpacing = font?.letterSpacing || "-0.02em";
-  const lineHeight = Number.parseFloat(font?.lineHeight || "0.9") || 0.9;
+  const lineHeight = Number.parseFloat(font?.lineHeight || "0.85") || 0.85;
 
   const anchor = textAlign === "left" ? "start" : "middle";
-  const x = textAlign === "left" ? "48px" : "50%";
+  const x = textAlign === "left" ? 48 : viewport.width / 2;
+  const lineHeightPx = fontSize * lineHeight;
+  const blockHeight = lineHeightPx * lines.length;
+  const startY = viewport.height / 2 - blockHeight / 2 + fontSize * 0.35;
 
   return (
     <div
@@ -61,40 +82,36 @@ export default function TextVideoMask({
         height: "100%",
         backgroundColor,
         overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: textAlign === "left" ? "flex-start" : "center",
       }}
     >
       <svg
         aria-hidden="true"
-        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+        width={viewport.width}
+        height={viewport.height}
+        viewBox={`0 0 ${viewport.width} ${viewport.height}`}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
       >
         <defs>
-          <mask id={maskId}>
+          <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
             <rect width="100%" height="100%" fill="black" />
             <text
               x={x}
-              y="50%"
+              y={startY}
               textAnchor={anchor}
-              dominantBaseline="middle"
               fill="white"
               style={{
-                fontSize,
+                fontSize: `${fontSize}px`,
                 fontFamily,
                 fontWeight,
                 fontStyle,
                 letterSpacing,
               }}
             >
-              {lines.map((line, index) => {
-                const offset = (index - (lines.length - 1) / 2) * lineHeight;
-                return (
-                  <tspan key={`${line}-${index}`} x={x} dy={index === 0 ? `${offset}em` : `${lineHeight}em`}>
-                    {line}
-                  </tspan>
-                );
-              })}
+              {lines.map((line, index) => (
+                <tspan key={`${line}-${index}`} x={x} dy={index === 0 ? 0 : lineHeightPx}>
+                  {line}
+                </tspan>
+              ))}
             </text>
           </mask>
         </defs>
@@ -107,8 +124,7 @@ export default function TextVideoMask({
         playsInline
         style={{
           position: "absolute",
-          top: 0,
-          left: 0,
+          inset: 0,
           width: "100%",
           height: "100%",
           objectFit: "cover",

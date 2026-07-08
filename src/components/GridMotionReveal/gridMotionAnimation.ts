@@ -1,21 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { animate, cubicBezier, scroll } from "motion";
+import { getLenisInstance } from "@/lib/lenisInstance";
 
 type GridMotionAnimationTargets = {
   image: HTMLImageElement;
   firstSection: HTMLElement;
   layers: HTMLDivElement[];
+  naturalWidth: number;
+  naturalHeight: number;
 };
 
 export function initGridMotionAnimation({
   image,
   firstSection,
   layers,
+  naturalWidth,
+  naturalHeight,
 }: GridMotionAnimationTargets): () => void {
-  const naturalWidth = image.offsetWidth;
-  const naturalHeight = image.offsetHeight;
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
+
+  // Start fullscreen before scroll animation attaches.
+  image.style.width = `${viewportWidth}px`;
+  image.style.height = `${viewportHeight}px`;
 
   const cleanups: Array<() => void> = [];
 
@@ -83,7 +90,43 @@ export function initGridMotionAnimation({
     );
   });
 
+  window.dispatchEvent(new Event("scroll"));
+  getLenisInstance()?.resize();
+
   return () => {
     cleanups.forEach((cleanup) => cleanup());
   };
+}
+
+export async function prepareScalerImage(image: HTMLImageElement): Promise<void> {
+  if (!image.complete) {
+    await new Promise<void>((resolve) => {
+      image.addEventListener("load", () => resolve(), { once: true });
+      image.addEventListener("error", () => resolve(), { once: true });
+    });
+  }
+
+  if (image.decode) {
+    try {
+      await image.decode();
+    } catch {
+      // Ignore decode errors — continue with loaded image.
+    }
+  }
+}
+
+export function measureScalerNaturalSize(image: HTMLImageElement) {
+  const previousWidth = image.style.width;
+  const previousHeight = image.style.height;
+
+  image.style.width = "100%";
+  image.style.height = "100%";
+
+  const width = image.offsetWidth;
+  const height = image.offsetHeight;
+
+  image.style.width = previousWidth;
+  image.style.height = previousHeight;
+
+  return { width, height };
 }
