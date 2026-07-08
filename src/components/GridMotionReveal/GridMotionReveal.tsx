@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { getGridMotionSlots, type GridMotionItem } from "@/components/GridMotionReveal/gridMotionData";
 import { initGridMotionAnimation } from "@/components/GridMotionReveal/gridMotionAnimation";
+import TextVideoMask from "@/components/TextVideoMask/TextVideoMask";
+import { videos } from "@/data/brand";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import "./GridMotionReveal.css";
 
@@ -69,8 +71,22 @@ export function GridMotionReveal() {
   return (
     <div className="grid-motion-wrap snap-none" aria-label="Collection grid motion gallery">
       <div className="content-wrap">
-        <header>
-          <h1 className="fluid">COLLECTION 2026</h1>
+        <header className="collection-header">
+          <TextVideoMask
+            text={"COLLECTION\n2026"}
+            videoFile={videos.hero}
+            videoUrl={videos.hero}
+            textAlign="left"
+            backgroundColor="#000000"
+            font={{
+              fontSize: "clamp(4rem, 12vw, 12rem)",
+              fontFamily:
+                '"SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui',
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              lineHeight: "0.85",
+            }}
+          />
         </header>
         <main>
           <section ref={sectionRef}>

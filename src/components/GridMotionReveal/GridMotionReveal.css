@@ -25,13 +25,11 @@
   overflow: clip;
 }
 
-.grid-motion-wrap header {
+.grid-motion-wrap header.collection-header {
   min-height: 100vh;
-  display: grid;
-  align-content: center;
-  max-width: calc(100% - (2 * var(--gutter)));
-  padding-left: 48px;
-  text-align: left;
+  width: 100%;
+  padding: 0;
+  max-width: none;
 }
 
 .grid-motion-wrap a {
