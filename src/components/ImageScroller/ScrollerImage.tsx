@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import type { ScrollerItem, ScrollerVisualState } from "@/components/ImageScroller/types";
 
 type ScrollerImageProps = {
@@ -18,7 +19,7 @@ export function ScrollerImage({ item, visualState, shouldPreload }: ScrollerImag
     const video = videoRef.current;
     if (!video) return;
 
-    if (visualState.isActive && visualState.opacity > 0.5) {
+    if (visualState.isActive && visualState.opacity > 0.55) {
       if (!wasActiveRef.current) {
         video.currentTime = 0;
         wasActiveRef.current = true;
@@ -32,15 +33,14 @@ export function ScrollerImage({ item, visualState, shouldPreload }: ScrollerImag
   }, [visualState.isActive, visualState.opacity]);
 
   return (
-    <div
+    <motion.div
       className="absolute inset-0 overflow-hidden"
       style={{
         zIndex: visualState.zIndex,
         opacity: visualState.opacity,
-        transform: `translate3d(0, ${visualState.translateY}px, 0) scale(${visualState.scale})`,
+        scale: visualState.scale,
         filter: `blur(${visualState.blur}px) brightness(${visualState.brightness})`,
         willChange: "transform, opacity, filter",
-        pointerEvents: visualState.opacity < 0.05 ? "none" : "auto",
       }}
     >
       <video
@@ -53,6 +53,6 @@ export function ScrollerImage({ item, visualState, shouldPreload }: ScrollerImag
         className="h-full w-full object-cover"
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/20 via-transparent to-ink/30" />
-    </div>
+    </motion.div>
   );
 }

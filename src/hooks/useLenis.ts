@@ -12,61 +12,32 @@ export function useLenis() {
     if (reduced) return;
 
     let lenis: Lenis | undefined;
+    let rafId = 0;
     let mounted = true;
-    let tickerCallback: ((time: number) => void) | undefined;
-    let onResize: (() => void) | undefined;
+
+    const onResize = () => {
+      lenis?.resize();
+      void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => ScrollTrigger.refresh());
+    };
 
     void (async () => {
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
       if (!mounted) return;
 
-      gsap.registerPlugin(ScrollTrigger);
-
       lenis = new Lenis({
-        duration: 1.15,
+        duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        wheelMultiplier: 0.9,
-        touchMultiplier: 1.1,
       });
 
       setLenisInstance(lenis);
-
       lenis.on("scroll", ScrollTrigger.update);
 
-      ScrollTrigger.scrollerProxy(document.documentElement, {
-        scrollTop(value) {
-          if (arguments.length && value !== undefined) {
-            lenis?.scrollTo(value, { immediate: true });
-          }
-          return lenis?.scroll ?? window.scrollY;
-        },
-        getBoundingClientRect() {
-          return {
-            top: 0,
-            left: 0,
-            width: window.innerWidth,
-            height: window.innerHeight,
-          };
-        },
-        pinType: document.documentElement.style.transform ? "transform" : "fixed",
-      });
-
-      tickerCallback = (time: number) => {
-        lenis?.raf(time * 1000);
+      const raf = (time: number) => {
+        lenis?.raf(time);
+        rafId = requestAnimationFrame(raf);
       };
-
-      gsap.ticker.add(tickerCallback);
-      gsap.ticker.lagSmoothing(0);
-
-      onResize = () => {
-        lenis?.resize();
-        ScrollTrigger.refresh();
-      };
+      rafId = requestAnimationFrame(raf);
 
       window.addEventListener("resize", onResize);
       ScrollTrigger.refresh();
@@ -74,16 +45,9 @@ export function useLenis() {
 
     return () => {
       mounted = false;
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", onResize);
       setLenisInstance(null);
-
-      if (onResize) {
-        window.removeEventListener("resize", onResize);
-      }
-
-      void import("gsap").then(({ gsap }) => {
-        if (tickerCallback) gsap.ticker.remove(tickerCallback);
-      });
-
       lenis?.destroy();
     };
   }, [reduced]);

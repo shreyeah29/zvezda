@@ -11,11 +11,7 @@ export function useActiveImage(exactIndex: number, itemCount: number, reducedMot
   }, [exactIndex, itemCount]);
 
   const getItemState = useMemo(
-    () => (index: number) => {
-      const distance = Math.abs(exactIndex - index);
-      const easedDistance = Math.min(distance, 1);
-      return getScrollerItemState(easedDistance, reducedMotion);
-    },
+    () => (index: number) => getScrollerItemState(Math.abs(exactIndex - index), reducedMotion),
     [exactIndex, reducedMotion]
   );
 

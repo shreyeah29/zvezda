@@ -26,6 +26,14 @@ const ImageScroller = dynamic(
   { ssr: false }
 );
 
+const HomeInstagramStrip = dynamic(
+  () =>
+    import("@/components/home/HomeInstagramStrip").then((mod) => ({
+      default: mod.HomeInstagramStrip,
+    })),
+  { ssr: false }
+);
+
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
 
@@ -49,7 +57,8 @@ export default function HomePage() {
           <main className="snap-y snap-proximity">
             <HomeHeroVideo />
             <HomeDomeGallery />
-            <ImageScroller className="snap-start snap-always" />
+            <ImageScroller />
+            <HomeInstagramStrip />
           </main>
         </SmoothScroll>
       )}

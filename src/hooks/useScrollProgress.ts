@@ -55,13 +55,12 @@ export function useScrollProgress({
           id: SCROLLER_TRIGGER_ID,
           trigger: container,
           start: "top top",
-          end: () => `+=${Math.max(itemCount - 1, 1) * window.innerHeight}`,
+          end: () => `+=${(itemCount - 1) * window.innerHeight}`,
           pin: sticky,
-          pinSpacing: true,
-          scrub: 0.35,
-          anticipatePin: 0,
+          pinSpacing: false,
+          scrub: 0.6,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
-          fastScrollEnd: true,
           onUpdate: (self) => {
             pendingIndex = self.progress * (itemCount - 1);
             if (!frameId) {
@@ -71,7 +70,7 @@ export function useScrollProgress({
         });
       }, container);
 
-      ScrollTrigger.refresh();
+      requestAnimationFrame(() => ScrollTrigger.refresh());
     })();
 
     return () => {
