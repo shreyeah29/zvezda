@@ -15,6 +15,7 @@ export function ImageScroller({ className = "" }: ImageScrollerProps) {
     stickyRef,
     items,
     activeIndex,
+    exactIndex,
     progress,
     scrollHeightVh,
     getItemState,
@@ -48,7 +49,12 @@ export function ImageScroller({ className = "" }: ImageScrollerProps) {
           })}
         </div>
 
-        <ProgressIndicator items={items} activeIndex={activeIndex} progress={progress} />
+        <ProgressIndicator
+          items={items}
+          activeIndex={activeIndex}
+          exactIndex={exactIndex}
+          progress={progress}
+        />
       </div>
     </section>
   );

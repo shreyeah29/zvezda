@@ -2,38 +2,56 @@
 
 import { motion } from "framer-motion";
 import type { ScrollerItem } from "@/components/ImageScroller/types";
+import { scrollToPosition } from "@/lib/lenisInstance";
+import { SCROLLER_TRIGGER_ID } from "@/hooks/useScrollProgress";
 
 type ProgressIndicatorProps = {
   items: ScrollerItem[];
   activeIndex: number;
+  exactIndex: number;
   progress: number;
 };
 
-function scrollToIndex(index: number) {
+async function scrollToIndex(index: number, itemCount: number) {
+  const [{ ScrollTrigger }] = await Promise.all([import("gsap/ScrollTrigger")]);
+  const trigger = ScrollTrigger.getById(SCROLLER_TRIGGER_ID);
+
+  if (trigger && itemCount > 1) {
+    const progress = index / (itemCount - 1);
+    const target = trigger.start + progress * (trigger.end - trigger.start);
+    scrollToPosition(target, { duration: 1.05 });
+    return;
+  }
+
   const container = document.querySelector("[data-scroller-container]");
   if (!container) return;
   const top = container.getBoundingClientRect().top + window.scrollY;
-  window.scrollTo({
-    top: top + index * window.innerHeight,
-    behavior: "smooth",
-  });
+  scrollToPosition(top + index * window.innerHeight, { duration: 1.05 });
 }
 
 /** Framer-style vertical thumbnail string — sits on the side */
-export function ProgressIndicator({ items, activeIndex, progress }: ProgressIndicatorProps) {
+export function ProgressIndicator({
+  items,
+  activeIndex,
+  exactIndex,
+  progress,
+}: ProgressIndicatorProps) {
+  const nearestIndex = Math.min(Math.max(Math.round(exactIndex), 0), items.length - 1);
+
   return (
     <div className="absolute top-1/2 right-4 z-30 -translate-y-1/2 md:right-8 lg:right-10">
       <div className="relative flex flex-col items-center gap-3 rounded-full border border-cream/10 bg-ink/30 px-2 py-3 backdrop-blur-md md:gap-3.5 md:px-2.5 md:py-4">
-        {/* Progress string */}
         <div className="absolute top-4 bottom-4 left-1/2 w-px -translate-x-1/2 bg-cream/10">
-          <div
-            className="w-full bg-cream/50 transition-[height] duration-300 ease-out"
-            style={{ height: `${Math.max(progress * 100, 4)}%` }}
+          <motion.div
+            className="w-full origin-top bg-cream/50"
+            animate={{ height: `${Math.max(progress * 100, 4)}%` }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
           />
         </div>
 
         {items.map((item, index) => {
-          const isActive = index === activeIndex;
+          const isActive = index === nearestIndex;
+          const isNear = Math.abs(exactIndex - index) < 0.55;
 
           return (
             <button
@@ -41,20 +59,20 @@ export function ProgressIndicator({ items, activeIndex, progress }: ProgressIndi
               type="button"
               aria-label={`Scroll to piece ${index + 1}`}
               aria-current={isActive ? "true" : undefined}
-              onClick={() => scrollToIndex(index)}
+              onClick={() => void scrollToIndex(index, items.length)}
               className="relative flex h-10 w-10 shrink-0 items-center justify-center md:h-12 md:w-12"
             >
               {isActive && (
                 <motion.div
                   layoutId="scroller-thumb-outline"
                   className="absolute inset-0 rounded-lg border-2 border-cream"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 28 }}
                 />
               )}
               <div
-                className={`relative h-8 w-8 overflow-hidden rounded-md md:h-10 md:w-10 ${
-                  isActive ? "opacity-100" : "opacity-45"
-                } transition-opacity duration-300`}
+                className={`relative h-8 w-8 overflow-hidden rounded-md transition-opacity duration-200 md:h-10 md:w-10 ${
+                  isNear ? "opacity-100" : "opacity-40"
+                }`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img

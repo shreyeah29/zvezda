@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type RefObject } from "react";
 
+const SCROLLER_TRIGGER_ID = "video-scroller-pin";
+
 type UseScrollProgressOptions = {
   itemCount: number;
   containerRef: RefObject<HTMLElement | null>;
@@ -29,6 +31,14 @@ export function useScrollProgress({
 
     let mounted = true;
     let ctx: { revert: () => void } | undefined;
+    let frameId = 0;
+    let pendingIndex = 0;
+
+    const flushIndex = () => {
+      frameId = 0;
+      if (!mounted) return;
+      setExactIndex(pendingIndex);
+    };
 
     void (async () => {
       const [{ gsap }, { ScrollTrigger }] = await Promise.all([
@@ -42,16 +52,21 @@ export function useScrollProgress({
 
       ctx = gsap.context(() => {
         ScrollTrigger.create({
+          id: SCROLLER_TRIGGER_ID,
           trigger: container,
           start: "top top",
-          end: () => `+=${(itemCount - 1) * window.innerHeight}`,
+          end: () => `+=${Math.max(itemCount - 1, 1) * window.innerHeight}`,
           pin: sticky,
           pinSpacing: true,
-          scrub: 0.85,
-          anticipatePin: 1,
+          scrub: 0.35,
+          anticipatePin: 0,
           invalidateOnRefresh: true,
+          fastScrollEnd: true,
           onUpdate: (self) => {
-            setExactIndex(self.progress * (itemCount - 1));
+            pendingIndex = self.progress * (itemCount - 1);
+            if (!frameId) {
+              frameId = requestAnimationFrame(flushIndex);
+            }
           },
         });
       }, container);
@@ -61,9 +76,12 @@ export function useScrollProgress({
 
     return () => {
       mounted = false;
+      if (frameId) cancelAnimationFrame(frameId);
       ctx?.revert();
     };
   }, [containerRef, stickyRef, enabled, itemCount]);
 
   return exactIndex;
 }
+
+export { SCROLLER_TRIGGER_ID };
