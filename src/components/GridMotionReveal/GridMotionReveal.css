@@ -1,4 +1,4 @@
-/* Grid Motion Reveal — ported from uploaded component */
+/* Grid Motion Reveal — exact port from uploaded component */
 
 .grid-motion-wrap *,
 .grid-motion-wrap *::before,
@@ -8,10 +8,10 @@
 
 .grid-motion-wrap {
   --gutter: 2rem;
+  margin: 0;
+  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui;
   background: #000;
   color: #fff;
-  overflow: clip;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui;
 }
 
 @media (max-width: 600px) {
@@ -26,16 +26,16 @@
 }
 
 .grid-motion-wrap header {
+  min-height: 100vh;
   display: grid;
   align-content: center;
   max-width: calc(100% - (2 * var(--gutter)));
-  padding: 48px 0 24px 48px;
+  padding-left: 48px;
   text-align: left;
 }
 
 .grid-motion-wrap a {
   color: white;
-  text-decoration: none;
 }
 
 .grid-motion-wrap .fluid {
@@ -95,8 +95,6 @@
   grid-row: 1 / -1;
   grid-template-columns: subgrid;
   grid-template-rows: subgrid;
-  opacity: 0;
-  scale: 0;
 }
 
 .grid-motion-wrap .grid > .layer:nth-of-type(1) div:nth-of-type(odd) {
@@ -155,17 +153,8 @@
   height: 100%;
 }
 
-.grid-motion-wrap .grid-cell-link {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.grid-motion-wrap .scaler .grid-cell-link {
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: relative;
+.grid-motion-wrap .grid-cell {
+  cursor: pointer;
 }
 
 @media (prefers-reduced-motion: reduce) {

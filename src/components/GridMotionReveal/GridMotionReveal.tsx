@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { getGridMotionSlots, type GridMotionItem } from "@/components/GridMotionReveal/gridMotionData";
 import { initGridMotionAnimation } from "@/components/GridMotionReveal/gridMotionAnimation";
@@ -8,19 +8,31 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import "./GridMotionReveal.css";
 
 function GridCell({ item }: { item: GridMotionItem }) {
+  const router = useRouter();
+
   if (!item.src) return <div />;
 
   return (
-    <div>
-      <Link href={`/products/${item.slug}`} className="grid-cell-link">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={item.src} alt={item.alt} draggable={false} />
-      </Link>
+    <div
+      className="grid-cell"
+      role="link"
+      tabIndex={0}
+      onClick={() => router.push(`/products/${item.slug}`)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          router.push(`/products/${item.slug}`);
+        }
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={item.src} alt={item.alt} draggable={false} />
     </div>
   );
 }
 
 export function GridMotionReveal() {
+  const router = useRouter();
   const reducedMotion = usePrefersReducedMotion();
   const slots = useMemo(() => getGridMotionSlots(), []);
   const sectionRef = useRef<HTMLElement>(null);
@@ -30,43 +42,32 @@ export function GridMotionReveal() {
   useEffect(() => {
     if (reducedMotion) return;
 
-    const image = scalerImageRef.current;
     const firstSection = sectionRef.current;
+    const image = scalerImageRef.current;
     const layers = layerRefs.current.filter(Boolean) as HTMLDivElement[];
 
     if (!image || !firstSection || layers.length === 0) return;
 
-    const onLoad = () => {
-      const cleanup = initGridMotionAnimation({ image, firstSection, layers });
+    let cleanup: (() => void) | undefined;
+    let frameId = 0;
 
-      void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => ScrollTrigger.refresh());
-      void import("@/lib/lenisInstance").then(({ getLenisInstance }) => getLenisInstance()?.resize());
-
-      return cleanup;
+    const setup = () => {
+      cleanup?.();
+      cleanup = initGridMotionAnimation({ image, firstSection, layers });
     };
 
-    let cleanup: (() => void) | undefined;
-
-    if (image.complete) {
-      cleanup = onLoad();
-    } else {
-      const handleLoad = () => {
-        cleanup = onLoad();
-      };
-      image.addEventListener("load", handleLoad, { once: true });
-      return () => {
-        image.removeEventListener("load", handleLoad);
-        cleanup?.();
-      };
-    }
+    frameId = requestAnimationFrame(() => {
+      frameId = requestAnimationFrame(setup);
+    });
 
     return () => {
+      cancelAnimationFrame(frameId);
       cleanup?.();
     };
   }, [reducedMotion, slots]);
 
   return (
-    <div className="grid-motion-wrap" aria-label="Collection grid motion gallery">
+    <div className="grid-motion-wrap snap-none" aria-label="Collection grid motion gallery">
       <div className="content-wrap">
         <header>
           <h1 className="fluid">COLLECTION 2026</h1>
@@ -105,21 +106,28 @@ export function GridMotionReveal() {
                     <GridCell key={`l3-${item.src}-${index}`} item={item} />
                   ))}
                 </div>
-                <div className="scaler">
-                  {slots.scaler.src ? (
-                    <Link href={`/products/${slots.scaler.slug}`} className="grid-cell-link">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        ref={scalerImageRef}
-                        src={slots.scaler.src}
-                        alt={slots.scaler.alt}
-                        draggable={false}
-                      />
-                    </Link>
-                  ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img ref={scalerImageRef} src="" alt="" />
-                  )}
+                <div
+                  className="scaler"
+                  role="link"
+                  tabIndex={0}
+                  onClick={() => {
+                    if (slots.scaler.slug) router.push(`/products/${slots.scaler.slug}`);
+                  }}
+                  onKeyDown={(event) => {
+                    if (!slots.scaler.slug) return;
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      router.push(`/products/${slots.scaler.slug}`);
+                    }
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    ref={scalerImageRef}
+                    src={slots.scaler.src}
+                    alt={slots.scaler.alt}
+                    draggable={false}
+                  />
                 </div>
               </div>
             </div>
