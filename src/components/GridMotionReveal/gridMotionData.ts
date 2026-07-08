@@ -13,8 +13,17 @@ export type GridMotionSlots = {
   scaler: GridMotionItem;
 };
 
+/** Fullscreen center image — film editorial, not used in surrounding grid */
+const SCALER_IMAGE = "/assets/images/film/HSP_4145.jpg";
+
+const SCALER: GridMotionItem = {
+  src: SCALER_IMAGE,
+  alt: "Zvezda Collection 2026",
+  slug: "set-1",
+};
+
 function buildImagePool(): GridMotionItem[] {
-  const seen = new Set<string>();
+  const seen = new Set<string>([SCALER_IMAGE]);
   const pool: GridMotionItem[] = [];
 
   const add = (src: string, alt: string, slug: string) => {
@@ -42,12 +51,12 @@ export function getGridMotionSlots(): GridMotionSlots {
       layer1: Array.from({ length: 6 }, () => fallback),
       layer2: Array.from({ length: 6 }, () => fallback),
       layer3: Array.from({ length: 2 }, () => fallback),
-      scaler: fallback,
+      scaler: SCALER,
     };
   }
 
   const items: GridMotionItem[] = [];
-  for (let index = 0; index < 15; index += 1) {
+  for (let index = 0; index < 14; index += 1) {
     items.push(pool[index % pool.length]);
   }
 
@@ -55,6 +64,6 @@ export function getGridMotionSlots(): GridMotionSlots {
     layer1: items.slice(0, 6),
     layer2: items.slice(6, 12),
     layer3: items.slice(12, 14),
-    scaler: items[14],
+    scaler: SCALER,
   };
 }
