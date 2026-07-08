@@ -8,8 +8,7 @@ import {
   measureScalerNaturalSize,
   prepareScalerImage,
 } from "@/components/GridMotionReveal/gridMotionAnimation";
-import TextVideoMask from "@/components/TextVideoMask/TextVideoMask";
-import { videos } from "@/data/brand";
+import CurvedLoop from "@/components/CurvedLoop/CurvedLoop";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import "./GridMotionReveal.css";
 
@@ -83,20 +82,13 @@ export function GridMotionReveal() {
     <div className="grid-motion-wrap snap-none" aria-label="Collection grid motion gallery">
       <div className="content-wrap">
         <header className="collection-header">
-          <TextVideoMask
-            text={"COLLECTION\n2026"}
-            videoFile={videos.hero}
-            videoUrl={videos.hero}
-            textAlign="left"
-            backgroundColor="#000000"
-            font={{
-              fontSize: "clamp(4rem, 12vw, 12rem)",
-              fontFamily:
-                '"SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui',
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
-              lineHeight: "0.85",
-            }}
+          <CurvedLoop
+            marqueeText="COLLECTION 2026 ✦ "
+            speed={2}
+            curveAmount={400}
+            direction="left"
+            interactive
+            className="collection-curved-text"
           />
         </header>
         <main>

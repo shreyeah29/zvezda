@@ -2,11 +2,52 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { videos } from "@/data/brand";
 
 const HERO_POSTER = "/assets/images/products/set-12/HSP_5750.jpg";
 
 export function HomeHeroVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const playVideo = () => {
+      if (video.paused) {
+        void video.play().catch(() => undefined);
+      }
+    };
+
+    playVideo();
+
+    video.addEventListener("canplay", playVideo);
+    video.addEventListener("loadeddata", playVideo);
+
+    const onVisibilityChange = () => {
+      if (!document.hidden) playVideo();
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) playVideo();
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(video);
+
+    return () => {
+      video.removeEventListener("canplay", playVideo);
+      video.removeEventListener("loadeddata", playVideo);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <section
       className="viewport-fill relative h-screen w-full snap-start snap-always overflow-hidden bg-ink"
@@ -18,11 +59,12 @@ export function HomeHeroVideo() {
         aria-hidden="true"
       />
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         poster={HERO_POSTER}
         className="absolute inset-0 h-full w-full object-cover object-center"
       >
