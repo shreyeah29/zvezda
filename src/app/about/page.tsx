@@ -84,7 +84,7 @@ export default function AboutPage() {
               />
               <MaskReveal
                 src="/assets/images/products/set-5/HSP_4393.jpg"
-                alt="Peach Silhouette — collection sketch"
+                alt="Blush Mirage — collection sketch"
                 direction="down"
                 accent="#d4a088"
                 className="aspect-[4/5]"

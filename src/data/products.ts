@@ -27,15 +27,15 @@ export type Product = {
 };
 
 const editorialNames: Record<number, string> = {
-  1: "Conservatory I",
-  2: "Conservatory II",
-  3: "Conservatory III",
+  1: "Fardin Elegance",
+  2: "Verdant Whisper Gown",
+  3: "Olive Tiered Zephyr Mini Dress",
   4: "Conservatory IV",
-  5: "Peach Silhouette",
+  5: "Blush Mirage",
   6: "Noir I",
   7: "Noir II",
-  8: "Noir III",
-  9: "Noir IV",
+  8: "Eclipse Royale",
+  9: "Ivory Eclipse",
   10: "Noir V",
   11: "Solar",
   12: "Crimson",
