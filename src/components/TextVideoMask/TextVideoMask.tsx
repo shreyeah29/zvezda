@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useLayoutEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type TextVideoMaskFont = {
   fontSize?: string;
@@ -44,22 +44,9 @@ export default function TextVideoMask({
   textAlign = "center",
   className,
 }: TextVideoMaskProps) {
-  const maskId = useId().replace(/:/g, "");
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const videoSource = useVideoFile ? videoFile : videoUrl;
-  const lines = text.split("\n");
-  const [fontSize, setFontSize] = useState(120);
-  const [viewport, setViewport] = useState({ width: 1200, height: 800 });
-
-  useLayoutEffect(() => {
-    const update = () => {
-      setFontSize(computeDisplayFontSize());
-      setViewport({ width: window.innerWidth, height: window.innerHeight });
-    };
-
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
 
   const fontFamily = font?.fontFamily || "Inter, sans-serif";
   const fontWeight = font?.fontWeight || 700;
@@ -67,11 +54,90 @@ export default function TextVideoMask({
   const letterSpacing = font?.letterSpacing || "-0.02em";
   const lineHeight = Number.parseFloat(font?.lineHeight || "0.85") || 0.85;
 
-  const anchor = textAlign === "left" ? "start" : "middle";
-  const x = textAlign === "left" ? 48 : viewport.width / 2;
-  const lineHeightPx = fontSize * lineHeight;
-  const blockHeight = lineHeightPx * lines.length;
-  const startY = viewport.height / 2 - blockHeight / 2 + fontSize * 0.35;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    if (!canvas || !video) return;
+
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    let frameId = 0;
+    let width = 0;
+    let height = 0;
+    const lines = text.split("\n");
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+
+      width = Math.max(1, Math.floor(rect.width));
+      height = Math.max(1, Math.floor(rect.height));
+
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const drawTextMask = () => {
+      const fontSize = computeDisplayFontSize();
+      const lineHeightPx = fontSize * lineHeight;
+      const blockHeight = lineHeightPx * lines.length;
+      const x = textAlign === "left" ? 48 : width / 2;
+      const startY = height / 2 - blockHeight / 2 + fontSize * 0.85;
+
+      context.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
+      context.textAlign = textAlign === "left" ? "left" : "center";
+      context.textBaseline = "alphabetic";
+      context.fillStyle = "#fff";
+
+      lines.forEach((line, index) => {
+        context.fillText(line, x, startY + index * lineHeightPx);
+      });
+    };
+
+    const drawVideoCover = () => {
+      const videoWidth = video.videoWidth || width;
+      const videoHeight = video.videoHeight || height;
+      const scale = Math.max(width / videoWidth, height / videoHeight);
+      const drawWidth = videoWidth * scale;
+      const drawHeight = videoHeight * scale;
+      const dx = (width - drawWidth) / 2;
+      const dy = (height - drawHeight) / 2;
+
+      context.drawImage(video, dx, dy, drawWidth, drawHeight);
+    };
+
+    const draw = () => {
+      context.globalCompositeOperation = "source-over";
+      context.clearRect(0, 0, width, height);
+
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        drawVideoCover();
+        context.globalCompositeOperation = "destination-in";
+        drawTextMask();
+        context.globalCompositeOperation = "destination-over";
+        context.fillStyle = backgroundColor;
+        context.fillRect(0, 0, width, height);
+      } else {
+        context.fillStyle = backgroundColor;
+        context.fillRect(0, 0, width, height);
+        drawTextMask();
+      }
+
+      frameId = requestAnimationFrame(draw);
+    };
+
+    resize();
+    void video.play().catch(() => undefined);
+    frameId = requestAnimationFrame(draw);
+    window.addEventListener("resize", resize);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", resize);
+    };
+  }, [backgroundColor, fontFamily, fontStyle, fontWeight, lineHeight, text, textAlign]);
 
   return (
     <div
@@ -84,52 +150,25 @@ export default function TextVideoMask({
         overflow: "hidden",
       }}
     >
-      <svg
+      <canvas
+        ref={canvasRef}
         aria-hidden="true"
-        width={viewport.width}
-        height={viewport.height}
-        viewBox={`0 0 ${viewport.width} ${viewport.height}`}
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-      >
-        <defs>
-          <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
-            <rect width="100%" height="100%" fill="black" />
-            <text
-              x={x}
-              y={startY}
-              textAnchor={anchor}
-              fill="white"
-              style={{
-                fontSize: `${fontSize}px`,
-                fontFamily,
-                fontWeight,
-                fontStyle,
-                letterSpacing,
-              }}
-            >
-              {lines.map((line, index) => (
-                <tspan key={`${line}-${index}`} x={x} dy={index === 0 ? 0 : lineHeightPx}>
-                  {line}
-                </tspan>
-              ))}
-            </text>
-          </mask>
-        </defs>
-      </svg>
+      />
       <video
+        ref={videoRef}
         src={videoSource}
         autoPlay={autoplay}
         loop={loop}
         muted={muted}
         playsInline
+        preload="auto"
         style={{
           position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          mask: `url(#${maskId})`,
-          WebkitMask: `url(#${maskId})`,
+          width: 1,
+          height: 1,
+          opacity: 0,
+          pointerEvents: "none",
         }}
       />
       <span
