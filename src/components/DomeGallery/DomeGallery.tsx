@@ -24,6 +24,7 @@ export type DomeGalleryProps = {
   imageBorderRadius?: string;
   openedImageBorderRadius?: string;
   grayscale?: boolean;
+  allowPageScroll?: boolean;
 };
 
 type DomeItem = {
@@ -146,6 +147,7 @@ export default function DomeGallery({
   imageBorderRadius = "30px",
   openedImageBorderRadius = "30px",
   grayscale = true,
+  allowPageScroll = false,
 }: DomeGalleryProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
@@ -691,7 +693,10 @@ export default function DomeGallery({
         } as React.CSSProperties
       }
     >
-      <main ref={mainRef} className="sphere-main">
+      <main
+        ref={mainRef}
+        className={`sphere-main${allowPageScroll ? " sphere-main--page-scroll" : ""}`}
+      >
         <div className="stage">
           <div ref={sphereRef} className="sphere">
             {items.map((item, index) => (

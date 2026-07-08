@@ -18,7 +18,7 @@ export function HomeDomeGallery() {
 
   return (
     <section
-      className="viewport-fill relative h-screen w-full overflow-hidden bg-black"
+      className="viewport-fill relative h-screen w-full snap-start snap-always overflow-hidden bg-black"
       aria-label="Collection dome gallery"
     >
       <DomeGallery
@@ -29,6 +29,7 @@ export function HomeDomeGallery() {
         segments={26}
         dragDampening={2.6}
         grayscale={false}
+        allowPageScroll
         overlayBlurColor="#120F17"
         openedImageWidth="400px"
         openedImageHeight="400px"

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
 import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
 
@@ -29,14 +29,28 @@ const ImageScroller = dynamic(
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, [loaded]);
+
   return (
     <>
       {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
       {loaded && (
         <SmoothScroll>
-          <HomeHeroVideo />
-          <HomeDomeGallery />
-          <ImageScroller />
+          <main className="snap-y snap-proximity md:snap-mandatory">
+            <HomeHeroVideo />
+            <HomeDomeGallery />
+            <ImageScroller className="snap-start snap-always" />
+          </main>
         </SmoothScroll>
       )}
     </>

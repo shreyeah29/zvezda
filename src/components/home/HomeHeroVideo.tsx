@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { videos } from "@/data/brand";
 
 export function HomeHeroVideo() {
   return (
-    <div className="viewport-fill relative h-screen w-full overflow-hidden bg-ink">
+    <section
+      className="viewport-fill relative h-screen w-full snap-start snap-always overflow-hidden bg-ink"
+      aria-label="Hero"
+    >
       <video
         autoPlay
         muted
@@ -25,6 +29,15 @@ export function HomeHeroVideo() {
           Shop
         </Link>
       </header>
-    </div>
+
+      <div className="pointer-events-none absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3">
+        <span className="editorial-spacing text-[9px] text-cream/45">Scroll</span>
+        <motion.span
+          className="block h-10 w-px origin-top bg-cream/35"
+          animate={{ scaleY: [1, 0.45, 1], opacity: [0.35, 0.85, 0.35] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+    </section>
   );
 }

@@ -33,6 +33,10 @@ main.sphere-main {
   background: transparent;
 }
 
+main.sphere-main--page-scroll {
+  touch-action: pan-y;
+}
+
 .stage {
   width: 100%;
   height: 100%;
