@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { formatPrice, products } from "@/data/products";
+import { products } from "@/data/products";
+import SplitText from "@/components/ui/SplitText";
+import TextType from "@/components/ui/TextType";
 import "./PillCarousel.css";
 
 const AUTOPLAY_MS = 4200;
@@ -43,12 +45,18 @@ function getCardStyle(index: number, current: number, count: number, hovered: bo
   return { left: "50%", top: "50%", scale: 0.5, zIndex: 10, opacity: 0, blur: 3, brightness: 1 };
 }
 
+function getShortDescription(story: string) {
+  const firstSentence = story.split(".")[0]?.trim();
+  return firstSentence ? `${firstSentence}.` : story;
+}
+
 export function HomePillCarousel() {
   const items = useMemo(() => products, []);
   const count = items.length;
   const [current, setCurrent] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [paused, setPaused] = useState(false);
+  const [nameComplete, setNameComplete] = useState(false);
 
   const next = useCallback(() => setCurrent((p) => (p + 1) % count), [count]);
   const prev = useCallback(() => setCurrent((p) => (p - 1 + count) % count), [count]);
@@ -69,6 +77,11 @@ export function HomePillCarousel() {
   }, [paused, next, count]);
 
   const active = items[current];
+  const shortDescription = active ? getShortDescription(active.story) : "";
+
+  useEffect(() => {
+    setNameComplete(false);
+  }, [active?.slug]);
 
   return (
     <section
@@ -139,36 +152,42 @@ export function HomePillCarousel() {
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -16 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="editorial-spacing pill-carousel__meta-label">{active?.collectionLabel}</p>
-            <h2 className="pill-carousel__name">{active?.name}</h2>
-            <p className="pill-carousel__desc">{active?.story}</p>
+            <SplitText
+              key={`name-${active?.slug}`}
+              tag="h2"
+              text={active?.name ?? ""}
+              className="pill-carousel__name"
+              delay={38}
+              duration={0.85}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 34, rotateX: -35 }}
+              to={{ opacity: 1, y: 0, rotateX: 0 }}
+              textAlign="left"
+              onLetterAnimationComplete={() => setNameComplete(true)}
+            />
+            {nameComplete && (
+              <TextType
+                key={`desc-${active?.slug}`}
+                as="p"
+                text={shortDescription}
+                className="pill-carousel__desc"
+                typingSpeed={18}
+                initialDelay={140}
+                loop={false}
+                showCursor
+                cursorCharacter="|"
+                cursorClassName="pill-carousel__desc-cursor"
+              />
+            )}
           </motion.div>
         </AnimatePresence>
-
-        <div className="pill-carousel__actions">
-          <Link
-            href={`/products/${active?.slug}`}
-            className="pill-carousel__btn pill-carousel__btn--primary"
-            data-cursor="VIEW"
-          >
-            View Product
-          </Link>
-          <Link
-            href={`/collections/${active?.collection}`}
-            className="pill-carousel__btn"
-            data-cursor="EXPLORE"
-          >
-            View Collection
-          </Link>
-          <span className="pill-carousel__price">
-            {active ? formatPrice(active.price, active.currency) : ""}
-          </span>
-        </div>
       </div>
 
       <div className="pill-carousel__controls">

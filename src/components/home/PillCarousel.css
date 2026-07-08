@@ -4,9 +4,6 @@
   width: 100%;
   overflow: hidden;
   background: #070707;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .pill-carousel__ambient {
@@ -31,10 +28,12 @@
 
 /* ---- 3D cascade stage ---- */
 .pill-carousel__stage {
-  position: relative;
-  width: clamp(220px, 24vw, 300px);
+  position: absolute;
+  top: 50%;
+  left: clamp(18rem, 34vw, 34rem);
+  transform: translate(-50%, -50%);
+  width: clamp(210px, 22vw, 290px);
   height: min(74vh, 620px);
-  margin: 0 auto;
   perspective: 1600px;
 }
 
@@ -115,87 +114,44 @@
 /* ---- editorial meta ---- */
 .pill-carousel__meta {
   position: absolute;
-  left: clamp(1.5rem, 5vw, 4.5rem);
-  bottom: clamp(2rem, 8vh, 5rem);
+  right: clamp(2rem, 7vw, 6rem);
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 70;
-  max-width: min(30rem, 40vw);
+  width: min(34rem, 36vw);
   pointer-events: none;
-}
-
-.pill-carousel__meta a {
-  pointer-events: auto;
 }
 
 .pill-carousel__meta-label {
   font-size: 10px;
   color: rgba(196, 165, 116, 0.85);
-  margin: 0 0 1rem;
+  margin: 0 0 1.15rem;
 }
 
 .pill-carousel__name {
-  font-family: var(--font-editorial), var(--font-display), serif;
-  font-size: clamp(2.5rem, 5.5vw, 4.75rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0.01em;
+  font-family: var(--font-product), var(--font-display), serif;
+  font-size: clamp(3rem, 6.3vw, 6.75rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
   color: #f5f0e8;
-  margin: 0 0 1.1rem;
+  margin: 0 0 1.25rem;
+  text-wrap: balance;
+  text-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
 }
 
 .pill-carousel__desc {
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
-  line-height: 1.7;
-  color: rgba(245, 240, 232, 0.6);
-  margin: 0 0 1.9rem;
-  max-width: 34ch;
+  display: block;
+  min-height: 4.9em;
+  max-width: 31ch;
+  font-size: clamp(0.88rem, 1.15vw, 1rem);
+  line-height: 1.72;
+  color: rgba(245, 240, 232, 0.62);
+  margin: 0;
 }
 
-.pill-carousel__actions {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-  pointer-events: auto;
-}
-
-.pill-carousel__btn {
-  display: inline-flex;
-  align-items: center;
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(245, 240, 232, 0.75);
-  border-bottom: 1px solid rgba(245, 240, 232, 0.25);
-  padding-bottom: 0.35rem;
-  transition: color 0.35s ease, border-color 0.35s ease;
-}
-
-.pill-carousel__btn:hover {
-  color: #f5f0e8;
-  border-color: #c4a574;
-}
-
-.pill-carousel__btn--primary {
-  color: #0a0a0a;
-  background: #f5f0e8;
-  border: none;
-  border-radius: 50px;
-  padding: 0.85rem 1.75rem;
-  letter-spacing: 0.22em;
-  font-weight: 600;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.pill-carousel__btn--primary:hover {
-  transform: translateY(-2px);
-  background: #ffffff;
-  color: #0a0a0a;
-}
-
-.pill-carousel__price {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: rgba(245, 240, 232, 0.45);
+.pill-carousel__desc-cursor {
+  color: rgba(196, 165, 116, 0.9);
 }
 
 /* ---- controls ---- */
@@ -254,13 +210,19 @@
   }
 
   .pill-carousel__stage {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
     width: clamp(180px, 52vw, 240px);
     height: 48vh;
+    margin: 0 auto;
   }
 
   .pill-carousel__meta {
     position: static;
-    max-width: none;
+    transform: none;
+    width: auto;
     padding: 0 1.5rem;
     text-align: center;
   }
@@ -269,8 +231,12 @@
     max-width: none;
   }
 
-  .pill-carousel__actions {
-    justify-content: center;
+  .pill-carousel__name {
+    text-align: center !important;
+  }
+
+  .pill-carousel__desc {
+    min-height: 5.2em;
   }
 
   .pill-carousel__controls {
