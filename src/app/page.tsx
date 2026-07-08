@@ -13,6 +13,14 @@ const SmoothScroll = dynamic(
   { ssr: false }
 );
 
+const HomeDomeGallery = dynamic(
+  () =>
+    import("@/components/home/HomeDomeGallery").then((mod) => ({
+      default: mod.HomeDomeGallery,
+    })),
+  { ssr: false }
+);
+
 const ImageScroller = dynamic(
   () => import("@/components/ImageScroller/ImageScroller"),
   { ssr: false }
@@ -27,6 +35,7 @@ export default function HomePage() {
       {loaded && (
         <SmoothScroll>
           <HomeHeroVideo />
+          <HomeDomeGallery />
           <ImageScroller />
         </SmoothScroll>
       )}

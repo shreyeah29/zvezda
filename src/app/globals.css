@@ -71,6 +71,10 @@
     cursor: none;
   }
 
+  body.dg-scroll-lock {
+    overflow: hidden;
+  }
+
   ::selection {
     background: var(--color-crimson);
     color: var(--color-cream);
