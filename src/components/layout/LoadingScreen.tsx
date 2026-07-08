@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { brand } from "@/data/brand";
+import "./LoadingScreen.css";
 
 type LoadingScreenProps = {
   onComplete: () => void;
@@ -14,7 +15,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
   useEffect(() => {
     const start = Date.now();
-    const duration = 2800;
+    const duration = 3200;
 
     const tick = () => {
       const elapsed = Date.now() - start;
@@ -25,8 +26,8 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
       } else {
         setTimeout(() => {
           setDone(true);
-          setTimeout(onComplete, 900);
-        }, 400);
+          setTimeout(onComplete, 700);
+        }, 350);
       }
     };
 
@@ -37,50 +38,54 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     <AnimatePresence>
       {!done && (
         <motion.div
-          className="viewport-fixed z-[100] flex flex-col items-center justify-center bg-ink"
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          className="loading-screen"
+          exit={{ opacity: 0, scale: 1.03 }}
+          transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
         >
-          <div className="relative flex flex-col items-center gap-8">
-            {/* Logo stitched together */}
-            <motion.h1
-              className="font-display text-6xl font-light tracking-[0.5em] text-cream md:text-8xl"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              {brand.name.split("").map((letter, i) => (
-                <motion.span
-                  key={i}
-                  className="inline-block"
-                  initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{
-                    delay: 0.1 + i * 0.12,
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </motion.h1>
+          <div className="loading-screen__glow" aria-hidden="true" />
+          <div className="loading-screen__grain" aria-hidden="true" />
 
-            {/* Thread line */}
-            <div className="relative h-px w-48 overflow-hidden bg-cream/10 md:w-64">
+          <div className="loading-screen__content">
+            <motion.div
+              className="loading-screen__logo-wrap"
+              initial={{ opacity: 0, scale: 0.9, filter: "blur(16px)" }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                filter: "blur(0px)",
+              }}
+              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            >
               <motion.div
-                className="absolute inset-y-0 left-0 bg-gold"
-                style={{ width: `${progress * 100}%` }}
+                animate={{ scale: [1, 1.015, 1] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={brand.logo.champagne}
+                  alt="Zvezda Atelier"
+                  className="loading-screen__logo"
+                  draggable={false}
+                />
+              </motion.div>
+            </motion.div>
+
+            <div className="loading-screen__progress-track" aria-hidden="true">
+              <motion.div
+                className="loading-screen__progress-fill"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: progress }}
+                transition={{ ease: "linear", duration: 0.1 }}
               />
             </div>
 
             <motion.p
-              className="editorial-spacing text-[10px] text-muted"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              transition={{ delay: 1.2 }}
+              className="loading-screen__caption editorial-spacing"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 0.55, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.8 }}
             >
-              Crafting experience
+              {brand.tagline}
             </motion.p>
           </div>
         </motion.div>

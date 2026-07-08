@@ -13,7 +13,7 @@
   overflow: visible;
   display: block;
   font-size: clamp(3rem, 8vw, 6rem);
-  fill: #ffffff;
+  fill: #f5f0e8;
   -moz-user-select: none;
   -webkit-user-select: none;
   font-weight: 700;
@@ -23,5 +23,6 @@
 
 .collection-curved-text {
   font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
+  fill: #f5f0e8;
 }

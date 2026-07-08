@@ -26,10 +26,35 @@
 }
 
 .grid-motion-wrap header.collection-header {
+  position: relative;
   min-height: 100vh;
   width: 100%;
   padding: 0;
   max-width: none;
+  isolation: isolate;
+  background-color: #0a0a0a;
+  background-image:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.55) 0%, rgba(10, 10, 10, 0.78) 45%, rgba(10, 10, 10, 0.92) 100%),
+    radial-gradient(ellipse 90% 60% at 50% 15%, rgba(196, 165, 116, 0.14) 0%, transparent 68%),
+    radial-gradient(circle at 80% 80%, rgba(74, 82, 64, 0.18) 0%, transparent 42%),
+    url("/assets/images/film/HSP_4096.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.grid-motion-wrap header.collection-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.05;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.grid-motion-wrap header.collection-header > * {
+  position: relative;
+  z-index: 1;
 }
 
 .grid-motion-wrap a {
