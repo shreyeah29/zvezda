@@ -1,0 +1,51 @@
+.collection-canvas {
+  background: #000000;
+  touch-action: none;
+}
+
+.collection-canvas__grid {
+  isolation: isolate;
+}
+
+.collection-canvas__image-layer {
+  will-change: transform, opacity, filter;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.collection-canvas__editorial-panel {
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+}
+
+.collection-canvas__progress-track {
+  transform: translate3d(0, 0, 0);
+}
+
+.collection-canvas__progress-fill {
+  will-change: transform;
+  transform: translate3d(0, 0, 0) scaleX(0);
+  transform-origin: left center;
+}
+
+.collection-canvas__light {
+  will-change: opacity, transform;
+  pointer-events: none;
+}
+
+.collection-canvas__dot {
+  will-change: transform, opacity;
+}
+
+.collection-canvas-cursor {
+  mix-blend-mode: difference;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-canvas__image-layer,
+  .collection-canvas__editorial-panel,
+  .collection-canvas__progress-fill {
+    will-change: auto;
+    transition: none !important;
+  }
+}

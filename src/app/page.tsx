@@ -21,15 +21,47 @@ const HomeGridMotion = dynamic(
   { ssr: false }
 );
 
+const HomeAtelierManifesto = dynamic(
+  () =>
+    import("@/components/home/HomeAtelierManifesto").then((mod) => ({
+      default: mod.HomeAtelierManifesto,
+    })),
+  { ssr: false }
+);
+
+const HomeMoodBoard = dynamic(
+  () =>
+    import("@/components/home/HomeMoodBoard").then((mod) => ({
+      default: mod.HomeMoodBoard,
+    })),
+  { ssr: false }
+);
+
+const HomeEditorialMarquee = dynamic(
+  () =>
+    import("@/components/home/HomeEditorialMarquee").then((mod) => ({
+      default: mod.HomeEditorialMarquee,
+    })),
+  { ssr: false }
+);
+
+const HomeCollectionCanvas = dynamic(
+  () =>
+    import("@/components/home/HomeCollectionCanvas").then((mod) => ({
+      default: mod.HomeCollectionCanvas,
+    })),
+  { ssr: false }
+);
+
 const ImageScroller = dynamic(
   () => import("@/components/ImageScroller/ImageScroller"),
   { ssr: false }
 );
 
-const HomeInstagramStrip = dynamic(
+const Footer = dynamic(
   () =>
-    import("@/components/home/HomeInstagramStrip").then((mod) => ({
-      default: mod.HomeInstagramStrip,
+    import("@/components/layout/Footer").then((mod) => ({
+      default: mod.Footer,
     })),
   { ssr: false }
 );
@@ -57,8 +89,12 @@ export default function HomePage() {
           <main className="snap-y snap-proximity">
             <HomeHeroVideo />
             <HomeGridMotion />
+            <HomeAtelierManifesto />
+            <HomeMoodBoard />
+            <HomeEditorialMarquee />
+            <HomeCollectionCanvas />
             <ImageScroller />
-            <HomeInstagramStrip />
+            <Footer />
           </main>
         </SmoothScroll>
       )}
