@@ -13,10 +13,10 @@ const SmoothScroll = dynamic(
   { ssr: false }
 );
 
-const HomeDomeGallery = dynamic(
+const HomeGridMotion = dynamic(
   () =>
-    import("@/components/home/HomeDomeGallery").then((mod) => ({
-      default: mod.HomeDomeGallery,
+    import("@/components/home/HomeGridMotion").then((mod) => ({
+      default: mod.HomeGridMotion,
     })),
   { ssr: false }
 );
@@ -56,7 +56,7 @@ export default function HomePage() {
         <SmoothScroll>
           <main className="snap-y snap-proximity">
             <HomeHeroVideo />
-            <HomeDomeGallery />
+            <HomeGridMotion />
             <ImageScroller />
             <HomeInstagramStrip />
           </main>

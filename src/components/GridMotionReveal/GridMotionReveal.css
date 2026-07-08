@@ -1,0 +1,176 @@
+/* Grid Motion Reveal — ported from uploaded component */
+
+.grid-motion-wrap *,
+.grid-motion-wrap *::before,
+.grid-motion-wrap *::after {
+  box-sizing: border-box;
+}
+
+.grid-motion-wrap {
+  --gutter: 2rem;
+  background: #000;
+  color: #fff;
+  overflow: clip;
+  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui;
+}
+
+@media (max-width: 600px) {
+  .grid-motion-wrap {
+    --gutter: 1rem;
+  }
+}
+
+.grid-motion-wrap .content-wrap {
+  background: #000;
+  overflow: clip;
+}
+
+.grid-motion-wrap header {
+  display: grid;
+  align-content: center;
+  max-width: calc(100% - (2 * var(--gutter)));
+  padding: 48px 0 24px 48px;
+  text-align: left;
+}
+
+.grid-motion-wrap a {
+  color: white;
+  text-decoration: none;
+}
+
+.grid-motion-wrap .fluid {
+  font-size: clamp(4rem, 12vw, 12rem);
+  line-height: 0.6;
+  margin: 0;
+}
+
+.grid-motion-wrap main section:first-of-type {
+  min-height: 240vh;
+}
+
+.grid-motion-wrap .content {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  place-items: center;
+  align-content: center;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+.grid-motion-wrap .grid {
+  --offset: 0;
+  --container-width: 1600px;
+  --gap: clamp(10px, 7.35vw, 80px);
+
+  width: var(--container-width);
+  max-width: calc(100% - (2 * var(--gutter)));
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: var(--gap);
+  margin: 0 auto;
+  align-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+@media (max-width: 600px) {
+  .grid-motion-wrap .grid {
+    grid-template-columns: repeat(3, 1fr);
+    --offset: -1;
+  }
+
+  .grid-motion-wrap .grid > .layer:nth-of-type(1) {
+    display: none;
+  }
+}
+
+.grid-motion-wrap .grid > .layer {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  opacity: 0;
+  scale: 0;
+}
+
+.grid-motion-wrap .grid > .layer:nth-of-type(1) div:nth-of-type(odd) {
+  grid-column: 1;
+}
+
+.grid-motion-wrap .grid > .layer:nth-of-type(1) div:nth-of-type(even) {
+  grid-column: -2;
+}
+
+.grid-motion-wrap .grid > .layer:nth-of-type(2) div:nth-of-type(odd) {
+  grid-column: calc(2 + var(--offset));
+}
+
+.grid-motion-wrap .grid > .layer:nth-of-type(2) div:nth-of-type(even) {
+  grid-column: calc(-3 - var(--offset));
+}
+
+.grid-motion-wrap .grid > .layer:nth-of-type(3) div:first-of-type {
+  grid-column: calc(3 + var(--offset));
+  grid-row: 1;
+}
+
+.grid-motion-wrap .grid > .layer:nth-of-type(3) div:last-of-type {
+  grid-column: calc(3 + var(--offset));
+  grid-row: -1;
+}
+
+.grid-motion-wrap .grid img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.grid-motion-wrap .grid .scaler {
+  position: relative;
+  grid-area: 2 / calc(3 + var(--offset));
+}
+
+.grid-motion-wrap .scaler {
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.grid-motion-wrap .scaler img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  object-fit: cover;
+  border-radius: 1rem;
+  width: 100%;
+  height: 100%;
+}
+
+.grid-motion-wrap .grid-cell-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.grid-motion-wrap .scaler .grid-cell-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid-motion-wrap .grid > .layer {
+    opacity: 1;
+    scale: 1;
+  }
+}
