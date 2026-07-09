@@ -1,7 +1,12 @@
 .category-shuffle-gallery {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: min(92vh, 760px);
-  padding: clamp(1.25rem, 3vh, 2rem) clamp(0.75rem, 2vw, 1.5rem);
+  width: 100%;
+  padding: 0;
+}
+
+.category-shuffle-gallery .image-shuffle-grid {
+  width: 100%;
+}
+
+.category-shuffle-gallery .image-shuffle-grid__inner {
+  width: 100%;
 }

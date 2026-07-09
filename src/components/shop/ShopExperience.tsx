@@ -9,6 +9,7 @@ import { ShopProductCard } from "@/components/shop/ShopProductCard";
 import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import type { CircularGalleryHandle, CircularGalleryItem } from "@/components/shop/CircularGallery";
+import "./ShopExperience.css";
 
 const CircularGallery = dynamic(() => import("@/components/shop/CircularGallery"), {
   ssr: false,
@@ -63,9 +64,7 @@ function ShopExperienceContent() {
       <div className="hero-screen relative w-full overflow-hidden bg-ink">
         <div className="pointer-events-none absolute top-24 left-6 z-20 md:top-28 md:left-10">
           <p className="editorial-spacing text-[9px] tracking-[0.45em] text-cream/40">Collection</p>
-          <p className="mt-3 font-[family-name:var(--font-shop-display)] text-2xl font-medium tracking-wide text-cream md:text-3xl">
-            Atelier
-          </p>
+          <p className="shop-heading mt-3 text-4xl text-cream md:text-5xl">Atelier</p>
           <p className="mt-3 max-w-[220px] text-[11px] leading-relaxed tracking-wide text-cream/45 md:max-w-xs">
             Drag, scroll, tap the arrows, or use arrow keys to explore all {products.length} pieces.
           </p>
@@ -101,9 +100,7 @@ function ShopExperienceContent() {
         <div className="mx-auto max-w-[1320px]">
           <header className="mb-10 max-w-xl md:mb-12">
             <p className="editorial-spacing text-[10px] text-gold/90">Complete Edit</p>
-            <h2 className="font-[family-name:var(--font-shop-display)] mt-4 text-4xl font-medium text-cream md:text-5xl">
-              All Pieces
-            </h2>
+            <h2 className="shop-heading mt-4 text-5xl text-cream md:text-6xl">All Pieces</h2>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-cream/50">
               Browse every couture piece — tap to view details, save to your wishlist, or add to cart.
             </p>

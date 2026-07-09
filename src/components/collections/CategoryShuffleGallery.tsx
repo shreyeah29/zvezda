@@ -21,13 +21,13 @@ export function CategoryShuffleGallery({ category }: CategoryShuffleGalleryProps
         images={images}
         rows={3}
         columns={3}
-        gap={6}
-        padding={12}
-        aspectRatio="portrait"
+        gap={8}
+        padding={0}
+        aspectRatio="square"
         objectFit="cover"
         objectPosition="center top"
         backgroundColor={category.backgroundColor}
-        borderRadius={3}
+        borderRadius={0}
         borderColor="rgba(255,255,255,0.78)"
         borderWidth={2}
         swapInterval={2200}
@@ -35,12 +35,10 @@ export function CategoryShuffleGallery({ category }: CategoryShuffleGalleryProps
         easing="easeInOut"
         shuffleStyle="neighbors"
         hoverEffect
-        hoverScale={1.025}
+        hoverScale={1.02}
         enableImageCycle={images.length > 9}
         maxSwapsPerInterval={1}
         randomizationIntensity={100}
-        fitViewport
-        maxHeight="min(88vh, 720px)"
       />
     </section>
   );
