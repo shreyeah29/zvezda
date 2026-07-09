@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { LoadingScreen } from "@/components/layout/LoadingScreen";
+import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
@@ -15,12 +14,8 @@ const galleryImages = products.flatMap((p) => [
 ]);
 
 export default function GalleryPage() {
-  const [loaded, setLoaded] = useState(false);
-
   return (
-    <>
-      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
-      {loaded && (
+    <SessionLoadGate>
         <SmoothScroll>
           <CustomCursor />
           <main className="px-6 pt-32 pb-16 md:px-12">
@@ -53,7 +48,6 @@ export default function GalleryPage() {
           </main>
           <Footer />
         </SmoothScroll>
-      )}
-    </>
+    </SessionLoadGate>
   );
 }

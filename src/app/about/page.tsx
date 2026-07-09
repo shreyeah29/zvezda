@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { LoadingScreen } from "@/components/layout/LoadingScreen";
+import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
@@ -20,12 +19,8 @@ const timeline = [
 ];
 
 export default function AboutPage() {
-  const [loaded, setLoaded] = useState(false);
-
   return (
-    <>
-      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
-      {loaded && (
+    <SessionLoadGate>
         <SmoothScroll>
           <CustomCursor />
           <main>
@@ -91,7 +86,6 @@ export default function AboutPage() {
           </main>
           <Footer />
         </SmoothScroll>
-      )}
-    </>
+    </SessionLoadGate>
   );
 }

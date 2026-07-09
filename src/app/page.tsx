@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import { LoadingScreen } from "@/components/layout/LoadingScreen";
+import { useEffect } from "react";
+import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
 import { HomePillCarousel } from "@/components/home/HomePillCarousel";
 
@@ -63,8 +63,6 @@ const Footer = dynamic(
 );
 
 export default function HomePage() {
-  const [loaded, setLoaded] = useState(false);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
     if ("scrollRestoration" in history) {
@@ -72,28 +70,20 @@ export default function HomePage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (!loaded) return;
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
-  }, [loaded]);
-
   return (
-    <>
-      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
-      {loaded && (
-        <SmoothScroll>
-          <main>
-            <HomeHeroVideo />
-            <HomeGridMotion />
-            <HomeAtelierManifesto />
-            <HomeEditorialMarquee />
-            <HomeShopCards />
-            <HomePillCarousel />
-            <HomeInstagramChapter />
-            <Footer />
-          </main>
-        </SmoothScroll>
-      )}
-    </>
+    <SessionLoadGate>
+      <SmoothScroll>
+        <main>
+          <HomeHeroVideo />
+          <HomeGridMotion />
+          <HomeAtelierManifesto />
+          <HomeEditorialMarquee />
+          <HomeShopCards />
+          <HomePillCarousel />
+          <HomeInstagramChapter />
+          <Footer />
+        </main>
+      </SmoothScroll>
+    </SessionLoadGate>
   );
 }

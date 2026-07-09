@@ -2,19 +2,17 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useState } from "react";
-import { getCollection } from "@/data/collections";
-import { getProductsByCollection, formatPrice } from "@/data/products";
-import { LoadingScreen } from "@/components/layout/LoadingScreen";
+import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { MaskReveal } from "@/components/ui/MaskReveal";
 import { EditorialImage } from "@/components/ui/EditorialImage";
+import { getCollection } from "@/data/collections";
+import { getProductsByCollection, formatPrice } from "@/data/products";
 
 export function CollectionClient({ slug }: { slug: string }) {
-  const [loaded, setLoaded] = useState(false);
   const collection = getCollection(slug);
 
   if (!collection) notFound();
@@ -22,9 +20,7 @@ export function CollectionClient({ slug }: { slug: string }) {
   const products = getProductsByCollection(collection.slug);
 
   return (
-    <>
-      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
-      {loaded && (
+    <SessionLoadGate>
         <SmoothScroll>
           <CustomCursor />
           <main>
@@ -105,7 +101,6 @@ export function CollectionClient({ slug }: { slug: string }) {
           </main>
           <Footer />
         </SmoothScroll>
-      )}
-    </>
+    </SessionLoadGate>
   );
 }
