@@ -5,6 +5,10 @@ import { Suspense, useMemo, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { products } from "@/data/products";
 import { StageArrows } from "@/components/shop/StageArrows";
+import { ShopProductCard } from "@/components/shop/ShopProductCard";
+import { ScrollCue } from "@/components/ui/ScrollCue";
+import { Footer } from "@/components/layout/Footer";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import type { CircularGalleryHandle, CircularGalleryItem } from "@/components/shop/CircularGallery";
 
 const CircularGallery = dynamic(() => import("@/components/shop/CircularGallery"), {
@@ -35,7 +39,7 @@ function ShopExperienceContent() {
         requestAnimationFrame(() => api.goToIndex(focusIndex));
       }
     },
-    [focusIndex, focusedSlug]
+    [focusIndex, focusedSlug],
   );
 
   const galleryItems: CircularGalleryItem[] = useMemo(
@@ -44,7 +48,7 @@ function ShopExperienceContent() {
         image: product.hero,
         text: product.name,
       })),
-    []
+    [],
   );
 
   const handleItemClick = useCallback(
@@ -52,59 +56,88 @@ function ShopExperienceContent() {
       const product = products[index];
       if (product) router.push(`/products/${product.slug}`);
     },
-    [router]
+    [router],
   );
 
   return (
-    <div className="hero-screen relative w-full overflow-hidden bg-ink">
-      <div className="pointer-events-none absolute top-24 left-6 z-20 md:top-28 md:left-10">
-        <p className="editorial-spacing text-[9px] tracking-[0.45em] text-cream/40">Collection</p>
-        <p className="mt-3 font-[family-name:var(--font-shop-display)] text-2xl font-medium tracking-wide text-cream md:text-3xl">
-          Atelier
-        </p>
-        <p className="mt-3 max-w-[220px] text-[11px] leading-relaxed tracking-wide text-cream/45 md:max-w-xs">
-          Drag, scroll, tap the arrows, or use arrow keys to explore all {products.length} pieces.
-        </p>
+    <>
+      <div className="hero-screen relative w-full overflow-hidden bg-ink">
+        <div className="pointer-events-none absolute top-24 left-6 z-20 md:top-28 md:left-10">
+          <p className="editorial-spacing text-[9px] tracking-[0.45em] text-cream/40">Collection</p>
+          <p className="mt-3 font-[family-name:var(--font-shop-display)] text-2xl font-medium tracking-wide text-cream md:text-3xl">
+            Atelier
+          </p>
+          <p className="mt-3 max-w-[220px] text-[11px] leading-relaxed tracking-wide text-cream/45 md:max-w-xs">
+            Drag, scroll, tap the arrows, or use arrow keys to explore all {products.length} pieces.
+          </p>
+        </div>
+
+        <div className="absolute inset-0 pt-16 pb-10">
+          <CircularGallery
+            onReady={handleGalleryReady}
+            items={galleryItems}
+            bend={3}
+            textColor="#f5f0e8"
+            borderRadius={0.05}
+            scrollEase={0.012}
+            scrollSpeed={0.9}
+            fontUrl="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap"
+            font="500 26px Bodoni Moda"
+            onItemClick={handleItemClick}
+          />
+          <StageArrows
+            onPrev={() => galleryApi.current?.goPrev()}
+            onNext={() => galleryApi.current?.goNext()}
+            canPrev
+            canNext
+          />
+        </div>
+
+        <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-4">
+          <p className="editorial-spacing text-[9px] tracking-[0.4em] text-cream/35">
+            Click a piece to view · Drag or use arrows to browse
+          </p>
+          <ScrollCue label="Scroll down to see all pieces" />
+        </div>
       </div>
 
-      <div className="absolute inset-0 pt-16 pb-10">
-        <CircularGallery
-          onReady={handleGalleryReady}
-          items={galleryItems}
-          bend={3}
-          textColor="#f5f0e8"
-          borderRadius={0.05}
-          scrollEase={0.012}
-          scrollSpeed={0.9}
-          fontUrl="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap"
-          font="500 26px Bodoni Moda"
-          onItemClick={handleItemClick}
-        />
-        <StageArrows
-          onPrev={() => galleryApi.current?.goPrev()}
-          onNext={() => galleryApi.current?.goNext()}
-          canPrev
-          canNext
-        />
-      </div>
+      <section className="relative bg-ink px-6 py-16 md:px-10 md:py-24" aria-label="Shop catalog">
+        <div className="mx-auto max-w-7xl">
+          <header className="mb-12 max-w-xl md:mb-16">
+            <p className="editorial-spacing text-[10px] text-gold/90">Complete Edit</p>
+            <h2 className="font-[family-name:var(--font-shop-display)] mt-4 text-4xl font-medium text-cream md:text-5xl">
+              All Pieces
+            </h2>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-cream/50">
+              Browse every couture piece — tap to view details, save to your wishlist, or add to cart.
+            </p>
+          </header>
 
-      <p className="editorial-spacing pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-[9px] tracking-[0.4em] text-cream/35">
-        Click a piece to view · Drag or use arrows to browse
-      </p>
-    </div>
+          <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+            {products.map((product, index) => (
+              <ShopProductCard key={product.slug} product={product} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </>
   );
 }
 
 export function ShopExperience() {
   return (
-    <Suspense
-      fallback={
-        <div className="hero-screen flex items-center justify-center bg-ink">
-          <p className="editorial-spacing text-[9px] text-cream/40">Loading collection…</p>
-        </div>
-      }
-    >
-      <ShopExperienceContent />
-    </Suspense>
+    <SmoothScroll>
+      <Suspense
+        fallback={
+          <div className="hero-screen flex items-center justify-center bg-ink">
+            <p className="editorial-spacing text-[9px] text-cream/40">Loading collection…</p>
+          </div>
+        }
+      >
+        <ShopExperienceContent />
+      </Suspense>
+    </SmoothScroll>
   );
 }

@@ -65,22 +65,17 @@ export function ShopProductCard({ product, index = 0 }: ShopProductCardProps) {
           </div>
         </div>
 
-        <div className="relative mt-5 overflow-hidden">
+        <div className="relative mt-4 overflow-hidden">
           <motion.p
-            className="font-display text-xl font-light text-cream md:text-2xl"
-            animate={{ y: hovered ? -4 : 0, opacity: hovered ? 1 : 0.88 }}
+            className="font-[family-name:var(--font-shop-display)] text-base font-medium text-cream md:text-lg"
+            animate={{ y: hovered ? -2 : 0 }}
             transition={{ duration: 0.45, ease: EASE }}
           >
             {product.name}
           </motion.p>
-          <motion.p
-            className="editorial-spacing mt-2 text-[9px] text-gold"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
-            transition={{ duration: 0.4, ease: EASE }}
-          >
+          <p className="editorial-spacing mt-2 text-[10px] text-gold/90">
             {formatPrice(product.price, product.currency)}
-          </motion.p>
+          </p>
         </div>
       </Link>
 

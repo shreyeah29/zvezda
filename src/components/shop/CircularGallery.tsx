@@ -657,6 +657,19 @@ class App {
   }
 
   onWheel(e: WheelEvent) {
+    const rect = this.container.getBoundingClientRect();
+    const isVertical = Math.abs(e.deltaY) > Math.abs(e.deltaX);
+
+    // Let the page scroll when the user is clearly scrolling down past the gallery.
+    if (isVertical && e.deltaY > 0 && rect.top >= -24 && rect.top <= 48) {
+      return;
+    }
+
+    // Gallery is mostly off-screen — don't hijack scroll.
+    if (rect.bottom < window.innerHeight * 0.35 || rect.top > window.innerHeight * 0.75) {
+      return;
+    }
+
     const delta = e.deltaY || (e as WheelEvent & { wheelDelta?: number }).wheelDelta || 0;
     this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.06;
     this.onCheckDebounce();

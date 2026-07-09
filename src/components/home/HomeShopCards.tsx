@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { shopHighlightCards } from "@/data/shopHighlightCards";
+import { ScrollCue } from "@/components/ui/ScrollCue";
 import "./HomeShopCards.css";
 
 export function HomeShopCards() {
@@ -28,6 +29,10 @@ export function HomeShopCards() {
           </motion.article>
         ))}
       </div>
+      <ScrollCue
+        className="home-shop-cards__cue"
+        label="Scroll down to explore the collection"
+      />
     </section>
   );
 }

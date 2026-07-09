@@ -51,7 +51,7 @@ export function HomeHeroVideo() {
   return (
     <section
       ref={sectionRef}
-      className="hero-screen relative isolate w-full snap-start snap-always bg-ink"
+      className="hero-screen relative isolate w-full bg-ink"
       aria-label="Hero"
     >
       <div className="absolute inset-0 h-full w-full">

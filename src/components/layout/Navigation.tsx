@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { NavLink } from "@/components/layout/NavLink";
 import { MiniCart } from "@/components/commerce/MiniCart";
-import { FlyToCartLayer } from "@/components/commerce/CommerceAnimations";
+import { FlyToCartLayer, WishlistNavButton } from "@/components/commerce/CommerceAnimations";
 import { useCommerce } from "@/context/CommerceContext";
 
 const NAV_LINKS = [
@@ -79,9 +79,11 @@ export function Navigation() {
                     )}
                   </AnimatePresence>
                 </button>
+              ) : link.href === "/wishlist" ? (
+                <WishlistNavButton key={link.href} href={link.href} />
               ) : (
                 <NavLink key={link.href} href={link.href} label={link.label} />
-              )
+              ),
             )}
           </nav>
 

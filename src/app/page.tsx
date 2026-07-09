@@ -82,7 +82,7 @@ export default function HomePage() {
       {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
       {loaded && (
         <SmoothScroll>
-          <main className="snap-y snap-proximity">
+          <main>
             <HomeHeroVideo />
             <HomeGridMotion />
             <HomeAtelierManifesto />
