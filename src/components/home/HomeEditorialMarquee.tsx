@@ -1,12 +1,9 @@
 "use client";
 
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import "./EditorialMarquee.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const MARQUEE_SEGMENTS = [
   "ZVEZDA",
@@ -45,21 +42,6 @@ export function HomeEditorialMarquee() {
         ease: "power3.out",
         delay: 0.1,
       });
-
-      gsap.fromTo(
-        section,
-        { opacity: 0.35 },
-        {
-          opacity: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 90%",
-            end: "bottom 10%",
-            scrub: true,
-          },
-        }
-      );
     }, section);
 
     return () => ctx.revert();

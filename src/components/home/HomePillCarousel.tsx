@@ -95,7 +95,8 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
 
       <p className="editorial-spacing pill-carousel__eyebrow">The Collection</p>
 
-      <div className="pill-carousel__stage">
+      <div className="pill-carousel__layout">
+        <div className="pill-carousel__stage">
         {items.map((product, index) => {
           const isCenter = (index - current + count) % count === 0;
           const cs = getCardStyle(index, current, count, hoveredIndex === index);
@@ -149,7 +150,8 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
         </AnimatePresence>
       </div>
 
-      <div className="pill-carousel__meta">
+        <div className="pill-carousel__side">
+          <div className="pill-carousel__meta">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -190,7 +192,7 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
         </AnimatePresence>
       </div>
 
-      <div className="pill-carousel__controls">
+          <div className="pill-carousel__controls">
         <span className="pill-carousel__counter">
           {String(current + 1).padStart(2, "0")} <i>/</i> {String(count).padStart(2, "0")}
         </span>
@@ -205,6 +207,8 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
               <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="1.4" />
             </svg>
           </button>
+        </div>
+      </div>
         </div>
       </div>
     </section>

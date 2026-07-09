@@ -1,9 +1,10 @@
 .pill-carousel {
   position: relative;
-  min-height: 82vh;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   background: #070707;
+  padding: clamp(2.5rem, 6vh, 4rem) 0 clamp(2rem, 5vh, 3.5rem);
+  isolation: isolate;
 }
 
 .pill-carousel__ambient {
@@ -17,25 +18,33 @@
 }
 
 .pill-carousel__eyebrow {
-  position: absolute;
-  top: clamp(2rem, 5vh, 3.5rem);
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   z-index: 60;
+  margin: 0 0 clamp(1.75rem, 4vh, 2.75rem);
+  text-align: center;
   font-size: clamp(12px, 1.35vw, 15px);
   font-weight: 500;
   letter-spacing: 0.42em;
   color: rgba(196, 165, 116, 0.92);
 }
 
+.pill-carousel__layout {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  min-height: min(68vh, 600px);
+  padding-inline: clamp(1rem, 4vw, 3rem);
+}
+
 /* ---- 3D cascade stage ---- */
 .pill-carousel__stage {
-  position: absolute;
-  top: 50%;
-  left: clamp(18rem, 34vw, 34rem);
-  transform: translate(-50%, -50%);
+  position: relative;
+  justify-self: center;
   width: clamp(210px, 22vw, 290px);
-  height: min(74vh, 620px);
+  height: min(62vh, 560px);
   perspective: 1600px;
 }
 
@@ -114,13 +123,19 @@
 }
 
 /* ---- editorial meta ---- */
+.pill-carousel__side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  padding-right: clamp(0.5rem, 3vw, 2rem);
+}
+
 .pill-carousel__meta {
-  position: absolute;
-  right: clamp(2rem, 7vw, 6rem);
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative;
   z-index: 70;
-  width: min(34rem, 36vw);
+  width: 100%;
+  max-width: 34rem;
   pointer-events: none;
 }
 
@@ -152,9 +167,7 @@
 
 /* ---- controls ---- */
 .pill-carousel__controls {
-  position: absolute;
-  right: clamp(1.5rem, 5vw, 4.5rem);
-  bottom: clamp(2rem, 8vh, 5rem);
+  position: relative;
   z-index: 70;
   display: flex;
   align-items: center;
@@ -200,27 +213,29 @@
 
 @media (max-width: 900px) {
   .pill-carousel {
+    padding: 5rem 0 2.5rem;
+  }
+
+  .pill-carousel__layout {
+    grid-template-columns: 1fr;
     min-height: auto;
-    padding: 7rem 0 3rem;
     gap: 2rem;
   }
 
   .pill-carousel__stage {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
     width: clamp(180px, 52vw, 240px);
     height: 48vh;
     margin: 0 auto;
   }
 
-  .pill-carousel__meta {
-    position: static;
-    transform: none;
-    width: auto;
+  .pill-carousel__side {
     padding: 0 1.5rem;
+    align-items: center;
     text-align: center;
+  }
+
+  .pill-carousel__meta {
+    max-width: none;
   }
 
   .pill-carousel__desc {
@@ -236,9 +251,7 @@
   }
 
   .pill-carousel__controls {
-    position: static;
     justify-content: center;
-    margin-top: 1.5rem;
   }
 }
 

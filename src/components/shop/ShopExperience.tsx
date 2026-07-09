@@ -111,11 +111,7 @@ function ShopExperienceContent() {
         </p>
       </div>
 
-      <section className="shop-experience__catalog relative overflow-hidden px-5 py-14 md:px-8 md:py-20" aria-label="Shop catalog">
-        <div className="shop-experience__rays shop-experience__rays--catalog" aria-hidden="true">
-          <LightRays {...SHOP_LIGHT_RAYS} className="shop-experience__rays-canvas" />
-        </div>
-
+      <section className="shop-experience__catalog relative px-5 py-14 md:px-8 md:py-20" aria-label="Shop catalog">
         <div className="relative z-10 mx-auto max-w-[1320px]">
           <header className="mb-10 max-w-xl md:mb-12">
             <h2 className="shop-heading text-5xl text-cream md:text-6xl">All Pieces</h2>
