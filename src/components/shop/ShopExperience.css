@@ -4,3 +4,23 @@
   line-height: 0.95;
   letter-spacing: 0.01em;
 }
+
+.shop-experience__rays {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.shop-experience__rays-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.shop-experience__catalog {
+  background: #0a0908;
+}
+
+.shop-experience__rays--catalog {
+  opacity: 0.92;
+}

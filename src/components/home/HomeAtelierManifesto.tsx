@@ -110,16 +110,16 @@ export function HomeAtelierManifesto() {
       <div className="atelier-manifesto__rays" aria-hidden="true">
         <LightRays
           raysOrigin="top-center"
-          raysColor="#c4a574"
-          raysSpeed={0.7}
-          lightSpread={1.3}
-          rayLength={1.1}
+          raysColor="#e51515"
+          raysSpeed={0.9}
+          lightSpread={2}
+          rayLength={3}
           followMouse
-          mouseInfluence={0.07}
-          noiseAmount={0.05}
-          distortion={0.035}
-          fadeDistance={1.75}
-          saturation={0.82}
+          mouseInfluence={0.1}
+          noiseAmount={0}
+          distortion={0}
+          fadeDistance={2}
+          saturation={1}
           className="atelier-manifesto__rays-canvas"
         />
       </div>

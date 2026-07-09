@@ -8,6 +8,7 @@ import { StageArrows } from "@/components/shop/StageArrows";
 import { ShopProductCard } from "@/components/shop/ShopProductCard";
 import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { LightRays } from "@/components/ui/LightRays";
 import type { CircularGalleryHandle, CircularGalleryItem } from "@/components/shop/CircularGallery";
 import "./ShopExperience.css";
 
@@ -19,6 +20,20 @@ const CircularGallery = dynamic(() => import("@/components/shop/CircularGallery"
     </div>
   ),
 });
+
+const SHOP_LIGHT_RAYS = {
+  raysOrigin: "top-center" as const,
+  raysColor: "#ffffff",
+  raysSpeed: 0.9,
+  lightSpread: 2,
+  rayLength: 3,
+  followMouse: true,
+  mouseInfluence: 0.1,
+  noiseAmount: 0,
+  distortion: 0,
+  fadeDistance: 2,
+  saturation: 1,
+};
 
 function ShopExperienceContent() {
   const router = useRouter();
@@ -62,6 +77,10 @@ function ShopExperienceContent() {
   return (
     <>
       <div className="hero-screen relative w-full overflow-hidden bg-ink">
+        <div className="shop-experience__rays" aria-hidden="true">
+          <LightRays {...SHOP_LIGHT_RAYS} className="shop-experience__rays-canvas" />
+        </div>
+
         <div className="pointer-events-none absolute top-24 left-6 z-20 md:top-28 md:left-10">
           <p className="editorial-spacing text-[9px] tracking-[0.45em] text-cream/40">Collection</p>
           <p className="shop-heading mt-3 text-4xl text-cream md:text-5xl">Atelier</p>
@@ -70,7 +89,7 @@ function ShopExperienceContent() {
           </p>
         </div>
 
-        <div className="absolute inset-0 pt-16 pb-10">
+        <div className="absolute inset-0 z-[1] pt-16 pb-10">
           <CircularGallery
             onReady={handleGalleryReady}
             items={galleryItems}
@@ -96,8 +115,12 @@ function ShopExperienceContent() {
         </p>
       </div>
 
-      <section className="relative bg-ink px-5 py-14 md:px-8 md:py-20" aria-label="Shop catalog">
-        <div className="mx-auto max-w-[1320px]">
+      <section className="shop-experience__catalog relative overflow-hidden px-5 py-14 md:px-8 md:py-20" aria-label="Shop catalog">
+        <div className="shop-experience__rays shop-experience__rays--catalog" aria-hidden="true">
+          <LightRays {...SHOP_LIGHT_RAYS} className="shop-experience__rays-canvas" />
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-[1320px]">
           <header className="mb-10 max-w-xl md:mb-12">
             <p className="editorial-spacing text-[10px] text-gold/90">Complete Edit</p>
             <h2 className="shop-heading mt-4 text-5xl text-cream md:text-6xl">All Pieces</h2>
