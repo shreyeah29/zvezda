@@ -2,14 +2,97 @@
   position: relative;
 }
 
-.instagram-chapter__transition {
-  position: relative;
-  height: 100vh;
+/* ---------------------------------------------------------------
+   Sheer chiffon veil — a fixed, translucent overlay that drifts up
+   across the seam between the dark carousel and the ivory chapter.
+   Movement is scroll-driven (GSAP sets yPercent + opacity on the
+   wrapper); the layers only add an ambient breeze via GPU transforms.
+--------------------------------------------------------------- */
+.chiffon-veil {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  overflow: hidden;
-  background: #070707;
+  height: 100vh;
+  z-index: 45;
+  pointer-events: none;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
+.chiffon-veil__layer {
+  position: absolute;
+  left: -12%;
+  top: -22vh;
+  width: 124%;
+  height: 158vh;
+  transform-origin: 50% 40%;
+  will-change: transform;
+}
+
+.chiffon-veil__sheet {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.chiffon-veil__layer--back {
+  opacity: 0.55;
+  filter: blur(7px);
+  animation: chiffon-breeze-back 15s ease-in-out infinite;
+}
+
+.chiffon-veil__layer--mid {
+  opacity: 0.8;
+  filter: blur(3px);
+  animation: chiffon-breeze-mid 12s ease-in-out infinite;
+}
+
+.chiffon-veil__layer--front {
+  opacity: 1;
+  filter: blur(0.4px);
+  animation: chiffon-breeze-front 9.5s ease-in-out infinite;
+}
+
+@keyframes chiffon-breeze-back {
+  0% {
+    transform: translate3d(-2.4%, 0, 0) skewX(0.9deg) scaleY(1);
+  }
+  50% {
+    transform: translate3d(2.4%, 0, 0) skewX(-0.9deg) scaleY(1.035);
+  }
+  100% {
+    transform: translate3d(-2.4%, 0, 0) skewX(0.9deg) scaleY(1);
+  }
+}
+
+@keyframes chiffon-breeze-mid {
+  0% {
+    transform: translate3d(1.8%, 0, 0) skewX(-0.7deg) scaleY(1.02);
+  }
+  50% {
+    transform: translate3d(-1.8%, 0, 0) skewX(0.7deg) scaleY(1);
+  }
+  100% {
+    transform: translate3d(1.8%, 0, 0) skewX(-0.7deg) scaleY(1.02);
+  }
+}
+
+@keyframes chiffon-breeze-front {
+  0% {
+    transform: translate3d(-1.2%, 0, 0) skewX(0.5deg) scaleY(1);
+  }
+  50% {
+    transform: translate3d(1.2%, 0, 0) skewX(-0.5deg) scaleY(1.025);
+  }
+  100% {
+    transform: translate3d(-1.2%, 0, 0) skewX(0.5deg) scaleY(1);
+  }
+}
+
+/* ---------------------------------------------------------------
+   Ivory Instagram chapter — sits in normal flow beneath the veil.
+--------------------------------------------------------------- */
 .instagram-chapter__static {
   position: relative;
   z-index: 1;
@@ -140,76 +223,8 @@
   transform: translateX(6px);
 }
 
-/* Freeze frame — single handoff from pill carousel */
-.freeze-frame {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  will-change: transform, opacity;
-}
-
-.freeze-frame__ambient {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 62% 40%, rgba(196, 165, 116, 0.1) 0%, transparent 48%),
-    radial-gradient(circle at 30% 78%, rgba(74, 82, 64, 0.12) 0%, transparent 45%),
-    linear-gradient(180deg, #050505 0%, #0c0b0a 55%, #050505 100%);
-}
-
-.freeze-frame__stage {
-  position: absolute;
-  top: 50%;
-  left: clamp(18rem, 34vw, 34rem);
-  transform: translate(-50%, -50%);
-  width: clamp(210px, 22vw, 290px);
-  height: min(74vh, 620px);
-}
-
-.freeze-frame__card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 62%;
-  transform: translate(-50%, -50%);
-  border-radius: 150px;
-  overflow: hidden;
-  border: 5px solid rgba(245, 240, 232, 0.92);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 60px rgba(196, 165, 116, 0.14);
-}
-
-.freeze-frame__card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Torn paper */
-.instagram-chapter__paper {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 2;
-  height: calc(100vh + 88px);
-  display: flex;
-  flex-direction: column;
-  will-change: transform;
-  pointer-events: none;
-}
-
-.instagram-chapter__paper-fill {
-  flex: 1;
-  background: #070707;
-}
-
-.instagram-chapter__paper-edge {
-  width: 100%;
-  height: 88px;
-  flex-shrink: 0;
-  display: block;
+@media (prefers-reduced-motion: reduce) {
+  .chiffon-veil {
+    display: none;
+  }
 }

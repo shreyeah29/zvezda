@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
 import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
 import { HomePillCarousel } from "@/components/home/HomePillCarousel";
@@ -64,7 +64,6 @@ const Footer = dynamic(
 
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
-  const pillRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -89,8 +88,8 @@ export default function HomePage() {
             <HomeAtelierManifesto />
             <HomeEditorialMarquee />
             <HomeShopCards />
-            <HomePillCarousel ref={pillRef} />
-            <HomeInstagramChapter pillSectionRef={pillRef} />
+            <HomePillCarousel />
+            <HomeInstagramChapter />
             <Footer />
           </main>
         </SmoothScroll>
