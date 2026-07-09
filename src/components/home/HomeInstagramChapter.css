@@ -1,0 +1,237 @@
+.instagram-chapter {
+  position: relative;
+}
+
+.instagram-chapter__pin {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #070707;
+}
+
+.instagram-chapter__ivory {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #f7f5f2;
+  color: #0a0a0a;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+}
+
+.instagram-chapter__ivory.is-interactive {
+  pointer-events: auto;
+}
+
+.instagram-chapter__ivory-inner {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: clamp(4rem, 10vh, 7rem) clamp(1.25rem, 4vw, 3rem) clamp(5rem, 12vh, 8rem);
+}
+
+.instagram-chapter__label {
+  margin: 0;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #8a6f4e;
+}
+
+.instagram-chapter__heading {
+  margin: clamp(1.5rem, 4vw, 2.5rem) auto 0;
+  max-width: 1100px;
+  text-align: center;
+  font-family: var(--font-display), serif;
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+}
+
+.instagram-chapter__heading-line {
+  display: block;
+  font-size: clamp(3.25rem, 12vw, 8.5rem);
+}
+
+@media (min-width: 1280px) {
+  .instagram-chapter__heading-line {
+    font-size: 7.5rem;
+  }
+}
+
+.instagram-chapter__word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  margin-right: 0.22em;
+}
+
+.instagram-chapter__word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.instagram-chapter__body {
+  margin: clamp(1.5rem, 4vw, 2.25rem) auto 0;
+  max-width: 36rem;
+  text-align: center;
+  font-size: clamp(0.92rem, 1.4vw, 1.08rem);
+  line-height: 1.8;
+  color: rgba(10, 10, 10, 0.55);
+}
+
+.instagram-chapter__gallery {
+  margin-top: clamp(2.5rem, 7vw, 5rem);
+}
+
+.instagram-chapter__footer {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.instagram-chapter__handle {
+  margin: 0;
+  font-family: var(--font-display), serif;
+  font-size: clamp(2rem, 5.5vw, 4rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.instagram-chapter__follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  cursor: pointer;
+  position: relative;
+}
+
+.instagram-chapter__follow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.3);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.instagram-chapter__follow:hover::after {
+  transform: scaleX(1);
+}
+
+.instagram-chapter__follow-arrow {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.instagram-chapter__follow:hover .instagram-chapter__follow-arrow {
+  transform: translateX(6px);
+}
+
+.instagram-chapter__fade-footer {
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: clamp(4rem, 10vh, 7rem);
+  background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 10, 0.12) 55%, #0a0a0a 100%);
+  z-index: 2;
+}
+
+/* Freeze frame — mirrors pill carousel center card */
+.freeze-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: #070707;
+  overflow: hidden;
+}
+
+.freeze-frame__ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 62% 40%, rgba(196, 165, 116, 0.1) 0%, transparent 48%),
+    radial-gradient(circle at 30% 78%, rgba(74, 82, 64, 0.12) 0%, transparent 45%),
+    linear-gradient(180deg, #050505 0%, #0c0b0a 55%, #050505 100%);
+}
+
+.freeze-frame__stage {
+  position: absolute;
+  top: 50%;
+  left: clamp(18rem, 34vw, 34rem);
+  transform: translate(-50%, -50%);
+  width: clamp(210px, 22vw, 290px);
+  height: min(74vh, 620px);
+}
+
+.freeze-frame__card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 62%;
+  transform: translate(-50%, -50%);
+  border-radius: 150px;
+  overflow: hidden;
+  border: 5px solid rgba(245, 240, 232, 0.92);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 60px rgba(196, 165, 116, 0.14);
+}
+
+.freeze-frame__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Torn paper sheet */
+.instagram-chapter__paper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 20;
+  height: 110vh;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.instagram-chapter__paper-fill {
+  flex: 1;
+  background: #070707;
+}
+
+.instagram-chapter__paper-edge {
+  width: 100%;
+  height: 88px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.instagram-chapter__spacer {
+  height: 1px;
+}

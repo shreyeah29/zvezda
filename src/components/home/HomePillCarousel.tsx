@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
 import { products } from "@/data/products";
 import SplitText from "@/components/ui/SplitText";
 import TextType from "@/components/ui/TextType";
@@ -50,7 +50,7 @@ function getShortDescription(story: string) {
   return firstSentence ? `${firstSentence}.` : story;
 }
 
-export function HomePillCarousel() {
+export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarousel(_, ref) {
   const items = useMemo(() => products, []);
   const count = items.length;
   const [current, setCurrent] = useState(0);
@@ -85,6 +85,7 @@ export function HomePillCarousel() {
 
   return (
     <section
+      ref={ref}
       className="pill-carousel snap-none"
       aria-label="Collection explorer"
       onMouseEnter={() => setPaused(true)}
@@ -208,4 +209,4 @@ export function HomePillCarousel() {
       </div>
     </section>
   );
-}
+});

@@ -1,9 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
 import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
+import { HomePillCarousel } from "@/components/home/HomePillCarousel";
 
 const SmoothScroll = dynamic(
   () =>
@@ -45,18 +46,10 @@ const HomeEditorialMarquee = dynamic(
   { ssr: false }
 );
 
-const HomePillCarousel = dynamic(
+const HomeInstagramChapter = dynamic(
   () =>
-    import("@/components/home/HomePillCarousel").then((mod) => ({
-      default: mod.HomePillCarousel,
-    })),
-  { ssr: false }
-);
-
-const HomeInstagramStrip = dynamic(
-  () =>
-    import("@/components/home/HomeInstagramStrip").then((mod) => ({
-      default: mod.HomeInstagramStrip,
+    import("@/components/home/HomeInstagramChapter").then((mod) => ({
+      default: mod.HomeInstagramChapter,
     })),
   { ssr: false }
 );
@@ -71,6 +64,7 @@ const Footer = dynamic(
 
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
+  const pillRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -95,8 +89,8 @@ export default function HomePage() {
             <HomeAtelierManifesto />
             <HomeEditorialMarquee />
             <HomeShopCards />
-            <HomePillCarousel />
-            <HomeInstagramStrip />
+            <HomePillCarousel ref={pillRef} />
+            <HomeInstagramChapter pillSectionRef={pillRef} />
             <Footer />
           </main>
         </SmoothScroll>

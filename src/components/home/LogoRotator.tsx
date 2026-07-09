@@ -106,8 +106,7 @@ export function LogoRotator({
       const viewH = window.innerHeight;
       const isNearViewport = rect.bottom > -viewH * 0.5 && rect.top < viewH * 1.5;
       if (isNearViewport) {
-        const sensitivity = 0.03;
-        scrollVelocity.current += delta * sensitivity;
+        scrollVelocity.current += delta * 0.03;
         scrollVelocity.current = Math.max(-3, Math.min(3, scrollVelocity.current));
       }
     };
@@ -154,7 +153,7 @@ export function LogoRotator({
 
   if (logos.length === 0) {
     return (
-      <div className="flex h-full w-full items-center justify-center text-sm text-cream/40">
+      <div className="flex h-full w-full items-center justify-center text-sm text-black/40">
         No images available
       </div>
     );
@@ -202,53 +201,54 @@ export function LogoRotator({
       >
         {sorted.map((item) => {
           const isHovered = hoveredIndex === item.index;
-          const hoverBoost = premium && isHovered ? 1.06 : 1;
-          const liftY = premium && isHovered ? -10 : 0;
+          const hoverBoost = premium && isHovered ? 1.08 : 1;
+          const liftY = premium && isHovered ? -14 : 0;
           const finalScale = item.scale * hoverBoost;
 
           return (
-          <button
-            key={item.index}
-            type="button"
-            aria-label={`Open Instagram — ${item.logo.alt}`}
-            onClick={handleImageClick}
-            onMouseEnter={() => setHoveredIndex(item.index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            className="absolute top-1/2 left-1/2 border-0 bg-transparent p-0 transition-[filter] duration-500"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              willChange: "transform",
-              transform: `translate(-50%, -50%) translateX(${item.x}px) translateY(${item.y + liftY}px) scale(${finalScale})`,
-              zIndex: Math.round(item.depthNorm * 100) + (isHovered ? 20 : 0),
-              cursor: "pointer",
-              transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), z-index 0s",
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={item.logo.src}
-              alt={item.logo.alt}
-              draggable={false}
+            <button
+              key={item.index}
+              type="button"
+              aria-label={`Open Instagram — ${item.logo.alt}`}
+              onClick={handleImageClick}
+              onMouseEnter={() => setHoveredIndex(item.index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className="absolute top-1/2 left-1/2 border-0 bg-transparent p-0"
               style={{
-                width: responsiveImageWidth,
-                height: responsiveImageHeight,
-                objectFit: "cover",
-                display: "block",
-                borderRadius: imageRadius,
-                pointerEvents: "none",
-                border: premium ? "3px solid rgba(255,255,255,0.92)" : undefined,
-                boxShadow: isHovered
-                  ? "0 28px 64px rgba(10,10,10,0.28), 0 12px 28px rgba(10,10,10,0.18)"
-                  : premium
-                    ? "0 20px 48px rgba(10,10,10,0.16), 0 8px 20px rgba(10,10,10,0.1)"
-                    : "0 18px 48px rgba(0,0,0,0.55)",
-                transition: "box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                willChange: "transform",
+                transform: `translate(-50%, -50%) translateX(${item.x}px) translateY(${item.y + liftY}px) scale(${finalScale})`,
+                zIndex: Math.round(item.depthNorm * 100) + (isHovered ? 20 : 0),
+                cursor: "pointer",
+                transition:
+                  "transform 0.55s cubic-bezier(0.34, 1.45, 0.64, 1), box-shadow 0.45s ease, z-index 0s",
               }}
-            />
-          </button>
-        );
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.logo.src}
+                alt={item.logo.alt}
+                draggable={false}
+                style={{
+                  width: responsiveImageWidth,
+                  height: responsiveImageHeight,
+                  objectFit: "cover",
+                  display: "block",
+                  borderRadius: imageRadius,
+                  pointerEvents: "none",
+                  border: premium ? "3px solid rgba(255,255,255,0.92)" : undefined,
+                  boxShadow: isHovered
+                    ? "0 32px 72px rgba(10,10,10,0.3), 0 14px 32px rgba(10,10,10,0.2)"
+                    : premium
+                      ? "0 20px 48px rgba(10,10,10,0.16), 0 8px 20px rgba(10,10,10,0.1)"
+                      : "0 18px 48px rgba(0,0,0,0.55)",
+                  transition: "box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+              />
+            </button>
+          );
         })}
       </div>
     </div>
