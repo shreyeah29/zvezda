@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { getSet, setPhotoPath } from "@/data/sets";
 import { toneSubsections } from "@/data/collectionCategories";
+import { GalleryGradientSection } from "@/components/collections/GalleryGradientSection";
 
 const EDITORIAL_NAMES: Record<number, string> = {
   5: "Blush Mirage",
@@ -12,20 +13,18 @@ const EDITORIAL_NAMES: Record<number, string> = {
 };
 
 type ToneEditorialSectionProps = {
-  backgroundColor?: string;
   textColor?: string;
 };
 
-export function ToneEditorialSection({
-  backgroundColor = "#0a0808",
-  textColor = "#f5f0e8",
-}: ToneEditorialSectionProps) {
+export function ToneEditorialSection({ textColor = "#f5f0e8" }: ToneEditorialSectionProps) {
   return (
-    <section style={{ backgroundColor }}>
+    <div>
       {toneSubsections.map((tone, index) => (
-        <ToneBlock key={tone.id} tone={tone} index={index} textColor={textColor} />
+        <GalleryGradientSection key={tone.id} gradientId={tone.id} className="border-t border-white/6">
+          <ToneBlock tone={tone} index={index} textColor={textColor} />
+        </GalleryGradientSection>
       ))}
-    </section>
+    </div>
   );
 }
 
@@ -58,7 +57,7 @@ function ToneBlock({
   const isEven = index % 2 === 0;
 
   return (
-    <section ref={sectionRef} className="border-t border-white/6 py-20 md:py-28">
+    <section ref={sectionRef} className="py-20 md:py-28">
       <div
         className={`mx-auto grid max-w-7xl items-center gap-12 px-6 md:px-10 lg:grid-cols-2 lg:gap-20 ${
           isEven ? "" : "lg:[&>*:first-child]:order-2"

@@ -6,15 +6,11 @@ import type { GalleryImage } from "@/data/collectionCategories";
 
 type SimplePhotoGridProps = {
   images: GalleryImage[];
-  backgroundColor?: string;
 };
 
-export function SimplePhotoGrid({
-  images,
-  backgroundColor = "#08120d",
-}: SimplePhotoGridProps) {
+export function SimplePhotoGrid({ images }: SimplePhotoGridProps) {
   return (
-    <section className="px-4 py-14 md:px-8 md:py-20" style={{ backgroundColor }}>
+    <div className="px-4 py-14 md:px-8 md:py-20">
       <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 md:gap-4">
         {images.map((image, index) => {
           const content = (
@@ -44,6 +40,6 @@ export function SimplePhotoGrid({
           );
         })}
       </div>
-    </section>
+    </div>
   );
 }

@@ -5,13 +5,9 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
 type DepthBlurCarouselProps = {
   images: string[];
-  backgroundColor?: string;
 };
 
-export function DepthBlurCarousel({
-  images,
-  backgroundColor = "#0a0608",
-}: DepthBlurCarouselProps) {
+export function DepthBlurCarousel({ images }: DepthBlurCarouselProps) {
   const pool = images.length > 0 ? images : [];
   const renderItems = useMemo(() => {
     const items: string[] = [];
@@ -179,7 +175,6 @@ export function BlackPinkSection({
   accentColor,
   textColor,
   mutedColor,
-  backgroundColor,
 }: {
   story: string;
   storyLines: string[];
@@ -189,10 +184,9 @@ export function BlackPinkSection({
   accentColor: string;
   textColor: string;
   mutedColor: string;
-  backgroundColor: string;
 }) {
   return (
-    <section className="min-h-screen" style={{ backgroundColor }}>
+    <div className="min-h-screen">
       <div className="grid min-h-screen lg:grid-cols-[minmax(280px,38%)_1fr]">
         <div className="flex flex-col justify-center px-6 py-24 md:px-10 lg:sticky lg:top-0 lg:h-screen">
           <motion.p
@@ -242,9 +236,9 @@ export function BlackPinkSection({
           </motion.p>
         </div>
         <div className="flex items-center py-12 lg:py-0">
-          <DepthBlurCarousel images={images} backgroundColor={backgroundColor} />
+          <DepthBlurCarousel images={images} />
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -6,7 +6,6 @@ import type { GalleryImage } from "@/data/collectionCategories";
 
 type InertiaGridProps = {
   items: GalleryImage[];
-  backgroundColor?: string;
   columns?: number;
   itemSize?: number;
   gap?: number;
@@ -25,7 +24,6 @@ const PRESET_BASE = {
 
 export function InertiaGrid({
   items,
-  backgroundColor = "#050505",
   columns = 3,
   itemSize = 180,
   gap = 16,
@@ -73,7 +71,7 @@ export function InertiaGrid({
   const shouldAnimate = !prefersReduced && isInView;
 
   return (
-    <section className="px-4 py-16 md:px-8 md:py-24" style={{ backgroundColor }}>
+    <div className="px-4 py-16 md:px-8 md:py-24">
       <div
         ref={containerRef}
         className="mx-auto flex min-h-[520px] max-w-6xl items-start justify-center"
@@ -114,7 +112,7 @@ export function InertiaGrid({
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

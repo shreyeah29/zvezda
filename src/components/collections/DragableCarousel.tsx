@@ -9,7 +9,6 @@ type DragableCarouselProps = {
   slideHeight?: number;
   gap?: number;
   borderRadius?: number;
-  backgroundColor?: string;
 };
 
 const wrapperStyle: React.CSSProperties = {
@@ -29,7 +28,6 @@ export function DragableCarousel({
   slideHeight = 400,
   gap = 20,
   borderRadius = 12,
-  backgroundColor = "#120c08",
 }: DragableCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -182,7 +180,7 @@ export function DragableCarousel({
   if (count === 0) return null;
 
   return (
-    <section style={{ backgroundColor }} className="px-4 py-16 md:px-8 md:py-24">
+    <div className="px-4 py-16 md:px-8 md:py-24">
       <div ref={containerRef} style={{ ...wrapperStyle, height: slideHeight + 80 }}>
         <div ref={trackRef} style={{ display: "flex", gap, alignItems: "center" }}>
           {slides.map((src, i) => (
@@ -251,7 +249,7 @@ export function DragableCarousel({
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
