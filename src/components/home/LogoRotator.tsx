@@ -21,6 +21,7 @@ type LogoRotatorProps = {
   aspectRatio?: number;
   imageRadius?: number;
   onImageClick?: () => void;
+  premium?: boolean;
 };
 
 export function LogoRotator({
@@ -30,6 +31,7 @@ export function LogoRotator({
   aspectRatio = 0.75,
   imageRadius = 10,
   onImageClick,
+  premium = false,
 }: LogoRotatorProps) {
   const logos = images.filter((image) => !!image.src);
   const angleRef = useRef(0);
@@ -42,6 +44,7 @@ export function LogoRotator({
   const autoSpeed = useRef(1);
   const dragVelocity = useRef(0);
   const scrollVelocity = useRef(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1200,
   );
@@ -197,21 +200,30 @@ export function LogoRotator({
           height: radiusY * 2 + responsiveImageHeight + containerPadding,
         }}
       >
-        {sorted.map((item) => (
+        {sorted.map((item) => {
+          const isHovered = hoveredIndex === item.index;
+          const hoverBoost = premium && isHovered ? 1.06 : 1;
+          const liftY = premium && isHovered ? -10 : 0;
+          const finalScale = item.scale * hoverBoost;
+
+          return (
           <button
             key={item.index}
             type="button"
             aria-label={`Open Instagram — ${item.logo.alt}`}
             onClick={handleImageClick}
-            className="absolute top-1/2 left-1/2 border-0 bg-transparent p-0"
+            onMouseEnter={() => setHoveredIndex(item.index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            className="absolute top-1/2 left-1/2 border-0 bg-transparent p-0 transition-[filter] duration-500"
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               willChange: "transform",
-              transform: `translate(-50%, -50%) translateX(${item.x}px) translateY(${item.y}px) scale(${item.scale})`,
-              zIndex: Math.round(item.depthNorm * 100),
+              transform: `translate(-50%, -50%) translateX(${item.x}px) translateY(${item.y + liftY}px) scale(${finalScale})`,
+              zIndex: Math.round(item.depthNorm * 100) + (isHovered ? 20 : 0),
               cursor: "pointer",
+              transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), z-index 0s",
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -226,11 +238,18 @@ export function LogoRotator({
                 display: "block",
                 borderRadius: imageRadius,
                 pointerEvents: "none",
-                boxShadow: "0 18px 48px rgba(0,0,0,0.55)",
+                border: premium ? "3px solid rgba(255,255,255,0.92)" : undefined,
+                boxShadow: isHovered
+                  ? "0 28px 64px rgba(10,10,10,0.28), 0 12px 28px rgba(10,10,10,0.18)"
+                  : premium
+                    ? "0 20px 48px rgba(10,10,10,0.16), 0 8px 20px rgba(10,10,10,0.1)"
+                    : "0 18px 48px rgba(0,0,0,0.55)",
+                transition: "box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             />
           </button>
-        ))}
+        );
+        })}
       </div>
     </div>
   );
