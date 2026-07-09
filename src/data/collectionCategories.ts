@@ -1,44 +1,36 @@
-import {
-  getSet,
-  setPhotoPath,
-  setVideoPath,
-  type SetGroup,
-} from "./sets";
+import { getSet, setPhotoPath, type SetGroup } from "./sets";
 
-export type CollectionCategoryId =
-  | "green"
-  | "black-white"
-  | "orange"
-  | "yellow"
-  | "red";
+export type CollectionLayout =
+  | "green-simple"
+  | "inertia"
+  | "drag-carousel"
+  | "depth-blur"
+  | "editorial-tones";
 
-export type GalleryMediaItem = {
-  image?: string;
-  videoFile?: string;
-  videoUrl?: string;
-  title?: string;
-  description?: string;
-  type?: "auto" | "foto" | "video";
+export type GalleryImage = {
+  src: string;
+  alt: string;
   href?: string;
+  borderRadius?: string;
 };
 
 export type CollectionCategory = {
-  id: CollectionCategoryId;
+  id: string;
   title: string;
   displayTitle: string;
   subtitle: string;
   story: string;
   storyLines: string[];
-  heroVideo: string;
+  heroVideo?: string;
   heroPoster?: string;
   backgroundColor: string;
   accentColor: string;
   textColor: string;
   mutedColor: string;
   group: SetGroup;
-  setIds: number[];
-  editorialVideos: { src: string; title: string; poster?: string }[];
-  editorialPhotos?: string[];
+  layout: CollectionLayout;
+  galleryImages: GalleryImage[];
+  showStory?: boolean;
 };
 
 const EDITORIAL_NAMES: Record<number, string> = {
@@ -46,6 +38,7 @@ const EDITORIAL_NAMES: Record<number, string> = {
   2: "Verdant Whisper Gown",
   3: "Olive Tiered Zephyr Mini Dress",
   4: "Conservatory IV",
+  5: "Blush Mirage",
   6: "Noir I",
   7: "Noir II",
   8: "Eclipse Royale",
@@ -56,7 +49,7 @@ const EDITORIAL_NAMES: Record<number, string> = {
   13: "Ember",
 };
 
-const FILM_PHOTOS = [
+const BLACK_WHITE_FILM = [
   "HSP_3296.jpg",
   "HSP_3310.jpg",
   "HSP_3336.jpg",
@@ -66,19 +59,34 @@ const FILM_PHOTOS = [
   "HSP_3615.jpg",
   "HSP_3626.jpg",
   "HSP_3641.jpg",
-  "HSP_4096.jpg",
-  "HSP_4145.jpg",
-  "HSP_4233.jpg",
-  "HSP_4408.jpg",
-  "HSP_4662.jpg",
-  "HSP_4669.jpg",
-  "HSP_4702.jpg",
-  "HSP_4743.jpg",
-  "HSP_4751.jpg",
-  "HSP_4755.jpg",
-  "HSP_4779.jpg",
-  "HSP_4787.jpg",
 ].map((file) => `/assets/images/film/${file}`);
+
+function photosFromSets(
+  setIds: number[],
+  withLinks = true,
+  maxPerSet?: number,
+): GalleryImage[] {
+  return setIds.flatMap((setId) => {
+    const set = getSet(setId);
+    if (!set) return [];
+    const name = EDITORIAL_NAMES[setId] ?? set.slug;
+    const photos = maxPerSet ? set.photos.slice(0, maxPerSet) : set.photos;
+    return photos.map((photo) => ({
+      src: setPhotoPath(set, photo),
+      alt: name,
+      href: withLinks ? `/products/${set.slug}` : undefined,
+      borderRadius: "4%",
+    }));
+  });
+}
+
+function filmPhotos(paths: string[], prefix: string): GalleryImage[] {
+  return paths.map((src, index) => ({
+    src,
+    alt: `${prefix} editorial ${index + 1}`,
+    borderRadius: "4%",
+  }));
+}
 
 export const collectionCategories: CollectionCategory[] = [
   {
@@ -87,11 +95,10 @@ export const collectionCategories: CollectionCategory[] = [
     displayTitle: "Green",
     subtitle: "Sets 1–4 · Garden Campaign",
     story:
-      "Silk caught between petals and shadow. Four silhouettes born among wild anthuriums, conservatory glass, and tall grasses — each tier falls like a leaf caught mid-descent.",
+      "Silk caught between petals and shadow. Four silhouettes born among wild anthuriums, conservatory glass, and tall grasses.",
     storyLines: [
       "Olive, moss, and glasshouse light.",
       "Four distinct silhouettes from the garden.",
-      "Where silk meets the wild.",
     ],
     heroVideo: "/assets/videos/film/GardenTrio.mp4",
     heroPoster: "/assets/images/film/HSP_4096.jpg",
@@ -100,24 +107,19 @@ export const collectionCategories: CollectionCategory[] = [
     textColor: "#e8f0ea",
     mutedColor: "rgba(232,240,234,0.58)",
     group: "garden-green",
-    setIds: [1, 2, 3, 4],
-    editorialVideos: [
-      { src: "/assets/videos/film/GardenDuo1.mp4", title: "Garden Duo I" },
-      { src: "/assets/videos/film/GardenTrio.mp4", title: "Garden Trio" },
-      { src: "/assets/videos/film/GardenTrioSingleShot.mp4", title: "Garden Trio — Single Shot" },
-    ],
-    editorialPhotos: FILM_PHOTOS,
+    layout: "green-simple",
+    galleryImages: photosFromSets([1, 2, 3, 4], true, 2),
+    showStory: false,
   },
   {
     id: "black-white",
     title: "Black & White",
     displayTitle: "Black & White",
-    subtitle: "Sets 6–10 · Monochrome Campaign",
+    subtitle: "Sets 8–9 · Monochrome Campaign",
     story:
-      "Black is not the absence of colour — it is the deepest form of presence. Five sculptural pieces stripped to essence, moving between shadow and ivory light.",
+      "Black is not the absence of colour — it is the deepest form of presence. Sculptural, intentional, stripped to essence.",
     storyLines: [
       "Monochrome as emotion.",
-      "Sculptural. Intentional. Stripped to essence.",
       "Presence in shadow, radiance in white.",
     ],
     heroVideo: "/assets/videos/products/set-8/White&Black1.mp4",
@@ -127,25 +129,21 @@ export const collectionCategories: CollectionCategory[] = [
     textColor: "#f5f0e8",
     mutedColor: "rgba(245,240,232,0.55)",
     group: "black-combo",
-    setIds: [6, 7, 8, 9, 10],
-    editorialVideos: [
-      { src: "/assets/videos/products/set-8/White&Black1.mp4", title: "Black & White I" },
-      { src: "/assets/videos/products/set-9/White&Black2.mp4", title: "Black & White II" },
-      { src: "/assets/videos/film/White&BlackTrio.mp4", title: "Black & White Trio" },
+    layout: "inertia",
+    galleryImages: [
+      ...photosFromSets([8, 9], false),
+      ...filmPhotos(BLACK_WHITE_FILM, "Black & White"),
     ],
+    showStory: true,
   },
   {
     id: "orange",
     title: "Orange",
     displayTitle: "Orange",
-    subtitle: "Set 13 · Resort Campaign",
+    subtitle: "Sets 6 & 13 · Warm Campaign",
     story:
-      "Burnt orange satin in candlelight. Warmth, movement, and the dying embers of a golden afternoon — fabric that catches fire without burning.",
-    storyLines: [
-      "Burnt satin in candlelight.",
-      "Warmth that moves with the body.",
-      "The embers of a golden afternoon.",
-    ],
+      "Burnt satin in candlelight. Warmth, movement, and the dying embers of a golden afternoon.",
+    storyLines: ["Burnt satin in candlelight.", "Warmth that moves with the body."],
     heroVideo: "/assets/videos/products/set-13/OrangeSolo1.mp4",
     heroPoster: "/assets/images/products/set-13/HSP_2932.jpg",
     backgroundColor: "#120c08",
@@ -153,125 +151,90 @@ export const collectionCategories: CollectionCategory[] = [
     textColor: "#f5ece4",
     mutedColor: "rgba(245,236,228,0.55)",
     group: "orange",
-    setIds: [13],
-    editorialVideos: [
-      { src: "/assets/videos/products/set-13/OrangeSolo1.mp4", title: "Orange Solo" },
+    layout: "drag-carousel",
+    galleryImages: photosFromSets([6, 13], false),
+    showStory: false,
+  },
+  {
+    id: "black-pink",
+    title: "Black Pink",
+    displayTitle: "Black Pink",
+    subtitle: "Sets 7 & 10 · Nocturne Campaign",
+    story:
+      "Between shadow and blush — a study in contrast. Sculptural black forms meet the faintest trace of rose, intimate and deliberate.",
+    storyLines: [
+      "Shadow held close.",
+      "A whisper of rose in the dark.",
+      "Intimate. Deliberate. Unforgettable.",
     ],
+    heroPoster: "/assets/images/products/set-7/HSP_2254.jpg",
+    backgroundColor: "#0a0608",
+    accentColor: "#b86b7a",
+    textColor: "#f5ece8",
+    mutedColor: "rgba(245,236,232,0.58)",
+    group: "black-combo",
+    layout: "depth-blur",
+    galleryImages: photosFromSets([7, 10], false),
+    showStory: false,
+  },
+  {
+    id: "red-yellow-peach",
+    title: "Crimson · Solar · Peach",
+    displayTitle: "Crimson · Solar · Peach",
+    subtitle: "Sets 12, 11 & 5 · Colour Stories",
+    story:
+      "Three declarations of colour — crimson as arrival, yellow as sunlight made garment, peach as the softest gesture of warmth.",
+    storyLines: [
+      "Crimson as declaration.",
+      "Sunlight made garment.",
+      "Blush against pale stone.",
+    ],
+    heroVideo: "/assets/videos/RedDressSolo.mp4",
+    heroPoster: "/assets/images/products/set-12/HSP_5750.jpg",
+    backgroundColor: "#0a0808",
+    accentColor: "#c4a574",
+    textColor: "#f5f0e8",
+    mutedColor: "rgba(245,240,232,0.55)",
+    group: "red",
+    layout: "editorial-tones",
+    galleryImages: [
+      ...photosFromSets([12], false),
+      ...photosFromSets([11], false),
+      ...photosFromSets([5], false),
+    ],
+    showStory: true,
+  },
+];
+
+export const toneSubsections = [
+  {
+    id: "red",
+    title: "Red",
+    subtitle: "Set 12",
+    story: "Crimson as declaration. Deep, saturated, cinematic.",
+    heroVideo: "/assets/videos/RedDressSolo.mp4",
+    heroPoster: "/assets/images/products/set-12/HSP_5750.jpg",
+    accentColor: "#8b1a2b",
+    setIds: [12] as number[],
   },
   {
     id: "yellow",
     title: "Yellow",
-    displayTitle: "Yellow",
-    subtitle: "Set 11 · Spring Campaign",
-    story:
-      "Sunlight made garment. Bold, architectural, unapologetically bright — the moment the room holds its breath before the curtain rises.",
-    storyLines: [
-      "Sunlight made garment.",
-      "Architectural. Unapologetic. Bright.",
-      "The moment the room holds its breath.",
-    ],
+    subtitle: "Set 11",
+    story: "Sunlight made garment. Bold, architectural, unapologetically bright.",
     heroVideo: "/assets/videos/products/set-11/YellowSolo1.mp4",
     heroPoster: "/assets/images/products/set-11/HSP_5916.jpg",
-    backgroundColor: "#12100a",
     accentColor: "#e8c547",
-    textColor: "#f5f0e8",
-    mutedColor: "rgba(245,240,232,0.55)",
-    group: "yellow",
-    setIds: [11],
-    editorialVideos: [
-      { src: "/assets/videos/products/set-11/YellowSolo1.mp4", title: "Yellow Solo" },
-    ],
+    setIds: [11] as number[],
   },
   {
-    id: "red",
-    title: "Red",
-    displayTitle: "Red",
-    subtitle: "Set 12 · Autumn Campaign",
-    story:
-      "Crimson as declaration. Deep, saturated, cinematic — the colour of the curtain rising, of arrival, of the room remembering your name.",
-    storyLines: [
-      "Crimson as declaration.",
-      "Deep. Saturated. Cinematic.",
-      "The colour of the curtain rising.",
-    ],
-    heroVideo: "/assets/videos/RedDressSolo.mp4",
-    heroPoster: "/assets/images/products/set-12/HSP_5750.jpg",
-    backgroundColor: "#0f0608",
-    accentColor: "#8b1a2b",
-    textColor: "#f5ecee",
-    mutedColor: "rgba(245,236,238,0.55)",
-    group: "red",
-    setIds: [12],
-    editorialVideos: [
-      { src: "/assets/videos/RedDressSolo.mp4", title: "Crimson Solo" },
-    ],
+    id: "peach",
+    title: "Peach",
+    subtitle: "Set 5",
+    story: "Soft warmth against pale stone. Intimate, luminous, impossibly tender.",
+    heroVideo: "/assets/videos/products/set-5/PeachSolo1.mp4",
+    heroPoster: "/assets/images/products/set-5/HSP_4393.jpg",
+    accentColor: "#d4a088",
+    setIds: [5] as number[],
   },
 ];
-
-export function buildCategoryGallery(category: CollectionCategory): GalleryMediaItem[] {
-  const items: GalleryMediaItem[] = [];
-
-  for (const setId of category.setIds) {
-    const set = getSet(setId);
-    if (!set) continue;
-
-    const productName = EDITORIAL_NAMES[setId] ?? `Set ${setId}`;
-
-    for (const photo of set.photos) {
-      items.push({
-        image: setPhotoPath(set, photo),
-        title: productName,
-        type: "foto",
-        href: `/products/${set.slug}`,
-      });
-    }
-
-    if (set.video) {
-      const videoSrc = setVideoPath(set);
-      if (videoSrc) {
-        items.push({
-          image: setPhotoPath(set, set.photos[0]),
-          videoFile: videoSrc,
-          title: `${productName} — Film`,
-          type: "video",
-        });
-      }
-    }
-
-    if (set.videoAlt) {
-      const altSrc = setVideoPath(set, set.videoAlt);
-      if (altSrc) {
-        items.push({
-          image: setPhotoPath(set, set.photos[0]),
-          videoFile: altSrc,
-          title: `${productName} — Alt Film`,
-          type: "video",
-        });
-      }
-    }
-  }
-
-  for (const video of category.editorialVideos) {
-    const exists = items.some((item) => item.videoFile === video.src);
-    if (!exists) {
-      items.push({
-        image: video.poster,
-        videoFile: video.src,
-        title: video.title,
-        type: "video",
-      });
-    }
-  }
-
-  if (category.editorialPhotos) {
-    category.editorialPhotos.forEach((src, index) => {
-      items.push({
-        image: src,
-        title: `Editorial ${index + 1}`,
-        type: "foto",
-      });
-    });
-  }
-
-  return items;
-}
