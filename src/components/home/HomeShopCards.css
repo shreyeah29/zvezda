@@ -22,9 +22,17 @@
   position: relative;
   aspect-ratio: 3 / 4.2;
   overflow: hidden;
-  border: 10px solid #ffffff;
-  border-radius: 2px;
+  border: 5px solid rgba(255, 255, 255, 0.94);
+  border-radius: 1px;
   background: #111;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-shop-cards__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
 }
 
 .home-shop-cards__image {
@@ -62,14 +70,20 @@
   justify-content: center;
   padding: 1.25rem;
   text-align: center;
-  font-family: var(--font-display), serif;
-  font-size: clamp(1.1rem, 2.2vw, 1.65rem);
-  font-weight: 400;
-  letter-spacing: 0.12em;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: clamp(0.72rem, 1.35vw, 0.92rem);
+  font-weight: 300;
+  letter-spacing: 0.38em;
   text-transform: uppercase;
-  color: #ffffff;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
   pointer-events: none;
+  transition: letter-spacing 0.45s ease, opacity 0.45s ease;
+}
+
+.home-shop-cards__card:hover .home-shop-cards__title {
+  letter-spacing: 0.44em;
+  opacity: 0.98;
 }
 
 .home-shop-cards__shop {

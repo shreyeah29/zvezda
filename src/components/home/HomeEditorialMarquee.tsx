@@ -38,6 +38,14 @@ export function HomeEditorialMarquee() {
     if (!section || reduced) return;
 
     const ctx = gsap.context(() => {
+      gsap.from(".editorial-marquee__track", {
+        opacity: 0,
+        y: 10,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.1,
+      });
+
       gsap.fromTo(
         section,
         { opacity: 0.35 },

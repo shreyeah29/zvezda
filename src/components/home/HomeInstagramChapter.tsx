@@ -3,6 +3,7 @@
 import { useMemo, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import { products } from "@/data/products";
 import { LogoRotator } from "@/components/home/LogoRotator";
 import { ChiffonVeil } from "@/components/home/ChiffonVeil";
@@ -123,13 +124,33 @@ export function HomeInstagramChapter() {
         <div className="instagram-chapter__static-inner">
           <p className="instagram-chapter__label editorial-spacing">Instagram</p>
 
-          <h2 className="instagram-chapter__heading">The Story Continues.</h2>
+          <motion.h2
+            className="instagram-chapter__heading"
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-8%" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            The Story Continues.
+          </motion.h2>
 
-          <p className="instagram-chapter__body">
+          <motion.p
+            className="instagram-chapter__body"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-8%" }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          >
             Behind-the-scenes moments and new collections from the atelier.
-          </p>
+          </motion.p>
 
-          <div className="instagram-chapter__gallery">
+          <motion.div
+            className="instagram-chapter__gallery"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-8%" }}
+            transition={{ duration: 0.85, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          >
             <LogoRotator
               images={images}
               speed={12}
@@ -139,19 +160,27 @@ export function HomeInstagramChapter() {
               onImageClick={openInstagram}
               premium
             />
-          </div>
+          </motion.div>
 
-          <div className="instagram-chapter__velocity">
+          <motion.div
+            className="instagram-chapter__velocity-band"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="instagram-chapter__velocity-band-fade instagram-chapter__velocity-band-fade--left" />
+            <div className="instagram-chapter__velocity-band-fade instagram-chapter__velocity-band-fade--right" />
             <ScrollVelocity
               texts={["@zvezdaatelier", "@zvezdaatelier"]}
-              velocity={36}
-              numCopies={8}
+              velocity={22}
+              numCopies={10}
               className="instagram-chapter__scroll-handle"
               parallaxClassName="instagram-chapter__velocity-track"
               scrollerClassName="instagram-chapter__velocity-scroller"
-              velocityMapping={{ input: [0, 1200], output: [0, 4] }}
+              velocityMapping={{ input: [0, 1200], output: [0, 3] }}
             />
-          </div>
+          </motion.div>
 
           <button type="button" onClick={openInstagram} className="instagram-chapter__follow">
             <span>Follow the Story</span>

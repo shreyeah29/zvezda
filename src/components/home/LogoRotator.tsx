@@ -238,7 +238,7 @@ export function LogoRotator({
                   display: "block",
                   borderRadius: imageRadius,
                   pointerEvents: "none",
-                  border: premium ? "3px solid rgba(255,255,255,0.92)" : undefined,
+                  border: premium ? "2px solid rgba(255,255,255,0.88)" : undefined,
                   boxShadow: isHovered
                     ? "0 32px 72px rgba(10,10,10,0.3), 0 14px 32px rgba(10,10,10,0.2)"
                     : premium
