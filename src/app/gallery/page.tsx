@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
-import { Navigation } from "@/components/layout/Navigation";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
@@ -24,7 +23,6 @@ export default function GalleryPage() {
       {loaded && (
         <SmoothScroll>
           <CustomCursor />
-          <Navigation />
           <main className="px-6 pt-32 pb-16 md:px-12">
             <div className="mx-auto max-w-7xl">
               <p className="editorial-spacing mb-4 text-[10px] text-muted">Archive</p>

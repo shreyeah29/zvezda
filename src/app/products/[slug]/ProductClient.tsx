@@ -5,7 +5,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProduct, getProductsByCollection, type Product } from "@/data/products";
 import { getCollection } from "@/data/collections";
-import { brand } from "@/data/brand";
 import { ProductGalleryLayout } from "@/components/product/ProductGalleryLayout";
 import { CARD_RADIUS } from "@/lib/motion/MotionUtilities";
 
@@ -51,19 +50,6 @@ export function ProductClient({ slug }: { slug: string }) {
 
   return (
     <div className="min-h-screen bg-ink">
-      {/* Nav */}
-      <header className="fixed top-0 z-50 flex w-full items-center justify-between px-6 py-5 md:px-10">
-        <Link href="/" className="font-display text-lg tracking-[0.35em] text-cream">
-          {brand.name}
-        </Link>
-        <Link
-          href="/shop"
-          className="editorial-spacing text-[9px] text-cream/50 transition-colors hover:text-cream"
-        >
-          ← Collection
-        </Link>
-      </header>
-
       {/* Video hero — full screen, scroll down to shop layout */}
       {hasVideo && (
         <section className="relative h-screen w-full">
@@ -84,7 +70,7 @@ export function ProductClient({ slug }: { slug: string }) {
       )}
 
       {/* Gallery + details — AROKA-style layout */}
-      <section className={hasVideo ? "" : "pt-20"}>
+      <section className={hasVideo ? "" : "pt-24 md:pt-28"}>
         <ProductGalleryLayout
           product={product}
           images={allImages}

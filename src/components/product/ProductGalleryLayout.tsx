@@ -1,7 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { AddToCartButton } from "@/components/commerce/AddToCartButton";
+import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import type { Product } from "@/data/products";
 import { formatPrice } from "@/data/products";
 
@@ -230,31 +233,25 @@ export function ProductGalleryLayout({
 
           <p className="mt-4 text-[10px] text-cream/35">Made to order · 6–8 weeks</p>
 
-          <div className="mt-6 flex gap-3">
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              className="editorial-spacing flex-1 bg-cream py-4 text-[9px] text-ink transition-opacity hover:opacity-90"
-            >
-              Add to Bag
-            </motion.button>
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              className="editorial-spacing flex-1 border border-cream/30 py-4 text-[9px] text-cream transition-colors hover:bg-cream hover:text-ink"
+          <div className="mt-6 flex flex-col gap-3">
+            <AddToCartButton
+              slug={product.slug}
+              quantity={quantity}
+              size={selectedSize}
+              className="flex-1"
+              label="Add to Bag"
+            />
+            <Link
+              href="/cart"
+              className="editorial-spacing flex-1 border border-cream/30 py-4 text-center text-[9px] text-cream transition-colors hover:bg-cream hover:text-ink"
             >
               Checkout
-            </motion.button>
+            </Link>
           </div>
-          <button
-            type="button"
-            className="editorial-spacing mt-3 w-full border border-cream/10 py-3 text-[9px] text-cream/45 transition-colors hover:text-cream"
-            aria-label="Add to wishlist"
-          >
-            ♡ Add to Wishlist
-          </button>
+          <div className="mt-3 flex items-center justify-center gap-2 border border-cream/10 py-3">
+            <WishlistButton slug={product.slug} size="sm" />
+            <span className="editorial-spacing text-[9px] text-cream/45">Add to Wishlist</span>
+          </div>
 
           <div className="mt-10 border-t border-cream/10 pt-6">
             <button

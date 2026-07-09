@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { videos } from "@/data/brand";
@@ -73,15 +72,6 @@ export function HomeHeroVideo() {
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-transparent to-ink/40" />
       </div>
-
-      <header className="absolute top-0 right-0 left-0 z-20 flex items-start justify-end px-6 py-8 md:px-12">
-        <Link
-          href="/shop"
-          className="editorial-spacing text-[10px] text-cream/70 transition-colors hover:text-cream"
-        >
-          Shop
-        </Link>
-      </header>
 
       <motion.button
         type="button"

@@ -6,7 +6,6 @@ import { useState } from "react";
 import { getCollection } from "@/data/collections";
 import { getProductsByCollection, formatPrice } from "@/data/products";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
-import { Navigation } from "@/components/layout/Navigation";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
@@ -28,7 +27,6 @@ export function CollectionClient({ slug }: { slug: string }) {
       {loaded && (
         <SmoothScroll>
           <CustomCursor />
-          <Navigation />
           <main>
             <section className="relative h-screen w-full overflow-hidden">
               <EditorialImage

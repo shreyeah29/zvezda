@@ -1,5 +1,5 @@
-import { ShopExperience } from "@/components/shop/ShopExperience";
+import { ShopListing } from "@/components/shop/ShopListing";
 
 export default function ShopPage() {
-  return <ShopExperience />;
+  return <ShopListing />;
 }

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Instrument_Serif, Inter, Playfair_Display } from "next/font/google";
 import { MotionProvider } from "@/components/motion/MotionProvider";
+import { CommerceProvider } from "@/context/CommerceContext";
+import { Navigation } from "@/components/layout/Navigation";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -51,7 +53,12 @@ export default function RootLayout({
     >
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <div className="viewport-fixed pointer-events-none -z-50 bg-ink" aria-hidden="true" />
-        <MotionProvider>{children}</MotionProvider>
+        <CommerceProvider>
+          <MotionProvider>
+            <Navigation />
+            {children}
+          </MotionProvider>
+        </CommerceProvider>
       </body>
     </html>
   );

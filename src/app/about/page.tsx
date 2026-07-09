@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
-import { Navigation } from "@/components/layout/Navigation";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
@@ -29,7 +28,6 @@ export default function AboutPage() {
       {loaded && (
         <SmoothScroll>
           <CustomCursor />
-          <Navigation />
           <main>
             <section className="relative h-screen w-full overflow-hidden">
               <video autoPlay muted loop playsInline className="h-full w-full object-cover">
