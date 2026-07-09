@@ -60,7 +60,7 @@
   top: 0;
   left: 0;
   object-fit: cover;
-  object-position: center 12%;
+  object-position: center center;
   pointer-events: none;
 }
 

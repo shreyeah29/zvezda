@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { products } from "@/data/products";
 import { StageArrows } from "@/components/shop/StageArrows";
 import { ShopProductCard } from "@/components/shop/ShopProductCard";
-import { ScrollCue } from "@/components/ui/ScrollCue";
 import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import type { CircularGalleryHandle, CircularGalleryItem } from "@/components/shop/CircularGallery";
@@ -93,17 +92,14 @@ function ShopExperienceContent() {
           />
         </div>
 
-        <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-4">
-          <p className="editorial-spacing text-[9px] tracking-[0.4em] text-cream/35">
-            Click a piece to view · Drag or use arrows to browse
-          </p>
-          <ScrollCue label="Scroll down to see all pieces" />
-        </div>
+        <p className="editorial-spacing pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-[9px] tracking-[0.4em] text-cream/35">
+          Click a piece to view · Drag or use arrows to browse
+        </p>
       </div>
 
-      <section className="relative bg-ink px-6 py-16 md:px-10 md:py-24" aria-label="Shop catalog">
-        <div className="mx-auto max-w-7xl">
-          <header className="mb-12 max-w-xl md:mb-16">
+      <section className="relative bg-ink px-5 py-14 md:px-8 md:py-20" aria-label="Shop catalog">
+        <div className="mx-auto max-w-[1320px]">
+          <header className="mb-10 max-w-xl md:mb-12">
             <p className="editorial-spacing text-[10px] text-gold/90">Complete Edit</p>
             <h2 className="font-[family-name:var(--font-shop-display)] mt-4 text-4xl font-medium text-cream md:text-5xl">
               All Pieces
@@ -113,9 +109,9 @@ function ShopExperienceContent() {
             </p>
           </header>
 
-          <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-4 md:gap-x-5 md:gap-y-12">
             {products.map((product, index) => (
-              <ShopProductCard key={product.slug} product={product} index={index} />
+              <ShopProductCard key={product.slug} product={product} index={index} compact />
             ))}
           </div>
         </div>

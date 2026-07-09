@@ -35,6 +35,7 @@ export type ImageShuffleGridProps = {
   padding?: number;
   aspectRatio?: AspectRatio;
   objectFit?: React.CSSProperties["objectFit"];
+  objectPosition?: string;
   borderRadius?: number;
   borderColor?: string;
   borderWidth?: number;
@@ -74,6 +75,7 @@ export function ImageShuffleGrid({
   padding = 20,
   aspectRatio = "square",
   objectFit = "cover",
+  objectPosition = "center center",
   borderRadius = 6,
   borderColor = "rgba(255,255,255,0.88)",
   borderWidth = 4,
@@ -321,7 +323,7 @@ export function ImageShuffleGrid({
                 src={item.src}
                 alt={item.alt}
                 className="image-shuffle-grid__img"
-                style={{ objectFit }}
+                style={{ objectFit, objectPosition }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0 }}
               />
@@ -331,7 +333,7 @@ export function ImageShuffleGrid({
                 src={item.nextSrc}
                 alt={item.alt}
                 className="image-shuffle-grid__img image-shuffle-grid__img--next"
-                style={{ objectFit }}
+                style={{ objectFit, objectPosition }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: animationDuration, ease: "easeInOut" }}

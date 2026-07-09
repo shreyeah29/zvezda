@@ -1,18 +1,12 @@
 "use client";
 
-import { useMemo, useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { products } from "@/data/products";
 import { LogoRotator } from "@/components/home/LogoRotator";
-import { ChiffonVeil } from "@/components/home/ChiffonVeil";
 import { ScrollVelocity } from "@/components/ui/ScrollVelocity";
 import { LightRays } from "@/components/ui/LightRays";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import "./HomeInstagramChapter.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const INSTAGRAM_URL = "https://www.instagram.com/zvezda_atelier/" as const;
 
@@ -34,75 +28,13 @@ function buildRotatorImages() {
 
 export function HomeInstagramChapter() {
   const images = useMemo(() => buildRotatorImages(), []);
-  const chapterRef = useRef<HTMLDivElement>(null);
-  const veilRef = useRef<HTMLDivElement>(null);
-  const reduced = usePrefersReducedMotion();
-
-  useEffect(() => {
-    const chapter = chapterRef.current;
-    const veil = veilRef.current;
-    if (!chapter || !veil) return;
-
-    if (reduced) {
-      gsap.set(veil, { display: "none" });
-      return;
-    }
-
-    gsap.set(veil, { yPercent: 92, opacity: 0, visibility: "hidden" });
-
-    const trigger = ScrollTrigger.create({
-      trigger: chapter,
-      start: "top bottom",
-      end: "top 18%",
-      scrub: 0.55,
-      invalidateOnRefresh: true,
-      onUpdate(self) {
-        const p = self.progress;
-        const fadeIn = Math.min(p / 0.22, 1);
-        const fadeOut = p > 0.78 ? 1 - (p - 0.78) / 0.22 : 1;
-        const opacity = fadeIn * fadeOut;
-        const yPercent = gsap.utils.interpolate(92, -112, p);
-
-        gsap.set(veil, {
-          yPercent,
-          opacity,
-          visibility: opacity > 0.02 ? "visible" : "hidden",
-        });
-      },
-      onLeave() {
-        gsap.set(veil, { opacity: 0, visibility: "hidden" });
-      },
-      onLeaveBack() {
-        gsap.set(veil, { opacity: 0, visibility: "hidden" });
-      },
-      onEnterBack() {
-        gsap.set(veil, { visibility: "visible" });
-      },
-    });
-
-    return () => {
-      trigger.kill();
-    };
-  }, [reduced]);
 
   const openInstagram = () => {
     window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <div ref={chapterRef} className="instagram-chapter" aria-label="Instagram">
-      <div ref={veilRef} className="chiffon-veil" aria-hidden="true">
-        <div className="chiffon-veil__layer chiffon-veil__layer--back">
-          <ChiffonVeil variant="c" className="chiffon-veil__sheet" />
-        </div>
-        <div className="chiffon-veil__layer chiffon-veil__layer--mid">
-          <ChiffonVeil variant="b" className="chiffon-veil__sheet" />
-        </div>
-        <div className="chiffon-veil__layer chiffon-veil__layer--front">
-          <ChiffonVeil variant="a" className="chiffon-veil__sheet" />
-        </div>
-      </div>
-
+    <div className="instagram-chapter" aria-label="Instagram">
       <section className="instagram-chapter__static">
         <div className="instagram-chapter__rays" aria-hidden="true">
           <LightRays

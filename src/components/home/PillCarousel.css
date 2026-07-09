@@ -1,6 +1,6 @@
 .pill-carousel {
   position: relative;
-  min-height: 94vh;
+  min-height: 82vh;
   width: 100%;
   overflow: hidden;
   background: #070707;
@@ -69,7 +69,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 18%;
+  object-position: center 22%;
   display: block;
 }
 
@@ -198,15 +198,6 @@
   background: rgba(196, 165, 116, 0.12);
 }
 
-.pill-carousel__scroll-cue {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(1.5rem, 4vh, 2.5rem);
-  transform: translateX(-50%);
-  z-index: 65;
-  pointer-events: none;
-}
-
 @media (max-width: 900px) {
   .pill-carousel {
     min-height: auto;
@@ -248,12 +239,6 @@
     position: static;
     justify-content: center;
     margin-top: 1.5rem;
-  }
-
-  .pill-carousel__scroll-cue {
-    position: static;
-    transform: none;
-    margin-top: 1.25rem;
   }
 }
 

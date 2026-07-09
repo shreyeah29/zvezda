@@ -6,7 +6,6 @@ import { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
 import { products } from "@/data/products";
 import SplitText from "@/components/ui/SplitText";
 import TextType from "@/components/ui/TextType";
-import { ScrollCue } from "@/components/ui/ScrollCue";
 import "./PillCarousel.css";
 
 const AUTOPLAY_MS = 4200;
@@ -208,11 +207,6 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
           </button>
         </div>
       </div>
-
-      <ScrollCue
-        className="pill-carousel__scroll-cue"
-        label="Scroll down to continue"
-      />
     </section>
   );
 });
