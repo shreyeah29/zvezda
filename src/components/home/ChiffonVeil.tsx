@@ -37,9 +37,9 @@ export function ChiffonVeil({ variant, className = "" }: ChiffonLayerProps) {
 
         <linearGradient id={sheen} x1="0" y1="0" x2="1" y2="0.85">
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-          <stop offset="42%" stopColor="#ffffff" stopOpacity="0.5" />
-          <stop offset="55%" stopColor="#ffffff" stopOpacity="0.12" />
-          <stop offset="78%" stopColor="#ffffff" stopOpacity="0.34" />
+          <stop offset="42%" stopColor="#ffffff" stopOpacity="0.18" />
+          <stop offset="55%" stopColor="#ffffff" stopOpacity="0.05" />
+          <stop offset="78%" stopColor="#ffffff" stopOpacity="0.12" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
 
@@ -49,7 +49,7 @@ export function ChiffonVeil({ variant, className = "" }: ChiffonLayerProps) {
         </linearGradient>
 
         <radialGradient id={glow} cx="0.5" cy="0.18" r="0.75">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.22" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </radialGradient>
       </defs>
