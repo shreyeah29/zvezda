@@ -71,7 +71,8 @@
   position: relative;
   min-height: 42vh;
   overflow: hidden;
-  border-radius: 0.15rem;
+  border: 10px solid #ffffff;
+  border-radius: 2px;
 }
 
 @media (min-width: 900px) {

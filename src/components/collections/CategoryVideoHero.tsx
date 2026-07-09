@@ -53,17 +53,19 @@ export function CategoryVideoHero({ category }: CategoryVideoHeroProps) {
             aria-hidden
           />
         )}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={category.heroPoster}
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src={category.heroVideo} type="video/mp4" />
-        </video>
+        {category.heroVideo && (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={category.heroPoster}
+            className="absolute inset-0 h-full w-full object-cover"
+          >
+            <source src={category.heroVideo} type="video/mp4" />
+          </video>
+        )}
         <div
           className="absolute inset-0"
           style={{
@@ -90,13 +92,6 @@ export function CategoryVideoHero({ category }: CategoryVideoHeroProps) {
         >
           {category.displayTitle}
         </h2>
-        <p
-          data-hero-reveal
-          className="editorial-spacing mt-8 text-[10px]"
-          style={{ color: category.mutedColor }}
-        >
-          Scroll to explore the gallery
-        </p>
       </motion.div>
     </section>
   );

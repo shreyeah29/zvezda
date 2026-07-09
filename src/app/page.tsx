@@ -53,11 +53,6 @@ const HomePillCarousel = dynamic(
   { ssr: false }
 );
 
-const ImageScroller = dynamic(
-  () => import("@/components/ImageScroller/ImageScroller"),
-  { ssr: false }
-);
-
 const HomeInstagramStrip = dynamic(
   () =>
     import("@/components/home/HomeInstagramStrip").then((mod) => ({
@@ -101,7 +96,6 @@ export default function HomePage() {
             <HomeEditorialMarquee />
             <HomeShopCards />
             <HomePillCarousel />
-            <ImageScroller />
             <HomeInstagramStrip />
             <Footer />
           </main>
