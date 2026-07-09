@@ -104,6 +104,15 @@
     will-change: transform, opacity;
   }
 
+  /* Exact one-screen hero — prevents next section peeking on load */
+  .hero-screen {
+    height: 100svh;
+    min-height: 100svh;
+    max-height: 100svh;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
   /* Fallback — ensure h-screen never uses legacy 100vh */
   .h-screen {
     height: 100svh;

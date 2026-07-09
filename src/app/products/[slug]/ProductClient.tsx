@@ -52,7 +52,7 @@ export function ProductClient({ slug }: { slug: string }) {
     <div className="min-h-screen bg-ink">
       {/* Video hero — full screen, scroll down to shop layout */}
       {hasVideo && (
-        <section className="relative h-screen w-full">
+        <section className="hero-screen relative isolate w-full overflow-hidden">
           <video
             autoPlay
             muted
@@ -63,7 +63,7 @@ export function ProductClient({ slug }: { slug: string }) {
             <source src={product.video} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/30" />
-          <p className="editorial-spacing absolute bottom-8 left-1/2 -translate-x-1/2 text-[9px] text-cream/50">
+          <p className="editorial-spacing absolute bottom-10 left-1/2 z-20 -translate-x-1/2 text-[9px] text-cream/50">
             Scroll to explore
           </p>
         </section>

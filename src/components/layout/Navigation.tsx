@@ -21,19 +21,8 @@ const NAV_LINKS = [
 export function Navigation() {
   const pathname = usePathname();
   const { cartCount, cartPulse } = useCommerce();
-  const [scrolled, setScrolled] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [displayCount, setDisplayCount] = useState(cartCount);
-
-  const isHome = pathname === "/";
-  const solid = scrolled || !isHome;
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     setDisplayCount(cartCount);
@@ -44,21 +33,11 @@ export function Navigation() {
       <FlyToCartLayer />
       <MiniCart open={cartOpen} onClose={() => setCartOpen(false)} />
 
-      <motion.header
-        className="fixed top-0 right-0 left-0 z-50 px-4 md:px-10"
-        initial={false}
-        animate={{
-          backgroundColor: solid ? "rgba(10,10,10,0.82)" : "rgba(10,10,10,0)",
-          backdropFilter: solid ? "blur(12px)" : "blur(0px)",
-          borderBottomColor: solid ? "rgba(245,240,232,0.08)" : "rgba(245,240,232,0)",
-        }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        style={{ borderBottomWidth: 1, borderBottomStyle: "solid" }}
-      >
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between py-5 md:py-6">
+      <header className="pointer-events-none fixed top-0 right-0 left-0 z-50 px-4 md:px-10">
+        <div className="pointer-events-auto mx-auto flex max-w-[1400px] items-center justify-between py-6 md:py-8">
           <BrandLogo variant="nav" />
 
-          <nav className="hidden items-center gap-6 lg:gap-9 md:flex" aria-label="Primary">
+          <nav className="hidden items-center gap-6 md:flex lg:gap-9" aria-label="Primary">
             {NAV_LINKS.map((link) =>
               link.href === "/cart" ? (
                 <button
@@ -106,24 +85,21 @@ export function Navigation() {
             )}
           </nav>
 
-          {/* Mobile: cart + menu toggle */}
-          <div className="flex items-center gap-3 md:hidden">
+          <div className="pointer-events-auto flex items-center gap-3 md:hidden">
             <button
               type="button"
               data-cart-target
               onClick={() => setCartOpen(true)}
-              className="relative editorial-spacing text-[9px] text-cream/70"
+              className="editorial-spacing relative text-[9px] text-cream/70"
               aria-label={`Cart, ${cartCount} items`}
             >
               Cart
-              {displayCount > 0 && (
-                <span className="ml-1 text-gold">({displayCount})</span>
-              )}
+              {displayCount > 0 && <span className="ml-1 text-gold">({displayCount})</span>}
             </button>
             <MobileNav />
           </div>
         </div>
-      </motion.header>
+      </header>
     </>
   );
 }

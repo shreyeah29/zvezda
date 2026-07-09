@@ -8,7 +8,7 @@
 
 .grid-motion-wrap {
   --gutter: 2rem;
-  --hero-overlap: 9vh;
+  --hero-overlap: 0;
   position: relative;
   z-index: 2;
   margin: calc(var(--hero-overlap) * -1) 0 0;

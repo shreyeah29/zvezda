@@ -8,6 +8,7 @@ const HERO_POSTER = "/assets/images/products/set-12/HSP_5750.jpg";
 
 export function HomeHeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -49,7 +50,8 @@ export function HomeHeroVideo() {
 
   return (
     <section
-      className="viewport-fill relative block h-screen w-full snap-start snap-always overflow-hidden bg-ink"
+      ref={sectionRef}
+      className="hero-screen relative isolate w-full snap-start snap-always bg-ink"
       aria-label="Hero"
     >
       <div className="absolute inset-0 h-full w-full">
@@ -76,9 +78,9 @@ export function HomeHeroVideo() {
       <motion.button
         type="button"
         onClick={() =>
-          window.scrollTo({ top: window.innerHeight, left: 0, behavior: "smooth" })
+          sectionRef.current?.nextElementSibling?.scrollIntoView({ behavior: "smooth" })
         }
-        className="group pointer-events-auto absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3"
+        className="group pointer-events-auto absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-3"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 1 }}

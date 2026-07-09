@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useMemo, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { products } from "@/data/products";
-import { ShopNav } from "@/components/shop/ShopNav";
 import { StageArrows } from "@/components/shop/StageArrows";
 import type { CircularGalleryHandle, CircularGalleryItem } from "@/components/shop/CircularGallery";
 
@@ -43,10 +42,8 @@ export function ShopExperience() {
   );
 
   return (
-    <div className="viewport-fill relative h-screen w-full overflow-hidden bg-ink">
-      <ShopNav />
-
-      <div className="pointer-events-none absolute top-20 left-6 z-20 md:top-24 md:left-10">
+    <div className="hero-screen relative w-full overflow-hidden bg-ink">
+      <div className="pointer-events-none absolute top-24 left-6 z-20 md:top-28 md:left-10">
         <p className="editorial-spacing text-[9px] tracking-[0.45em] text-cream/40">Collection</p>
         <p className="mt-3 font-[family-name:var(--font-shop-display)] text-2xl font-medium tracking-wide text-cream md:text-3xl">
           Atelier
