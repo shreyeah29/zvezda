@@ -24,8 +24,8 @@ export function CategoryShuffleGallery({ category }: CategoryShuffleGalleryProps
         gap={6}
         padding={12}
         aspectRatio="portrait"
-        objectFit="contain"
-        objectPosition="center center"
+        objectFit="cover"
+        objectPosition="center top"
         backgroundColor={category.backgroundColor}
         borderRadius={3}
         borderColor="rgba(255,255,255,0.78)"

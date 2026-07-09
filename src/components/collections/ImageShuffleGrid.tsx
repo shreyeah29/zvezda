@@ -75,7 +75,7 @@ export function ImageShuffleGrid({
   padding = 20,
   aspectRatio = "square",
   objectFit = "cover",
-  objectPosition = "center center",
+  objectPosition = "center top",
   borderRadius = 6,
   borderColor = "rgba(255,255,255,0.88)",
   borderWidth = 4,
@@ -288,15 +288,20 @@ export function ImageShuffleGrid({
         backgroundColor,
         padding,
         gap,
-        ...(maxHeight ? { maxHeight, height: maxHeight } : {}),
+        ...(fitViewport ? {} : maxHeight ? { maxHeight, height: maxHeight } : {}),
       }}
     >
       <div
         className="image-shuffle-grid__inner"
         style={{
-          gridTemplateColumns: `repeat(${columns}, 1fr)`,
-          gridTemplateRows: `repeat(${rows}, 1fr)`,
+          gridTemplateColumns: fitViewport
+            ? `repeat(${columns}, var(--shuffle-cell-w))`
+            : `repeat(${columns}, 1fr)`,
+          gridTemplateRows: fitViewport
+            ? `repeat(${rows}, calc(var(--shuffle-cell-w) * 16 / 9))`
+            : `repeat(${rows}, 1fr)`,
           gap,
+          ...(fitViewport ? { width: "fit-content", margin: "0 auto" } : {}),
         }}
       >
         {imageItems.map((item) => (
