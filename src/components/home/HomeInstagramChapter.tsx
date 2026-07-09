@@ -14,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const INSTAGRAM_URL = "https://www.instagram.com/zvezda_atelier/" as const;
 const HEADING_WORDS = ["THE", "STORY", "CONTINUES."] as const;
-const SCROLL_DISTANCE_VH = 1.85;
+const SCROLL_DISTANCE_VH = 1.05;
 
 type HomeInstagramChapterProps = {
   pillSectionRef: RefObject<HTMLElement | null>;
@@ -51,8 +51,9 @@ function getCenterCarouselImage() {
 
 export function HomeInstagramChapter({ pillSectionRef }: HomeInstagramChapterProps) {
   const images = useMemo(() => buildRotatorImages(), []);
+  const chapterRef = useRef<HTMLDivElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
   const staticRef = useRef<HTMLElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
   const freezeRef = useRef<HTMLDivElement>(null);
   const paperRef = useRef<HTMLDivElement>(null);
   const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -68,16 +69,14 @@ export function HomeInstagramChapter({ pillSectionRef }: HomeInstagramChapterPro
 
   useEffect(() => {
     const pill = pillSectionRef.current;
+    const pin = pinRef.current;
     const staticSection = staticRef.current;
-    const overlay = overlayRef.current;
-    if (!pill || !staticSection || !overlay) return;
+    if (!pill || !pin || !staticSection) return;
 
     const words = wordRefs.current.filter(Boolean);
-    const zoomRoot = pill.querySelector<HTMLElement>(".pill-carousel__zoom-root");
 
     if (reduced) {
-      overlay.classList.remove("is-active");
-      gsap.set(overlay, { display: "none" });
+      gsap.set([freezeRef.current, paperRef.current], { display: "none" });
       gsap.set([labelRef.current, ...words, bodyRef.current, galleryRef.current, ctaRef.current], {
         opacity: 1,
         y: 0,
@@ -89,10 +88,8 @@ export function HomeInstagramChapter({ pillSectionRef }: HomeInstagramChapterPro
     setFreezeImage(getCenterCarouselImage());
 
     const ctx = gsap.context(() => {
-      gsap.set(overlay, { visibility: "hidden", opacity: 0 });
-      gsap.set(freezeRef.current, { opacity: 1, scale: 1 });
+      gsap.set(freezeRef.current, { opacity: 1, scale: 1, transformOrigin: "center center" });
       gsap.set(paperRef.current, { y: 0 });
-      if (zoomRoot) gsap.set(zoomRoot, { scale: 1, transformOrigin: "center center" });
       gsap.set(labelRef.current, { opacity: 0, y: 20 });
       gsap.set(words, { yPercent: 115, opacity: 0 });
       gsap.set(bodyRef.current, { opacity: 0, y: 28 });
@@ -104,53 +101,39 @@ export function HomeInstagramChapter({ pillSectionRef }: HomeInstagramChapterPro
           trigger: pill,
           start: "bottom bottom",
           end: () => `+=${window.innerHeight * SCROLL_DISTANCE_VH}`,
-          pin: pill,
-          scrub: 0.9,
+          pin: pin,
+          scrub: 0.85,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onEnter: () => {
-            overlay.classList.add("is-active");
-            gsap.set(overlay, { visibility: "visible", opacity: 1 });
-            setFreezeImage(getCenterCarouselImage());
-          },
-          onEnterBack: () => {
-            overlay.classList.add("is-active");
-            gsap.set(overlay, { visibility: "visible", opacity: 1 });
-          },
+          onEnter: () => setFreezeImage(getCenterCarouselImage()),
           onLeave: () => {
-            overlay.classList.remove("is-active");
-            gsap.set(overlay, { visibility: "hidden", opacity: 0 });
             gsap.set([labelRef.current, ...words, bodyRef.current, galleryRef.current, ctaRef.current], {
               opacity: 1,
               y: 0,
               yPercent: 0,
             });
           },
-          onLeaveBack: () => {
-            overlay.classList.remove("is-active");
-            gsap.set(overlay, { visibility: "hidden", opacity: 0 });
-          },
         },
       });
 
-      tl.to(zoomRoot, { scale: 1.12, duration: 0.14, ease: "power2.inOut" }, 0)
-        .to(zoomRoot, { scale: 1.12, duration: 0.08, ease: "none" }, 0.14)
+      tl.to(freezeRef.current, { scale: 1.12, duration: 0.12, ease: "power2.inOut" }, 0)
+        .to(freezeRef.current, { scale: 1.12, duration: 0.06, ease: "none" }, 0.12)
         .to(
           paperRef.current,
-          { y: () => -(window.innerHeight + 88), duration: 0.38, ease: "power2.inOut" },
-          0.2,
+          { y: () => -(window.innerHeight + 88), duration: 0.36, ease: "power2.inOut" },
+          0.18,
         )
-        .to(freezeRef.current, { opacity: 0, duration: 0.16, ease: "power1.out" }, 0.24)
-        .to(labelRef.current, { opacity: 1, y: 0, duration: 0.08, ease: "power2.out" }, 0.32)
+        .to(freezeRef.current, { opacity: 0, duration: 0.14, ease: "power1.out" }, 0.22)
+        .to(labelRef.current, { opacity: 1, y: 0, duration: 0.08, ease: "power2.out" }, 0.28)
         .to(
           words,
           { yPercent: 0, opacity: 1, duration: 0.1, stagger: 0.05, ease: "power3.out" },
-          0.34,
+          0.3,
         )
-        .to(bodyRef.current, { opacity: 1, y: 0, duration: 0.09, ease: "power2.out" }, 0.48)
-        .to(galleryRef.current, { opacity: 1, y: 0, duration: 0.12, ease: "power3.out" }, 0.54)
-        .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.09, ease: "power2.out" }, 0.66);
-    }, staticSection);
+        .to(bodyRef.current, { opacity: 1, y: 0, duration: 0.09, ease: "power2.out" }, 0.44)
+        .to(galleryRef.current, { opacity: 1, y: 0, duration: 0.12, ease: "power3.out" }, 0.5)
+        .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.09, ease: "power2.out" }, 0.62);
+    }, chapterRef);
 
     return () => ctx.revert();
   }, [pillSectionRef, reduced]);
@@ -160,13 +143,9 @@ export function HomeInstagramChapter({ pillSectionRef }: HomeInstagramChapterPro
   };
 
   return (
-    <>
-      <div
-        ref={overlayRef}
-        className="instagram-chapter__overlay"
-        aria-hidden="true"
-      >
-        <div ref={freezeRef} className="freeze-frame">
+    <div ref={chapterRef} className="instagram-chapter" aria-label="The story continues — Instagram">
+      <div ref={pinRef} className="instagram-chapter__transition">
+        <div ref={freezeRef} className="freeze-frame" aria-hidden="true">
           <div className="freeze-frame__ambient" />
           <div className="freeze-frame__stage">
             <div className="freeze-frame__card">
@@ -182,11 +161,7 @@ export function HomeInstagramChapter({ pillSectionRef }: HomeInstagramChapterPro
         </div>
       </div>
 
-      <section
-        ref={staticRef}
-        className="instagram-chapter__static"
-        aria-label="The story continues — Instagram"
-      >
+      <section ref={staticRef} className="instagram-chapter__static">
         <div className="instagram-chapter__static-inner">
           <p ref={labelRef} className="instagram-chapter__label editorial-spacing">
             Instagram
@@ -255,6 +230,6 @@ export function HomeInstagramChapter({ pillSectionRef }: HomeInstagramChapterPro
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

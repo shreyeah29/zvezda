@@ -93,7 +93,6 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
     >
       <div className="pill-carousel__ambient" aria-hidden="true" />
 
-      <div className="pill-carousel__zoom-root">
       <p className="editorial-spacing pill-carousel__eyebrow">The Collection</p>
 
       <div className="pill-carousel__stage">
@@ -207,7 +206,6 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
             </svg>
           </button>
         </div>
-      </div>
       </div>
     </section>
   );

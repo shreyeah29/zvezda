@@ -31,6 +31,24 @@ export function useLenis() {
       });
 
       setLenisInstance(lenis);
+
+      ScrollTrigger.scrollerProxy(document.documentElement, {
+        scrollTop(value) {
+          if (arguments.length && value !== undefined) {
+            lenis?.scrollTo(value, { immediate: true });
+          }
+          return lenis?.scroll ?? 0;
+        },
+        getBoundingClientRect() {
+          return {
+            top: 0,
+            left: 0,
+            width: window.innerWidth,
+            height: window.innerHeight,
+          };
+        },
+      });
+
       lenis.on("scroll", ScrollTrigger.update);
 
       const raf = (time: number) => {
