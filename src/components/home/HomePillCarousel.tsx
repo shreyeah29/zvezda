@@ -157,7 +157,6 @@ export function HomePillCarousel() {
             exit={{ opacity: 0, x: -16 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="editorial-spacing pill-carousel__meta-label">{active?.collectionLabel}</p>
             <SplitText
               key={`name-${active?.slug}`}
               tag="h2"
