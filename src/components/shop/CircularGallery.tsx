@@ -12,6 +12,7 @@ export type CircularGalleryItem = {
 export type CircularGalleryHandle = {
   goNext: () => void;
   goPrev: () => void;
+  goToIndex: (index: number) => void;
 };
 
 type CircularGalleryProps = {
@@ -724,6 +725,22 @@ class App {
     this.navigateBy(-1);
   }
 
+  goToIndex(index: number) {
+    if (!this.medias[0] || !this.originalCount) return;
+    const normalized = ((index % this.originalCount) + this.originalCount) % this.originalCount;
+    const width = this.medias[0].width;
+
+    this.medias.forEach((media) => {
+      media.extra = 0;
+    });
+
+    const nextTarget = normalized * width;
+    this.scroll.target = nextTarget;
+    this.scroll.current = nextTarget;
+    this.scroll.last = nextTarget;
+    this.medias.forEach((media) => media.update(this.scroll, "right"));
+  }
+
   onResize() {
     this.screen = {
       width: this.container.clientWidth,
@@ -810,6 +827,7 @@ const CircularGallery = forwardRef<CircularGalleryHandle, CircularGalleryProps>(
     const apiRef = useRef<CircularGalleryHandle>({
       goNext: () => appRef.current?.goNext(),
       goPrev: () => appRef.current?.goPrev(),
+      goToIndex: (index) => appRef.current?.goToIndex(index),
     });
 
     useImperativeHandle(ref, () => apiRef.current);

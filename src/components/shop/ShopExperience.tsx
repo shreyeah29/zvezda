@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useMemo, useCallback, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { products } from "@/data/products";
 import { StageArrows } from "@/components/shop/StageArrows";
 import type { CircularGalleryHandle, CircularGalleryItem } from "@/components/shop/CircularGallery";
@@ -16,13 +16,27 @@ const CircularGallery = dynamic(() => import("@/components/shop/CircularGallery"
   ),
 });
 
-export function ShopExperience() {
+function ShopExperienceContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const galleryApi = useRef<CircularGalleryHandle | null>(null);
+  const focusedSlug = searchParams.get("set");
 
-  const handleGalleryReady = useCallback((api: CircularGalleryHandle) => {
-    galleryApi.current = api;
-  }, []);
+  const focusIndex = useMemo(() => {
+    if (!focusedSlug) return 0;
+    const index = products.findIndex((product) => product.slug === focusedSlug);
+    return index >= 0 ? index : 0;
+  }, [focusedSlug]);
+
+  const handleGalleryReady = useCallback(
+    (api: CircularGalleryHandle) => {
+      galleryApi.current = api;
+      if (focusedSlug) {
+        requestAnimationFrame(() => api.goToIndex(focusIndex));
+      }
+    },
+    [focusIndex, focusedSlug]
+  );
 
   const galleryItems: CircularGalleryItem[] = useMemo(
     () =>
@@ -78,5 +92,19 @@ export function ShopExperience() {
         Click a piece to view · Drag or use arrows to browse
       </p>
     </div>
+  );
+}
+
+export function ShopExperience() {
+  return (
+    <Suspense
+      fallback={
+        <div className="hero-screen flex items-center justify-center bg-ink">
+          <p className="editorial-spacing text-[9px] text-cream/40">Loading collection…</p>
+        </div>
+      }
+    >
+      <ShopExperienceContent />
+    </Suspense>
   );
 }

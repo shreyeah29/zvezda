@@ -29,10 +29,10 @@ const HomeAtelierManifesto = dynamic(
   { ssr: false }
 );
 
-const HomeMoodBoard = dynamic(
+const HomeShopCards = dynamic(
   () =>
-    import("@/components/home/HomeMoodBoard").then((mod) => ({
-      default: mod.HomeMoodBoard,
+    import("@/components/home/HomeShopCards").then((mod) => ({
+      default: mod.HomeShopCards,
     })),
   { ssr: false }
 );
@@ -98,8 +98,8 @@ export default function HomePage() {
             <HomeHeroVideo />
             <HomeGridMotion />
             <HomeAtelierManifesto />
-            <HomeMoodBoard />
             <HomeEditorialMarquee />
+            <HomeShopCards />
             <HomePillCarousel />
             <ImageScroller />
             <HomeInstagramStrip />

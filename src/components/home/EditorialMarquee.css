@@ -1,8 +1,8 @@
 .editorial-marquee {
   position: relative;
-  height: 22vh;
-  min-height: 20vh;
-  max-height: 24vh;
+  height: 14vh;
+  min-height: 12vh;
+  max-height: 16vh;
   display: flex;
   align-items: center;
   background: #050505;
@@ -17,7 +17,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center 32%;
-  opacity: 0.62;
+  opacity: 0.88;
   filter: saturate(0.95) contrast(1.05);
   pointer-events: none;
 }
@@ -27,9 +27,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(5, 5, 5, 0.65) 0%,
-    rgba(5, 5, 5, 0.18) 50%,
-    rgba(5, 5, 5, 0.65) 100%
+    rgba(5, 5, 5, 0.28) 0%,
+    rgba(5, 5, 5, 0.06) 50%,
+    rgba(5, 5, 5, 0.28) 100%
   );
   pointer-events: none;
 }
@@ -56,7 +56,7 @@
 
 .editorial-marquee__word {
   font-family: var(--font-editorial), var(--font-display), serif;
-  font-size: clamp(2.75rem, 7.5vw, 6rem);
+  font-size: clamp(2.25rem, 6vw, 4.75rem);
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: uppercase;
