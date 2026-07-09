@@ -1,34 +1,29 @@
-.instagram-chapter {
-  position: relative;
-}
-
-.instagram-chapter__pin {
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  background: #070707;
-}
-
-.instagram-chapter__ivory {
-  position: absolute;
+.instagram-chapter__overlay {
+  position: fixed;
   inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.instagram-chapter__overlay.is-active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.instagram-chapter__static {
+  position: relative;
   z-index: 1;
   background: #f7f5f2;
   color: #0a0a0a;
-  overflow-x: hidden;
-  overflow-y: auto;
-  pointer-events: none;
 }
 
-.instagram-chapter__ivory.is-interactive {
-  pointer-events: auto;
-}
-
-.instagram-chapter__ivory-inner {
+.instagram-chapter__static-inner {
   margin: 0 auto;
   max-width: 1280px;
-  padding: clamp(4rem, 10vh, 7rem) clamp(1.25rem, 4vw, 3rem) clamp(5rem, 12vh, 8rem);
+  padding: clamp(4rem, 9vh, 6.5rem) clamp(1.25rem, 4vw, 3rem)
+    clamp(7rem, 14vh, 10rem);
 }
 
 .instagram-chapter__label {
@@ -88,7 +83,7 @@
   margin-top: clamp(2.5rem, 7vw, 5rem);
 }
 
-.instagram-chapter__footer {
+.instagram-chapter__cta {
   margin-top: clamp(3rem, 7vw, 5rem);
   display: flex;
   flex-direction: column;
@@ -147,22 +142,10 @@
   transform: translateX(6px);
 }
 
-.instagram-chapter__fade-footer {
-  pointer-events: none;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: clamp(4rem, 10vh, 7rem);
-  background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 10, 0.12) 55%, #0a0a0a 100%);
-  z-index: 2;
-}
-
-/* Freeze frame — mirrors pill carousel center card */
+/* Freeze frame overlay */
 .freeze-frame {
   position: absolute;
   inset: 0;
-  z-index: 10;
   background: #070707;
   overflow: hidden;
 }
@@ -206,17 +189,15 @@
   display: block;
 }
 
-/* Torn paper sheet */
+/* Torn paper */
 .instagram-chapter__paper {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
-  z-index: 20;
-  height: 110vh;
+  height: calc(100vh + 88px);
   display: flex;
   flex-direction: column;
-  pointer-events: none;
   will-change: transform;
 }
 
@@ -230,8 +211,4 @@
   height: 88px;
   flex-shrink: 0;
   display: block;
-}
-
-.instagram-chapter__spacer {
-  height: 1px;
 }
