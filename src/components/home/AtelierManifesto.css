@@ -1,11 +1,26 @@
 .atelier-manifesto {
   position: relative;
   min-height: 68vh;
-  background: #0a0a0a;
+  background: #0a0908;
   overflow: hidden;
+  color: #f5f0e8;
+}
+
+.atelier-manifesto__rays {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.atelier-manifesto__rays-canvas {
+  width: 100%;
+  height: 100%;
 }
 
 .atelier-manifesto__inner {
+  position: relative;
+  z-index: 1;
   display: grid;
   min-height: 68vh;
   grid-template-columns: 1fr;
@@ -26,7 +41,7 @@
   font-size: 10px;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(196, 165, 116, 0.85);
+  color: rgba(196, 165, 116, 0.9);
   margin: 0 0 1.5rem;
 }
 
@@ -71,7 +86,7 @@
   position: relative;
   min-height: 42vh;
   overflow: hidden;
-  border: 10px solid #ffffff;
+  border: 5px solid rgba(255, 255, 255, 0.92);
   border-radius: 2px;
 }
 
@@ -93,6 +108,6 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.45) 100%);
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.12) 0%, rgba(10, 10, 10, 0.38) 100%);
   pointer-events: none;
 }

@@ -5,6 +5,23 @@
   box-sizing: border-box;
 }
 
+.image-shuffle-grid--fit-viewport {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline: auto;
+  max-width: min(1080px, 94vw);
+}
+
+.image-shuffle-grid--fit-viewport .image-shuffle-grid__inner {
+  height: 100%;
+  width: 100%;
+}
+
+.image-shuffle-grid--fit-viewport .image-shuffle-grid__cell {
+  min-height: 0;
+}
+
 .image-shuffle-grid__inner {
   display: grid;
   width: 100%;

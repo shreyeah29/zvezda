@@ -48,6 +48,8 @@ export type ImageShuffleGridProps = {
   randomizationIntensity?: number;
   maxSwapsPerInterval?: number;
   enableImageCycle?: boolean;
+  fitViewport?: boolean;
+  maxHeight?: string;
 };
 
 function getAspectRatioValue(ratio: AspectRatio) {
@@ -85,6 +87,8 @@ export function ImageShuffleGrid({
   randomizationIntensity = 100,
   maxSwapsPerInterval = 1,
   enableImageCycle = true,
+  fitViewport = false,
+  maxHeight,
 }: ImageShuffleGridProps) {
   const router = useRouter();
   const reduced = usePrefersReducedMotion();
@@ -277,8 +281,13 @@ export function ImageShuffleGrid({
 
   return (
     <div
-      className="image-shuffle-grid"
-      style={{ backgroundColor, padding, gap }}
+      className={`image-shuffle-grid${fitViewport ? " image-shuffle-grid--fit-viewport" : ""}`}
+      style={{
+        backgroundColor,
+        padding,
+        gap,
+        ...(maxHeight ? { maxHeight, height: maxHeight } : {}),
+      }}
     >
       <div
         className="image-shuffle-grid__inner"
@@ -299,7 +308,7 @@ export function ImageShuffleGrid({
               borderRadius,
               backgroundColor: emptySlotColor,
               border: borderWidth > 0 ? `${borderWidth}px solid ${borderColor}` : "none",
-              aspectRatio: getAspectRatioValue(aspectRatio),
+              aspectRatio: fitViewport ? undefined : getAspectRatioValue(aspectRatio),
             }}
             transition={getTransition(easing, animationDuration)}
             whileHover={hoverEffect && item.src ? { scale: hoverScale } : undefined}

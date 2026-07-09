@@ -1,0 +1,7 @@
+.category-shuffle-gallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(92vh, 760px);
+  padding: clamp(1.25rem, 3vh, 2rem) clamp(0.75rem, 2vw, 1.5rem);
+}

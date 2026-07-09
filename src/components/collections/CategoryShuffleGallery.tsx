@@ -2,6 +2,7 @@
 
 import type { CollectionCategory } from "@/data/collectionCategories";
 import { ImageShuffleGrid } from "@/components/collections/ImageShuffleGrid";
+import "./CategoryShuffleGallery.css";
 
 type CategoryShuffleGalleryProps = {
   category: CollectionCategory;
@@ -15,26 +16,30 @@ export function CategoryShuffleGallery({ category }: CategoryShuffleGalleryProps
   }));
 
   return (
-    <ImageShuffleGrid
-      images={images}
-      rows={3}
-      columns={3}
-      gap={10}
-      padding={20}
-      aspectRatio="portrait"
-      backgroundColor={category.backgroundColor}
-      borderRadius={4}
-      borderColor="rgba(255,255,255,0.82)"
-      borderWidth={4}
-      swapInterval={2400}
-      animationDuration={0.85}
-      easing="easeInOut"
-      shuffleStyle="neighbors"
-      hoverEffect
-      hoverScale={1.03}
-      enableImageCycle={images.length > 9}
-      maxSwapsPerInterval={1}
-      randomizationIntensity={100}
-    />
+    <section className="category-shuffle-gallery" aria-label={`${category.displayTitle} gallery`}>
+      <ImageShuffleGrid
+        images={images}
+        rows={3}
+        columns={3}
+        gap={6}
+        padding={12}
+        aspectRatio="portrait"
+        backgroundColor={category.backgroundColor}
+        borderRadius={3}
+        borderColor="rgba(255,255,255,0.78)"
+        borderWidth={2}
+        swapInterval={2200}
+        animationDuration={0.8}
+        easing="easeInOut"
+        shuffleStyle="neighbors"
+        hoverEffect
+        hoverScale={1.025}
+        enableImageCycle={images.length > 9}
+        maxSwapsPerInterval={1}
+        randomizationIntensity={100}
+        fitViewport
+        maxHeight="min(88vh, 720px)"
+      />
+    </section>
   );
 }
