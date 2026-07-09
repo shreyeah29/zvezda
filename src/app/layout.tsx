@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Instrument_Serif, Inter, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { CommerceProvider } from "@/context/CommerceContext";
 import { Navigation } from "@/components/layout/Navigation";
@@ -29,6 +30,12 @@ const product = Playfair_Display({
   weight: ["600", "700", "800"],
 });
 
+const bright = localFont({
+  src: "../../public/fonts/Bright.otf",
+  variable: "--font-bright",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Zvezda — Where light becomes garment",
   description:
@@ -49,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} h-full`}
+      className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} ${bright.variable} h-full`}
     >
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <div className="viewport-fixed pointer-events-none -z-50 bg-ink" aria-hidden="true" />

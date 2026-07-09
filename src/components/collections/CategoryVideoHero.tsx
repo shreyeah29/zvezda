@@ -87,8 +87,11 @@ export function CategoryVideoHero({ category }: CategoryVideoHeroProps) {
         </p>
         <h2
           data-hero-reveal
-          className="font-display mt-6 text-[clamp(4rem,14vw,11rem)] leading-[0.85] font-light tracking-[-0.04em]"
-          style={{ color: category.textColor }}
+          className="mt-6 text-[clamp(4rem,14vw,11rem)] leading-[0.85] font-normal tracking-[-0.02em]"
+          style={{
+            color: category.textColor,
+            fontFamily: "var(--font-bright), var(--font-display), serif",
+          }}
         >
           {category.displayTitle}
         </h2>

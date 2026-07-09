@@ -81,12 +81,8 @@ function ShopExperienceContent() {
           <LightRays {...SHOP_LIGHT_RAYS} className="shop-experience__rays-canvas" />
         </div>
 
-        <div className="pointer-events-none absolute top-24 left-6 z-20 md:top-28 md:left-10">
-          <p className="editorial-spacing text-[9px] tracking-[0.45em] text-cream/40">Collection</p>
-          <p className="shop-heading mt-3 text-4xl text-cream md:text-5xl">Atelier</p>
-          <p className="mt-3 max-w-[220px] text-[11px] leading-relaxed tracking-wide text-cream/45 md:max-w-xs">
-            Drag, scroll, tap the arrows, or use arrow keys to explore all {products.length} pieces.
-          </p>
+        <div className="pointer-events-none absolute top-24 left-1/2 z-20 -translate-x-1/2 text-center md:top-28">
+          <p className="shop-heading text-5xl text-cream md:text-6xl">Atelier</p>
         </div>
 
         <div className="absolute inset-0 z-[1] pt-16 pb-10">
@@ -122,8 +118,7 @@ function ShopExperienceContent() {
 
         <div className="relative z-10 mx-auto max-w-[1320px]">
           <header className="mb-10 max-w-xl md:mb-12">
-            <p className="editorial-spacing text-[10px] text-gold/90">Complete Edit</p>
-            <h2 className="shop-heading mt-4 text-5xl text-cream md:text-6xl">All Pieces</h2>
+            <h2 className="shop-heading text-5xl text-cream md:text-6xl">All Pieces</h2>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-cream/50">
               Browse every couture piece — tap to view details, save to your wishlist, or add to cart.
             </p>

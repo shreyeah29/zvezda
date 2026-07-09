@@ -1,11 +1,4 @@
-import localFont from "next/font/local";
 import { Barlow_Condensed } from "next/font/google";
-
-const bright = localFont({
-  src: "../../../public/fonts/Bright.otf",
-  variable: "--font-bright",
-  display: "swap",
-});
 
 const shopSans = Barlow_Condensed({
   subsets: ["latin"],
@@ -16,7 +9,7 @@ const shopSans = Barlow_Condensed({
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className={`${bright.variable} ${shopSans.variable} min-h-screen font-[family-name:var(--font-shop-sans)]`}
+      className={`${shopSans.variable} min-h-screen font-[family-name:var(--font-shop-sans)]`}
     >
       {children}
     </div>
