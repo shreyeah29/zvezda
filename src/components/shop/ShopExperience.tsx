@@ -10,10 +10,10 @@ import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { LightRays } from "@/components/ui/LightRays";
 import { ScrollBendSection } from "@/components/shop/ScrollBendSection";
-import type { CircularGalleryHandle, CircularGalleryItem } from "@/components/shop/CircularGallery";
+import type { OrganicCarouselHandle, OrganicCarouselItem } from "@/components/shop/OrganicCarousel";
 import "./ShopExperience.css";
 
-const CircularGallery = dynamic(() => import("@/components/shop/CircularGallery"), {
+const OrganicCarousel = dynamic(() => import("@/components/shop/OrganicCarousel"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full w-full items-center justify-center">
@@ -39,7 +39,7 @@ const SHOP_LIGHT_RAYS = {
 function ShopExperienceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const galleryApi = useRef<CircularGalleryHandle | null>(null);
+  const galleryApi = useRef<OrganicCarouselHandle | null>(null);
   const focusedSlug = searchParams.get("set");
 
   const focusIndex = useMemo(() => {
@@ -49,7 +49,7 @@ function ShopExperienceContent() {
   }, [focusedSlug]);
 
   const handleGalleryReady = useCallback(
-    (api: CircularGalleryHandle) => {
+    (api: OrganicCarouselHandle) => {
       galleryApi.current = api;
       if (focusedSlug) {
         requestAnimationFrame(() => api.goToIndex(focusIndex));
@@ -58,11 +58,11 @@ function ShopExperienceContent() {
     [focusIndex, focusedSlug],
   );
 
-  const galleryItems: CircularGalleryItem[] = useMemo(
+  const galleryItems: OrganicCarouselItem[] = useMemo(
     () =>
       products.map((product) => ({
         image: product.hero,
-        text: product.name,
+        title: product.name,
       })),
     [],
   );
@@ -91,16 +91,16 @@ function ShopExperienceContent() {
             </div>
 
             <div className="absolute inset-0 z-[1] pt-16 pb-10">
-              <CircularGallery
+              <OrganicCarousel
                 onReady={handleGalleryReady}
                 items={galleryItems}
-                bend={3}
                 textColor="#f5f0e8"
-                borderRadius={0.05}
-                scrollEase={0.012}
-                scrollSpeed={0.9}
-                fontUrl="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap"
-                font="500 26px Bodoni Moda"
+                borderRadius={46}
+                cardWidth={252}
+                cardHeight={430}
+                cardGap={52}
+                activeScale={1.05}
+                inactiveOpacity={0.55}
                 onItemClick={handleItemClick}
               />
               <StageArrows
