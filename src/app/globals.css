@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display: var(--font-body);
   --font-body: "Inter", system-ui, sans-serif;
 
-  --color-ink: #0a0a0a;
-  --color-cream: #f5f0e8;
+  --color-ink: #ffffff;
+  --color-cream: #0a0a0a;
   --color-crimson: #8b1a2b;
   --color-olive: #4a5240;
   --color-gold: #c4a574;
@@ -157,4 +157,58 @@
   button {
     cursor: pointer;
   }
+}
+
+/*
+ * White theme preview: use the navigation's Inter face throughout the site,
+ * and neutralize legacy section backgrounds that predate the color tokens.
+ */
+html,
+body,
+body *,
+body *::before,
+body *::after {
+  font-family: var(--font-body) !important;
+}
+
+html,
+body,
+body::before,
+.viewport-fixed,
+main,
+section,
+footer {
+  background-color: #ffffff !important;
+  color: #0a0a0a;
+}
+
+.bg-black,
+.bg-zinc-950 {
+  background-color: #ffffff !important;
+}
+
+.pill-carousel,
+.site-footer,
+.policy-page,
+.home-shop-cards,
+.home-shop-cards__card,
+.atelier-manifesto,
+.instagram-chapter__static,
+.editorial-marquee,
+.mood-board,
+.shop-experience__catalog,
+.collection-canvas,
+.grid-motion-reveal {
+  background: #ffffff !important;
+  color: #0a0a0a !important;
+}
+
+.pill-carousel *,
+.site-footer *,
+.policy-page *,
+.atelier-manifesto *,
+.instagram-chapter__static *,
+.editorial-marquee *,
+.mood-board * {
+  color: #0a0a0a !important;
 }
