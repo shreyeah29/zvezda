@@ -130,21 +130,29 @@ function FlyingHeart({ size = 22 }: { size?: number }) {
   );
 }
 
-function buildZigZagPath(startX: number, startY: number, endX: number, endY: number) {
+function buildFloatingPath(startX: number, startY: number, endX: number, endY: number) {
   const dx = endX - startX;
   const dy = endY - startY;
-  const swing = Math.min(72, Math.max(42, Math.abs(dx) * 0.12));
+  const distance = Math.hypot(dx, dy);
+  const lift = Math.min(96, Math.max(44, distance * 0.2));
+  const sway = Math.min(24, Math.max(10, distance * 0.05));
 
-  return [
-    { x: startX, y: startY },
-    { x: startX + dx * 0.14, y: startY + dy * 0.1 - swing * 0.55 },
-    { x: startX + dx * 0.28, y: startY + dy * 0.22 + swing * 0.7 },
-    { x: startX + dx * 0.44, y: startY + dy * 0.36 - swing * 0.65 },
-    { x: startX + dx * 0.58, y: startY + dy * 0.5 + swing * 0.75 },
-    { x: startX + dx * 0.72, y: startY + dy * 0.64 - swing * 0.5 },
-    { x: startX + dx * 0.86, y: startY + dy * 0.8 + swing * 0.45 },
-    { x: endX, y: endY },
-  ];
+  const steps = 14;
+  const points: { x: number; y: number; rotate: number; scale: number }[] = [];
+
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const progress = t * t * (3 - 2 * t);
+    const arc = Math.sin(t * Math.PI);
+    const x = startX + dx * progress + sway * arc * 0.28;
+    const y = startY + dy * progress - lift * arc;
+    const rotate = Math.sin(t * Math.PI) * 5.5;
+    const scale = 1 + arc * 0.05 - t * 0.38;
+
+    points.push({ x, y, rotate, scale });
+  }
+
+  return points;
 }
 
 const WISHLIST_FLY_DURATION = 2.15;
@@ -184,7 +192,7 @@ export function FlyToWishlistLayer() {
   const endY = wishlistRect ? wishlistRect.top + wishlistRect.height / 2 : 32;
   const startX = wishlistFlyPayload.from.left + wishlistFlyPayload.from.width / 2;
   const startY = wishlistFlyPayload.from.top + wishlistFlyPayload.from.height / 2;
-  const path = buildZigZagPath(startX, startY, endX, endY);
+  const path = buildFloatingPath(startX, startY, endX, endY);
 
   return createPortal(
     <>
@@ -195,22 +203,28 @@ export function FlyToWishlistLayer() {
           top: path[0].y,
           x: "-50%",
           y: "-50%",
-          scale: 1,
+          scale: path[0].scale,
           opacity: 1,
-          rotate: 0,
+          rotate: path[0].rotate,
+          filter: "drop-shadow(0 8px 18px rgba(232, 93, 138, 0.22))",
         }}
         animate={{
           left: path.map((point) => point.x),
           top: path.map((point) => point.y),
           x: "-50%",
           y: "-50%",
-          scale: [1, 1.12, 1.08, 1.1, 1.06, 1.04, 0.92, 0.6],
-          opacity: [1, 1, 1, 1, 1, 1, 0.85, 0.25],
-          rotate: [0, -8, 10, -12, 9, -7, 5, 0],
+          scale: path.map((point) => point.scale),
+          opacity: path.map((_, index) => (index < path.length - 2 ? 1 : index === path.length - 1 ? 0.3 : 0.92)),
+          rotate: path.map((point) => point.rotate),
+          filter: [
+            "drop-shadow(0 8px 18px rgba(232, 93, 138, 0.22))",
+            "drop-shadow(0 14px 24px rgba(232, 93, 138, 0.16))",
+            "drop-shadow(0 4px 10px rgba(232, 93, 138, 0.08))",
+          ],
         }}
         transition={{
           duration: WISHLIST_FLY_DURATION,
-          ease: [0.42, 0, 0.18, 1],
+          ease: [0.33, 0, 0.18, 1],
           times: path.map((_, index) => index / (path.length - 1)),
         }}
       >
