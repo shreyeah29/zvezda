@@ -79,12 +79,7 @@ function ShopExperienceContent() {
     <>
       <ScrollBendSection
         backgroundColor="#0a0908"
-        heroBackground="#0a0a0a"
-        topBend={120}
-        bottomBend={72}
-        cornerRadius={32}
-        sectionPadding="clamp(0.85rem, 2.8vw, 1.75rem)"
-        scrollDistance="100vh"
+        topRadius={36}
         hero={
           <div className="relative h-full w-full overflow-hidden bg-ink">
             <div className="shop-experience__rays" aria-hidden="true">
