@@ -17,41 +17,52 @@
     linear-gradient(180deg, #050505 0%, #0c0b0a 55%, #050505 100%);
 }
 
-.pill-carousel__eyebrow {
-  position: relative;
-  z-index: 60;
-  margin: 0 0 clamp(1.75rem, 4vh, 2.75rem);
-  text-align: center;
-  font-size: clamp(12px, 1.35vw, 15px);
-  font-weight: 500;
-  letter-spacing: 0.42em;
-  color: rgba(196, 165, 116, 0.92);
-}
-
 .pill-carousel__layout {
   position: relative;
   z-index: 10;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(2.5rem, auto) minmax(0, 1.05fr) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(2rem, 4vh, 3rem);
-  min-height: min(68vh, 600px);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  min-height: min(72vh, 640px);
+  max-width: 1380px;
+  margin-inline: auto;
   padding-inline: clamp(1rem, 4vw, 3rem);
+}
+
+.pill-carousel__eyebrow {
+  position: relative;
+  z-index: 60;
+  margin: 0;
+  justify-self: start;
+  align-self: center;
+  color: rgba(196, 165, 116, 0.92);
+}
+
+.pill-carousel__eyebrow span {
+  display: inline-block;
+  font-size: clamp(11px, 1.15vw, 14px);
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
 }
 
 /* ---- 3D cascade stage ---- */
 .pill-carousel__stage {
   position: relative;
-  width: clamp(210px, 22vw, 290px);
-  height: min(52vh, 520px);
+  justify-self: center;
+  width: clamp(200px, 19vw, 255px);
+  height: min(72vh, 620px);
   perspective: 1600px;
-  margin-inline: auto;
 }
 
 .pill-carousel__card {
   position: absolute;
   width: 100%;
-  height: 62%;
+  height: 74%;
   will-change: transform, opacity, filter;
 }
 
@@ -59,7 +70,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 150px;
+  border-radius: 9999px;
   overflow: hidden;
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.5);
   transition: box-shadow 0.35s ease;
@@ -85,7 +96,7 @@
 /* ---- floating pill CTA above the center card ---- */
 .pill-carousel__pill {
   position: absolute;
-  top: calc(19% - 58px);
+  top: calc(13% - 58px);
   left: 50%;
   z-index: 100;
 }
@@ -122,16 +133,16 @@
   border-top: 8px solid #f5f0e8;
 }
 
-/* ---- editorial meta ---- */
+/* ---- editorial meta (right column) ---- */
 .pill-carousel__side {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   gap: 2rem;
   width: 100%;
-  max-width: 44rem;
-  text-align: center;
+  max-width: 34rem;
+  padding-right: clamp(0.25rem, 2vw, 1.5rem);
+  text-align: left;
 }
 
 .pill-carousel__meta {
@@ -143,7 +154,7 @@
 
 .pill-carousel__name {
   font-family: var(--font-hearty-sacred), var(--font-display), serif;
-  font-size: clamp(2.75rem, 5.8vw, 5.5rem);
+  font-size: clamp(2.75rem, 5.5vw, 5.75rem);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: 0.01em;
@@ -168,8 +179,7 @@
 .pill-carousel__desc {
   display: block;
   min-height: 4.9em;
-  max-width: 36ch;
-  margin-inline: auto;
+  max-width: 34ch;
   font-size: clamp(0.88rem, 1.15vw, 1rem);
   line-height: 1.72;
   color: rgba(245, 240, 232, 0.62);
@@ -232,22 +242,42 @@
   }
 
   .pill-carousel__layout {
+    grid-template-columns: 1fr;
     min-height: auto;
     gap: 2rem;
+    justify-items: center;
+  }
+
+  .pill-carousel__eyebrow {
+    justify-self: center;
+  }
+
+  .pill-carousel__eyebrow span {
+    writing-mode: horizontal-tb;
+    transform: none;
+    letter-spacing: 0.38em;
   }
 
   .pill-carousel__stage {
-    width: clamp(180px, 52vw, 240px);
-    height: 44vh;
+    width: clamp(180px, 48vw, 230px);
+    height: min(58vh, 520px);
   }
 
   .pill-carousel__side {
     padding: 0 1.5rem;
+    align-items: center;
+    text-align: center;
+    max-width: none;
   }
 
   .pill-carousel__desc {
     max-width: none;
     min-height: 5.2em;
+    margin-inline: auto;
+  }
+
+  .pill-carousel__controls {
+    justify-content: center;
   }
 }
 

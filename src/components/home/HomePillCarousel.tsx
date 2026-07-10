@@ -93,9 +93,11 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
     >
       <div className="pill-carousel__ambient" aria-hidden="true" />
 
-      <p className="editorial-spacing pill-carousel__eyebrow">The Collection</p>
-
       <div className="pill-carousel__layout">
+        <p className="editorial-spacing pill-carousel__eyebrow" aria-label="The Collection">
+          <span>The Collection</span>
+        </p>
+
         <div className="pill-carousel__stage">
         {items.map((product, index) => {
           const isCenter = (index - current + count) % count === 0;
@@ -171,7 +173,7 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
               splitType="words"
               from={{ opacity: 0, y: 28 }}
               to={{ opacity: 1, y: 0 }}
-              textAlign="center"
+              textAlign="left"
               onLetterAnimationComplete={() => setNameComplete(true)}
             />
             {nameComplete && (
