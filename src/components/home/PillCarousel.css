@@ -153,7 +153,7 @@
 }
 
 .pill-carousel__name {
-  font-family: var(--font-griffiths), var(--font-display), serif;
+  font-family: var(--font-against), var(--font-display), serif;
   font-size: clamp(2.75rem, 5.5vw, 5.75rem);
   font-weight: 400;
   line-height: 1.05;
