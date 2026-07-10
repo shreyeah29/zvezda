@@ -1,0 +1,72 @@
+.policy-page {
+  min-height: 100vh;
+  background: #0a0908;
+  padding: clamp(6rem, 14vh, 8rem) clamp(1.5rem, 5vw, 3rem) clamp(4rem, 10vh, 6rem);
+}
+
+.policy-page__inner {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.policy-page__back {
+  display: inline-block;
+  margin-bottom: 2.5rem;
+  font-size: 10px;
+  color: rgba(245, 240, 232, 0.45);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.policy-page__back:hover {
+  color: #f5f0e8;
+}
+
+.policy-page__eyebrow {
+  font-size: 10px;
+  color: rgba(196, 165, 116, 0.9);
+}
+
+.policy-page__title {
+  margin-top: 1rem;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.08;
+  color: #f5f0e8;
+}
+
+.policy-page__body {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: rgba(245, 240, 232, 0.68);
+}
+
+.policy-page__body h2 {
+  margin-top: 0.5rem;
+  font-family: var(--font-display), serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: #f5f0e8;
+}
+
+.policy-page__body p {
+  margin: 0;
+}
+
+.policy-page__body a {
+  color: #c4a574;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.policy-page__body ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

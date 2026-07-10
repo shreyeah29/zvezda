@@ -54,6 +54,10 @@
   gap: 1.25rem 2rem;
 }
 
+.site-footer__nav--policy {
+  gap: 1rem 1.75rem;
+}
+
 .site-footer__link {
   font-size: 11px;
   font-weight: 500;
@@ -64,8 +68,18 @@
   transition: color 0.3s ease;
 }
 
+.site-footer__link--policy {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: rgba(245, 240, 232, 0.5);
+}
+
 .site-footer__link:hover {
   color: #f5f0e8;
+}
+
+.site-footer__link--policy:hover {
+  color: rgba(245, 240, 232, 0.82);
 }
 
 .site-footer__bottom {

@@ -11,6 +11,15 @@ const FOOTER_LINKS = [
   { href: "/gallery", label: "Gallery" },
 ];
 
+const FOOTER_POLICY_LINKS = [
+  { href: "/shipping", label: "Shipping" },
+  { href: "/returns", label: "Returns & Exchanges" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+];
+
 export function Footer() {
   return (
     <footer className="site-footer">
@@ -27,6 +36,14 @@ export function Footer() {
         <nav className="site-footer__nav" aria-label="Footer">
           {FOOTER_LINKS.map((link) => (
             <Link key={link.href} href={link.href} className="site-footer__link">
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <nav className="site-footer__nav site-footer__nav--policy" aria-label="Policies">
+          {FOOTER_POLICY_LINKS.map((link) => (
+            <Link key={link.href} href={link.href} className="site-footer__link site-footer__link--policy">
               {link.label}
             </Link>
           ))}
