@@ -31,10 +31,10 @@
 .pill-carousel__layout {
   position: relative;
   z-index: 10;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: clamp(1rem, 3vw, 2rem);
+  gap: clamp(2rem, 4vh, 3rem);
   min-height: min(68vh, 600px);
   padding-inline: clamp(1rem, 4vw, 3rem);
 }
@@ -42,10 +42,10 @@
 /* ---- 3D cascade stage ---- */
 .pill-carousel__stage {
   position: relative;
-  justify-self: center;
   width: clamp(210px, 22vw, 290px);
-  height: min(62vh, 560px);
+  height: min(52vh, 520px);
   perspective: 1600px;
+  margin-inline: auto;
 }
 
 .pill-carousel__card {
@@ -126,35 +126,50 @@
 .pill-carousel__side {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 2rem;
-  padding-right: clamp(0.5rem, 3vw, 2rem);
+  width: 100%;
+  max-width: 44rem;
+  text-align: center;
 }
 
 .pill-carousel__meta {
   position: relative;
   z-index: 70;
   width: 100%;
-  max-width: 34rem;
   pointer-events: none;
 }
 
 .pill-carousel__name {
-  font-family: var(--font-product), var(--font-display), serif;
-  font-size: clamp(3rem, 6.3vw, 6.75rem);
-  font-weight: 800;
-  line-height: 0.9;
-  letter-spacing: -0.06em;
+  font-family: var(--font-hearty-sacred), var(--font-display), serif;
+  font-size: clamp(2.75rem, 5.8vw, 5.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
   color: #f5f0e8;
   margin: 0 0 1.25rem;
-  text-wrap: balance;
+  text-wrap: pretty;
   text-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
+}
+
+.pill-carousel__name.split-parent {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  white-space: normal;
+}
+
+.pill-carousel__name .split-word {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .pill-carousel__desc {
   display: block;
   min-height: 4.9em;
-  max-width: 31ch;
+  max-width: 36ch;
+  margin-inline: auto;
   font-size: clamp(0.88rem, 1.15vw, 1rem);
   line-height: 1.72;
   color: rgba(245, 240, 232, 0.62);
@@ -217,41 +232,22 @@
   }
 
   .pill-carousel__layout {
-    grid-template-columns: 1fr;
     min-height: auto;
     gap: 2rem;
   }
 
   .pill-carousel__stage {
     width: clamp(180px, 52vw, 240px);
-    height: 48vh;
-    margin: 0 auto;
+    height: 44vh;
   }
 
   .pill-carousel__side {
     padding: 0 1.5rem;
-    align-items: center;
-    text-align: center;
-  }
-
-  .pill-carousel__meta {
-    max-width: none;
   }
 
   .pill-carousel__desc {
     max-width: none;
-  }
-
-  .pill-carousel__name {
-    text-align: center !important;
-  }
-
-  .pill-carousel__desc {
     min-height: 5.2em;
-  }
-
-  .pill-carousel__controls {
-    justify-content: center;
   }
 }
 

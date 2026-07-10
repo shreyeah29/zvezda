@@ -165,13 +165,13 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
               tag="h2"
               text={active?.name ?? ""}
               className="pill-carousel__name"
-              delay={38}
-              duration={0.85}
+              delay={120}
+              duration={0.75}
               ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 34, rotateX: -35 }}
-              to={{ opacity: 1, y: 0, rotateX: 0 }}
-              textAlign="left"
+              splitType="words"
+              from={{ opacity: 0, y: 28 }}
+              to={{ opacity: 1, y: 0 }}
+              textAlign="center"
               onLetterAnimationComplete={() => setNameComplete(true)}
             />
             {nameComplete && (
