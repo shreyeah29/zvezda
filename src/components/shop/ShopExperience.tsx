@@ -9,6 +9,7 @@ import { ShopProductCard } from "@/components/shop/ShopProductCard";
 import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { LightRays } from "@/components/ui/LightRays";
+import { ScrollBendSection } from "@/components/shop/ScrollBendSection";
 import type { CircularGalleryHandle, CircularGalleryItem } from "@/components/shop/CircularGallery";
 import "./ShopExperience.css";
 
@@ -76,57 +77,65 @@ function ShopExperienceContent() {
 
   return (
     <>
-      <div className="hero-screen relative w-full overflow-hidden bg-ink">
-        <div className="shop-experience__rays" aria-hidden="true">
-          <LightRays {...SHOP_LIGHT_RAYS} className="shop-experience__rays-canvas" />
-        </div>
+      <ScrollBendSection
+        backgroundColor="#0a0908"
+        topBend={88}
+        bendDirection="inward"
+        pinHeight="125vh"
+        hero={
+          <div className="relative h-full w-full overflow-hidden bg-ink">
+            <div className="shop-experience__rays" aria-hidden="true">
+              <LightRays {...SHOP_LIGHT_RAYS} className="shop-experience__rays-canvas" />
+            </div>
 
-        <div className="pointer-events-none absolute top-24 left-1/2 z-20 -translate-x-1/2 text-center md:top-28">
-          <p className="shop-heading text-5xl text-cream md:text-6xl">Atelier</p>
-        </div>
+            <div className="pointer-events-none absolute top-24 left-1/2 z-20 -translate-x-1/2 text-center md:top-28">
+              <p className="shop-heading text-5xl text-cream md:text-6xl">Atelier</p>
+            </div>
 
-        <div className="absolute inset-0 z-[1] pt-16 pb-10">
-          <CircularGallery
-            onReady={handleGalleryReady}
-            items={galleryItems}
-            bend={3}
-            textColor="#f5f0e8"
-            borderRadius={0.05}
-            scrollEase={0.012}
-            scrollSpeed={0.9}
-            fontUrl="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap"
-            font="500 26px Bodoni Moda"
-            onItemClick={handleItemClick}
-          />
-          <StageArrows
-            onPrev={() => galleryApi.current?.goPrev()}
-            onNext={() => galleryApi.current?.goNext()}
-            canPrev
-            canNext
-          />
-        </div>
+            <div className="absolute inset-0 z-[1] pt-16 pb-10">
+              <CircularGallery
+                onReady={handleGalleryReady}
+                items={galleryItems}
+                bend={3}
+                textColor="#f5f0e8"
+                borderRadius={0.05}
+                scrollEase={0.012}
+                scrollSpeed={0.9}
+                fontUrl="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap"
+                font="500 26px Bodoni Moda"
+                onItemClick={handleItemClick}
+              />
+              <StageArrows
+                onPrev={() => galleryApi.current?.goPrev()}
+                onNext={() => galleryApi.current?.goNext()}
+                canPrev
+                canNext
+              />
+            </div>
 
-        <p className="editorial-spacing pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-[9px] tracking-[0.4em] text-cream/35">
-          Click a piece to view · Drag or use arrows to browse
-        </p>
-      </div>
-
-      <section className="shop-experience__catalog relative px-5 py-14 md:px-8 md:py-20" aria-label="Shop catalog">
-        <div className="relative z-10 mx-auto max-w-[1320px]">
-          <header className="mb-10 max-w-xl md:mb-12">
-            <h2 className="shop-heading text-5xl text-cream md:text-6xl">All Pieces</h2>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-cream/50">
-              Browse every couture piece — tap to view details, save to your wishlist, or add to cart.
+            <p className="editorial-spacing pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-[9px] tracking-[0.4em] text-cream/35">
+              Click a piece to view · Drag or use arrows to browse
             </p>
-          </header>
-
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-4 md:gap-x-5 md:gap-y-12">
-            {products.map((product, index) => (
-              <ShopProductCard key={product.slug} product={product} index={index} compact />
-            ))}
           </div>
-        </div>
-      </section>
+        }
+      >
+        <section className="shop-experience__catalog relative px-5 py-14 md:px-8 md:py-20" aria-label="Shop catalog">
+          <div className="relative z-10 mx-auto max-w-[1320px]">
+            <header className="mb-10 max-w-xl md:mb-12">
+              <h2 className="shop-heading text-5xl text-cream md:text-6xl">All Pieces</h2>
+              <p className="mt-4 max-w-md text-sm leading-relaxed text-cream/50">
+                Browse every couture piece — tap to view details, save to your wishlist, or add to cart.
+              </p>
+            </header>
+
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-4 md:gap-x-5 md:gap-y-12">
+              {products.map((product, index) => (
+                <ShopProductCard key={product.slug} product={product} index={index} compact />
+              ))}
+            </div>
+          </div>
+        </section>
+      </ScrollBendSection>
 
       <Footer />
     </>

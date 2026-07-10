@@ -1,0 +1,51 @@
+.scroll-bend-stack {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-bend-stack__pin {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-bend-stack__hero {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.scroll-bend-stack__panel {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-4.5rem, -9vh, -3rem);
+  will-change: transform;
+}
+
+.scroll-bend-stack__curve {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: clamp(3.25rem, 7.5vw, 5.25rem);
+  margin-bottom: -1px;
+  pointer-events: none;
+}
+
+.scroll-bend-stack__curve svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-bend-stack__content {
+  position: relative;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-bend-stack__panel {
+    will-change: auto;
+  }
+}
