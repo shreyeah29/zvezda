@@ -79,9 +79,12 @@ function ShopExperienceContent() {
     <>
       <ScrollBendSection
         backgroundColor="#0a0908"
-        topBend={88}
-        bendDirection="inward"
-        pinHeight="125vh"
+        heroBackground="#0a0a0a"
+        topBend={120}
+        bottomBend={72}
+        cornerRadius={32}
+        sectionPadding="clamp(0.85rem, 2.8vw, 1.75rem)"
+        scrollDistance="100vh"
         hero={
           <div className="relative h-full w-full overflow-hidden bg-ink">
             <div className="shop-experience__rays" aria-hidden="true">
@@ -119,7 +122,7 @@ function ShopExperienceContent() {
           </div>
         }
       >
-        <section className="shop-experience__catalog relative px-5 py-14 md:px-8 md:py-20" aria-label="Shop catalog">
+        <section className="shop-experience__catalog relative px-5 py-14 md:px-10 md:py-20" aria-label="Shop catalog">
           <div className="relative z-10 mx-auto max-w-[1320px]">
             <header className="mb-10 max-w-xl md:mb-12">
               <h2 className="shop-heading text-5xl text-cream md:text-6xl">All Pieces</h2>
