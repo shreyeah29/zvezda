@@ -36,9 +36,9 @@ const bright = localFont({
   display: "swap",
 });
 
-const heartySacred = localFont({
-  src: "../../public/fonts/HeartySacred.otf",
-  variable: "--font-hearty-sacred",
+const griffiths = localFont({
+  src: "../../public/fonts/Griffiths.otf",
+  variable: "--font-griffiths",
   display: "swap",
 });
 
@@ -62,7 +62,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} ${bright.variable} ${heartySacred.variable} h-full`}
+      className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} ${bright.variable} ${griffiths.variable} h-full`}
     >
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <div className="viewport-fixed pointer-events-none -z-50 bg-ink" aria-hidden="true" />
