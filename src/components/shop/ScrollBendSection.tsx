@@ -9,7 +9,6 @@ type ScrollBendSectionProps = {
   backgroundColor?: string;
   topRadius?: number;
   overlap?: string;
-  scrollRoom?: string;
 };
 
 export function ScrollBendSection({
@@ -18,7 +17,6 @@ export function ScrollBendSection({
   backgroundColor = "#0a0908",
   topRadius = 40,
   overlap = "clamp(2rem, 5vh, 3.5rem)",
-  scrollRoom = "50vh",
 }: ScrollBendSectionProps) {
   const panelStyle = {
     "--scroll-bend-bg": backgroundColor,
@@ -28,10 +26,7 @@ export function ScrollBendSection({
 
   return (
     <div className="scroll-bend-stack" style={panelStyle}>
-      <div className="scroll-bend-stack__pin" style={{ height: `calc(100vh + ${scrollRoom})` }}>
-        <div className="scroll-bend-stack__hero">{hero}</div>
-      </div>
-
+      <div className="scroll-bend-stack__hero">{hero}</div>
       <section className="scroll-bend-stack__panel">{children}</section>
     </div>
   );

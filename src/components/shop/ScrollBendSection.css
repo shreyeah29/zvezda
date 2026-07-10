@@ -3,14 +3,8 @@
   width: 100%;
 }
 
-.scroll-bend-stack__pin {
-  position: relative;
-  width: 100%;
-}
-
 .scroll-bend-stack__hero {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 1;
   height: 100vh;
   height: 100dvh;
