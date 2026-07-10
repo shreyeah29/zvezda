@@ -42,6 +42,12 @@ const against = localFont({
   display: "swap",
 });
 
+const tempting = localFont({
+  src: "../../public/fonts/Tempting.otf",
+  variable: "--font-tempting",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Zvezda — Where light becomes garment",
   description:
@@ -62,7 +68,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} ${bright.variable} ${against.variable} h-full`}
+      className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} ${bright.variable} ${against.variable} ${tempting.variable} h-full`}
     >
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <div className="viewport-fixed pointer-events-none -z-50 bg-ink" aria-hidden="true" />

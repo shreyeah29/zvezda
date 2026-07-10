@@ -31,7 +31,7 @@ export function Footer() {
       </div>
 
       <div className="site-footer__inner">
-        <h2 className="site-footer__statement font-display">{brand.statement}</h2>
+        <h2 className="site-footer__statement">{brand.statement}</h2>
 
         <nav className="site-footer__nav" aria-label="Footer">
           {FOOTER_LINKS.map((link) => (
