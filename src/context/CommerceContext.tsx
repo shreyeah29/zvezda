@@ -23,6 +23,10 @@ type FlyPayload = {
   from: DOMRect;
 };
 
+type WishlistFlyPayload = {
+  from: DOMRect;
+};
+
 type CommerceContextValue = {
   cart: CartItem[];
   wishlist: string[];
@@ -39,6 +43,11 @@ type CommerceContextValue = {
   clearFlyPayload: () => void;
   cartPulse: boolean;
   setCartPulse: (value: boolean) => void;
+  wishlistFlyPayload: WishlistFlyPayload | null;
+  triggerFlyToWishlist: (from: DOMRect) => void;
+  clearWishlistFlyPayload: () => void;
+  wishlistPulse: boolean;
+  setWishlistPulse: (value: boolean) => void;
 };
 
 const CommerceContext = createContext<CommerceContextValue | null>(null);
@@ -66,6 +75,8 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
   const [flyPayload, setFlyPayload] = useState<FlyPayload | null>(null);
   const [cartPulse, setCartPulse] = useState(false);
+  const [wishlistFlyPayload, setWishlistFlyPayload] = useState<WishlistFlyPayload | null>(null);
+  const [wishlistPulse, setWishlistPulse] = useState(false);
 
   useEffect(() => {
     setCart(readStorage<CartItem[]>(CART_KEY, []));
@@ -136,6 +147,13 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
 
   const clearFlyPayload = useCallback(() => setFlyPayload(null), []);
 
+  const triggerFlyToWishlist = useCallback((from: DOMRect) => {
+    setWishlistFlyPayload({ from });
+    setWishlistPulse(true);
+  }, []);
+
+  const clearWishlistFlyPayload = useCallback(() => setWishlistFlyPayload(null), []);
+
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + item.quantity, 0),
     [cart]
@@ -167,6 +185,11 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
       clearFlyPayload,
       cartPulse,
       setCartPulse,
+      wishlistFlyPayload,
+      triggerFlyToWishlist,
+      clearWishlistFlyPayload,
+      wishlistPulse,
+      setWishlistPulse,
     }),
     [
       cart,
@@ -183,6 +206,10 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
       triggerFlyToCart,
       clearFlyPayload,
       cartPulse,
+      wishlistFlyPayload,
+      triggerFlyToWishlist,
+      clearWishlistFlyPayload,
+      wishlistPulse,
     ]
   );
 

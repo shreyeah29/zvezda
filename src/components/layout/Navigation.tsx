@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { NavLink } from "@/components/layout/NavLink";
 import { MiniCart } from "@/components/commerce/MiniCart";
-import { FlyToCartLayer, WishlistNavButton } from "@/components/commerce/CommerceAnimations";
+import { FlyToCartLayer, FlyToWishlistLayer, WishlistNavButton } from "@/components/commerce/CommerceAnimations";
 import { useCommerce } from "@/context/CommerceContext";
 
 const NAV_LINKS = [
@@ -31,6 +31,7 @@ export function Navigation() {
   return (
     <>
       <FlyToCartLayer />
+      <FlyToWishlistLayer />
       <MiniCart open={cartOpen} onClose={() => setCartOpen(false)} />
 
       <header className="pointer-events-none fixed top-0 right-0 left-0 z-50 px-4 md:px-10">
@@ -88,6 +89,22 @@ export function Navigation() {
           </nav>
 
           <div className="pointer-events-auto flex items-center gap-3 md:hidden">
+            <Link
+              href="/wishlist"
+              data-wishlist-target
+              className="relative inline-flex items-center justify-center text-cream/70"
+              aria-label="Wishlist"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path
+                  d="M12 20.5s-7.2-4.74-9.6-8.64C.62 8.74 2.24 5.5 5.7 5.5c1.92 0 3.18 1.02 4.3 2.34C11.12 6.52 12.38 5.5 14.3 5.5c3.46 0 5.08 3.24 3.3 6.36C19.2 15.76 12 20.5 12 20.5z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.35"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
             <button
               type="button"
               data-cart-target

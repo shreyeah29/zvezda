@@ -8,14 +8,23 @@ import { createPortal } from "react-dom";
 import { useCommerce } from "@/context/CommerceContext";
 
 const CONFETTI_COLORS = ["#c4a574", "#f5f0e8", "#8b1a2b", "#e8dcc8", "#ffffff"];
+const WISHLIST_CONFETTI = ["#e85d8a", "#f4a4b8", "#ff6b9d", "#ffc2d4", "#ffffff", "#c4a574"];
 
-function ConfettiBurst({ active, onComplete }: { active: boolean; onComplete: () => void }) {
+function ConfettiBurst({
+  active,
+  onComplete,
+  colors = CONFETTI_COLORS,
+}: {
+  active: boolean;
+  onComplete: () => void;
+  colors?: string[];
+}) {
   const particles = Array.from({ length: 18 }, (_, i) => ({
     id: i,
     angle: (i / 18) * 360 + Math.random() * 18,
     distance: 14 + Math.random() * 22,
     size: 3 + Math.random() * 4,
-    color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+    color: colors[i % colors.length],
     rotate: Math.random() * 180,
   }));
 
@@ -107,6 +116,98 @@ export function FlyToCartLayer() {
   );
 }
 
+function FlyingHeart({ size = 22 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+      <path
+        d="M12 20.5s-7.2-4.74-9.6-8.64C.62 8.74 2.24 5.5 5.7 5.5c1.92 0 3.18 1.02 4.3 2.34C11.12 6.52 12.38 5.5 14.3 5.5c3.46 0 5.08 3.24 3.3 6.36C19.2 15.76 12 20.5 12 20.5z"
+        fill="#e85d8a"
+        stroke="#f4a4b8"
+        strokeWidth="1"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function FlyToWishlistLayer() {
+  const { wishlistFlyPayload, clearWishlistFlyPayload, setWishlistPulse } = useCommerce();
+  const [mounted, setMounted] = useState(false);
+  const [navBurst, setNavBurst] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (!wishlistFlyPayload) return;
+    const timer = setTimeout(() => {
+      setNavBurst(true);
+    }, 580);
+    const clearTimer = setTimeout(() => {
+      clearWishlistFlyPayload();
+      setWishlistPulse(false);
+      setNavBurst(false);
+    }, 1200);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(clearTimer);
+    };
+  }, [wishlistFlyPayload, clearWishlistFlyPayload, setWishlistPulse]);
+
+  if (!mounted || !wishlistFlyPayload) return null;
+
+  const targets = document.querySelectorAll("[data-wishlist-target]");
+  const wishlistEl = Array.from(targets).find((el) => {
+    const rect = el.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0;
+  });
+  const wishlistRect = wishlistEl?.getBoundingClientRect();
+  const endX = wishlistRect ? wishlistRect.left + wishlistRect.width / 2 : window.innerWidth - 120;
+  const endY = wishlistRect ? wishlistRect.top + wishlistRect.height / 2 : 32;
+  const startX = wishlistFlyPayload.from.left + wishlistFlyPayload.from.width / 2;
+  const startY = wishlistFlyPayload.from.top + wishlistFlyPayload.from.height / 2;
+  const midX = (startX + endX) / 2;
+  const midY = Math.min(startY, endY) - 72;
+
+  return createPortal(
+    <>
+      <motion.div
+        className="pointer-events-none fixed z-[200] flex items-center justify-center"
+        initial={{
+          left: startX,
+          top: startY,
+          x: "-50%",
+          y: "-50%",
+          scale: 1,
+          opacity: 1,
+        }}
+        animate={{
+          left: [startX, midX, endX],
+          top: [startY, midY, endY],
+          x: "-50%",
+          y: "-50%",
+          scale: [1, 1.15, 0.55],
+          opacity: [1, 1, 0.2],
+        }}
+        transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <FlyingHeart size={26} />
+      </motion.div>
+      {navBurst && wishlistRect && (
+        <div
+          className="pointer-events-none fixed z-[201] -translate-x-1/2 -translate-y-1/2"
+          style={{
+            left: wishlistRect.left + wishlistRect.width / 2,
+            top: wishlistRect.top + wishlistRect.height / 2,
+          }}
+        >
+          <ConfettiBurst active colors={WISHLIST_CONFETTI} onComplete={() => setNavBurst(false)} />
+        </div>
+      )}
+    </>,
+    document.body,
+  );
+}
+
 type WishlistButtonProps = {
   slug: string;
   className?: string;
@@ -128,16 +229,19 @@ function HeartIcon({ filled }: { filled: boolean }) {
 }
 
 export function WishlistButton({ slug, className = "", size = "md" }: WishlistButtonProps) {
-  const { toggleWishlist, isInWishlist } = useCommerce();
+  const { toggleWishlist, isInWishlist, triggerFlyToWishlist } = useCommerce();
   const active = isInWishlist(slug);
   const [burst, setBurst] = useState(false);
   const dim = size === "sm" ? 34 : 42;
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     const added = toggleWishlist(slug);
-    if (added) setBurst(true);
+    if (added) {
+      setBurst(true);
+      triggerFlyToWishlist(e.currentTarget.getBoundingClientRect());
+    }
   };
 
   return (
@@ -153,10 +257,10 @@ export function WishlistButton({ slug, className = "", size = "md" }: WishlistBu
         animate={
           burst
             ? {
-                scale: [1, 1.42, 1],
+                scale: [1, 1.35, 1],
                 filter: [
                   "drop-shadow(0 0 0px transparent)",
-                  "drop-shadow(0 0 16px rgba(196,165,116,0.95))",
+                  "drop-shadow(0 0 14px rgba(232,93,138,0.95))",
                   "drop-shadow(0 0 0px transparent)",
                 ],
               }
@@ -166,13 +270,13 @@ export function WishlistButton({ slug, className = "", size = "md" }: WishlistBu
         className="relative z-10"
       >
         <motion.span
-          animate={{ color: active ? "#c4a574" : "rgba(245,240,232,0.55)" }}
+          animate={{ color: active ? "#e85d8a" : "rgba(245,240,232,0.55)" }}
           transition={{ duration: 0.35 }}
         >
           <HeartIcon filled={active} />
         </motion.span>
       </motion.span>
-      <ConfettiBurst active={burst} onComplete={() => setBurst(false)} />
+      <ConfettiBurst active={burst} colors={WISHLIST_CONFETTI} onComplete={() => setBurst(false)} />
     </button>
   );
 }
@@ -185,12 +289,18 @@ export function WishlistNavButton({
   className?: string;
 }) {
   const pathname = usePathname();
+  const { wishlistPulse } = useCommerce();
   const isActive = pathname === href;
   const [burst, setBurst] = useState(false);
+
+  useEffect(() => {
+    if (wishlistPulse) setBurst(true);
+  }, [wishlistPulse]);
 
   return (
     <Link
       href={href}
+      data-wishlist-target
       onClick={() => setBurst(true)}
       className={`group relative inline-flex flex-col items-center py-1 ${className}`}
       aria-label="Wishlist"
@@ -198,7 +308,14 @@ export function WishlistNavButton({
       <motion.span
         className={`relative z-10 transition-colors duration-500 ${isActive ? "text-cream" : "text-cream/55 group-hover:text-cream"}`}
         whileHover={{ y: -2, scale: 1.06 }}
-        animate={burst ? { scale: [1, 1.28, 1] } : { scale: 1 }}
+        animate={
+          burst || wishlistPulse
+            ? {
+                scale: [1, 1.32, 1],
+                color: ["rgba(245,240,232,0.55)", "#e85d8a", isActive ? "#f5f0e8" : "rgba(245,240,232,0.55)"],
+              }
+            : { scale: 1 }
+        }
         transition={{ type: "spring", stiffness: 520, damping: 18 }}
       >
         <HeartIcon filled={false} />
@@ -210,7 +327,11 @@ export function WishlistNavButton({
         whileHover={{ scaleX: 1, opacity: 1 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       />
-      <ConfettiBurst active={burst} onComplete={() => setBurst(false)} />
+      <ConfettiBurst
+        active={burst}
+        colors={WISHLIST_CONFETTI}
+        onComplete={() => setBurst(false)}
+      />
     </Link>
   );
 }
