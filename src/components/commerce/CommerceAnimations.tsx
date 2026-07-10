@@ -130,26 +130,47 @@ function FlyingHeart({ size = 22 }: { size?: number }) {
   );
 }
 
-function buildFloatingPath(startX: number, startY: number, endX: number, endY: number) {
+function buildWaveFlowPath(startX: number, startY: number, endX: number, endY: number) {
   const dx = endX - startX;
   const dy = endY - startY;
-  const distance = Math.hypot(dx, dy);
-  const lift = Math.min(96, Math.max(44, distance * 0.2));
-  const sway = Math.min(24, Math.max(10, distance * 0.05));
+  const distance = Math.hypot(dx, dy) || 1;
+  const perpX = -dy / distance;
+  const perpY = dx / distance;
+  const amplitude = Math.min(40, Math.max(20, distance * 0.09));
+  const waves = 2.6;
+  const steps = 36;
 
-  const steps = 14;
   const points: { x: number; y: number; rotate: number; scale: number }[] = [];
+
+  const sample = (t: number) => {
+    const progress = 1 - Math.pow(1 - t, 2.05);
+    const envelope = Math.sin(t * Math.PI);
+    const ripple =
+      Math.sin(t * Math.PI * waves) * amplitude * envelope +
+      Math.sin(t * Math.PI * waves * 0.42 + 0.9) * amplitude * 0.32 * envelope;
+    const bob = Math.sin(t * Math.PI * 1.6 + 0.35) * 12 * envelope;
+
+    const x = startX + dx * progress + perpX * ripple;
+    const y = startY + dy * progress + perpY * ripple * 0.18 + bob;
+
+    return { x, y, envelope, progress };
+  };
 
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    const progress = t * t * (3 - 2 * t);
-    const arc = Math.sin(t * Math.PI);
-    const x = startX + dx * progress + sway * arc * 0.28;
-    const y = startY + dy * progress - lift * arc;
-    const rotate = Math.sin(t * Math.PI) * 5.5;
-    const scale = 1 + arc * 0.05 - t * 0.38;
+    const current = sample(t);
+    const ahead = sample(Math.min(1, t + 1 / steps));
+    const angle = Math.atan2(ahead.y - current.y, ahead.x - current.x);
+    const travelAngle = Math.atan2(dy, dx);
+    const rotate = ((angle - travelAngle) * 180) / Math.PI;
+    const clampedRotate = Math.max(-16, Math.min(16, rotate * 0.7));
 
-    points.push({ x, y, rotate, scale });
+    points.push({
+      x: current.x,
+      y: current.y,
+      rotate: clampedRotate,
+      scale: 1.04 + current.envelope * 0.05 - t * 0.34,
+    });
   }
 
   return points;
@@ -192,21 +213,21 @@ export function FlyToWishlistLayer() {
   const endY = wishlistRect ? wishlistRect.top + wishlistRect.height / 2 : 32;
   const startX = wishlistFlyPayload.from.left + wishlistFlyPayload.from.width / 2;
   const startY = wishlistFlyPayload.from.top + wishlistFlyPayload.from.height / 2;
-  const path = buildFloatingPath(startX, startY, endX, endY);
+  const path = buildWaveFlowPath(startX, startY, endX, endY);
 
   return createPortal(
     <>
       <motion.div
-        className="pointer-events-none fixed z-[200] flex items-center justify-center"
+        className="pointer-events-none fixed z-[200] flex items-center justify-center will-change-transform"
         initial={{
           left: path[0].x,
           top: path[0].y,
           x: "-50%",
           y: "-50%",
           scale: path[0].scale,
-          opacity: 1,
+          opacity: 0.95,
           rotate: path[0].rotate,
-          filter: "drop-shadow(0 8px 18px rgba(232, 93, 138, 0.22))",
+          filter: "drop-shadow(0 6px 16px rgba(232, 93, 138, 0.2))",
         }}
         animate={{
           left: path.map((point) => point.x),
@@ -214,17 +235,21 @@ export function FlyToWishlistLayer() {
           x: "-50%",
           y: "-50%",
           scale: path.map((point) => point.scale),
-          opacity: path.map((_, index) => (index < path.length - 2 ? 1 : index === path.length - 1 ? 0.3 : 0.92)),
+          opacity: path.map((_, index) => {
+            const t = index / (path.length - 1);
+            if (t < 0.88) return 1;
+            return 1 - (t - 0.88) / 0.12 * 0.72;
+          }),
           rotate: path.map((point) => point.rotate),
           filter: [
-            "drop-shadow(0 8px 18px rgba(232, 93, 138, 0.22))",
-            "drop-shadow(0 14px 24px rgba(232, 93, 138, 0.16))",
-            "drop-shadow(0 4px 10px rgba(232, 93, 138, 0.08))",
+            "drop-shadow(0 6px 16px rgba(232, 93, 138, 0.2))",
+            "drop-shadow(0 10px 22px rgba(232, 93, 138, 0.14))",
+            "drop-shadow(0 2px 8px rgba(232, 93, 138, 0.06))",
           ],
         }}
         transition={{
           duration: WISHLIST_FLY_DURATION,
-          ease: [0.33, 0, 0.18, 1],
+          ease: "linear",
           times: path.map((_, index) => index / (path.length - 1)),
         }}
       >
