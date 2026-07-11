@@ -295,7 +295,7 @@ export function WishlistButton({ slug, className = "", size = "md" }: WishlistBu
   const { toggleWishlist, isInWishlist, triggerFlyToWishlist } = useCommerce();
   const active = isInWishlist(slug);
   const [burst, setBurst] = useState(false);
-  const dim = size === "sm" ? 34 : 42;
+  const dim = size === "sm" ? 44 : 44;
 
   const stopEvent = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -339,7 +339,7 @@ export function WishlistButton({ slug, className = "", size = "md" }: WishlistBu
         className="relative z-10"
       >
         <motion.span
-          animate={{ color: active ? "#e85d8a" : "rgba(245,240,232,0.55)" }}
+          animate={{ color: active ? "#e85d8a" : "rgba(12, 10, 9, 0.55)" }}
           transition={{ duration: 0.35 }}
         >
           <HeartIcon filled={active} />

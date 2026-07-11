@@ -20,7 +20,7 @@ export function PolicyPageLayout({
   return (
     <SessionLoadGate>
       <SmoothScroll>
-        <main className="policy-page">
+        <main id="main-content" className="policy-page">
           <article className="policy-page__inner">
             <Link href="/shop" className="policy-page__back editorial-spacing">
               ← Back to Shop

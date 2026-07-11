@@ -18,7 +18,7 @@ export default function GalleryPage() {
     <SessionLoadGate>
         <SmoothScroll>
           <CustomCursor />
-          <main className="px-6 pt-32 pb-16 md:px-12">
+          <main id="main-content" className="px-6 pt-32 pb-16 md:px-12">
             <div className="mx-auto max-w-7xl">
               <p className="editorial-spacing mb-4 text-[10px] text-muted">Archive</p>
               <TextReveal

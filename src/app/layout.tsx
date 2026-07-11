@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Instrument_Serif, Inter, Playfair_Display } from "next/font/google";
+import { Cormorant_Garamond, Instrument_Serif, Montserrat, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { CommerceProvider } from "@/context/CommerceContext";
@@ -12,9 +12,10 @@ const display = Cormorant_Garamond({
   weight: ["300", "400", "500"],
 });
 
-const body = Inter({
+const body = Montserrat({
   subsets: ["latin"],
   variable: "--font-body",
+  weight: ["300", "400", "500", "600"],
 });
 
 const editorial = Instrument_Serif({
@@ -71,6 +72,9 @@ export default function RootLayout({
       className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} ${bright.variable} ${against.variable} ${tempting.variable} h-full`}
     >
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <div className="viewport-fixed pointer-events-none -z-50 bg-ink" aria-hidden="true" />
         <CommerceProvider>
           <MotionProvider>

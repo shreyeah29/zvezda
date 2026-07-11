@@ -50,8 +50,8 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
           onClick={goToProduct}
           onKeyDown={handleCardKeyDown}
           className={`block cursor-pointer ${
-            compact ? "rounded-lg border border-cream/8" : "rounded-2xl border border-cream/10"
-          } overflow-hidden bg-zinc-950`}
+            compact ? "rounded-lg border border-default" : "rounded-2xl border border-default"
+          } overflow-hidden bg-ink`}
           aria-label={`View ${product.name}`}
         >
           <div className={`relative overflow-hidden ${compact ? "aspect-[3/4.2]" : "aspect-[3/4]"}`}>

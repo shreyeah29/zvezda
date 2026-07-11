@@ -1,6 +1,6 @@
 .atelier-shop {
-  background: #ffffff;
-  color: #0a0a0a;
+  background: var(--color-ink, #fafaf9);
+  color: var(--color-cream, #0c0a09);
   padding: clamp(2.5rem, 6vh, 4.5rem) clamp(1.25rem, 4vw, 2.5rem);
   margin-bottom: clamp(1rem, 3vh, 2rem);
 }
@@ -10,16 +10,16 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   max-width: 1120px;
   margin-inline: auto;
-  border: 1px solid #0a0a0a;
+  border: 1px solid rgba(12, 10, 9, 0.14);
   overflow: hidden;
 }
 
 .atelier-shop__visual {
   position: relative;
   min-height: clamp(300px, 42vw, 460px);
-  border-right: 1px solid #0a0a0a;
+  border-right: 1px solid rgba(12, 10, 9, 0.14);
   overflow: hidden;
-  background: #ffffff;
+  background: var(--color-ink, #fafaf9);
 }
 
 .atelier-shop__visual img {
@@ -75,8 +75,8 @@
 }
 
 .atelier-shop__cta:hover {
-  background: #ffffff;
-  color: #0a0a0a;
+  background: var(--color-ink, #fafaf9);
+  color: var(--color-cream, #0c0a09);
   border-color: #ffffff;
 }
 
@@ -88,8 +88,8 @@
 }
 
 .atelier-shop__cell {
-  border-right: 1px solid #0a0a0a;
-  border-bottom: 1px solid #0a0a0a;
+  border-right: 1px solid rgba(12, 10, 9, 0.14);
+  border-bottom: 1px solid rgba(12, 10, 9, 0.14);
 }
 
 .atelier-shop__cell:nth-child(2n) {
@@ -112,7 +112,7 @@
   .atelier-shop__visual {
     min-height: clamp(280px, 52vw, 380px);
     border-right: 0;
-    border-bottom: 1px solid #0a0a0a;
+    border-bottom: 1px solid rgba(12, 10, 9, 0.14);
   }
 
   .atelier-shop__grid {
@@ -120,7 +120,7 @@
   }
 
   .atelier-shop__cell:nth-child(2n) {
-    border-right: 1px solid #0a0a0a;
+    border-right: 1px solid rgba(12, 10, 9, 0.14);
   }
 
   .atelier-shop__cell:nth-child(even) {
@@ -128,7 +128,7 @@
   }
 
   .atelier-shop__cell:nth-last-child(-n + 2) {
-    border-bottom: 1px solid #0a0a0a;
+    border-bottom: 1px solid rgba(12, 10, 9, 0.14);
   }
 
   .atelier-shop__cell:last-child {

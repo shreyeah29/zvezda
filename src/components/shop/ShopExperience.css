@@ -6,5 +6,5 @@
 }
 
 .shop-experience__catalog {
-  background: #ffffff;
+  background: var(--color-ink, #fafaf9);
 }

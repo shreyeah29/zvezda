@@ -23,7 +23,7 @@ export default function AboutPage() {
     <SessionLoadGate>
         <SmoothScroll>
           <CustomCursor />
-          <main>
+          <main id="main-content">
             <section className="relative h-screen w-full overflow-hidden">
               <video autoPlay muted loop playsInline className="h-full w-full object-cover">
                 <source src={aboutVideo} type="video/mp4" />

@@ -2,18 +2,19 @@
 
 @theme {
   --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  --font-body: "Montserrat", system-ui, sans-serif;
   --font-editorial: "Instrument Serif", Georgia, serif;
   --font-product: "Playfair Display", Georgia, serif;
 
-  --color-ink: #ffffff;
-  --color-cream: #0a0a0a;
+  /* Semantic light theme — UI UX Pro Max / Zvezda Atelier */
+  --color-ink: #fafaf9;
+  --color-cream: #0c0a09;
   --color-crimson: #8b1a2b;
-  --color-olive: #4a5240;
-  --color-gold: #c4a574;
-  --color-muted: #5a5a5a;
+  --color-olive: #44403c;
+  --color-gold: #a16207;
+  --color-muted: #57534e;
+  --color-border: #d6d3d1;
 
-  /* Fix 100vh gap on macOS / mobile browsers */
   --height-screen: 100dvh;
 }
 
@@ -28,7 +29,6 @@
     scroll-behavior: auto;
     height: 100%;
     min-height: 100%;
-    /* Safari / embedded browsers — fill visible viewport */
     min-height: -webkit-fill-available;
   }
 
@@ -49,9 +49,12 @@
     min-height: 100dvh;
     min-height: -webkit-fill-available;
     font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     background: var(--color-ink);
+    color: var(--color-cream);
   }
 
   h1,
@@ -62,9 +65,27 @@
   h6 {
     font-family: var(--font-display), Georgia, serif;
     font-weight: 300;
+    line-height: 1.15;
   }
 
-  /* Bleed past viewport edges — covers sub-pixel gaps on macOS Chrome */
+  a,
+  button,
+  [role="button"],
+  [role="link"],
+  label[for],
+  summary {
+    cursor: pointer;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cream);
+    outline-offset: 3px;
+  }
+
   body::before {
     content: "";
     position: fixed;
@@ -89,7 +110,7 @@
 
   ::selection {
     background: var(--color-crimson);
-    color: var(--color-cream);
+    color: #fafaf9;
   }
 }
 
@@ -117,6 +138,51 @@
     text-transform: uppercase;
   }
 
+  .text-secondary {
+    color: rgba(12, 10, 9, 0.72);
+  }
+
+  .text-muted-safe {
+    color: rgba(12, 10, 9, 0.62);
+  }
+
+  .border-subtle {
+    border-color: rgba(12, 10, 9, 0.12);
+  }
+
+  .border-default {
+    border-color: rgba(12, 10, 9, 0.18);
+  }
+
+  .section-padding {
+    padding-block: clamp(3rem, 8vh, 5rem);
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 200;
+    padding: 0.65rem 1rem;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transform: translateY(-140%);
+    transition: transform 0.2s ease;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
   .mask-curtain {
     clip-path: inset(0 0 100% 0);
   }
@@ -126,7 +192,6 @@
     will-change: transform, opacity;
   }
 
-  /* Exact one-screen hero — prevents next section peeking on load */
   .hero-screen {
     height: 100svh;
     min-height: 100svh;
@@ -135,7 +200,6 @@
     overflow: hidden;
   }
 
-  /* Fallback — ensure h-screen never uses legacy 100vh */
   .h-screen {
     height: 100svh;
     height: 100dvh;
@@ -154,7 +218,6 @@
     max-height: 100lvh;
   }
 
-  /* Fixed full-bleed layers — lvh covers the largest possible viewport (no bottom gap) */
   .viewport-fill {
     min-height: 100lvh;
     min-height: 100dvh;
@@ -175,183 +238,34 @@
     cursor: auto;
   }
 
+  body.has-custom-cursor {
+    cursor: auto;
+  }
+
   a,
   button {
     cursor: pointer;
   }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-/* White theme preview — flip page surfaces while keeping luxury typography */
-html,
-body,
-body::before,
-.viewport-fixed,
-main,
-section,
-footer {
-  background-color: #ffffff !important;
-  color: #0a0a0a !important;
-}
-
-.bg-black,
-.bg-zinc-950 {
-  background-color: #ffffff !important;
-}
-
-.pill-carousel,
-.site-footer,
-.policy-page,
-.home-shop-cards,
-.home-shop-cards__card,
-.atelier-manifesto,
-.atelier-shop,
-.instagram-chapter__static,
-.editorial-marquee,
-.mood-board,
-.shop-experience__catalog,
-.collection-canvas,
-.grid-motion-reveal,
-.grid-motion-wrap {
-  background: #ffffff !important;
-  color: #0a0a0a !important;
-}
-
-/* Section parents that hardcode light text */
-.atelier-manifesto,
-.instagram-chapter__static,
-.mood-board,
-.policy-page,
-.editorial-marquee,
-.grid-motion-reveal,
-.collection-canvas {
-  color: #0a0a0a !important;
-}
-
-/* Footer legibility on white */
-.site-footer__scrim {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.35) 0%,
-    rgba(255, 255, 255, 0.78) 55%,
-    rgba(255, 255, 255, 0.95) 100%
-  ) !important;
-}
-
-.site-footer__statement,
-.site-footer__link,
-.site-footer__link--policy,
-.site-footer__brand,
-.site-footer__copy,
-.policy-page__back,
-.policy-page__eyebrow,
-.policy-page__title,
-.policy-page__body,
-.policy-page__body h2,
-.policy-page__body p,
-.policy-page__body li,
-.policy-page__body a,
-.atelier-manifesto__label,
-.atelier-manifesto__heading,
-.atelier-manifesto__body,
-.atelier-manifesto__cta,
-.instagram-chapter__label,
-.instagram-chapter__heading,
-.instagram-chapter__body,
-.editorial-marquee__word,
-.editorial-marquee__star,
-.mood-board__label,
-.mood-board__view,
-.grid-motion-wrap,
-.grid-motion-wrap .content-wrap,
-.pill-carousel__eyebrow,
-.pill-carousel__eyebrow span,
-.pill-carousel__name,
-.pill-carousel__desc,
-.pill-carousel__counter,
-.pill-carousel__counter i,
-.pill-carousel__arrow {
-  color: #0a0a0a !important;
-}
-
-.policy-page__body,
-.policy-page__body p,
-.atelier-manifesto__body,
-.instagram-chapter__body,
-.pill-carousel__desc,
-.site-footer__link,
-.site-footer__link--policy,
-.mood-board__label {
-  color: rgba(10, 10, 10, 0.68) !important;
-}
-
-.policy-page__back,
-.pill-carousel__counter,
-.site-footer__copy {
-  color: rgba(10, 10, 10, 0.5) !important;
-}
-
-.pill-carousel__counter i {
-  color: rgba(10, 10, 10, 0.35) !important;
-}
-
-.instagram-chapter__velocity-band {
-  background: rgba(255, 255, 255, 0.55) !important;
-  border-block-color: rgba(10, 10, 10, 0.14) !important;
-}
-
-.editorial-marquee {
-  border-block-color: rgba(10, 10, 10, 0.14) !important;
-}
-
-.editorial-marquee__word {
-  text-shadow: none !important;
-}
-
-.pill-carousel__arrow {
-  border-color: rgba(10, 10, 10, 0.2) !important;
-  background: rgba(10, 10, 10, 0.03) !important;
-}
-
-.site-footer__bottom {
-  border-top-color: rgba(10, 10, 10, 0.12) !important;
-}
-
-.site-footer__link:hover,
-.site-footer__link--policy:hover,
-.pill-carousel__arrow:hover {
-  color: #0a0a0a !important;
-}
-
-/* Tailwind accent utilities → black for preview */
-[class*="text-gold"],
-[class*="text-cream"],
-.font-display,
-.font-editorial,
-.font-product,
-nav,
-header,
-article,
-.organic-carousel__title,
-.organic-carousel__category,
-.organic-carousel__subtitle,
-.shop-heading {
-  color: #0a0a0a !important;
-}
-
-/* Keep white label text on filled dark buttons */
-.bg-cream:not([class*="bg-cream/"]),
-[class~="bg-cream"]:not([class*="bg-cream/"]) {
-  color: #ffffff !important;
-}
-
-/* Hide light ray effects site-wide */
+/* Hide decorative light-ray layers */
 [class*="__rays"],
 .shop-experience__rays,
 .light-rays {
-  display: none !important;
+  display: none;
 }
 
-.bg-cream:not([class*="bg-cream/"]) *,
-[class~="bg-cream"]:not([class*="bg-cream/"]) * {
-  color: inherit !important;
+/* Filled primary buttons keep light label text */
+.bg-cream:not([class*="bg-cream/"]),
+[class~="bg-cream"]:not([class*="bg-cream/"]) {
+  color: #fafaf9;
 }

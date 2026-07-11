@@ -10,7 +10,8 @@ import "./ShopExperience.css";
 function ShopExperienceContent() {
   return (
     <>
-      <section className="shop-experience__catalog relative px-5 py-24 md:px-10 md:py-28" aria-label="Shop catalog">
+      <main id="main-content">
+      <section className="shop-experience__catalog section-padding relative" aria-label="Shop catalog">
         <div className="relative z-10 mx-auto max-w-[1320px]">
           <header className="mb-10 max-w-xl md:mb-12">
             <h1 className="shop-heading text-5xl text-cream md:text-6xl">All Pieces</h1>
@@ -26,6 +27,7 @@ function ShopExperienceContent() {
           </div>
         </div>
       </section>
+      </main>
 
       <Footer />
     </>

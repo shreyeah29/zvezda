@@ -31,7 +31,7 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
           <motion.button
             type="button"
             aria-label="Close cart"
-            className="fixed inset-0 z-[90] bg-ink/50 backdrop-blur-[2px]"
+            className="fixed inset-0 z-[90] bg-black/45 backdrop-blur-[2px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -41,8 +41,9 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
           <motion.aside
             ref={panelRef}
             role="dialog"
+            aria-modal="true"
             aria-label="Shopping cart"
-            className="fixed top-0 right-0 z-[95] flex h-full w-full max-w-md flex-col border-l border-cream/10 bg-ink/95 backdrop-blur-xl"
+            className="fixed top-0 right-0 z-[95] flex h-full w-full max-w-md flex-col border-l border-default bg-ink shadow-2xl"
             initial={{ x: "100%", opacity: 0.8 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: "100%", opacity: 0.8 }}
@@ -53,7 +54,7 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
               <button
                 type="button"
                 onClick={onClose}
-                className="editorial-spacing text-[9px] text-cream/45 transition-colors hover:text-cream"
+                className="editorial-spacing inline-flex min-h-11 min-w-11 items-center justify-center text-[9px] text-cream/70 transition-colors hover:text-cream"
               >
                 Close
               </button>

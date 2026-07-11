@@ -23,6 +23,7 @@
 *.pem
 /_originals-backup/
 /_originals-backup/
+ui-ux-pro-max-skill/
 
 # debug
 npm-debug.log*

@@ -23,12 +23,15 @@ export function NavLink({ href, label, onClick, className }: NavLinkProps) {
     <Link
       href={href}
       onClick={onClick}
-      className={cn("group relative inline-flex flex-col items-center py-1", className)}
+      className={cn(
+          "group relative inline-flex min-h-11 min-w-11 flex-col items-center justify-center px-2",
+          className,
+        )}
     >
       <motion.span
         className={cn(
           "editorial-spacing text-[9px] transition-colors duration-500 md:text-[10px]",
-          isActive ? "text-cream" : "text-cream/55 group-hover:text-cream"
+          isActive ? "text-cream" : "text-cream/70 group-hover:text-cream"
         )}
         style={{ letterSpacing: "0.32em" }}
         whileHover={{ y: -2, letterSpacing: "0.42em" }}

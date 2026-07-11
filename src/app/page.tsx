@@ -57,7 +57,7 @@ export default function HomePage() {
   return (
     <SessionLoadGate>
       <SmoothScroll>
-        <main>
+        <main id="main-content">
           <HomeHeroVideo />
           <HomeGridMotion />
           <HomeAtelierShop />

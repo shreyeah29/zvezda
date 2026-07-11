@@ -11,7 +11,7 @@ export function CollectionsExperience() {
   return (
     <SessionLoadGate>
       <SmoothScroll>
-        <main className="bg-ink">
+        <main id="main-content" className="bg-ink">
           {collectionCategories.map((category) => (
             <div key={category.id} className="relative">
               <CategoryVideoHero category={category} />

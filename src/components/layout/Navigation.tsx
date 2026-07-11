@@ -18,6 +18,9 @@ const NAV_LINKS = [
   { href: "/cart", label: "Cart" },
 ];
 
+const navButtonClass =
+  "group relative inline-flex min-h-11 min-w-11 flex-col items-center justify-center px-2";
+
 export function Navigation() {
   const pathname = usePathname();
   const { cartCount, cartPulse } = useCommerce();
@@ -34,11 +37,11 @@ export function Navigation() {
       <FlyToWishlistLayer />
       <MiniCart open={cartOpen} onClose={() => setCartOpen(false)} />
 
-      <header className="pointer-events-none fixed top-0 right-0 left-0 z-50 px-4 md:px-10">
-        <div className="pointer-events-auto mx-auto flex max-w-[1400px] items-center justify-between py-6 md:py-8">
+      <header className="pointer-events-none fixed top-0 right-0 left-0 z-50 border-b border-subtle bg-ink/90 px-4 backdrop-blur-md md:px-10">
+        <div className="pointer-events-auto mx-auto flex max-w-[1120px] items-center justify-between py-4 md:py-5">
           <BrandLogo variant="nav" />
 
-          <nav className="hidden items-center gap-6 md:flex lg:gap-9" aria-label="Primary">
+          <nav className="hidden items-center gap-2 md:flex lg:gap-4" aria-label="Primary">
             {NAV_LINKS.map((link) =>
               link.href === "/cart" ? (
                 <button
@@ -46,11 +49,11 @@ export function Navigation() {
                   type="button"
                   data-cart-target
                   onClick={() => setCartOpen(true)}
-                  className="group relative inline-flex flex-col items-center py-1"
+                  className={navButtonClass}
                   aria-label={`Cart, ${cartCount} items`}
                 >
                   <motion.span
-                    className="editorial-spacing text-[9px] text-cream/55 transition-colors duration-500 group-hover:text-cream md:text-[10px]"
+                    className="editorial-spacing text-[9px] text-cream/70 transition-colors duration-300 group-hover:text-cream md:text-[10px]"
                     style={{ letterSpacing: "0.32em" }}
                     whileHover={{ y: -2, letterSpacing: "0.42em" }}
                     transition={{ type: "spring", stiffness: 420, damping: 28 }}
@@ -59,11 +62,11 @@ export function Navigation() {
                     Cart
                   </motion.span>
                   <motion.span
-                    className="absolute -bottom-0.5 left-0 h-px w-full origin-left bg-gold/90"
+                    className="absolute -bottom-0.5 left-2 right-2 h-px origin-left bg-gold/90"
                     initial={false}
                     animate={{ scaleX: pathname === "/cart" ? 1 : 0, opacity: pathname === "/cart" ? 1 : 0.6 }}
                     whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   />
                   <AnimatePresence mode="popLayout">
                     {displayCount > 0 && (
@@ -73,7 +76,7 @@ export function Navigation() {
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.6, opacity: 0 }}
                         transition={{ type: "spring", stiffness: 500, damping: 22 }}
-                        className="absolute -top-1.5 -right-3 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold px-1 text-[8px] font-medium text-ink"
+                        className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold px-1 text-[8px] font-medium text-ink"
                       >
                         {displayCount}
                       </motion.span>
@@ -88,14 +91,14 @@ export function Navigation() {
             )}
           </nav>
 
-          <div className="pointer-events-auto flex items-center gap-3 md:hidden">
+          <div className="pointer-events-auto flex items-center gap-1 md:hidden">
             <Link
               href="/wishlist"
               data-wishlist-target
-              className="relative inline-flex items-center justify-center text-cream/70"
+              className="relative inline-flex min-h-11 min-w-11 items-center justify-center text-cream/75 transition-colors hover:text-cream"
               aria-label="Wishlist"
             >
-              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <path
                   d="M12 20.5s-7.2-4.74-9.6-8.64C.62 8.74 2.24 5.5 5.7 5.5c1.92 0 3.18 1.02 4.3 2.34C11.12 6.52 12.38 5.5 14.3 5.5c3.46 0 5.08 3.24 3.3 6.36C19.2 15.76 12 20.5 12 20.5z"
                   fill="none"
@@ -109,7 +112,7 @@ export function Navigation() {
               type="button"
               data-cart-target
               onClick={() => setCartOpen(true)}
-              className="editorial-spacing relative text-[9px] text-cream/70"
+              className="editorial-spacing relative inline-flex min-h-11 min-w-11 items-center justify-center text-[9px] text-cream/75 transition-colors hover:text-cream"
               aria-label={`Cart, ${cartCount} items`}
             >
               Cart
@@ -126,13 +129,28 @@ export function Navigation() {
 function MobileNav() {
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.body.classList.add("dg-scroll-lock");
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.classList.remove("dg-scroll-lock");
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="group flex flex-col gap-1.5 p-1"
+        className="inline-flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5"
         aria-label="Open menu"
+        aria-expanded={open}
+        aria-controls="mobile-nav"
       >
         <span className="block h-px w-6 bg-cream/80" />
         <span className="block h-px w-4 bg-cream/80" />
@@ -140,7 +158,7 @@ function MobileNav() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[80] bg-ink/96 backdrop-blur-md"
+            className="fixed inset-0 z-[80] bg-ink/95 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -150,12 +168,12 @@ function MobileNav() {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="editorial-spacing text-[9px] text-cream/50"
+                  className="editorial-spacing inline-flex min-h-11 min-w-11 items-center justify-center text-[9px] text-cream/70 transition-colors hover:text-cream"
                 >
                   Close
                 </button>
               </div>
-              <nav className="mt-12 flex flex-col gap-6">
+              <nav id="mobile-nav" className="mt-8 flex flex-col gap-4" aria-label="Mobile">
                 {NAV_LINKS.map((link, i) => (
                   <motion.div
                     key={link.href}
@@ -166,7 +184,7 @@ function MobileNav() {
                     <Link
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="font-display text-4xl font-light text-cream"
+                      className="inline-flex min-h-11 items-center font-display text-3xl font-light text-cream transition-opacity hover:opacity-70"
                     >
                       {link.label}
                     </Link>

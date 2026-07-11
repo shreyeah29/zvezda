@@ -15,7 +15,7 @@ export function WishlistPage() {
 
   return (
     <SmoothScroll>
-      <main className="min-h-screen bg-ink pt-28 pb-20 md:pt-32">
+      <main id="main-content" className="min-h-screen bg-ink pt-28 pb-20 md:pt-32">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <header className="mb-16 md:mb-20">
             <p className="editorial-spacing text-[10px] text-gold/90">Curated</p>

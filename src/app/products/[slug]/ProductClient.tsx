@@ -49,7 +49,7 @@ export function ProductClient({ slug }: { slug: string }) {
     .slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-ink">
+    <main id="main-content" className="min-h-screen bg-ink">
       {/* Video hero — full screen, scroll down to shop layout */}
       {hasVideo && (
         <section className="hero-screen relative isolate w-full overflow-hidden">
@@ -100,6 +100,6 @@ export function ProductClient({ slug }: { slug: string }) {
           Back to Collection
         </Link>
       </footer>
-    </div>
+    </main>
   );
 }
