@@ -39,7 +39,7 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8%" }}
       transition={{ duration: 0.7, delay: (index % 6) * 0.06, ease: EASE }}
-      className="group relative"
+      className="group relative font-[Helvetica_Neue,Helvetica,Arial,sans-serif]"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -50,8 +50,8 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
           onClick={goToProduct}
           onKeyDown={handleCardKeyDown}
           className={`block cursor-pointer ${
-            compact ? "rounded-lg border border-default" : "rounded-2xl border border-default"
-          } overflow-hidden bg-ink`}
+            compact ? "rounded-none border border-black/12" : "rounded-none border border-black/12"
+          } overflow-hidden bg-[#f5f5f4]`}
           aria-label={`View ${product.name}`}
         >
           <div className={`relative overflow-hidden ${compact ? "aspect-[3/4.2]" : "aspect-[3/4]"}`}>
@@ -88,7 +88,7 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
         </div>
 
         <div
-          className={`absolute z-[60] rounded-full border border-cream/10 bg-ink/50 backdrop-blur-sm ${
+          className={`absolute z-[60] rounded-full border border-black/12 bg-white/85 backdrop-blur-sm ${
             compact ? "top-2 right-2" : "top-3 right-3"
           }`}
           data-wishlist-control
@@ -114,15 +114,15 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
         aria-label={`View ${product.name}`}
       >
         <motion.p
-          className="font-display text-base font-light text-cream md:text-lg"
+          className="text-[13px] font-normal text-black md:text-[14px]"
           animate={{ y: hovered ? -2 : 0 }}
           transition={{ duration: 0.45, ease: EASE }}
         >
           {product.name}
         </motion.p>
         <p
-          className={`editorial-spacing text-gold/90 ${
-            compact ? "mt-2 text-[11px] md:text-xs" : "mt-2 text-xs md:text-sm"
+          className={`mt-2 text-[11px] text-black/65 md:text-xs ${
+            compact ? "" : ""
           }`}
         >
           {formatPrice(product.price, product.currency)}

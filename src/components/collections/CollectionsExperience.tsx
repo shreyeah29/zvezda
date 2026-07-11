@@ -2,24 +2,17 @@
 
 import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import { Footer } from "@/components/layout/Footer";
-import { CategoryVideoHero } from "@/components/collections/CategoryVideoHero";
-import { CategoryShuffleGallery } from "@/components/collections/CategoryShuffleGallery";
-import { collectionCategories } from "@/data/collectionCategories";
+import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
+import { JacquemusCollectionsPage } from "@/components/collections/JacquemusCollectionsPage";
 
 export function CollectionsExperience() {
   return (
     <SessionLoadGate>
       <SmoothScroll>
-        <main id="main-content" className="bg-white">
-          {collectionCategories.map((category) => (
-            <div key={category.id} className="relative">
-              <CategoryVideoHero category={category} />
-              <CategoryShuffleGallery category={category} />
-            </div>
-          ))}
+        <main id="main-content">
+          <JacquemusCollectionsPage />
         </main>
-        <Footer />
+        <JacquemusFooter />
       </SmoothScroll>
     </SessionLoadGate>
   );
