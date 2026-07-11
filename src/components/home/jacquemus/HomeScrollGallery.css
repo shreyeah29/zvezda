@@ -1,7 +1,8 @@
 .jm-scroll-gallery {
-  /* Jacquemus collection-slider-image: 586 × 733 (4:5) */
-  --jm-gallery-width: 586px;
-  --jm-gallery-height: 733px;
+  /* Smaller Jacquemus-scale portraits (~40% viewport feel, 4:5) */
+  --jm-gallery-width: clamp(260px, 18vw, 360px);
+  --jm-gallery-height: clamp(325px, 22.5vw, 450px);
+  --jm-gallery-line: #ffffff;
   background: #ffffff;
 }
 
@@ -31,7 +32,7 @@
   flex: 0 0 auto;
   width: var(--jm-gallery-width);
   height: var(--jm-gallery-height);
-  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  border-right: 1px solid var(--jm-gallery-line);
 }
 
 .jm-scroll-gallery__slide:last-child {
@@ -47,9 +48,19 @@
   pointer-events: none;
 }
 
+/* Thin hairline under the gallery — matches Jacquemus separator */
+.jm-scroll-gallery__rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.14);
+}
+
 @media (max-width: 768px) {
   .jm-scroll-gallery {
-    --jm-gallery-width: min(586px, 78vw);
-    --jm-gallery-height: calc(var(--jm-gallery-width) * 733 / 586);
+    --jm-gallery-width: min(280px, 72vw);
+    --jm-gallery-height: calc(var(--jm-gallery-width) * 5 / 4);
   }
 }

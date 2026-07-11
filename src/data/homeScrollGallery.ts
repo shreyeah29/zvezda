@@ -6,18 +6,20 @@ export type HomeScrollGallerySlide = {
   alt: string;
 };
 
-/** Ten editorial portrait shots (4:5) — repeated in the infinite scroll gallery */
+/**
+ * Homepage scroll gallery — set 1 + set 2 only.
+ * Exact photos provided by the brand; these repeat in the infinite loop.
+ */
 export const homeScrollGallerySlides: HomeScrollGallerySlide[] = [
-  { setId: 1, photo: "HSP_4327.jpg", alt: "Garden green — full look" },
-  { setId: 1, photo: "HSP_4607.jpg", alt: "Garden green — portrait" },
-  { setId: 2, photo: "HSP_4819.jpg", alt: "Garden green — editorial" },
-  { setId: 3, photo: "HSP_3971.jpg", alt: "Garden green — detail" },
-  { setId: 8, photo: "HSP_2981.jpg", alt: "Noir — full look" },
-  { setId: 8, photo: "HSP_3056.jpg", alt: "Noir — portrait" },
-  { setId: 12, photo: "HSP_5750.jpg", alt: "Red — full look" },
-  { setId: 12, photo: "HSP_5571.jpg", alt: "Red — editorial" },
-  { setId: 13, photo: "BHA_2011.jpg", alt: "Orange — full look" },
-  { setId: 11, photo: "HSP_5875.jpg", alt: "Yellow — portrait" },
+  { setId: 1, photo: "HSP_4607.jpg", alt: "Garden set 1 — seated portrait" },
+  { setId: 1, photo: "HSP_4590.jpg", alt: "Garden set 1 — full look" },
+  { setId: 1, photo: "HSP_4510.jpg", alt: "Garden set 1 — standing look" },
+  { setId: 1, photo: "HSP_4327.jpg", alt: "Garden set 1 — detail" },
+  { setId: 2, photo: "HSP_4810.jpg", alt: "Garden set 2 — bodice detail" },
+  { setId: 2, photo: "HSP_4797.jpg", alt: "Garden set 2 — garden pose" },
+  { setId: 2, photo: "HSP_4828.jpg", alt: "Garden set 2 — full look" },
+  { setId: 2, photo: "HSP_4791.jpg", alt: "Garden set 2 — front look" },
+  { setId: 2, photo: "HSP_4819.jpg", alt: "Garden set 2 — skirt detail" },
 ];
 
 export function resolveScrollGalleryImages() {

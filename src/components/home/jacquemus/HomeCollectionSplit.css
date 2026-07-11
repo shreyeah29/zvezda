@@ -1,5 +1,7 @@
 .jm-collection-split {
   background: #ffffff;
+  margin: 0;
+  padding: 0;
 }
 
 .jm-collection-split__grid {
@@ -13,8 +15,7 @@
   }
 
   .jm-collection-split__panel:first-child {
-    border-right: none !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid #ffffff;
   }
 }
 
@@ -23,7 +24,13 @@
   display: block;
   overflow: hidden;
   text-decoration: none;
-  aspect-ratio: 960 / 580;
+  /* Jacquemus New In split — tall half-width editorial panels */
+  height: clamp(680px, 74vh, 860px);
+  border-right: 1px solid #ffffff;
+}
+
+.jm-collection-split__panel:last-child {
+  border-right: none;
 }
 
 .jm-collection-split__image {

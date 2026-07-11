@@ -90,7 +90,6 @@ export function HomeScrollGallery() {
 
   return (
     <section className="jm-scroll-gallery" aria-label="Campaign gallery">
-      <hr className="jm-divider" />
       <div
         ref={trackRef}
         className={`jm-scroll-gallery__track${isDragging ? " jm-scroll-gallery__track--dragging" : ""}`}
@@ -106,7 +105,7 @@ export function HomeScrollGallery() {
           </div>
         ))}
       </div>
-      <hr className="jm-divider" />
+      <hr className="jm-scroll-gallery__rule" aria-hidden="true" />
     </section>
   );
 }
