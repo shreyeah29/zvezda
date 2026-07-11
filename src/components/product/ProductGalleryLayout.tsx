@@ -7,6 +7,7 @@ import { AddToCartButton } from "@/components/commerce/AddToCartButton";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import type { Product } from "@/data/products";
 import { formatPrice } from "@/data/products";
+import "./ProductGalleryLayout.css";
 
 const SIZES = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -26,7 +27,6 @@ type ProductGalleryLayoutProps = {
   collectionTitle?: string;
 };
 
-/** Directional slide — moves with thumbnail selection order */
 const imageVariants = {
   enter: (dir: number) => ({
     opacity: 0,
@@ -71,9 +71,8 @@ export function ProductGalleryLayout({
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-16 lg:px-12">
+    <div className="jm-product-gallery mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-16 lg:px-12">
       <div className="grid gap-8 lg:grid-cols-[72px_1fr_340px] lg:gap-10 xl:grid-cols-[80px_1fr_380px]">
-        {/* Left — vertical thumbnails with active indicator */}
         <div className="order-2 flex gap-2 overflow-x-auto lg:order-1 lg:flex-col lg:overflow-visible">
           {images.map((img, i) => {
             const isActive = i === activeIndex;
@@ -82,26 +81,16 @@ export function ProductGalleryLayout({
                 key={`${img}-${i}`}
                 type="button"
                 onClick={() => selectImage(i)}
-                animate={{
-                  opacity: isActive ? 1 : 0.45,
-                  scale: isActive ? 1.04 : 1,
-                }}
-                whileHover={{ opacity: isActive ? 1 : 0.75, scale: isActive ? 1.04 : 1.02 }}
+                animate={{ scale: isActive ? 1.04 : 1 }}
+                whileHover={{ scale: isActive ? 1.04 : 1.02 }}
                 transition={{ duration: 0.4, ease: EASE }}
-                className={`gpu relative shrink-0 overflow-hidden rounded-lg border lg:w-full ${
-                  isActive ? "border-cream/45" : "border-cream/10"
+                className={`jm-product-gallery__thumb gpu relative shrink-0 overflow-hidden rounded-lg lg:w-full ${
+                  isActive ? "jm-product-gallery__thumb--active" : ""
                 }`}
                 style={{ width: 56, aspectRatio: "3/4" }}
                 aria-label={`View image ${i + 1}`}
                 aria-current={isActive ? "true" : undefined}
               >
-                {isActive && (
-                  <motion.span
-                    layoutId="thumb-active-ring"
-                    className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-cream/30 ring-inset"
-                    transition={{ duration: 0.45, ease: EASE }}
-                  />
-                )}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img} alt="" className="h-full w-full object-cover object-top" />
               </motion.button>
@@ -109,9 +98,8 @@ export function ProductGalleryLayout({
           })}
         </div>
 
-        {/* Center — main image with directional editorial transition */}
         <div className="order-1 overflow-hidden lg:order-2">
-          <div className="relative overflow-hidden rounded-[28px] border border-cream/12 bg-zinc-950 md:rounded-[32px]">
+          <div className="jm-product-gallery__stage relative overflow-hidden rounded-[28px] md:rounded-[32px]">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={activeImage}
@@ -132,38 +120,32 @@ export function ProductGalleryLayout({
               </motion.div>
             </AnimatePresence>
 
-            {/* Image counter */}
-            <div className="pointer-events-none absolute bottom-4 right-4 rounded-full bg-black/40 px-3 py-1 backdrop-blur-sm">
-              <p className="editorial-spacing text-[8px] text-cream/70">
+            <div className="pointer-events-none absolute bottom-4 right-4 rounded-full bg-black/50 px-3 py-1">
+              <p className="text-[10px] text-white/90">
                 {activeIndex + 1} / {images.length}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Right — product details */}
         <div className="order-3 lg:sticky lg:top-24 lg:self-start">
-          <p className="editorial-spacing text-[9px] text-cream/40">
-            {collectionTitle ?? product.collectionLabel}
-          </p>
-          <h1 className="font-display mt-3 text-3xl font-light text-cream md:text-4xl">
-            {product.name}
-          </h1>
-          <p className="font-display mt-4 text-2xl text-cream/85">
+          <p className="jm-product-gallery__label">{collectionTitle ?? product.collectionLabel}</p>
+          <h1 className="jm-product-gallery__title mt-3">{product.name}</h1>
+          <p className="jm-product-gallery__price mt-4">
             {formatPrice(product.price, product.currency)}
           </p>
 
           <div className="mt-8">
-            <p className="editorial-spacing mb-3 text-[9px] text-cream/40">Color</p>
+            <p className="jm-product-gallery__label mb-3">Color</p>
             <div className="flex gap-2">
               {colors.map((color, i) => (
                 <button
                   key={color}
                   type="button"
-                  className="h-6 w-6 rounded-full border border-cream/20 transition-transform hover:scale-110"
+                  className="h-7 w-7 rounded-full border border-black/25 transition-transform hover:scale-110"
                   style={{
                     backgroundColor: color,
-                    outline: i === 0 ? "1px solid rgba(245,240,232,0.5)" : "none",
+                    outline: i === 0 ? "2px solid rgba(0,0,0,0.45)" : "none",
                     outlineOffset: 2,
                   }}
                   aria-label={`Color ${i + 1}`}
@@ -174,11 +156,8 @@ export function ProductGalleryLayout({
 
           <div className="mt-8">
             <div className="mb-3 flex items-center justify-between">
-              <p className="editorial-spacing text-[9px] text-cream/40">Size</p>
-              <button
-                type="button"
-                className="editorial-spacing text-[9px] text-cream/40 underline-offset-2 hover:text-cream hover:underline"
-              >
+              <p className="jm-product-gallery__label">Size</p>
+              <button type="button" className="jm-product-gallery__link underline-offset-2 hover:underline">
                 Size Guide
               </button>
             </div>
@@ -188,42 +167,35 @@ export function ProductGalleryLayout({
                   key={size}
                   type="button"
                   onClick={() => setSelectedSize(size)}
-                  className={`editorial-spacing border py-2.5 text-[9px] transition-colors ${
-                    selectedSize === size
-                      ? "border-cream bg-cream text-ink"
-                      : "border-cream/15 text-cream/55 hover:border-cream/35"
+                  className={`jm-product-gallery__size ${
+                    selectedSize === size ? "jm-product-gallery__size--active" : ""
                   }`}
                 >
                   {size}
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              className="editorial-spacing mt-2 w-full border border-cream/15 py-2.5 text-[9px] text-cream/55 transition-colors hover:border-cream/30 hover:text-cream"
-            >
+            <button type="button" className="jm-product-gallery__outline-btn mt-2 w-full">
               Custom Size
             </button>
           </div>
 
           <div className="mt-8">
-            <p className="editorial-spacing mb-3 text-[9px] text-cream/40">Quantity</p>
-            <div className="inline-flex items-center border border-cream/15">
+            <p className="jm-product-gallery__label mb-3">Quantity</p>
+            <div className="jm-product-gallery__qty inline-flex items-center">
               <button
                 type="button"
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="px-4 py-2.5 text-cream/50 hover:text-cream"
+                className="jm-product-gallery__qty-btn"
                 aria-label="Decrease quantity"
               >
                 −
               </button>
-              <span className="editorial-spacing min-w-[2.5rem] text-center text-[10px] text-cream">
-                {quantity}
-              </span>
+              <span className="min-w-[2.5rem] text-center text-[12px] font-medium">{quantity}</span>
               <button
                 type="button"
                 onClick={() => setQuantity((q) => q + 1)}
-                className="px-4 py-2.5 text-cream/50 hover:text-cream"
+                className="jm-product-gallery__qty-btn"
                 aria-label="Increase quantity"
               >
                 +
@@ -231,7 +203,7 @@ export function ProductGalleryLayout({
             </div>
           </div>
 
-          <p className="mt-4 text-[10px] text-cream/35">Made to order · 6–8 weeks</p>
+          <p className="mt-4 text-[11px] text-black/60">Made to order · 6–8 weeks</p>
 
           <div className="mt-6 flex flex-col gap-3">
             <AddToCartButton
@@ -241,26 +213,23 @@ export function ProductGalleryLayout({
               className="flex-1"
               label="Add to Bag"
             />
-            <Link
-              href="/cart"
-              className="editorial-spacing flex-1 border border-cream/30 py-4 text-center text-[9px] text-cream transition-colors hover:bg-cream hover:text-ink"
-            >
+            <Link href="/cart" className="jm-product-gallery__checkout flex-1">
               Checkout
             </Link>
           </div>
-          <div className="mt-3 flex items-center justify-center gap-2 border border-cream/10 py-3">
+          <div className="jm-product-gallery__wishlist-row mt-3 flex items-center justify-center gap-2">
             <WishlistButton slug={product.slug} size="sm" />
-            <span className="editorial-spacing text-[9px] text-cream/45">Add to Wishlist</span>
+            <span className="text-[11px] text-black/70">Add to Wishlist</span>
           </div>
 
-          <div className="mt-10 border-t border-cream/10 pt-6">
+          <div className="jm-product-gallery__accordion mt-10 pt-6">
             <button
               type="button"
               onClick={() => setDescOpen((o) => !o)}
               className="flex w-full items-center justify-between text-left"
             >
-              <span className="editorial-spacing text-[9px] text-cream/50">Product Description</span>
-              <span className="text-cream/40">{descOpen ? "−" : "+"}</span>
+              <span className="text-[11px] font-medium text-black/75">Product Description</span>
+              <span className="text-black/55">{descOpen ? "−" : "+"}</span>
             </button>
             <AnimatePresence initial={false}>
               {descOpen && (
@@ -271,8 +240,8 @@ export function ProductGalleryLayout({
                   transition={{ duration: 0.35, ease: EASE }}
                   className="overflow-hidden"
                 >
-                  <p className="mt-4 text-sm leading-relaxed text-cream/55">{product.story}</p>
-                  <p className="mt-4 text-xs leading-relaxed text-cream/40">{product.fabric}</p>
+                  <p className="jm-product-gallery__body mt-4">{product.story}</p>
+                  <p className="jm-product-gallery__body mt-4 text-[13px]">{product.fabric}</p>
                 </motion.div>
               )}
             </AnimatePresence>

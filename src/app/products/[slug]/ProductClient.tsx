@@ -6,15 +6,11 @@ import { notFound } from "next/navigation";
 import { getProduct, getProductsByCollection, type Product } from "@/data/products";
 import { getCollection } from "@/data/collections";
 import { ProductGalleryLayout } from "@/components/product/ProductGalleryLayout";
-import { CARD_RADIUS } from "@/lib/motion/MotionUtilities";
 
 function RelatedCard({ product }: { product: Product }) {
   return (
     <Link href={`/products/${product.slug}`} className="group block shrink-0">
-      <div
-        className="overflow-hidden border border-cream/12 bg-zinc-950 transition-colors group-hover:border-cream/25"
-        style={{ width: 140, borderRadius: CARD_RADIUS * 0.6 }}
-      >
+      <div className="overflow-hidden border border-black/12 bg-[#f5f5f4] transition-colors group-hover:border-black/30" style={{ width: 140 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={product.hero}
@@ -22,8 +18,8 @@ function RelatedCard({ product }: { product: Product }) {
           className="aspect-[3/4] w-full object-cover object-top"
         />
       </div>
-      <p className="editorial-spacing mt-3 text-[8px] text-cream/40">{product.collectionLabel}</p>
-      <p className="mt-1 font-display text-sm text-cream">{product.name}</p>
+      <p className="mt-3 text-[10px] text-black/55">{product.collectionLabel}</p>
+      <p className="mt-1 text-sm text-black">{product.name}</p>
     </Link>
   );
 }
@@ -41,7 +37,7 @@ export function ProductClient({ slug }: { slug: string }) {
 
   const allImages = useMemo(
     () => uniqueImages([product.hero, product.detail, ...product.gallery]),
-    [product]
+    [product],
   );
 
   const related = getProductsByCollection(product.collection)
@@ -49,27 +45,19 @@ export function ProductClient({ slug }: { slug: string }) {
     .slice(0, 4);
 
   return (
-    <main id="main-content" className="min-h-screen bg-ink">
-      {/* Video hero — full screen, scroll down to shop layout */}
+    <main id="main-content" className="min-h-screen bg-[#fafaf9]">
       {hasVideo && (
         <section className="hero-screen relative isolate w-full overflow-hidden">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover"
-          >
+          <video autoPlay muted loop playsInline className="h-full w-full object-cover">
             <source src={product.video} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/30" />
-          <p className="editorial-spacing absolute bottom-10 left-1/2 z-20 -translate-x-1/2 text-[9px] text-cream/50">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/35 to-transparent" />
+          <p className="absolute bottom-10 left-1/2 z-20 -translate-x-1/2 text-[10px] tracking-[0.2em] text-white/85 uppercase">
             Scroll to explore
           </p>
         </section>
       )}
 
-      {/* Gallery + details — AROKA-style layout */}
       <section className={hasVideo ? "" : "pt-24 md:pt-28"}>
         <ProductGalleryLayout
           product={product}
@@ -78,11 +66,10 @@ export function ProductClient({ slug }: { slug: string }) {
         />
       </section>
 
-      {/* Related */}
       {related.length > 0 && (
-        <section className="border-t border-cream/10 px-6 py-16 md:px-10 md:py-24">
+        <section className="border-t border-black/10 px-6 py-16 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
-            <p className="editorial-spacing mb-8 text-[9px] text-cream/40">From the Collection</p>
+            <p className="mb-8 text-[11px] text-black/60">From the Collection</p>
             <div className="flex gap-6 overflow-x-auto pb-4">
               {related.map((p) => (
                 <RelatedCard key={p.slug} product={p} />
@@ -92,11 +79,8 @@ export function ProductClient({ slug }: { slug: string }) {
         </section>
       )}
 
-      <footer className="border-t border-cream/10 px-6 py-12 text-center md:px-10">
-        <Link
-          href="/shop"
-          className="editorial-spacing text-[9px] text-cream/40 transition-colors hover:text-cream"
-        >
+      <footer className="border-t border-black/10 px-6 py-12 text-center md:px-10">
+        <Link href="/shop" className="text-[11px] text-black/55 transition-colors hover:text-black">
           Back to Collection
         </Link>
       </footer>
