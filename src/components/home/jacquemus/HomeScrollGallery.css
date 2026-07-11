@@ -2,13 +2,12 @@
   /* Jacquemus-scale portraits (4:5), enlarged */
   --jm-gallery-width: clamp(320px, 24vw, 480px);
   --jm-gallery-height: clamp(400px, 30vw, 600px);
-  --jm-gallery-line: #ffffff;
   background: #ffffff;
 }
 
 .jm-scroll-gallery__track {
   display: flex;
-  gap: 0;
+  gap: 8px;
   overflow-x: auto;
   overflow-y: hidden;
   cursor: grab;
@@ -32,11 +31,6 @@
   flex: 0 0 auto;
   width: var(--jm-gallery-width);
   height: var(--jm-gallery-height);
-  border-right: 1px solid var(--jm-gallery-line);
-}
-
-.jm-scroll-gallery__slide:last-child {
-  border-right: none;
 }
 
 .jm-scroll-gallery__image {

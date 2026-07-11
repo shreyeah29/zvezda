@@ -67,6 +67,7 @@ export default function HomePage() {
       <SmoothScroll>
         <main id="main-content" className="jacquemus-home">
           <HomeHeroVideo />
+          <hr className="jm-section-rule" aria-hidden="true" />
           <HomeScrollGallery />
           <HomeCollectionSplit />
           <HomeProductRow />

@@ -5,6 +5,7 @@
 .jm-product-row__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
 }
 
 @media (max-width: 900px) {
@@ -21,12 +22,7 @@
 
 .jm-product-row__cell {
   position: relative;
-  border-right: 1px solid #ffffff;
   background: #f0f0f0;
-}
-
-.jm-product-row__cell:last-child {
-  border-right: none;
 }
 
 .jm-product-row__hit {

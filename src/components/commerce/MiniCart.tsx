@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useCommerce } from "@/context/CommerceContext";
 import { getProduct, formatPrice } from "@/data/products";
+import "./MiniCart.css";
 
 type MiniCartProps = {
   open: boolean;
@@ -43,28 +44,24 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
             role="dialog"
             aria-modal="true"
             aria-label="Shopping cart"
-            className="fixed top-0 right-0 z-[95] flex h-full w-full max-w-md flex-col border-l border-default bg-ink shadow-2xl"
+            className="mini-cart fixed top-0 right-0 z-[95] flex h-full w-full max-w-md flex-col shadow-2xl"
             initial={{ x: "100%", opacity: 0.8 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: "100%", opacity: 0.8 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
           >
-            <div className="flex items-center justify-between border-b border-cream/10 px-6 py-6 md:px-8">
-              <p className="editorial-spacing text-[10px] text-cream">Cart</p>
-              <button
-                type="button"
-                onClick={onClose}
-                className="editorial-spacing inline-flex min-h-11 min-w-11 items-center justify-center text-[9px] text-cream/70 transition-colors hover:text-cream"
-              >
+            <div className="mini-cart__header">
+              <p className="mini-cart__title">Cart</p>
+              <button type="button" onClick={onClose} className="mini-cart__close">
                 Close
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-6 md:px-8">
+            <div className="mini-cart__body">
               {cart.length === 0 ? (
-                <p className="font-display text-2xl font-light text-cream/40">Your cart is empty.</p>
+                <p className="mini-cart__empty">Your cart is empty.</p>
               ) : (
-                <ul className="space-y-6">
+                <ul className="mini-cart__list">
                   {cart.map((item) => {
                     const product = getProduct(item.slug);
                     if (!product) return null;
@@ -76,55 +73,45 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
                         initial={{ opacity: 0, x: 16 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -16, scale: 0.96 }}
-                        className="flex gap-4"
+                        className="mini-cart__item"
                       >
-                        <div className="h-24 w-20 shrink-0 overflow-hidden rounded-lg border border-cream/10">
+                        <div className="mini-cart__thumb">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={product.hero}
-                            alt={product.name}
-                            className="h-full w-full object-cover object-top"
-                          />
+                          <img src={product.hero} alt={product.name} />
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-display text-base text-cream">{product.name}</p>
-                          <p className="editorial-spacing mt-1 text-[8px] text-cream/40">
-                            Size {item.size}
-                          </p>
-                          <div className="mt-3 flex items-center justify-between gap-3">
-                            <div className="inline-flex items-center border border-cream/15">
+                        <div className="mini-cart__details">
+                          <p className="mini-cart__name">{product.name}</p>
+                          <p className="mini-cart__size">Size {item.size}</p>
+                          <div className="mini-cart__row">
+                            <div className="mini-cart__qty">
                               <button
                                 type="button"
                                 onClick={() =>
                                   updateCartQuantity(item.slug, item.quantity - 1, item.size)
                                 }
-                                className="px-2.5 py-1.5 text-cream/50 hover:text-cream"
                                 aria-label="Decrease quantity"
                               >
                                 −
                               </button>
-                              <span className="editorial-spacing min-w-[1.75rem] text-center text-[9px] text-cream">
-                                {item.quantity}
-                              </span>
+                              <span>{item.quantity}</span>
                               <button
                                 type="button"
                                 onClick={() =>
                                   updateCartQuantity(item.slug, item.quantity + 1, item.size)
                                 }
-                                className="px-2.5 py-1.5 text-cream/50 hover:text-cream"
                                 aria-label="Increase quantity"
                               >
                                 +
                               </button>
                             </div>
-                            <p className="text-sm text-cream/75">
+                            <p className="mini-cart__price">
                               {formatPrice(product.price * item.quantity, product.currency)}
                             </p>
                           </div>
                           <button
                             type="button"
                             onClick={() => removeFromCart(item.slug, item.size)}
-                            className="editorial-spacing mt-2 text-[8px] text-cream/35 transition-colors hover:text-cream"
+                            className="mini-cart__remove"
                           >
                             Remove
                           </button>
@@ -137,19 +124,13 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
             </div>
 
             {cart.length > 0 && (
-              <div className="border-t border-cream/10 px-6 py-6 md:px-8">
-                <div className="mb-5 flex items-end justify-between">
-                  <p className="editorial-spacing text-[9px] text-cream/45">Subtotal</p>
-                  <p className="font-display text-xl text-cream">
-                    {formatPrice(cartSubtotal, "USD")}
-                  </p>
+              <div className="mini-cart__footer">
+                <div className="mini-cart__subtotal-row">
+                  <p className="mini-cart__subtotal-label">Subtotal</p>
+                  <p className="mini-cart__subtotal-value">{formatPrice(cartSubtotal, "USD")}</p>
                 </div>
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <Link
-                    href="/cart"
-                    onClick={onClose}
-                    className="editorial-spacing block w-full bg-cream py-4 text-center text-[9px] text-ink transition-shadow hover:shadow-[0_0_40px_rgba(196,165,116,0.25)]"
-                  >
+                  <Link href="/cart" onClick={onClose} className="mini-cart__checkout">
                     Checkout
                   </Link>
                 </motion.div>

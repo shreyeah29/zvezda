@@ -7,6 +7,7 @@
 .jm-collection-feature__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 8px;
   height: 100vh;
   min-height: 100vh;
 }
@@ -19,7 +20,7 @@
   }
 
   .jm-collection-feature__panel--image {
-    border-bottom: 1px solid #ffffff;
+    border-bottom: none;
   }
 }
 
@@ -34,10 +35,6 @@
   .jm-collection-feature__panel {
     min-height: 100vh;
   }
-}
-
-.jm-collection-feature__panel--image {
-  border-right: 1px solid #ffffff;
 }
 
 .jm-collection-feature__media {
