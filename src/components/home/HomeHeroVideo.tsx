@@ -72,7 +72,7 @@ export function HomeHeroVideo() {
         >
           <source src={videos.hero} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-transparent to-ink/40" />
       </div>
 
       <motion.button
@@ -86,15 +86,15 @@ export function HomeHeroVideo() {
         transition={{ delay: 0.8, duration: 1 }}
         aria-label="Scroll to explore"
       >
-        <span className="editorial-spacing text-[11px] text-white/90 transition-colors group-hover:text-white">
+        <span className="editorial-spacing text-[11px] text-cream/85 transition-colors group-hover:text-cream">
           Scroll to explore
         </span>
         <motion.span
-          className="flex h-11 w-6 items-start justify-center rounded-full border border-white/45 p-1.5"
+          className="flex h-11 w-6 items-start justify-center rounded-full border border-cream/40 p-1.5"
           aria-hidden="true"
         >
           <motion.span
-            className="block h-2 w-1 rounded-full bg-white/95"
+            className="block h-2 w-1 rounded-full bg-cream/90"
             animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           />

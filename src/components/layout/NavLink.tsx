@@ -12,16 +12,12 @@ type NavLinkProps = {
   label: string;
   onClick?: () => void;
   className?: string;
-  tone?: "light" | "dark";
 };
 
-export function NavLink({ href, label, onClick, className, tone = "dark" }: NavLinkProps) {
+export function NavLink({ href, label, onClick, className }: NavLinkProps) {
   const pathname = usePathname();
   const isActive =
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
-
-  const textActive = tone === "light" ? "text-white" : "text-cream";
-  const textIdle = tone === "light" ? "text-white/75 group-hover:text-white" : "text-cream/70 group-hover:text-cream";
 
   return (
     <Link
@@ -35,7 +31,7 @@ export function NavLink({ href, label, onClick, className, tone = "dark" }: NavL
       <motion.span
         className={cn(
           "editorial-spacing text-[9px] transition-colors duration-500 md:text-[10px]",
-          isActive ? textActive : textIdle
+          isActive ? "text-cream" : "text-cream/70 group-hover:text-cream"
         )}
         style={{ letterSpacing: "0.32em" }}
         whileHover={{ y: -2, letterSpacing: "0.42em" }}
