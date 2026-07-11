@@ -2,19 +2,13 @@
   position: relative;
   width: 100%;
   overflow: visible;
-  background: #070707;
+  background: #ffffff;
   padding: clamp(2.5rem, 6vh, 4rem) 0 clamp(2rem, 5vh, 3.5rem);
   isolation: isolate;
 }
 
 .pill-carousel__ambient {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 62% 40%, rgba(196, 165, 116, 0.1) 0%, transparent 48%),
-    radial-gradient(circle at 30% 78%, rgba(74, 82, 64, 0.12) 0%, transparent 45%),
-    linear-gradient(180deg, #050505 0%, #0c0b0a 55%, #050505 100%);
+  display: none;
 }
 
 .pill-carousel__layout {
@@ -36,7 +30,7 @@
   margin: 0;
   justify-self: start;
   align-self: center;
-  color: rgba(196, 165, 116, 0.92);
+  color: rgba(10, 10, 10, 0.72);
 }
 
 .pill-carousel__eyebrow span {
@@ -158,10 +152,10 @@
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: 0.01em;
-  color: #c4a574;
+  color: #0a0a0a;
   margin: 0 0 1.25rem;
   text-wrap: pretty;
-  text-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  text-shadow: none;
 }
 
 .pill-carousel__name.split-parent {
@@ -184,12 +178,12 @@
   font-style: italic;
   font-size: clamp(0.88rem, 1.15vw, 1rem);
   line-height: 1.72;
-  color: rgba(245, 240, 232, 0.62);
+  color: rgba(10, 10, 10, 0.68);
   margin: 0;
 }
 
 .pill-carousel__desc-cursor {
-  color: rgba(196, 165, 116, 0.9);
+  color: rgba(10, 10, 10, 0.9);
 }
 
 /* ---- controls ---- */
@@ -204,12 +198,12 @@
 .pill-carousel__counter {
   font-size: 12px;
   letter-spacing: 0.12em;
-  color: rgba(245, 240, 232, 0.55);
+  color: rgba(10, 10, 10, 0.55);
   font-variant-numeric: tabular-nums;
 }
 
 .pill-carousel__counter i {
-  color: rgba(245, 240, 232, 0.3);
+  color: rgba(10, 10, 10, 0.35);
   font-style: normal;
   margin: 0 0.35rem;
 }
@@ -226,16 +220,16 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(245, 240, 232, 0.2);
-  color: rgba(245, 240, 232, 0.75);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(10, 10, 10, 0.2);
+  color: rgba(10, 10, 10, 0.75);
+  background: rgba(10, 10, 10, 0.03);
   transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
 }
 
 .pill-carousel__arrow:hover {
-  border-color: #c4a574;
-  color: #f5f0e8;
-  background: rgba(196, 165, 116, 0.12);
+  border-color: #0a0a0a;
+  color: #0a0a0a;
+  background: rgba(10, 10, 10, 0.06);
 }
 
 @media (max-width: 900px) {

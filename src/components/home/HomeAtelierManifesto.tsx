@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import { products } from "@/data/products";
-import { LightRays } from "@/components/ui/LightRays";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import "./AtelierManifesto.css";
 
@@ -107,23 +106,6 @@ export function HomeAtelierManifesto() {
 
   return (
     <section ref={sectionRef} className="atelier-manifesto snap-none" aria-label="Atelier manifesto">
-      <div className="atelier-manifesto__rays" aria-hidden="true">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#e51515"
-          raysSpeed={0.9}
-          lightSpread={2}
-          rayLength={3}
-          followMouse
-          mouseInfluence={0.1}
-          noiseAmount={0}
-          distortion={0}
-          fadeDistance={2}
-          saturation={1}
-          className="atelier-manifesto__rays-canvas"
-        />
-      </div>
-
       <div className="atelier-manifesto__inner">
         <div className="atelier-manifesto__copy">
           <p className="atelier-manifesto__label">Atelier</p>

@@ -11,7 +11,7 @@
   --color-crimson: #8b1a2b;
   --color-olive: #4a5240;
   --color-gold: #c4a574;
-  --color-muted: #8a8580;
+  --color-muted: #5a5a5a;
 
   /* Fix 100vh gap on macOS / mobile browsers */
   --height-screen: 100dvh;
@@ -341,6 +341,13 @@ article,
 .bg-cream:not([class*="bg-cream/"]),
 [class~="bg-cream"]:not([class*="bg-cream/"]) {
   color: #ffffff !important;
+}
+
+/* Hide light ray effects site-wide */
+[class*="__rays"],
+.shop-experience__rays,
+.light-rays {
+  display: none !important;
 }
 
 .bg-cream:not([class*="bg-cream/"]) *,

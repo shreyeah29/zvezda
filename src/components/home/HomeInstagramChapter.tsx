@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { products } from "@/data/products";
 import { LogoRotator } from "@/components/home/LogoRotator";
 import { ScrollVelocity } from "@/components/ui/ScrollVelocity";
-import { LightRays } from "@/components/ui/LightRays";
 import "./HomeInstagramChapter.css";
 
 const INSTAGRAM_URL = "https://www.instagram.com/zvezda_atelier/" as const;
@@ -36,23 +35,6 @@ export function HomeInstagramChapter() {
   return (
     <div className="instagram-chapter" aria-label="Instagram">
       <section className="instagram-chapter__static">
-        <div className="instagram-chapter__rays" aria-hidden="true">
-          <LightRays
-            raysOrigin="top-center"
-            raysColor="#c4a574"
-            raysSpeed={0.75}
-            lightSpread={1.35}
-            rayLength={1.15}
-            followMouse
-            mouseInfluence={0.08}
-            noiseAmount={0.06}
-            distortion={0.04}
-            fadeDistance={1.8}
-            saturation={0.85}
-            className="instagram-chapter__rays-canvas"
-          />
-        </div>
-
         <div className="instagram-chapter__static-inner">
           <p className="instagram-chapter__label editorial-spacing">Instagram</p>
 

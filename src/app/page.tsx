@@ -11,15 +11,7 @@ const SmoothScroll = dynamic(
     import("@/components/layout/SmoothScroll").then((mod) => ({
       default: mod.SmoothScroll,
     })),
-  { ssr: false }
-);
-
-const HomeGridMotion = dynamic(
-  () =>
-    import("@/components/home/HomeGridMotion").then((mod) => ({
-      default: mod.HomeGridMotion,
-    })),
-  { ssr: false }
+  { ssr: false },
 );
 
 const HomeAtelierManifesto = dynamic(
@@ -27,7 +19,7 @@ const HomeAtelierManifesto = dynamic(
     import("@/components/home/HomeAtelierManifesto").then((mod) => ({
       default: mod.HomeAtelierManifesto,
     })),
-  { ssr: false }
+  { ssr: false },
 );
 
 const HomeShopCards = dynamic(
@@ -35,15 +27,7 @@ const HomeShopCards = dynamic(
     import("@/components/home/HomeShopCards").then((mod) => ({
       default: mod.HomeShopCards,
     })),
-  { ssr: false }
-);
-
-const HomeEditorialMarquee = dynamic(
-  () =>
-    import("@/components/home/HomeEditorialMarquee").then((mod) => ({
-      default: mod.HomeEditorialMarquee,
-    })),
-  { ssr: false }
+  { ssr: false },
 );
 
 const HomeInstagramChapter = dynamic(
@@ -51,7 +35,7 @@ const HomeInstagramChapter = dynamic(
     import("@/components/home/HomeInstagramChapter").then((mod) => ({
       default: mod.HomeInstagramChapter,
     })),
-  { ssr: false }
+  { ssr: false },
 );
 
 const Footer = dynamic(
@@ -59,7 +43,7 @@ const Footer = dynamic(
     import("@/components/layout/Footer").then((mod) => ({
       default: mod.Footer,
     })),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function HomePage() {
@@ -75,9 +59,7 @@ export default function HomePage() {
       <SmoothScroll>
         <main>
           <HomeHeroVideo />
-          <HomeGridMotion />
           <HomeAtelierManifesto />
-          <HomeEditorialMarquee />
           <HomeShopCards />
           <HomePillCarousel />
           <HomeInstagramChapter />

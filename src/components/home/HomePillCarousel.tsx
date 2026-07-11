@@ -91,8 +91,6 @@ export const HomePillCarousel = forwardRef<HTMLElement>(function HomePillCarouse
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="pill-carousel__ambient" aria-hidden="true" />
-
       <div className="pill-carousel__layout">
         <p className="editorial-spacing pill-carousel__eyebrow" aria-label="The Collection">
           <span>The Collection</span>

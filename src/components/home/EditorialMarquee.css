@@ -5,9 +5,9 @@
   max-height: 5.5rem;
   display: flex;
   align-items: center;
-  background: #050505;
+  background: #ffffff;
   overflow: hidden;
-  border-block: 1px solid rgba(245, 240, 232, 0.14);
+  border-block: 1px solid rgba(10, 10, 10, 0.14);
 }
 
 .editorial-marquee::before,
@@ -82,7 +82,7 @@
   font-weight: 300;
   letter-spacing: 0.48em;
   text-transform: uppercase;
-  color: rgba(245, 240, 232, 0.92);
+  color: rgba(10, 10, 10, 0.92);
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
 }
 
