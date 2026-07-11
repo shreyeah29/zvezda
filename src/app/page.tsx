@@ -14,14 +14,6 @@ const SmoothScroll = dynamic(
   { ssr: false },
 );
 
-const HomeGridMotion = dynamic(
-  () =>
-    import("@/components/home/HomeGridMotion").then((mod) => ({
-      default: mod.HomeGridMotion,
-    })),
-  { ssr: false },
-);
-
 const HomeAtelierShop = dynamic(
   () =>
     import("@/components/home/HomeAtelierShop").then((mod) => ({
@@ -59,7 +51,6 @@ export default function HomePage() {
       <SmoothScroll>
         <main id="main-content">
           <HomeHeroVideo />
-          <HomeGridMotion />
           <HomeAtelierShop />
           <HomePillCarousel />
           <HomeInstagramChapter />
