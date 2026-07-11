@@ -8,6 +8,15 @@ import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import { JacquemusQuickView } from "./JacquemusQuickView";
 import "./HomeProductRow.css";
 
+function formatJacquemusPrice(price: number, currency: string) {
+  const formatted = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 0,
+  }).format(price);
+  return `${formatted.replace("$", "").trim()} USD`;
+}
+
 export function HomeProductRow() {
   const [quickViewSlug, setQuickViewSlug] = useState<string | null>(null);
   const quickViewProduct = quickViewSlug ? getProduct(quickViewSlug) : null;
@@ -27,33 +36,31 @@ export function HomeProductRow() {
             <article key={card.slug} className="jm-product-row__cell">
               <button
                 type="button"
-                className="jm-product-row__image-btn"
+                className="jm-product-row__hit"
                 onClick={() => openQuickView(card.slug)}
                 aria-label={`Quick view ${product.name}`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={card.image} alt={product.name} className="jm-product-row__image" />
-              </button>
-              <div className="jm-product-row__meta">
-                <div className="jm-product-row__meta-top">
-                  <span className="jm-product-row__badge">New</span>
-                  <div className="jm-product-row__wishlist">
-                    <WishlistButton slug={product.slug} size="sm" />
-                  </div>
-                </div>
-                <div className="jm-product-row__meta-bottom">
-                  <button
-                    type="button"
-                    className="jm-product-row__name-btn"
-                    onClick={() => openQuickView(card.slug)}
-                  >
-                    {product.name}
-                  </button>
+                <img src={card.image} alt={product.name} className="jm-product-row__image" draggable={false} />
+
+                <span className="jm-product-row__badge">New</span>
+
+                <div className="jm-product-row__hover-meta">
+                  <span className="jm-product-row__name">{product.name}</span>
                   <span className="jm-product-row__price">
-                    {formatPrice(product.price, product.currency).replace("$", "")} USD
+                    {formatJacquemusPrice(product.price, product.currency)}
                   </span>
                 </div>
-              </div>
+
+                <div
+                  className="jm-product-row__wishlist"
+                  data-wishlist-control
+                  onClick={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
+                >
+                  <WishlistButton slug={product.slug} size="sm" />
+                </div>
+              </button>
             </article>
           );
         })}
