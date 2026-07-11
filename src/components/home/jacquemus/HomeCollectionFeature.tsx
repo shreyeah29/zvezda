@@ -3,8 +3,8 @@
 import Link from "next/link";
 import "./HomeCollectionFeature.css";
 
-const FEATURE_IMAGE = "/assets/images/film/HSP_4662.jpg";
-const FEATURE_VIDEO = "/assets/videos/film/GardenTrio.mp4";
+const FEATURE_IMAGE = "/assets/images/film/HSP_3336.jpg";
+const FEATURE_VIDEO = "/assets/videos/film/White&BlackTrio.mp4";
 
 export function HomeCollectionFeature() {
   return (
