@@ -7,4 +7,5 @@
 
 .shop-experience__catalog {
   background: var(--color-ink, #fafaf9);
+  padding-top: clamp(6.5rem, 13vh, 8rem);
 }

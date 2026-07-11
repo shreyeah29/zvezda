@@ -38,7 +38,7 @@ export function Navigation() {
       <MiniCart open={cartOpen} onClose={() => setCartOpen(false)} />
 
       <header className="pointer-events-none fixed top-0 right-0 left-0 z-50 border-b border-black/8 bg-white px-4 md:px-10">
-        <div className="pointer-events-auto mx-auto flex max-w-[1120px] items-center justify-between py-4 md:py-5">
+        <div className="pointer-events-auto mx-auto flex max-w-[1120px] items-center justify-between py-2">
           <BrandLogo variant="nav" />
 
           <nav className="hidden items-center gap-2 md:flex lg:gap-4" aria-label="Primary">
