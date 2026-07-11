@@ -1,27 +1,72 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect, useMemo } from "react";
+import { getSet, setPhotoPath } from "@/data/sets";
 import "./HomeScrollGallery.css";
 
-const GALLERY_IMAGES = [
-  { src: "/assets/images/film/HSP_4145.jpg", alt: "Garden campaign" },
-  { src: "/assets/images/film/HSP_4233.jpg", alt: "Runway moment" },
-  { src: "/assets/images/film/HSP_4408.jpg", alt: "Editorial walk" },
-  { src: "/assets/images/film/HSP_4669.jpg", alt: "Atelier look" },
-  { src: "/assets/images/film/HSP_4743.jpg", alt: "Collection detail" },
-  { src: "/assets/images/film/HSP_4751.jpg", alt: "Campaign still" },
-  { src: "/assets/images/film/HSP_4755.jpg", alt: "Runway portrait" },
-  { src: "/assets/images/film/HSP_4779.jpg", alt: "Fashion moment" },
-  { src: "/assets/images/film/HSP_4787.jpg", alt: "Editorial frame" },
-  { src: "/assets/images/film/HSP_4096.jpg", alt: "Garden trio" },
-  { src: "/assets/images/film/HSP_4702.jpg", alt: "Garden duo" },
-  { src: "/assets/images/film/HSP_3336.jpg", alt: "Monochrome duo" },
-];
+const SET_IDS = [1, 2, 3] as const;
+const LOOP_COPIES = 3;
+
+function buildSetImages() {
+  return SET_IDS.flatMap((setId) => {
+    const set = getSet(setId);
+    if (!set) return [];
+    return set.photos.map((photo, index) => ({
+      src: setPhotoPath(set, photo),
+      alt: `Garden set ${setId} — look ${index + 1}`,
+    }));
+  });
+}
 
 export function HomeScrollGallery() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const segmentWidthRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
   const dragState = useRef({ startX: 0, scrollLeft: 0 });
+
+  const baseImages = useMemo(() => buildSetImages(), []);
+  const loopImages = useMemo(
+    () => Array.from({ length: LOOP_COPIES }, (_, copy) => baseImages.map((img, i) => ({ ...img, key: `${copy}-${i}-${img.src}` }))).flat(),
+    [baseImages],
+  );
+
+  const recenterIfNeeded = useCallback(() => {
+    const track = trackRef.current;
+    const segment = segmentWidthRef.current;
+    if (!track || segment <= 0) return;
+
+    const { scrollLeft } = track;
+    if (scrollLeft <= segment * 0.25) {
+      track.scrollLeft = scrollLeft + segment;
+    } else if (scrollLeft >= segment * (LOOP_COPIES - 0.25)) {
+      track.scrollLeft = scrollLeft - segment;
+    }
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const measureAndCenter = () => {
+      segmentWidthRef.current = track.scrollWidth / LOOP_COPIES;
+      if (segmentWidthRef.current > 0) {
+        track.scrollLeft = segmentWidthRef.current;
+      }
+    };
+
+    measureAndCenter();
+
+    const ro = new ResizeObserver(measureAndCenter);
+    ro.observe(track);
+
+    const onScroll = () => recenterIfNeeded();
+    track.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      ro.disconnect();
+      track.removeEventListener("scroll", onScroll);
+    };
+  }, [recenterIfNeeded, loopImages.length]);
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     const track = trackRef.current;
@@ -43,10 +88,14 @@ export function HomeScrollGallery() {
     [isDragging],
   );
 
-  const onPointerUp = useCallback((e: React.PointerEvent) => {
-    setIsDragging(false);
-    trackRef.current?.releasePointerCapture(e.pointerId);
-  }, []);
+  const onPointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      setIsDragging(false);
+      trackRef.current?.releasePointerCapture(e.pointerId);
+      recenterIfNeeded();
+    },
+    [recenterIfNeeded],
+  );
 
   return (
     <section className="jm-scroll-gallery" aria-label="Campaign gallery">
@@ -59,10 +108,10 @@ export function HomeScrollGallery() {
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
-        {GALLERY_IMAGES.map((img) => (
-          <div key={img.src} className="jm-scroll-gallery__slide">
+        {loopImages.map((img) => (
+          <div key={img.key} className="jm-scroll-gallery__slide">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={img.src} alt={img.alt} className="jm-scroll-gallery__image" draggable={false} />
+            <img src={img.src} alt={img.alt} className="jm-scroll-gallery__image" draggable={false} loading="eager" />
           </div>
         ))}
       </div>
