@@ -9,6 +9,7 @@ import { NavLink } from "@/components/layout/NavLink";
 import { MiniCart } from "@/components/commerce/MiniCart";
 import { FlyToCartLayer, FlyToWishlistLayer, WishlistNavButton } from "@/components/commerce/CommerceAnimations";
 import { useCommerce } from "@/context/CommerceContext";
+import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -26,10 +27,31 @@ export function Navigation() {
   const { cartCount, cartPulse } = useCommerce();
   const [cartOpen, setCartOpen] = useState(false);
   const [displayCount, setDisplayCount] = useState(cartCount);
+  const [homeHeroNav, setHomeHeroNav] = useState(pathname === "/");
 
   useEffect(() => {
     setDisplayCount(cartCount);
   }, [cartCount]);
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      setHomeHeroNav(false);
+      return;
+    }
+
+    const updateHeroNav = () => {
+      setHomeHeroNav(window.scrollY < window.innerHeight * 0.85);
+    };
+
+    updateHeroNav();
+    window.addEventListener("scroll", updateHeroNav, { passive: true });
+    return () => window.removeEventListener("scroll", updateHeroNav);
+  }, [pathname]);
+
+  const navTone = homeHeroNav ? "light" : "dark";
+  const headerClass = homeHeroNav
+    ? "pointer-events-none fixed top-0 right-0 left-0 z-50 border-b border-transparent bg-transparent px-4 md:px-10"
+    : "pointer-events-none fixed top-0 right-0 left-0 z-50 border-b border-subtle bg-white/92 px-4 backdrop-blur-md md:px-10";
 
   return (
     <>
@@ -37,9 +59,9 @@ export function Navigation() {
       <FlyToWishlistLayer />
       <MiniCart open={cartOpen} onClose={() => setCartOpen(false)} />
 
-      <header className="pointer-events-none fixed top-0 right-0 left-0 z-50 border-b border-subtle bg-ink/90 px-4 backdrop-blur-md md:px-10">
-        <div className="pointer-events-auto mx-auto flex max-w-[1120px] items-center justify-between py-4 md:py-5">
-          <BrandLogo variant="nav" />
+      <header className={headerClass}>
+        <div className="pointer-events-auto mx-auto flex max-w-[1200px] items-center justify-between py-4 md:py-5">
+          <BrandLogo variant="nav" tone={navTone} />
 
           <nav className="hidden items-center gap-2 md:flex lg:gap-4" aria-label="Primary">
             {NAV_LINKS.map((link) =>
@@ -53,7 +75,12 @@ export function Navigation() {
                   aria-label={`Cart, ${cartCount} items`}
                 >
                   <motion.span
-                    className="editorial-spacing text-[9px] text-cream/70 transition-colors duration-300 group-hover:text-cream md:text-[10px]"
+                    className={cn(
+                      "editorial-spacing text-[9px] transition-colors duration-300 md:text-[10px]",
+                      navTone === "light"
+                        ? "text-white/75 group-hover:text-white"
+                        : "text-cream/70 group-hover:text-cream",
+                    )}
                     style={{ letterSpacing: "0.32em" }}
                     whileHover={{ y: -2, letterSpacing: "0.42em" }}
                     transition={{ type: "spring", stiffness: 420, damping: 28 }}
@@ -86,7 +113,7 @@ export function Navigation() {
               ) : link.href === "/wishlist" ? (
                 <WishlistNavButton key={link.href} href={link.href} />
               ) : (
-                <NavLink key={link.href} href={link.href} label={link.label} />
+                <NavLink key={link.href} href={link.href} label={link.label} tone={navTone} />
               ),
             )}
           </nav>
@@ -95,7 +122,12 @@ export function Navigation() {
             <Link
               href="/wishlist"
               data-wishlist-target
-              className="relative inline-flex min-h-11 min-w-11 items-center justify-center text-cream/75 transition-colors hover:text-cream"
+              className={cn(
+                "relative inline-flex min-h-11 min-w-11 items-center justify-center transition-colors",
+                navTone === "light"
+                  ? "text-white/80 hover:text-white"
+                  : "text-cream/75 hover:text-cream",
+              )}
               aria-label="Wishlist"
             >
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -112,13 +144,18 @@ export function Navigation() {
               type="button"
               data-cart-target
               onClick={() => setCartOpen(true)}
-              className="editorial-spacing relative inline-flex min-h-11 min-w-11 items-center justify-center text-[9px] text-cream/75 transition-colors hover:text-cream"
+              className={cn(
+                "editorial-spacing relative inline-flex min-h-11 min-w-11 items-center justify-center text-[9px] transition-colors",
+                navTone === "light"
+                  ? "text-white/80 hover:text-white"
+                  : "text-cream/75 hover:text-cream",
+              )}
               aria-label={`Cart, ${cartCount} items`}
             >
               Cart
               {displayCount > 0 && <span className="ml-1 text-gold">({displayCount})</span>}
             </button>
-            <MobileNav />
+            <MobileNav navTone={navTone} />
           </div>
         </div>
       </header>
@@ -126,7 +163,7 @@ export function Navigation() {
   );
 }
 
-function MobileNav() {
+function MobileNav({ navTone }: { navTone: "light" | "dark" }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -152,13 +189,13 @@ function MobileNav() {
         aria-expanded={open}
         aria-controls="mobile-nav"
       >
-        <span className="block h-px w-6 bg-cream/80" />
-        <span className="block h-px w-4 bg-cream/80" />
+        <span className={cn("block h-px w-6", navTone === "light" ? "bg-white/85" : "bg-cream/80")} />
+        <span className={cn("block h-px w-4", navTone === "light" ? "bg-white/85" : "bg-cream/80")} />
       </button>
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[80] bg-ink/95 backdrop-blur-md"
+            className="fixed inset-0 z-[80] bg-white/98 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

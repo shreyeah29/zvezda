@@ -1,0 +1,113 @@
+.collections-masonry {
+  background: #ffffff;
+  padding-top: 0;
+}
+
+.collections-masonry__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+.collections-masonry__item {
+  grid-column: span 12;
+}
+
+.collections-masonry__item--1 {
+  grid-column: span 12;
+}
+
+.collections-masonry__item--2 {
+  grid-column: span 12;
+}
+
+.collections-masonry__item--3 {
+  grid-column: span 12;
+}
+
+@media (min-width: 768px) {
+  .collections-masonry__item--1 {
+    grid-column: span 7;
+  }
+
+  .collections-masonry__item--2 {
+    grid-column: span 5;
+  }
+
+  .collections-masonry__item--3 {
+    grid-column: span 6;
+  }
+}
+
+.collections-masonry__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.collections-masonry__image-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: #f5f5f4;
+  box-shadow: var(--editorial-shadow);
+  transition: box-shadow 0.45s ease, transform 0.45s ease;
+}
+
+.collections-masonry__item--1 .collections-masonry__image-wrap {
+  aspect-ratio: 16 / 10;
+}
+
+.collections-masonry__link:hover .collections-masonry__image-wrap {
+  box-shadow: var(--editorial-shadow-hover);
+  transform: translateY(-4px);
+}
+
+.collections-masonry__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.collections-masonry__link:hover .collections-masonry__image {
+  transform: scale(1.06);
+}
+
+.collections-masonry__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: linear-gradient(transparent 40%, rgba(10, 10, 10, 0.55));
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.collections-masonry__link:hover .collections-masonry__overlay {
+  opacity: 1;
+}
+
+.collections-masonry__title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+}
+
+.collections-masonry__cta {
+  color: #ffffff;
+}
+
+.collections-masonry__desc {
+  margin-top: 1rem;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(10, 10, 10, 0.58);
+  max-width: 48ch;
+}

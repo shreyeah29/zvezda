@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 type BrandLogoProps = {
   variant?: "hero" | "nav" | "footer";
+  tone?: "light" | "dark";
   className?: string;
   asLink?: boolean;
 };
@@ -19,14 +20,17 @@ function LogoStar({ className }: { className?: string }) {
   );
 }
 
-function LogoMark({ variant }: { variant: "hero" | "nav" | "footer" }) {
+function LogoMark({ variant, tone = "dark" }: { variant: "hero" | "nav" | "footer"; tone?: "light" | "dark" }) {
   const isHero = variant === "hero";
   const isFooter = variant === "footer";
+  const textClass = tone === "light" ? "text-white" : "text-cream";
+  const subClass = tone === "light" ? "text-white/85" : "text-cream/85";
 
   return (
     <div
       className={cn(
-        "flex flex-col items-center text-cream",
+        "flex flex-col items-center",
+        textClass,
         isHero && "gap-3 md:gap-4",
         !isHero && "gap-1"
       )}
@@ -55,7 +59,8 @@ function LogoMark({ variant }: { variant: "hero" | "nav" | "footer" }) {
       </div>
       <span
         className={cn(
-          "editorial-spacing text-cream/85",
+          "editorial-spacing",
+          subClass,
           isHero && "text-[10px] md:text-[11px]",
           variant === "nav" && "text-[7px]",
           isFooter && "text-[8px]"
@@ -68,8 +73,8 @@ function LogoMark({ variant }: { variant: "hero" | "nav" | "footer" }) {
 }
 
 /** Official Zvezda wordmark — star above the E, Atelier subline */
-export function BrandLogo({ variant = "nav", className, asLink = true }: BrandLogoProps) {
-  const content = <LogoMark variant={variant} />;
+export function BrandLogo({ variant = "nav", tone = "dark", className, asLink = true }: BrandLogoProps) {
+  const content = <LogoMark variant={variant} tone={tone} />;
 
   if (!asLink) {
     return <div className={className}>{content}</div>;

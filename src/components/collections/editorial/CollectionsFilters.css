@@ -1,0 +1,53 @@
+.collections-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  padding-block: clamp(1.5rem, 4vh, 2.5rem);
+  padding-inline: clamp(1.5rem, 5vw, 3rem);
+  background: #ffffff;
+  position: sticky;
+  top: 4.5rem;
+  z-index: 30;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.06);
+}
+
+.collections-filters__pill {
+  position: relative;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid rgba(10, 10, 10, 0.14);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.collections-filters__pill:hover {
+  border-color: rgba(10, 10, 10, 0.28);
+}
+
+.collections-filters__pill--active {
+  border-color: #0a0a0a;
+}
+
+.collections-filters__pill-bg {
+  position: absolute;
+  inset: 0;
+  background: #0a0a0a;
+  border-radius: 999px;
+}
+
+.collections-filters__pill-label {
+  position: relative;
+  z-index: 1;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  transition: color 0.3s ease;
+}
+
+.collections-filters__pill--active .collections-filters__pill-label {
+  color: #ffffff;
+}

@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
-import { HomePillCarousel } from "@/components/home/HomePillCarousel";
+import "@/components/home/editorial/editorial-theme.css";
 
 const SmoothScroll = dynamic(
   () =>
@@ -14,34 +14,50 @@ const SmoothScroll = dynamic(
   { ssr: false },
 );
 
-const HomeGridMotion = dynamic(
+const HomeCollectionsSection = dynamic(
   () =>
-    import("@/components/home/HomeGridMotion").then((mod) => ({
-      default: mod.HomeGridMotion,
+    import("@/components/home/editorial/HomeCollectionsSection").then((mod) => ({
+      default: mod.HomeCollectionsSection,
     })),
   { ssr: false },
 );
 
-const HomeAtelierShop = dynamic(
+const HomeEditorialStory = dynamic(
   () =>
-    import("@/components/home/HomeAtelierShop").then((mod) => ({
-      default: mod.HomeAtelierShop,
+    import("@/components/home/editorial/HomeEditorialStory").then((mod) => ({
+      default: mod.HomeEditorialStory,
     })),
   { ssr: false },
 );
 
-const HomeInstagramChapter = dynamic(
+const HomeFeaturedProducts = dynamic(
   () =>
-    import("@/components/home/HomeInstagramChapter").then((mod) => ({
-      default: mod.HomeInstagramChapter,
+    import("@/components/home/editorial/HomeFeaturedProducts").then((mod) => ({
+      default: mod.HomeFeaturedProducts,
     })),
   { ssr: false },
 );
 
-const Footer = dynamic(
+const HomeInstagramSection = dynamic(
   () =>
-    import("@/components/layout/Footer").then((mod) => ({
-      default: mod.Footer,
+    import("@/components/home/editorial/HomeInstagramSection").then((mod) => ({
+      default: mod.HomeInstagramSection,
+    })),
+  { ssr: false },
+);
+
+const HomeNewsletter = dynamic(
+  () =>
+    import("@/components/home/editorial/HomeNewsletter").then((mod) => ({
+      default: mod.HomeNewsletter,
+    })),
+  { ssr: false },
+);
+
+const EditorialFooter = dynamic(
+  () =>
+    import("@/components/home/editorial/EditorialFooter").then((mod) => ({
+      default: mod.EditorialFooter,
     })),
   { ssr: false },
 );
@@ -57,13 +73,14 @@ export default function HomePage() {
   return (
     <SessionLoadGate>
       <SmoothScroll>
-        <main id="main-content">
+        <main id="main-content" className="editorial-page">
           <HomeHeroVideo />
-          <HomeGridMotion />
-          <HomeAtelierShop />
-          <HomePillCarousel />
-          <HomeInstagramChapter />
-          <Footer />
+          <HomeCollectionsSection />
+          <HomeEditorialStory />
+          <HomeFeaturedProducts />
+          <HomeInstagramSection />
+          <HomeNewsletter />
+          <EditorialFooter />
         </main>
       </SmoothScroll>
     </SessionLoadGate>
