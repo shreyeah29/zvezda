@@ -1,0 +1,120 @@
+.jm-product-row {
+  background: #ffffff;
+}
+
+.jm-product-row__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 900px) {
+  .jm-product-row__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .jm-product-row__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.jm-product-row__cell {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f0f0f0;
+}
+
+.jm-product-row__cell:last-child {
+  border-right: none;
+}
+
+.jm-product-row__image-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: #f0f0f0;
+  cursor: pointer;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+
+.jm-product-row__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 1.5rem;
+  pointer-events: none;
+  transition: transform 0.45s ease;
+}
+
+.jm-product-row__image-btn:hover .jm-product-row__image {
+  transform: scale(1.03);
+}
+
+.jm-product-row__meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 5.5rem;
+  padding: 0.85rem 1rem 1rem;
+  background: #f0f0f0;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.jm-product-row__meta-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jm-product-row__badge {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.jm-product-row__wishlist {
+  border-radius: 999px;
+}
+
+.jm-product-row__meta-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.jm-product-row__name-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #000000;
+  line-height: 1.35;
+  max-width: 65%;
+}
+
+.jm-product-row__name-btn:hover {
+  opacity: 0.65;
+}
+
+.jm-product-row__price {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #000000;
+  white-space: nowrap;
+}

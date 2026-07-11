@@ -1,0 +1,47 @@
+.jm-collection-feature {
+  background: #ffffff;
+}
+
+.jm-collection-feature__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: clamp(420px, 58vh, 640px);
+}
+
+@media (max-width: 640px) {
+  .jm-collection-feature__grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .jm-collection-feature__panel--image {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+}
+
+.jm-collection-feature__panel {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(320px, 50vh, 640px);
+}
+
+.jm-collection-feature__panel--image {
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.jm-collection-feature__media {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  object-position: center;
+}
+
+.jm-collection-feature__panel--video .jm-caption {
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.jm-collection-feature__panel--video .jm-caption:hover {
+  opacity: 0.75;
+}

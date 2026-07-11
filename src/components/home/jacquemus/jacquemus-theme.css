@@ -1,0 +1,46 @@
+/* Jacquemus-inspired homepage tokens */
+.jacquemus-home {
+  --jm-white: #ffffff;
+  --jm-black: #000000;
+  --jm-gray: #f0f0f0;
+  --jm-gray-dark: #e8e8e8;
+  --jm-muted: #666666;
+  --jm-line: rgba(0, 0, 0, 0.12);
+  --jm-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--jm-white);
+  color: var(--jm-black);
+  font-family: var(--jm-font);
+}
+
+.jacquemus-home *,
+.jacquemus-home *::before,
+.jacquemus-home *::after {
+  box-sizing: border-box;
+}
+
+.jm-divider {
+  height: 1px;
+  width: 100%;
+  background: var(--jm-line);
+  border: none;
+}
+
+.jm-label {
+  font-family: var(--jm-font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.jm-caption {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  z-index: 2;
+  font-family: var(--jm-font);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--jm-white);
+  letter-spacing: 0.01em;
+}

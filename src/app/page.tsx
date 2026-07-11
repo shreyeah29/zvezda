@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
-import { HomePillCarousel } from "@/components/home/HomePillCarousel";
+import "@/components/home/jacquemus/jacquemus-theme.css";
 
 const SmoothScroll = dynamic(
   () =>
@@ -14,26 +14,42 @@ const SmoothScroll = dynamic(
   { ssr: false },
 );
 
-const HomeAtelierShop = dynamic(
+const HomeScrollGallery = dynamic(
   () =>
-    import("@/components/home/HomeAtelierShop").then((mod) => ({
-      default: mod.HomeAtelierShop,
+    import("@/components/home/jacquemus/HomeScrollGallery").then((mod) => ({
+      default: mod.HomeScrollGallery,
     })),
   { ssr: false },
 );
 
-const HomeInstagramChapter = dynamic(
+const HomeCollectionSplit = dynamic(
   () =>
-    import("@/components/home/HomeInstagramChapter").then((mod) => ({
-      default: mod.HomeInstagramChapter,
+    import("@/components/home/jacquemus/HomeCollectionSplit").then((mod) => ({
+      default: mod.HomeCollectionSplit,
     })),
   { ssr: false },
 );
 
-const Footer = dynamic(
+const HomeProductRow = dynamic(
   () =>
-    import("@/components/layout/Footer").then((mod) => ({
-      default: mod.Footer,
+    import("@/components/home/jacquemus/HomeProductRow").then((mod) => ({
+      default: mod.HomeProductRow,
+    })),
+  { ssr: false },
+);
+
+const HomeCollectionFeature = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomeCollectionFeature").then((mod) => ({
+      default: mod.HomeCollectionFeature,
+    })),
+  { ssr: false },
+);
+
+const JacquemusFooter = dynamic(
+  () =>
+    import("@/components/home/jacquemus/JacquemusFooter").then((mod) => ({
+      default: mod.JacquemusFooter,
     })),
   { ssr: false },
 );
@@ -49,12 +65,13 @@ export default function HomePage() {
   return (
     <SessionLoadGate>
       <SmoothScroll>
-        <main id="main-content">
+        <main id="main-content" className="jacquemus-home">
           <HomeHeroVideo />
-          <HomeAtelierShop />
-          <HomePillCarousel />
-          <HomeInstagramChapter />
-          <Footer />
+          <HomeScrollGallery />
+          <HomeCollectionSplit />
+          <HomeProductRow />
+          <HomeCollectionFeature />
+          <JacquemusFooter />
         </main>
       </SmoothScroll>
     </SessionLoadGate>
