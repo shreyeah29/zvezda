@@ -36,28 +36,35 @@ const EDITORIAL_NAMES: Record<number, string> = {
 type RowPhoto = { setId: number; photo: string };
 type RowVideo = { src: string; poster?: string; href: string; alt: string };
 
-function buildCollectionRow(video: RowVideo, photos: RowPhoto[]): JacquemusCollectionMedia[] {
-  const row: JacquemusCollectionMedia[] = [
-    {
-      type: "video",
-      src: video.src,
-      poster: video.poster,
-      alt: video.alt,
-      href: video.href,
-    },
-  ];
+function buildCollectionRow(
+  video: RowVideo,
+  photos: RowPhoto[],
+  videoIndex: number,
+): JacquemusCollectionMedia[] {
+  const videoItem: JacquemusCollectionMedia = {
+    type: "video",
+    src: video.src,
+    poster: video.poster,
+    alt: video.alt,
+    href: video.href,
+  };
 
-  photos.slice(0, 5).forEach(({ setId, photo }) => {
+  const imageItems: JacquemusCollectionMedia[] = photos.slice(0, 5).flatMap(({ setId, photo }) => {
     const set = getSet(setId);
-    if (!set) return;
-    row.push({
-      type: "image",
-      src: setPhotoPath(set, photo),
-      alt: EDITORIAL_NAMES[setId] ?? set.slug,
-      href: `/products/${set.slug}`,
-    });
+    if (!set) return [];
+    return [
+      {
+        type: "image" as const,
+        src: setPhotoPath(set, photo),
+        alt: EDITORIAL_NAMES[setId] ?? set.slug,
+        href: `/products/${set.slug}`,
+      },
+    ];
   });
 
+  const index = Math.min(Math.max(videoIndex, 0), imageItems.length);
+  const row = [...imageItems];
+  row.splice(index, 0, videoItem);
   return row;
 }
 
@@ -88,6 +95,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(3, "HSP_3971.jpg"),
         photo(4, "HSP_4864.jpg"),
       ],
+      1,
     ),
   },
   {
@@ -111,6 +119,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(9, "HSP_3218.jpg"),
         photo(8, "HSP_3013.jpg"),
       ],
+      3,
     ),
   },
   {
@@ -134,6 +143,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(6, "HSP_2887.jpg"),
         photo(13, "HSP_2612.jpg"),
       ],
+      0,
     ),
   },
   {
@@ -157,6 +167,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(12, "HSP_5635.jpg"),
         photo(12, "HSP_5549.jpg"),
       ],
+      4,
     ),
   },
   {
@@ -180,6 +191,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(11, "HSP_5883.jpg"),
         photo(11, "HSP_5858.jpg"),
       ],
+      2,
     ),
   },
   {
@@ -203,6 +215,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(10, "HSP_2216.jpg"),
         photo(7, "HSP_2372.jpg"),
       ],
+      5,
     ),
   },
 ];
