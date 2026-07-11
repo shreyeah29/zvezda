@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: var(--font-body);
+  --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
+  --font-editorial: "Instrument Serif", Georgia, serif;
+  --font-product: "Playfair Display", Georgia, serif;
 
   --color-ink: #0a0a0a;
   --color-cream: #f5f0e8;
@@ -52,6 +54,16 @@
     background: var(--color-ink);
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 300;
+  }
+
   /* Bleed past viewport edges — covers sub-pixel gaps on macOS Chrome */
   body::before {
     content: "";
@@ -83,7 +95,15 @@
 
 @layer utilities {
   .font-display {
-    font-family: var(--font-display);
+    font-family: var(--font-display), Georgia, serif;
+  }
+
+  .font-editorial {
+    font-family: var(--font-editorial), Georgia, serif;
+  }
+
+  .font-product {
+    font-family: var(--font-product), Georgia, serif;
   }
 
   .text-balance {
@@ -91,6 +111,8 @@
   }
 
   .editorial-spacing {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
     letter-spacing: 0.35em;
     text-transform: uppercase;
   }
@@ -157,13 +179,4 @@
   button {
     cursor: pointer;
   }
-}
-
-/* Use the navigation's Inter face site-wide */
-html,
-body,
-body *,
-body *::before,
-body *::after {
-  font-family: var(--font-body) !important;
 }

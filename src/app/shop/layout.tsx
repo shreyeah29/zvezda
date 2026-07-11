@@ -13,11 +13,5 @@ const bodoni = Bodoni_Moda({
 });
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className={`${shopSans.variable} ${bodoni.variable} min-h-screen font-[family-name:var(--font-shop-sans)]`}
-    >
-      {children}
-    </div>
-  );
+  return <div className={`${shopSans.variable} ${bodoni.variable} min-h-screen`}>{children}</div>;
 }

@@ -114,7 +114,7 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
         aria-label={`View ${product.name}`}
       >
         <motion.p
-          className="font-[family-name:var(--font-shop-display)] text-base font-medium text-cream md:text-lg"
+          className="font-display text-base font-light text-cream md:text-lg"
           animate={{ y: hovered ? -2 : 0 }}
           transition={{ duration: 0.45, ease: EASE }}
         >
