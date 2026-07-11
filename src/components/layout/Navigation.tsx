@@ -11,9 +11,9 @@ import { cn } from "@/lib/utils";
 import "./JacquemusNav.css";
 
 const JM_LINKS = [
+  { href: "/", label: "Home" },
   { href: "/collections", label: "Collections" },
   { href: "/shop", label: "Shop" },
-  { href: "/shop", label: "New In" },
 ];
 
 export function Navigation() {
@@ -95,9 +95,9 @@ export function Navigation() {
               data-cart-target
               onClick={() => setCartOpen(true)}
               className={cn("jm-nav__cart", mutedClass)}
-              aria-label={`Shopping cart, ${cartCount} items`}
+              aria-label={`Cart, ${cartCount} items`}
             >
-              <span>Shopping cart</span>
+              <span>Cart</span>
               {displayCount > 0 && <span className="jm-nav__cart-dot" aria-hidden="true" />}
             </button>
             <JacquemusMobileNav heroOverlay={heroOverlay} onOpenCart={() => setCartOpen(true)} />
@@ -161,7 +161,7 @@ function JacquemusMobileNav({
                   </Link>
                 ))}
                 <button type="button" onClick={onOpenCart} className="jm-nav__link text-left text-lg text-black">
-                  Shopping cart
+                  Cart
                 </button>
               </nav>
             </div>

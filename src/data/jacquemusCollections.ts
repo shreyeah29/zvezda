@@ -77,8 +77,8 @@ export const jacquemusCollections: JacquemusCollection[] = [
   {
     id: "verdant-epoque",
     name: "Verdant Époque",
-    season: "Garden Green",
-    detail: "Sets 1–4 · Garden Campaign",
+    season: "Spring-Summer 2026",
+    detail: "Paris, France",
     group: "garden-green",
     setIds: [1, 2, 3, 4],
     media: buildCollectionRow(
@@ -101,8 +101,8 @@ export const jacquemusCollections: JacquemusCollection[] = [
   {
     id: "noir-ivoire",
     name: "Noir & Ivoire",
-    season: "Monochrome",
-    detail: "Sets 8–9 · Black & White",
+    season: "Fall-Winter 2025",
+    detail: "Paris, France",
     group: "black-combo",
     setIds: [8, 9],
     media: buildCollectionRow(
@@ -125,8 +125,8 @@ export const jacquemusCollections: JacquemusCollection[] = [
   {
     id: "amber-solstice",
     name: "Amber Solstice",
-    season: "Orange",
-    detail: "Sets 6 & 13 · Warm Light",
+    season: "Spring-Summer 2025",
+    detail: "Provence, France",
     group: "orange",
     setIds: [6, 13],
     media: buildCollectionRow(
@@ -149,8 +149,8 @@ export const jacquemusCollections: JacquemusCollection[] = [
   {
     id: "crimson-reverie",
     name: "Crimson Reverie",
-    season: "Red",
-    detail: "Set 12 · Evening Light",
+    season: "Fall-Winter 2025",
+    detail: "Paris, France",
     group: "red",
     setIds: [12],
     media: buildCollectionRow(
@@ -173,8 +173,8 @@ export const jacquemusCollections: JacquemusCollection[] = [
   {
     id: "golden-lumiere",
     name: "Golden Lumière",
-    season: "Yellow",
-    detail: "Set 11 · Solar Campaign",
+    season: "Spring-Summer 2026",
+    detail: "Riviera, France",
     group: "yellow",
     setIds: [11],
     media: buildCollectionRow(
@@ -197,8 +197,8 @@ export const jacquemusCollections: JacquemusCollection[] = [
   {
     id: "velvet-blush",
     name: "Velvet Blush",
-    season: "Nocturne",
-    detail: "Sets 7 & 10 · Black & Pink",
+    season: "Fall-Winter 2026",
+    detail: "Paris, France",
     group: "black-combo",
     setIds: [7, 10],
     media: buildCollectionRow(
