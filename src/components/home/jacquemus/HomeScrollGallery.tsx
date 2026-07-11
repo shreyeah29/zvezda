@@ -105,7 +105,7 @@ export function HomeScrollGallery() {
           </div>
         ))}
       </div>
-      <hr className="jm-scroll-gallery__rule" aria-hidden="true" />
+      <hr className="jm-section-rule" aria-hidden="true" />
     </section>
   );
 }

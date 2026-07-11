@@ -23,7 +23,7 @@ export function HomeCollectionFeature() {
           </Link>
         </div>
       </div>
-      <hr className="jm-divider" />
+      <hr className="jm-section-rule" aria-hidden="true" />
     </section>
   );
 }

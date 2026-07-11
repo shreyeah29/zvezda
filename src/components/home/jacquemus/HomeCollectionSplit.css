@@ -7,11 +7,15 @@
 .jm-collection-split__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  min-height: 100vh;
 }
 
 @media (max-width: 640px) {
   .jm-collection-split__grid {
     grid-template-columns: 1fr;
+    height: auto;
+    min-height: auto;
   }
 
   .jm-collection-split__panel:first-child {
@@ -24,9 +28,15 @@
   display: block;
   overflow: hidden;
   text-decoration: none;
-  /* Jacquemus New In split — tall half-width editorial panels */
-  height: clamp(680px, 74vh, 860px);
+  height: 100%;
+  min-height: 100vh;
   border-right: 1px solid #ffffff;
+}
+
+@media (max-width: 640px) {
+  .jm-collection-split__panel {
+    min-height: 100vh;
+  }
 }
 
 .jm-collection-split__panel:last-child {

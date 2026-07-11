@@ -20,7 +20,7 @@ export function HomeCollectionSplit() {
           </Link>
         ))}
       </div>
-      <hr className="jm-divider" />
+      <hr className="jm-section-rule" aria-hidden="true" />
     </section>
   );
 }

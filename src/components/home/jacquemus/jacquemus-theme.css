@@ -25,6 +25,16 @@
   border: none;
 }
 
+.jm-section-rule {
+  display: block;
+  width: 100%;
+  height: 5px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.14);
+}
+
 .jm-label {
   font-family: var(--jm-font);
   font-size: 11px;
