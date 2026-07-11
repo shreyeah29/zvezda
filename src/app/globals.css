@@ -6,8 +6,8 @@
   --font-editorial: "Instrument Serif", Georgia, serif;
   --font-product: "Playfair Display", Georgia, serif;
 
-  --color-ink: #0a0a0a;
-  --color-cream: #f5f0e8;
+  --color-ink: #ffffff;
+  --color-cream: #0a0a0a;
   --color-crimson: #8b1a2b;
   --color-olive: #4a5240;
   --color-gold: #c4a574;
@@ -179,4 +179,49 @@
   button {
     cursor: pointer;
   }
+}
+
+/* White theme preview — flip page surfaces while keeping luxury typography */
+html,
+body,
+body::before,
+.viewport-fixed,
+main,
+section,
+footer {
+  background-color: #ffffff !important;
+}
+
+.bg-black,
+.bg-zinc-950 {
+  background-color: #ffffff !important;
+}
+
+.pill-carousel,
+.site-footer,
+.policy-page,
+.home-shop-cards,
+.home-shop-cards__card,
+.atelier-manifesto,
+.instagram-chapter__static,
+.editorial-marquee,
+.mood-board,
+.shop-experience__catalog,
+.collection-canvas,
+.grid-motion-reveal {
+  background: #ffffff !important;
+}
+
+.pill-carousel__desc {
+  color: rgba(10, 10, 10, 0.62) !important;
+}
+
+.pill-carousel__counter {
+  color: rgba(10, 10, 10, 0.55) !important;
+}
+
+.pill-carousel__arrow {
+  color: rgba(10, 10, 10, 0.75) !important;
+  border-color: rgba(10, 10, 10, 0.2) !important;
+  background: rgba(10, 10, 10, 0.03) !important;
 }
