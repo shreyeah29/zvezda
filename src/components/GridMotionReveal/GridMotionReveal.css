@@ -11,7 +11,7 @@
   --hero-overlap: 0;
   position: relative;
   z-index: 2;
-  margin: calc(var(--hero-overlap) * -1) 0 0;
+  margin: calc(var(--hero-overlap) * -1) 0 clamp(1.5rem, 4vh, 3rem);
   font-family: var(--font-body), system-ui, sans-serif;
   background: #ffffff;
   color: #0a0a0a;
