@@ -1,6 +1,7 @@
 .jm-collections {
-  --jm-cell-width: clamp(400px, 32vw, 520px);
-  --jm-cell-height: clamp(480px, 56vh, 620px);
+  /* Jacquemus presentation-slider-image: 352 × 440 (4:5) */
+  --jm-cell-width: 352px;
+  --jm-cell-height: 440px;
   background: #ffffff;
   color: #0c0a09;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -89,6 +90,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center top;
+  background: #f5f5f4;
   transition: transform 0.55s ease;
 }
 
@@ -98,8 +100,8 @@
 
 @media (max-width: 768px) {
   .jm-collections {
-    --jm-cell-width: min(340px, 78vw);
-    --jm-cell-height: clamp(400px, 52vh, 520px);
+    --jm-cell-width: min(352px, 78vw);
+    --jm-cell-height: calc(var(--jm-cell-width) * 440 / 352);
   }
 
   .jm-collections__layout {

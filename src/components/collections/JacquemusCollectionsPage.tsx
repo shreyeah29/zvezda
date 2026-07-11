@@ -13,6 +13,7 @@ function CollectionMedia({ item }: { item: (typeof jacquemusCollections)[0]["med
         muted
         loop
         playsInline
+        preload="metadata"
         poster={item.poster}
         className="jm-collections__media"
       >

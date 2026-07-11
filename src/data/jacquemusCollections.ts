@@ -62,7 +62,7 @@ function buildCollectionRow(
     ];
   });
 
-  const index = Math.min(Math.max(videoIndex, 0), imageItems.length);
+  const index = Math.min(Math.max(videoIndex, 0), 2);
   const row = [...imageItems];
   row.splice(index, 0, videoItem);
   return row;
@@ -95,7 +95,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(3, "HSP_3971.jpg"),
         photo(4, "HSP_4864.jpg"),
       ],
-      1,
+      0,
     ),
   },
   {
@@ -119,7 +119,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(9, "HSP_3218.jpg"),
         photo(8, "HSP_3013.jpg"),
       ],
-      3,
+      1,
     ),
   },
   {
@@ -143,7 +143,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(6, "HSP_2887.jpg"),
         photo(13, "HSP_2612.jpg"),
       ],
-      0,
+      2,
     ),
   },
   {
@@ -167,7 +167,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(12, "HSP_5635.jpg"),
         photo(12, "HSP_5549.jpg"),
       ],
-      4,
+      0,
     ),
   },
   {
@@ -191,7 +191,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(11, "HSP_5883.jpg"),
         photo(11, "HSP_5858.jpg"),
       ],
-      2,
+      1,
     ),
   },
   {
@@ -215,7 +215,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
         photo(10, "HSP_2216.jpg"),
         photo(7, "HSP_2372.jpg"),
       ],
-      5,
+      2,
     ),
   },
 ];
