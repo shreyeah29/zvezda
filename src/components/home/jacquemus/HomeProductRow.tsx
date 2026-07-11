@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { getProduct, formatPrice } from "@/data/products";
+import { getProduct } from "@/data/products";
 import { shopHighlightCards } from "@/data/shopHighlightCards";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import { JacquemusQuickView } from "./JacquemusQuickView";
@@ -47,18 +47,17 @@ export function HomeProductRow() {
 
                 <div className="jm-product-row__hover-meta">
                   <span className="jm-product-row__name">{product.name}</span>
-                  <span className="jm-product-row__price">
-                    {formatJacquemusPrice(product.price, product.currency)}
-                  </span>
-                </div>
-
-                <div
-                  className="jm-product-row__wishlist"
-                  data-wishlist-control
-                  onClick={(e) => e.stopPropagation()}
-                  onPointerDown={(e) => e.stopPropagation()}
-                >
-                  <WishlistButton slug={product.slug} size="sm" />
+                  <div
+                    className="jm-product-row__price-row"
+                    data-wishlist-control
+                    onClick={(e) => e.stopPropagation()}
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
+                    <span className="jm-product-row__price">
+                      {formatJacquemusPrice(product.price, product.currency)}
+                    </span>
+                    <WishlistButton slug={product.slug} size="sm" />
+                  </div>
                 </div>
               </button>
             </article>

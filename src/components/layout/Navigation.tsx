@@ -59,7 +59,7 @@ export function Navigation() {
   const heroOverlay = isHome && homeHeroNav;
   const textClass = heroOverlay ? "text-white" : "text-black";
   const mutedClass = heroOverlay ? "text-white/80 hover:text-white" : "text-black/70 hover:text-black";
-  const headerClass = heroOverlay
+  const headerClass = isHome
     ? "pointer-events-none fixed top-0 right-0 left-0 z-50 bg-transparent px-4 md:px-6"
     : "pointer-events-none fixed top-0 right-0 left-0 z-50 bg-white px-4 md:px-6";
 

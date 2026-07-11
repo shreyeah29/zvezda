@@ -25,7 +25,7 @@ export function HomeCollectionSplit() {
             key={panel.label}
             href={panel.href}
             className="jm-collection-split__panel"
-            style={{ borderRight: index === 0 ? "1px solid rgba(0,0,0,0.12)" : undefined }}
+            style={{ borderRight: index === 0 ? "1px solid rgba(0,0,0,0.08)" : undefined }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={panel.image} alt={panel.label} className="jm-collection-split__image" />

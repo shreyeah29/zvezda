@@ -1,22 +1,10 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect, useMemo } from "react";
-import { getSet, setPhotoPath } from "@/data/sets";
+import { resolveScrollGalleryImages } from "@/data/homeScrollGallery";
 import "./HomeScrollGallery.css";
 
-const SET_IDS = [1, 2, 3] as const;
 const LOOP_COPIES = 3;
-
-function buildSetImages() {
-  return SET_IDS.flatMap((setId) => {
-    const set = getSet(setId);
-    if (!set) return [];
-    return set.photos.map((photo, index) => ({
-      src: setPhotoPath(set, photo),
-      alt: `Garden set ${setId} — look ${index + 1}`,
-    }));
-  });
-}
 
 export function HomeScrollGallery() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -24,9 +12,12 @@ export function HomeScrollGallery() {
   const [isDragging, setIsDragging] = useState(false);
   const dragState = useRef({ startX: 0, scrollLeft: 0 });
 
-  const baseImages = useMemo(() => buildSetImages(), []);
+  const baseImages = useMemo(() => resolveScrollGalleryImages(), []);
   const loopImages = useMemo(
-    () => Array.from({ length: LOOP_COPIES }, (_, copy) => baseImages.map((img, i) => ({ ...img, key: `${copy}-${i}-${img.src}` }))).flat(),
+    () =>
+      Array.from({ length: LOOP_COPIES }, (_, copy) =>
+        baseImages.map((img, i) => ({ ...img, key: `${copy}-${i}-${img.src}` })),
+      ).flat(),
     [baseImages],
   );
 

@@ -1,6 +1,7 @@
 .jm-scroll-gallery {
-  --jm-gallery-height: clamp(520px, 65vh, 820px);
-  --jm-gallery-width: clamp(240px, 19vw, 360px);
+  /* Jacquemus collection-slider-image: 586 × 733 (4:5) */
+  --jm-gallery-width: 586px;
+  --jm-gallery-height: 733px;
   background: #ffffff;
 }
 
@@ -38,16 +39,17 @@
 }
 
 .jm-scroll-gallery__image {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center 12%;
   pointer-events: none;
 }
 
 @media (max-width: 768px) {
   .jm-scroll-gallery {
-    --jm-gallery-height: clamp(420px, 58vh, 640px);
-    --jm-gallery-width: clamp(200px, 42vw, 280px);
+    --jm-gallery-width: min(586px, 78vw);
+    --jm-gallery-height: calc(var(--jm-gallery-width) * 733 / 586);
   }
 }
