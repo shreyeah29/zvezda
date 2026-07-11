@@ -46,7 +46,7 @@ export function JacquemusCollectionsPage() {
               <p className="jm-collections__detail">{collection.detail}</p>
             </header>
 
-            <div className="jm-collections__grid">
+            <div className="jm-collections__track">
               {collection.media.map((item, index) => (
                 <CollectionMedia key={`${collection.id}-${item.src}-${index}`} item={item} />
               ))}
