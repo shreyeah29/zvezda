@@ -22,18 +22,10 @@ const HomeGridMotion = dynamic(
   { ssr: false },
 );
 
-const HomeAtelierManifesto = dynamic(
+const HomeAtelierShop = dynamic(
   () =>
-    import("@/components/home/HomeAtelierManifesto").then((mod) => ({
-      default: mod.HomeAtelierManifesto,
-    })),
-  { ssr: false },
-);
-
-const HomeShopCards = dynamic(
-  () =>
-    import("@/components/home/HomeShopCards").then((mod) => ({
-      default: mod.HomeShopCards,
+    import("@/components/home/HomeAtelierShop").then((mod) => ({
+      default: mod.HomeAtelierShop,
     })),
   { ssr: false },
 );
@@ -68,8 +60,7 @@ export default function HomePage() {
         <main>
           <HomeHeroVideo />
           <HomeGridMotion />
-          <HomeAtelierManifesto />
-          <HomeShopCards />
+          <HomeAtelierShop />
           <HomePillCarousel />
           <HomeInstagramChapter />
           <Footer />
