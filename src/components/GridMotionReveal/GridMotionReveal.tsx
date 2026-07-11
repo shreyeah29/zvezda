@@ -8,7 +8,6 @@ import {
   measureScalerNaturalSize,
   prepareScalerImage,
 } from "@/components/GridMotionReveal/gridMotionAnimation";
-import CurvedLoop from "@/components/CurvedLoop/CurvedLoop";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import "./GridMotionReveal.css";
 
@@ -82,14 +81,9 @@ export function GridMotionReveal() {
     <div className="grid-motion-wrap snap-none" aria-label="Collection grid motion gallery">
       <div className="content-wrap">
         <header className="collection-header">
-          <CurvedLoop
-            marqueeText="COLLECTION 2026 ✦ "
-            speed={2}
-            curveAmount={400}
-            direction="left"
-            interactive
-            className="collection-curved-text"
-          />
+          <p className="collection-header__eyebrow editorial-spacing">The Atelier</p>
+          <h2 className="collection-header__title font-display">A living gallery</h2>
+          <p className="collection-header__hint editorial-spacing">Scroll to explore</p>
         </header>
         <main>
           <section ref={sectionRef}>
