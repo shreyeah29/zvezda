@@ -38,14 +38,14 @@ export const collections: Collection[] = [
   {
     slug: "noir",
     title: "Black Combo",
-    subtitle: "Sets 6–10",
+    subtitle: "Sets 6–10, 14",
     description:
-      "Monochrome as emotion. Five sculptural pieces in black and white — stripped to essence, presence in shadow.",
+      "Monochrome as emotion. Sculptural pieces in black and white — stripped to essence, presence in shadow.",
     cover: "/assets/images/products/set-8/HSP_2981.jpg",
-    hero: "/assets/images/products/set-9/HSP_3158.jpg",
+    hero: "/assets/images/products/set-14/HSP_2470.jpg",
     accent: "#1a1a1a",
     season: "Permanent Collection",
-    setIds: [6, 7, 8, 9, 10],
+    setIds: [6, 7, 8, 9, 10, 14],
   },
   {
     slug: "yellow",
@@ -82,6 +82,18 @@ export const collections: Collection[] = [
     accent: "#c47a3a",
     season: "Resort 2026",
     setIds: [13],
+  },
+  {
+    slug: "pink",
+    title: "Pink",
+    subtitle: "Sets 15–18",
+    description:
+      "Romance in full bloom. Blush satin, hand-placed florals, and the soft hush of a garden at golden hour.",
+    cover: "/assets/images/products/set-15/HSP_4946.jpg",
+    hero: "/assets/images/products/set-16/HSP_5981.JPG",
+    accent: "#e8a4b8",
+    season: "Spring-Summer 2026",
+    setIds: [15, 16, 17, 18],
   },
 ];
 

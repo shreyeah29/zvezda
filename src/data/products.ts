@@ -40,6 +40,11 @@ const editorialNames: Record<number, string> = {
   11: "Solar",
   12: "Crimson",
   13: "Ember",
+  14: "Noir VI",
+  15: "Rose Cascade",
+  16: "Blush Coordination",
+  17: "Petal Garden",
+  18: "Rose Mirage",
 };
 
 const prices: Record<number, number> = {
@@ -56,6 +61,11 @@ const prices: Record<number, number> = {
   11: 61000,
   12: 124000,
   13: 89000,
+  14: 57000,
+  15: 48000,
+  16: 52000,
+  17: 50000,
+  18: 46000,
 };
 
 const stories: Record<SetGroup, string> = {
@@ -63,6 +73,8 @@ const stories: Record<SetGroup, string> = {
     "Silk caught between petals and shadow. Designed among wild anthuriums and tall grasses — each tier falls like a leaf caught mid-descent.",
   peach:
     "Soft warmth against pale stone. A single gesture in blush and gold — intimate, luminous, impossibly tender.",
+  pink:
+    "Romance in full bloom. Blush satin, hand-placed florals, and the soft hush of a garden at golden hour.",
   "black-combo":
     "Black is not the absence of colour — it is the deepest form of presence. Sculptural, intentional, stripped to essence.",
   yellow:
@@ -75,6 +87,7 @@ const stories: Record<SetGroup, string> = {
 const fabrics: Record<SetGroup, string> = {
   "garden-green": "Double-faced silk satin, hand-finished seams, internal structure in French lace.",
   peach: "Silk georgette and organza, hand-dyed blush, bias-cut panels.",
+  pink: "Silk satin and organza, hand-embroidered florals, delicate boning.",
   "black-combo": "Japanese wool crepe and silk dupioni, architectural boning, matte finish.",
   yellow: "Italian duchess satin, horsehair crinoline, hand-stitched hem.",
   red: "Silk organza with hand-sculpted appliqué, internal corsetry in French lace.",

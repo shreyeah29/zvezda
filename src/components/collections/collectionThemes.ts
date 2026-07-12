@@ -67,6 +67,15 @@ export const collectionThemes: Record<string, CollectionTheme> = {
       "radial-gradient(circle at 80% 20%, rgba(196,122,58,0.15) 0%, transparent 55%)",
     movingLight: true,
   },
+  pink: {
+    bg: "#1a0f12",
+    text: "#fce8ee",
+    muted: "rgba(252,232,238,0.58)",
+    accent: "#e8a4b8",
+    overlay:
+      "radial-gradient(ellipse 55% 45% at 50% 40%, rgba(232,164,184,0.2) 0%, transparent 70%)",
+    movingLight: true,
+  },
 };
 
 export function getCollectionProducts(collection: Collection) {

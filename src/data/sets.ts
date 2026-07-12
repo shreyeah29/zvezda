@@ -1,6 +1,7 @@
 export type SetGroup =
   | "garden-green"
   | "peach"
+  | "pink"
   | "black-combo"
   | "yellow"
   | "red"
@@ -28,9 +29,14 @@ export const setGroups: Record<SetGroup, { label: string; sets: number[]; collec
     sets: [5],
     collection: "peach",
   },
+  pink: {
+    label: "Pink",
+    sets: [15, 16, 17, 18],
+    collection: "pink",
+  },
   "black-combo": {
     label: "Black Combo",
-    sets: [6, 7, 8, 9, 10],
+    sets: [6, 7, 8, 9, 10, 14],
     collection: "noir",
   },
   yellow: {
@@ -151,6 +157,45 @@ export const sets: SetManifest[] = [
     collection: "orange",
     photos: ["BHA_2011.jpg", "BHA_2027.jpg", "HSP_2603.jpg", "HSP_2612.jpg", "HSP_2932.jpg"],
     video: "OrangeSolo1.mp4",
+  },
+  {
+    id: 14,
+    slug: "set-14",
+    group: "black-combo",
+    collection: "noir",
+    photos: ["BHA_1933.jpg", "BHA_1983.jpg", "BHA_2106.jpg", "HSP_2470.jpg", "HSP_2498.jpg", "HSP_2528.jpg"],
+  },
+  {
+    id: 15,
+    slug: "set-15",
+    group: "pink",
+    collection: "pink",
+    photos: ["HSP_4946.jpg", "HSP_5015.jpg", "HSP_5054.jpg", "HSP_5068.jpg", "VAM_6961.jpg"],
+    video: "PinkSolo1.mp4",
+  },
+  {
+    id: 16,
+    slug: "set-16",
+    group: "pink",
+    collection: "pink",
+    photos: ["HSP_5981.JPG", "HSP_5988.JPG", "HSP_6019.JPG"],
+    video: "PinkCoord1.mp4",
+  },
+  {
+    id: 17,
+    slug: "set-17",
+    group: "pink",
+    collection: "pink",
+    photos: ["HSP_5291.jpg", "HSP_5292.jpg", "HSP_5309.jpg", "HSP_5368.jpg", "HSP_5395.jpg", "HSP_5404.jpg"],
+    video: "PinkSOlo3.mp4",
+  },
+  {
+    id: 18,
+    slug: "set-18",
+    group: "pink",
+    collection: "pink",
+    photos: ["HSP_5080.jpg", "HSP_5151.jpg", "HSP_5165.jpg", "HSP_5186.jpg"],
+    video: "PinkSolo2.mp4",
   },
 ];
 

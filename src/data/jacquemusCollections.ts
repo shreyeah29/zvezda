@@ -31,6 +31,11 @@ const EDITORIAL_NAMES: Record<number, string> = {
   11: "Solar",
   12: "Crimson",
   13: "Ember",
+  14: "Noir VI",
+  15: "Rose Cascade",
+  16: "Blush Coordination",
+  17: "Petal Garden",
+  18: "Rose Mirage",
 };
 
 type RowPhoto = { setId: number; photo: string };
@@ -200,7 +205,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
     season: "Fall-Winter 2026",
     detail: "Paris, France",
     group: "black-combo",
-    setIds: [7, 10],
+    setIds: [7, 10, 14],
     media: buildCollectionRow(
       {
         src: "/assets/videos/film/White&BlackTrio.mp4",
@@ -210,12 +215,36 @@ export const jacquemusCollections: JacquemusCollection[] = [
       },
       [
         photo(7, "HSP_2254.jpg"),
+        photo(14, "HSP_2470.jpg"),
         photo(10, "BHA_5556.jpg"),
-        photo(7, "HSP_2294.jpg"),
-        photo(10, "HSP_2216.jpg"),
+        photo(14, "BHA_2106.jpg"),
         photo(7, "HSP_2372.jpg"),
       ],
       2,
+    ),
+  },
+  {
+    id: "rose-epoque",
+    name: "Rose Époque",
+    season: "Spring-Summer 2026",
+    detail: "Paris, France",
+    group: "pink",
+    setIds: [15, 16, 17, 18],
+    media: buildCollectionRow(
+      {
+        src: setVideoPath(getSet(15)!, "PinkSolo1.mp4")!,
+        poster: setPhotoPath(getSet(15)!, "HSP_4946.jpg"),
+        href: "/products/set-15",
+        alt: "Rose Époque film",
+      },
+      [
+        photo(15, "HSP_4946.jpg"),
+        photo(16, "HSP_5981.JPG"),
+        photo(17, "HSP_5291.jpg"),
+        photo(18, "HSP_5080.jpg"),
+        photo(15, "VAM_6961.jpg"),
+      ],
+      1,
     ),
   },
 ];

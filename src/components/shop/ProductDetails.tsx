@@ -8,6 +8,7 @@ const SIZES = ["XS", "S", "M", "L", "XL"];
 const COLLECTION_COLORS: Record<string, string[]> = {
   garden: ["#4a5240", "#6b7560", "#3d4436"],
   peach: ["#d4a088", "#e8c4b0", "#c48870"],
+  pink: ["#e8a4b8", "#f5c6d4", "#d4849c"],
   noir: ["#1a1a1a", "#4a4a4a", "#f5f0e8"],
   yellow: ["#c9a227", "#e8c547", "#a68520"],
   red: ["#8b1a2b", "#c42d42", "#5c1019"],
