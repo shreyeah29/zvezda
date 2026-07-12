@@ -7,7 +7,7 @@
 .jm-collection-split__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 0;
   height: 100vh;
   min-height: 100vh;
 }
