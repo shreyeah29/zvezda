@@ -6,20 +6,17 @@ import { notFound } from "next/navigation";
 import { getProduct, getProductsByCollection, type Product } from "@/data/products";
 import { getCollection } from "@/data/collections";
 import { ProductGalleryLayout } from "@/components/product/ProductGalleryLayout";
+import "@/components/product/ProductRelated.css";
 
 function RelatedCard({ product }: { product: Product }) {
   return (
-    <Link href={`/products/${product.slug}`} className="group block shrink-0">
-      <div className="overflow-hidden border border-black/12 bg-[#f5f5f4] transition-colors group-hover:border-black/30" style={{ width: 140 }}>
+    <Link href={`/products/${product.slug}`} className="product-related__card group">
+      <div className="product-related__media">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={product.hero}
-          alt={product.name}
-          className="aspect-[3/4] w-full object-cover object-top"
-        />
+        <img src={product.hero} alt={product.name} className="product-related__image" />
       </div>
-      <p className="mt-3 text-[10px] text-black/55">{product.collectionLabel}</p>
-      <p className="mt-1 text-sm text-black">{product.name}</p>
+      <p className="product-related__label">{product.collectionLabel}</p>
+      <p className="product-related__name">{product.name}</p>
     </Link>
   );
 }
@@ -74,10 +71,10 @@ export function ProductClient({ slug }: { slug: string }) {
       </section>
 
       {related.length > 0 && (
-        <section className="border-t border-black/10 px-6 py-16 md:px-10 md:py-24">
-          <div className="mx-auto max-w-6xl">
-            <p className="mb-8 text-[11px] text-black/60">From the Collection</p>
-            <div className="flex gap-6 overflow-x-auto pb-4">
+        <section className="product-related">
+          <div className="product-related__inner">
+            <p className="product-related__heading">From the Collection</p>
+            <div className="product-related__grid">
               {related.map((p) => (
                 <RelatedCard key={p.slug} product={p} />
               ))}

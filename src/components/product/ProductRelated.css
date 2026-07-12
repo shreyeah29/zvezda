@@ -1,0 +1,77 @@
+.product-related {
+  padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.product-related__inner {
+  margin-inline: auto;
+  max-width: 72rem;
+}
+
+.product-related__heading {
+  margin: 0 0 clamp(1.75rem, 3vw, 2.5rem);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.product-related__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+@media (min-width: 640px) {
+  .product-related__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-related__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.product-related__card {
+  text-decoration: none;
+}
+
+.product-related__media {
+  aspect-ratio: 436 / 580;
+  overflow: hidden;
+  background: #f0f0f0;
+  transition: opacity 0.25s ease;
+}
+
+.product-related__card:hover .product-related__media {
+  opacity: 0.92;
+}
+
+.product-related__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.product-related__label {
+  margin: 0.85rem 0 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.product-related__name {
+  margin: 0.35rem 0 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #0c0a09;
+}
