@@ -7,7 +7,7 @@
 
 .jm-scroll-gallery__track {
   display: flex;
-  gap: 8px;
+  gap: 0;
   overflow-x: auto;
   overflow-y: hidden;
   cursor: grab;
