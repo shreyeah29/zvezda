@@ -20,7 +20,11 @@ export function HomePinkCollectionFeature() {
         </div>
         <div className="jm-collection-feature__panel jm-collection-feature__panel--image">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={FEATURE_IMAGE} alt="Pink collection editorial" className="jm-collection-feature__media" />
+          <img
+            src={FEATURE_IMAGE}
+            alt="Pink collection editorial"
+            className="jm-collection-feature__media jm-collection-feature__media--pink-editorial"
+          />
         </div>
       </div>
       <hr className="jm-section-rule" aria-hidden="true" />

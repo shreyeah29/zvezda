@@ -45,6 +45,10 @@
   object-position: center;
 }
 
+.jm-collection-feature__media--pink-editorial {
+  object-position: center 38%;
+}
+
 .jm-collection-feature__panel--video .jm-caption {
   text-decoration: none;
   transition: opacity 0.3s ease;
