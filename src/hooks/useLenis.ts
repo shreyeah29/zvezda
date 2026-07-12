@@ -17,12 +17,22 @@ export function useLenis() {
 
     const onResize = () => {
       lenis?.resize();
-      void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => ScrollTrigger.refresh());
+      void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
+        ([{ default: gsap }, { ScrollTrigger }]) => {
+          gsap.registerPlugin(ScrollTrigger);
+          ScrollTrigger.refresh();
+        },
+      );
     };
 
     void (async () => {
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
       if (!mounted) return;
+
+      gsap.registerPlugin(ScrollTrigger);
 
       lenis = new Lenis({
         duration: 1.2,
