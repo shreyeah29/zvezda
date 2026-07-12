@@ -46,6 +46,22 @@ const HomeCollectionFeature = dynamic(
   { ssr: false },
 );
 
+const HomePinkProductRow = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomeProductRow").then((mod) => ({
+      default: mod.HomePinkProductRow,
+    })),
+  { ssr: false },
+);
+
+const HomePinkCollectionFeature = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomePinkCollectionFeature").then((mod) => ({
+      default: mod.HomePinkCollectionFeature,
+    })),
+  { ssr: false },
+);
+
 const JacquemusFooter = dynamic(
   () =>
     import("@/components/home/jacquemus/JacquemusFooter").then((mod) => ({
@@ -72,6 +88,8 @@ export default function HomePage() {
           <HomeCollectionSplit />
           <HomeProductRow />
           <HomeCollectionFeature />
+          <HomePinkProductRow />
+          <HomePinkCollectionFeature />
           <JacquemusFooter />
         </main>
       </SmoothScroll>
