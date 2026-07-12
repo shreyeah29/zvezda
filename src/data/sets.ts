@@ -15,6 +15,7 @@ export type SetManifest = {
   photos: string[];
   video?: string;
   videoAlt?: string;
+  videoObjectPosition?: string;
 };
 
 /** Colour / theme groupings — set number = same product across photos + videos folders */
@@ -180,6 +181,7 @@ export const sets: SetManifest[] = [
     collection: "pink",
     photos: ["HSP_5981.JPG", "HSP_5988.JPG", "HSP_6019.JPG"],
     video: "PinkCoord1.mp4",
+    videoObjectPosition: "center 22%",
   },
   {
     id: 17,

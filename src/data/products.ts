@@ -24,6 +24,7 @@ export type Product = {
   gallery: string[];
   video?: string;
   videoAlt?: string;
+  videoObjectPosition?: string;
 };
 
 const editorialNames: Record<number, string> = {
@@ -115,6 +116,7 @@ function setToProduct(set: SetManifest): Product {
     gallery: gallery.length > 1 ? gallery.slice(1) : gallery,
     video: setVideoPath(set),
     videoAlt: set.videoAlt ? setVideoPath(set, set.videoAlt) : undefined,
+    videoObjectPosition: set.videoObjectPosition,
   };
 }
 

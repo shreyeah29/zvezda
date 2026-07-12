@@ -48,7 +48,14 @@ export function ProductClient({ slug }: { slug: string }) {
     <main id="main-content" className="min-h-screen bg-[#fafaf9]">
       {hasVideo && (
         <section className="hero-screen relative isolate w-full overflow-hidden">
-          <video autoPlay muted loop playsInline className="h-full w-full object-cover">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+            style={{ objectPosition: product.videoObjectPosition ?? "center" }}
+          >
             <source src={product.video} type="video/mp4" />
           </video>
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/35 to-transparent" />
