@@ -23,6 +23,7 @@
 *.pem
 /_originals-backup/
 /_originals-backup/
+.cursor/
 ui-ux-pro-max-skill/
 public/assets/images/film/
 
