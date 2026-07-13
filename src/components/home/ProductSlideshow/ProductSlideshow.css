@@ -29,18 +29,23 @@
 .ps-backdrop {
   position: absolute;
   left: 50%;
-  top: 54%;
+  top: 52%;
   z-index: 1;
   transform: translate(-50%, -50%);
   font-family: var(--ps-font);
-  font-size: clamp(90px, 13vw, 190px);
+  font-size: clamp(160px, 30vw, 420px);
   font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
   color: #ececec;
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
+}
+
+.ps-root--browse .ps-backdrop {
+  font-size: clamp(180px, 34vw, 480px);
+  letter-spacing: -0.05em;
 }
 
 /* ------------------------------------------------------------------ */
@@ -75,8 +80,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: 13vw;
-  min-width: 88px;
+  width: 11.5vw;
+  min-width: 72px;
   margin: 0;
   padding: 0;
   border: 0;
@@ -249,6 +254,10 @@
 
   .ps-backdrop {
     top: 50%;
-    font-size: clamp(64px, 16vw, 120px);
+    font-size: clamp(96px, 22vw, 200px);
+  }
+
+  .ps-root--browse .ps-backdrop {
+    font-size: clamp(108px, 26vw, 240px);
   }
 }

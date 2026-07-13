@@ -133,12 +133,12 @@ function dressMetrics(
 ) {
   if (mode === "browse") {
     if (hoveredIndex === index) {
-      return { height: "34vh", opacity: 1, zIndex: 12 };
+      return { height: "26vh", opacity: 1, zIndex: 12 };
     }
     if (hoveredIndex !== null) {
-      return { height: "24vh", opacity: 0.28, zIndex: 5 };
+      return { height: "17vh", opacity: 0.28, zIndex: 5 };
     }
-    return { height: "28vh", opacity: 1, zIndex: 8 };
+    return { height: "21vh", opacity: 1, zIndex: 8 };
   }
 
   const isActive = index === activeIndex;
