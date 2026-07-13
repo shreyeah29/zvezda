@@ -31,6 +31,14 @@ const HomeMobileShop = dynamic(
   { ssr: false },
 );
 
+const HomeMobilePinkShop = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomeMobileShop").then((mod) => ({
+      default: mod.HomeMobilePinkShop,
+    })),
+  { ssr: false },
+);
+
 const HomeCollectionSplit = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeCollectionSplit").then((mod) => ({
@@ -91,15 +99,36 @@ export default function HomePage() {
     <SessionLoadGate>
       <SmoothScroll>
         <main id="main-content" className="jacquemus-home">
-          <HomeHeroVideo />
-          <HomeProductSlideshow />
-          <HomeCollectionSplit />
-          <HomeMobileShop />
-          <HomePinkProductRow />
-          <HomePinkCollectionFeature />
-          <HomeProductRow />
-          <HomeCollectionFeature />
-          <JacquemusFooter />
+          <div className="home-section home-section--hero">
+            <HomeHeroVideo />
+          </div>
+          <div className="home-section home-section--showcase">
+            <HomeProductSlideshow />
+          </div>
+          <div className="home-section home-section--split">
+            <HomeCollectionSplit />
+          </div>
+          <div className="home-section home-section--mobile-bw-shop">
+            <HomeMobileShop />
+          </div>
+          <div className="home-section home-section--pink-row">
+            <HomePinkProductRow />
+          </div>
+          <div className="home-section home-section--pink-feature">
+            <HomePinkCollectionFeature />
+          </div>
+          <div className="home-section home-section--bw-row">
+            <HomeProductRow />
+          </div>
+          <div className="home-section home-section--bw-feature">
+            <HomeCollectionFeature />
+          </div>
+          <div className="home-section home-section--mobile-pink-shop">
+            <HomeMobilePinkShop />
+          </div>
+          <div className="home-section home-section--footer">
+            <JacquemusFooter />
+          </div>
         </main>
       </SmoothScroll>
     </SessionLoadGate>

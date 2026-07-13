@@ -1,10 +1,60 @@
 /* Mobile-only homepage tuning — desktop styles unchanged above 768px */
 
 @media (max-width: 768px) {
+  .jacquemus-home {
+    display: flex;
+    flex-direction: column;
+    background: #000000;
+  }
+
+  .jacquemus-home .home-section--hero {
+    order: 1;
+  }
+
+  .jacquemus-home .home-section--split {
+    order: 2;
+  }
+
+  .jacquemus-home .home-section--mobile-bw-shop {
+    order: 3;
+  }
+
+  .jacquemus-home .home-section--bw-feature {
+    order: 4;
+  }
+
+  .jacquemus-home .home-section--pink-feature {
+    order: 5;
+  }
+
+  .jacquemus-home .home-section--mobile-pink-shop {
+    order: 6;
+  }
+
+  .jacquemus-home .home-section--footer {
+    order: 7;
+  }
+
+  .jacquemus-home .home-section--showcase,
+  .jacquemus-home .home-section--pink-row,
+  .jacquemus-home .home-section--bw-row {
+    display: none !important;
+  }
+
+  .jacquemus-home .jm-collection-split,
+  .jacquemus-home .jm-collection-feature {
+    margin: 0;
+    padding: 0;
+  }
+
   .jacquemus-home .jm-collection-split__grid,
   .jacquemus-home .jm-collection-feature__grid {
-    height: 48svh;
-    min-height: 48svh;
+    height: 50svh;
+    min-height: 50svh;
+  }
+
+  .jacquemus-home .jm-section-rule {
+    display: none;
   }
 
   .jacquemus-home .jm-caption {
@@ -13,12 +63,9 @@
     font-size: 9px;
   }
 
-  .jacquemus-home .jm-section-rule {
-    height: 2px;
-  }
-
   .jacquemus-home .jm-footer {
     padding: 1.25rem 0.85rem;
+    background: #ffffff;
   }
 
   .jacquemus-home .jm-footer__inner {
