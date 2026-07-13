@@ -2,29 +2,26 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { getHomeProductSlideshowItems } from "@/data/homeProductSlideshow";
 import type { SlideshowProduct } from "./types";
 import "./ProductSlideshow.css";
 
 const SPRING = {
   type: "spring" as const,
-  stiffness: 320,
-  damping: 32,
-  mass: 0.9,
+  stiffness: 260,
+  damping: 30,
+  mass: 1,
 };
 
-const PANEL_SPRING = {
-  type: "spring" as const,
-  stiffness: 280,
-  damping: 30,
-};
+/** Horizontal slot rhythm — equal spacing between every dress */
+const SLOT_VW = 11;
 
 type ProductSlideshowProps = {
   products?: SlideshowProduct[];
 };
 
-function ProductPanel({
+function InfoPanel({
   product,
   activeSize,
   activeColor,
@@ -38,100 +35,91 @@ function ProductPanel({
   onColorChange: (color: string) => void;
 }) {
   return (
-    <div className="product-slideshow__panel">
+    <aside className="ps-panel">
+      <div className="ps-panel__block">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.h2
+            key={`title-${product.slug}`}
+            className="ps-panel__title"
+            initial={{ y: 16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -16, opacity: 0 }}
+            transition={SPRING}
+          >
+            {product.title}
+          </motion.h2>
+        </AnimatePresence>
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p
+            key={`desc-${product.slug}`}
+            className="ps-panel__description"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          >
+            {product.description}
+          </motion.p>
+        </AnimatePresence>
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p
+            key={`price-${product.slug}`}
+            className="ps-panel__price"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={SPRING}
+          >
+            {product.price}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
-          key={product.slug}
-          className="product-slideshow__panel-inner"
-          initial={{ opacity: 1 }}
+          key={`variants-${product.slug}`}
+          className="ps-panel__block ps-panel__block--variants"
+          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22, ease: "easeInOut" }}
         >
-          <div className="product-slideshow__panel-copy">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.h2
-                key={`title-${product.slug}`}
-                className="product-slideshow__title"
-                initial={{ y: 18, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -18, opacity: 0 }}
-                transition={PANEL_SPRING}
+          <div className="ps-panel__row" aria-label="Sizes">
+            {product.sizes.map((size) => (
+              <button
+                key={size}
+                type="button"
+                className={`ps-pill${size === activeSize ? " ps-pill--active" : ""}`}
+                onClick={() => onSizeChange(size)}
               >
-                {product.title}
-              </motion.h2>
-            </AnimatePresence>
-
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.p
-                key={`desc-${product.slug}`}
-                className="product-slideshow__description"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.28, ease: "easeInOut" }}
-              >
-                {product.description}
-              </motion.p>
-            </AnimatePresence>
-
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.p
-                key={`price-${product.slug}`}
-                className="product-slideshow__price"
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={PANEL_SPRING}
-              >
-                {product.price}
-              </motion.p>
-            </AnimatePresence>
+                {size}
+              </button>
+            ))}
           </div>
 
-          <div className="product-slideshow__variants">
-            <div className="product-slideshow__variant-row" aria-label="Sizes">
-              {product.sizes.map((size) => {
-                const isActive = size === activeSize;
-                return (
-                  <button
-                    key={size}
-                    type="button"
-                    className={`product-slideshow__pill${
-                      isActive ? " product-slideshow__pill--active" : ""
-                    }`}
-                    onClick={() => onSizeChange(size)}
-                  >
-                    {size}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="product-slideshow__variant-row" aria-label="Colors">
-              {product.colors.map((color) => {
-                const isActive = color.name === activeColor;
-                return (
-                  <button
-                    key={color.name}
-                    type="button"
-                    className={`product-slideshow__pill product-slideshow__pill--color${
-                      isActive ? " product-slideshow__pill--active" : ""
-                    }`}
-                    onClick={() => onColorChange(color.name)}
-                  >
-                    {color.name}
-                  </button>
-                );
-              })}
-            </div>
+          <div className="ps-panel__row" aria-label="Colors">
+            {product.colors.map((color) => (
+              <button
+                key={color.name}
+                type="button"
+                className={`ps-pill${
+                  color.name === activeColor ? " ps-pill--active" : ""
+                }`}
+                onClick={() => onColorChange(color.name)}
+              >
+                {color.name}
+              </button>
+            ))}
           </div>
-
-          <Link href={product.href} className="product-slideshow__cta">
-            VIEW PRODUCT
-          </Link>
         </motion.div>
       </AnimatePresence>
-    </div>
+
+      <Link href={product.href} className="ps-panel__cta">
+        View Product
+      </Link>
+    </aside>
   );
 }
 
@@ -146,72 +134,68 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
     Object.fromEntries(items.map((item) => [item.slug, item.sizes[1] ?? item.sizes[0]])),
   );
   const [colors, setColors] = useState<Record<string, string>>(() =>
-    Object.fromEntries(items.map((item) => [item.slug, item.colors[0]?.name ?? "Default"])),
+    Object.fromEntries(items.map((item) => [item.slug, item.colors[0]?.name ?? ""])),
   );
 
   if (items.length === 0) return null;
 
   const active = items[activeIndex] ?? items[0];
   const activeSize = sizes[active.slug] ?? active.sizes[0];
-  const activeColor = colors[active.slug] ?? active.colors[0]?.name ?? "Default";
+  const activeColor = colors[active.slug] ?? active.colors[0]?.name ?? "";
+
+  const centerOffset = (items.length - 1) / 2;
 
   return (
-    <div className="product-slideshow">
-      <p className="product-slideshow__hint">CLICK ON THE IMAGES</p>
-
-      <div className="product-slideshow__backdrop" aria-hidden="true">
+    <div className="ps-root">
+      <div className="ps-backdrop" aria-hidden="true">
         PRODUCTS
       </div>
 
-      <ProductPanel
+      <InfoPanel
         product={active}
         activeSize={activeSize}
         activeColor={activeColor}
         onSizeChange={(size) => setSizes((prev) => ({ ...prev, [active.slug]: size }))}
-        onColorChange={(color) => setColors((prev) => ({ ...prev, [active.slug]: color }))}
+        onColorChange={(color) =>
+          setColors((prev) => ({ ...prev, [active.slug]: color }))
+        }
       />
 
-      <LayoutGroup>
-        <div className="product-slideshow__stage">
+      <div className="ps-stage">
+        <motion.div
+          className="ps-track"
+          animate={{ x: `${(centerOffset - activeIndex) * SLOT_VW}vw` }}
+          transition={SPRING}
+        >
           {items.map((item, index) => {
             const isActive = index === activeIndex;
-            const offset = index - activeIndex;
-            const baseWidth = 200;
-            const spacing = 164;
 
             return (
-              <motion.button
+              <button
                 key={item.slug}
                 type="button"
-                layout
-                layoutId={`slideshow-product-${item.slug}`}
-                className="product-slideshow__figure"
+                className="ps-slot"
                 aria-label={`View ${item.title}`}
                 aria-pressed={isActive}
                 onClick={() => setActiveIndex(index)}
-                animate={{
-                  x: offset * spacing - baseWidth / 2,
-                  scale: isActive ? 1 : 0.74,
-                  opacity: isActive ? 1 : 0.55,
-                }}
-                transition={SPRING}
-                style={{
-                  zIndex: isActive ? 20 : 10 - Math.abs(offset),
-                  originY: 1,
-                }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <motion.img
                   src={item.image}
                   alt={item.alt}
-                  className="product-slideshow__image"
+                  className="ps-image"
                   draggable={false}
+                  animate={{
+                    height: isActive ? "42vh" : "17vh",
+                    opacity: isActive ? 1 : 0.25,
+                  }}
+                  transition={SPRING}
                 />
-              </motion.button>
+              </button>
             );
           })}
-        </div>
-      </LayoutGroup>
+        </motion.div>
+      </div>
     </div>
   );
 }
