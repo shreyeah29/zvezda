@@ -14,8 +14,8 @@ const SPRING = {
   mass: 1,
 };
 
-const BROWSE_DRESS_HEIGHT = "17.2vh";
-const BROWSE_HERO_DRESS_HEIGHT = "18.92vh";
+const BROWSE_DRESS_HEIGHT = "19.2vh";
+const BROWSE_HERO_DRESS_HEIGHT = "21.1vh";
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
 
