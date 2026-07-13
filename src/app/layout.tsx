@@ -49,6 +49,12 @@ const tempting = localFont({
   display: "swap",
 });
 
+const modernRomance = localFont({
+  src: "../../public/fonts/ModernRomance.otf",
+  variable: "--font-modern-romance",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Zvezda — Where light becomes garment",
   description:
@@ -69,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} ${bright.variable} ${against.variable} ${tempting.variable} h-full`}
+      className={`${display.variable} ${body.variable} ${editorial.variable} ${product.variable} ${bright.variable} ${against.variable} ${tempting.variable} ${modernRomance.variable} h-full`}
     >
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <a href="#main-content" className="skip-link">
