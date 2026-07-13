@@ -2,17 +2,17 @@ import { formatPrice, getProduct } from "@/data/products";
 import type { SlideshowProduct } from "@/components/home/ProductSlideshow/types";
 
 const SLIDESHOW_PIECES = [
-  { slug: "set-12", image: "/assets/images/home/slideshow/crimson.png" },
+  { slug: "set-2", image: "/assets/images/home/slideshow/garden.png" },
   {
     slug: "set-13",
     image: "/assets/images/home/slideshow/DE28B8E0-FF52-4278-BA81-4E1F918BCCBD.png",
   },
+  { slug: "set-12", image: "/assets/images/home/slideshow/crimson.png" },
   {
     slug: "set-11",
     image: "/assets/images/home/slideshow/011DE4DF-2671-47B6-B3F0-2ED4B2A07269.png",
   },
   { slug: "set-15", image: "/assets/images/home/slideshow/rose-cascade.png" },
-  { slug: "set-2", image: "/assets/images/home/slideshow/garden.png" },
 ] as const;
 
 const SIZE_OPTIONS = ["S", "M", "L", "XL"];

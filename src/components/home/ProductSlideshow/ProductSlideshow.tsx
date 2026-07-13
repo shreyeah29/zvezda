@@ -17,6 +17,15 @@ const SPRING = {
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
 
+/** Anchor each dress to a letter in Z-V-E-Z-A (skip D). */
+const LETTER_ANCHORS = [
+  { left: "8.5%", bottom: "18%" },   // Z — green
+  { left: "27%", bottom: "16%" },    // V — black
+  { left: "44.5%", bottom: "14%" }, // E — red
+  { left: "62%", bottom: "16%" },    // Z — yellow
+  { left: "90%", bottom: "18%" },    // A — pink
+] as const;
+
 type Mode = "browse" | "detail";
 
 type ProductSlideshowProps = {
@@ -133,12 +142,12 @@ function dressMetrics(
 ) {
   if (mode === "browse") {
     if (hoveredIndex === index) {
-      return { height: "26vh", opacity: 1, zIndex: 12 };
+      return { height: "28vh", opacity: 1, zIndex: 12 };
     }
     if (hoveredIndex !== null) {
-      return { height: "17vh", opacity: 0.28, zIndex: 5 };
+      return { height: "18vh", opacity: 0.28, zIndex: 5 };
     }
-    return { height: "21vh", opacity: 1, zIndex: 8 };
+    return { height: "23vh", opacity: 1, zIndex: 8 };
   }
 
   const isActive = index === activeIndex;
@@ -159,20 +168,13 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
   const wheelCooldown = useRef(false);
 
   const [mode, setMode] = useState<Mode>("browse");
-  const [activeIndex, setActiveIndex] = useState(Math.floor(items.length / 2));
+  const [activeIndex, setActiveIndex] = useState(2);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [sizes, setSizes] = useState<Record<string, string>>(() =>
     Object.fromEntries(items.map((item) => [item.slug, item.sizes[1] ?? item.sizes[0]])),
   );
   const [colors, setColors] = useState<Record<string, string>>(() =>
     Object.fromEntries(items.map((item) => [item.slug, item.colors[0]?.name ?? ""])),
-  );
-
-  const goTo = useCallback(
-    (index: number) => {
-      setActiveIndex(Math.max(0, Math.min(items.length - 1, index)));
-    },
-    [items.length],
   );
 
   const goNext = useCallback(() => {
@@ -257,9 +259,54 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
       className={`ps-root ps-root--${mode}`}
       onMouseLeave={() => setHoveredIndex(null)}
     >
-      <div className="ps-backdrop" aria-hidden="true">
-        ZVEZDA
-      </div>
+      {mode === "browse" ? (
+        <div className="ps-word-stage">
+          <div className="ps-backdrop" aria-hidden="true">
+            ZVEZDA
+          </div>
+
+          <div className="ps-letter-track">
+            {items.map((item, index) => {
+              const metrics = dressMetrics(mode, index, activeIndex, hoveredIndex);
+              const anchor = LETTER_ANCHORS[index] ?? LETTER_ANCHORS[0];
+
+              return (
+                <button
+                  key={item.slug}
+                  type="button"
+                  className="ps-slot ps-slot--anchored"
+                  style={{
+                    left: anchor.left,
+                    bottom: anchor.bottom,
+                  }}
+                  aria-label={`View ${item.title}`}
+                  onClick={() => handleDressClick(index)}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <motion.img
+                    src={item.image}
+                    alt={item.alt}
+                    className="ps-image"
+                    draggable={false}
+                    animate={{
+                      height: metrics.height,
+                      opacity: metrics.opacity,
+                    }}
+                    transition={SPRING}
+                    style={{ zIndex: metrics.zIndex }}
+                  />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className="ps-backdrop ps-backdrop--detail" aria-hidden="true">
+          ZVEZDA
+        </div>
+      )}
 
       <AnimatePresence>
         {mode === "detail" && (
@@ -286,64 +333,65 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
         )}
       </AnimatePresence>
 
-      <div className="ps-stage">
-        <motion.div
-          className="ps-track"
-          animate={{ x: `${trackShift}vw` }}
-          transition={SPRING}
-          drag={mode === "detail" ? "x" : false}
-          dragConstraints={{ left: -80, right: 80 }}
-          dragElastic={0.12}
-          dragMomentum={false}
-          onDragEnd={(_, info) => {
-            if (mode !== "detail") return;
-            const threshold = 40;
-            const velocityThreshold = 280;
-            if (
-              info.offset.x < -threshold ||
-              info.velocity.x < -velocityThreshold
-            ) {
-              goNext();
-            } else if (
-              info.offset.x > threshold ||
-              info.velocity.x > velocityThreshold
-            ) {
-              goPrevious();
-            }
-          }}
-        >
-          {items.map((item, index) => {
-            const metrics = dressMetrics(mode, index, activeIndex, hoveredIndex);
+      {mode === "detail" && (
+        <div className="ps-stage">
+          <motion.div
+            className="ps-track"
+            animate={{ x: `${trackShift}vw` }}
+            transition={SPRING}
+            drag="x"
+            dragConstraints={{ left: -80, right: 80 }}
+            dragElastic={0.12}
+            dragMomentum={false}
+            onDragEnd={(_, info) => {
+              const threshold = 40;
+              const velocityThreshold = 280;
+              if (
+                info.offset.x < -threshold ||
+                info.velocity.x < -velocityThreshold
+              ) {
+                goNext();
+              } else if (
+                info.offset.x > threshold ||
+                info.velocity.x > velocityThreshold
+              ) {
+                goPrevious();
+              }
+            }}
+          >
+            {items.map((item, index) => {
+              const metrics = dressMetrics(mode, index, activeIndex, hoveredIndex);
 
-            return (
-              <button
-                key={item.slug}
-                type="button"
-                className="ps-slot"
-                aria-label={`View ${item.title}`}
-                aria-pressed={mode === "detail" && index === activeIndex}
-                onClick={() => handleDressClick(index)}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <motion.img
-                  src={item.image}
-                  alt={item.alt}
-                  className="ps-image"
-                  draggable={false}
-                  animate={{
-                    height: metrics.height,
-                    opacity: metrics.opacity,
-                  }}
-                  transition={SPRING}
-                  style={{ zIndex: metrics.zIndex }}
-                />
-              </button>
-            );
-          })}
-        </motion.div>
-      </div>
+              return (
+                <button
+                  key={item.slug}
+                  type="button"
+                  className="ps-slot"
+                  aria-label={`View ${item.title}`}
+                  aria-pressed={index === activeIndex}
+                  onClick={() => handleDressClick(index)}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <motion.img
+                    src={item.image}
+                    alt={item.alt}
+                    className="ps-image"
+                    draggable={false}
+                    animate={{
+                      height: metrics.height,
+                      opacity: metrics.opacity,
+                    }}
+                    transition={SPRING}
+                    style={{ zIndex: metrics.zIndex }}
+                  />
+                </button>
+              );
+            })}
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
