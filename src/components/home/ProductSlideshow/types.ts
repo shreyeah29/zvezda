@@ -13,6 +13,7 @@ export type SlideVariant = {
 export type SlideItem = {
   image: SlideImage;
   subImages?: SlideImage[];
+  imageBlendMode?: "normal" | "screen" | "multiply";
   productInfo?: {
     title: string;
     description: string;
@@ -146,4 +147,10 @@ export type ProductSlideshowProps = {
     alignmentY?: "flex-start" | "center" | "flex-end";
   };
   imageFit?: "cover" | "contain";
+  hint?: {
+    enabled?: boolean;
+    text?: string;
+    font?: Record<string, string | number>;
+    color?: string;
+  };
 };

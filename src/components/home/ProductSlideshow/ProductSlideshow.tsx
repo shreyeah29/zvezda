@@ -249,6 +249,12 @@ export function ProductSlideshow(props: ProductSlideshowProps) {
       alignmentY: "flex-start",
     },
     imageFit = "contain",
+    hint = {
+      enabled: false,
+      text: "CLICK ON THE IMAGES",
+      color: "#000000",
+      font: {},
+    },
   } = props;
 
   const displayItems = items.length > 0 ? items : DEFAULT_ITEMS;
@@ -275,7 +281,46 @@ export function ProductSlideshow(props: ProductSlideshowProps) {
   });
   const lastTapTime = useRef(0);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+  const [responsiveCardSize, setResponsiveCardSize] = useState({
+    width: baseSize.width ?? 200,
+    height: baseSize.height ?? 250,
+  });
   const instanceId = useRef(instanceCounter++);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateCardSize = () => {
+      const section = container.closest(".home-product-slideshow");
+      const styles = section ? getComputedStyle(section) : null;
+      const cssWidth = styles
+        ? Number.parseFloat(styles.getPropertyValue("--slideshow-card-width"))
+        : Number.NaN;
+      const cssHeight = styles
+        ? Number.parseFloat(styles.getPropertyValue("--slideshow-card-height"))
+        : Number.NaN;
+
+      if (!Number.isNaN(cssWidth) && !Number.isNaN(cssHeight)) {
+        setResponsiveCardSize({ width: cssWidth, height: cssHeight });
+        return;
+      }
+
+      const height = Math.min(container.offsetHeight * 0.72, 680);
+      const width = Math.max(120, Math.min(220, height * 0.28));
+      setResponsiveCardSize({ width, height });
+    };
+
+    updateCardSize();
+    const observer = new ResizeObserver(updateCardSize);
+    observer.observe(container);
+    window.addEventListener("resize", updateCardSize);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateCardSize);
+    };
+  }, [baseSize.width, baseSize.height]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -396,8 +441,8 @@ export function ProductSlideshow(props: ProductSlideshowProps) {
     return () => clearTimeout(timeoutId);
   }, [showProductInfo, selectedIndex]);
 
-  const cardWidth = baseSize.width ?? 200;
-  const cardHeight = baseSize.height ?? 250;
+  const cardWidth = responsiveCardSize.width;
+  const cardHeight = responsiveCardSize.height;
   const maxScale = (scaleUp.maxScale ?? 200) / 100;
   const zoomGap = (settings.gap ?? 16) * 2;
   const sizeDecrement = scaleUp.sizeDecrement ?? 15;
@@ -657,6 +702,7 @@ export function ProductSlideshow(props: ProductSlideshowProps) {
   return (
     <div
       ref={containerRef}
+      className="product-slideshow"
       style={{
         width: "100%",
         height: "100%",
@@ -667,6 +713,18 @@ export function ProductSlideshow(props: ProductSlideshowProps) {
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
+      {hint.enabled && !isZoomedIn && (
+        <p
+          className="product-slideshow__hint"
+          style={{
+            ...hint.font,
+            color: hint.color,
+          }}
+        >
+          {hint.text}
+        </p>
+      )}
+
       {title.enabled && !isZoomedIn && (
         <div
           style={{
@@ -727,10 +785,11 @@ export function ProductSlideshow(props: ProductSlideshowProps) {
             <motion.div
               key={index}
               layoutId={`item-${instanceId.current}-${index}`}
+              className="product-slideshow__card"
               style={{
                 position: isZoomedIn ? "absolute" : "relative",
                 borderRadius: settings.radius,
-                overflow: "hidden",
+                overflow: "visible",
                 cursor: "pointer",
                 width: cardWidth,
                 height: cardHeight,
@@ -809,14 +868,12 @@ export function ProductSlideshow(props: ProductSlideshowProps) {
                 src={activeImage.src}
                 alt={activeImage.alt}
                 srcSet={activeImage.srcSet}
+                className={`product-slideshow__image${
+                  item.imageBlendMode === "screen" ? " product-slideshow__image--screen" : ""
+                }`}
                 style={{
-                  width: "100%",
-                  height: "100%",
                   objectFit: imageFit,
-                  objectPosition: "center bottom",
-                  WebkitBackfaceVisibility: "hidden",
-                  backfaceVisibility: "hidden",
-                  transform: "translateZ(0)",
+                  mixBlendMode: item.imageBlendMode ?? "normal",
                 }}
               />
               {subImages.enabled &&
