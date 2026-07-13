@@ -92,7 +92,6 @@ export default function HomePage() {
         <main id="main-content" className="jacquemus-home">
           <HomeHeroVideo />
           <HomeProductSlideshow />
-          <hr className="jm-section-rule" aria-hidden="true" />
           <HomeScrollGallery />
           <HomeCollectionSplit />
           <HomeProductRow />
