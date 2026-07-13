@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, startTransition } from "react";
+import { useEffect, useMemo, useRef, useState, startTransition, type CSSProperties } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { arcCarouselCollections } from "@/data/arcCarouselCollections";
 import "./CircularGallery.css";
@@ -98,15 +98,21 @@ const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>>
  * Pattern-space image frame inside each wedge bbox.
  * Tall, top-anchored crop (cover) so dresses stay visible — not face-only.
  */
-function wedgePatternImage(index: number, count: number): WedgePatternFrame {
+function wedgePatternImage(
+  index: number,
+  count: number,
+  stageWidth: number,
+): WedgePatternFrame {
   const center = (count - 1) / 2;
   const offsetFromCenter = (index - center) / Math.max(center, 1);
+  const mobile = stageWidth <= 480;
+  const tablet = stageWidth <= 768;
 
   const defaults: WedgePatternFrame = {
-    width: 1.3,
-    height: 2.1,
-    x: (1 - 1.3) / 2 - offsetFromCenter * 0.06,
-    y: -0.42,
+    width: mobile ? 1.38 : tablet ? 1.34 : 1.3,
+    height: mobile ? 2.25 : tablet ? 2.18 : 2.1,
+    x: (1 - (mobile ? 1.38 : tablet ? 1.34 : 1.3)) / 2 - offsetFromCenter * (mobile ? 0.05 : 0.06),
+    y: mobile ? -0.38 : -0.42,
     preserveAspectRatio: "xMidYMin slice",
   };
 
@@ -114,9 +120,22 @@ function wedgePatternImage(index: number, count: number): WedgePatternFrame {
 }
 
 function innerRadiusRatioForWidth(width: number) {
-  if (width <= 480) return 0.54;
+  if (width <= 380) return 0.52;
+  if (width <= 480) return 0.535;
+  if (width <= 600) return 0.545;
   if (width <= 900) return 0.55;
   return INNER_RADIUS_RATIO;
+}
+
+function hoverOffsetRatioForWidth(width: number) {
+  if (width <= 480) return 0.038;
+  if (width <= 768) return 0.048;
+  return HOVER_OFFSET_RATIO;
+}
+
+function strokeWidthForWidth(width: number) {
+  if (width <= 480) return 1.5;
+  return STROKE_WIDTH;
 }
 
 export function CircularGallery() {
@@ -138,6 +157,8 @@ export function CircularGallery() {
   }, []);
 
   const innerRatio = innerRadiusRatioForWidth(stageWidth);
+  const hoverOffsetRatio = hoverOffsetRatioForWidth(stageWidth);
+  const strokeW = strokeWidthForWidth(stageWidth);
   const count = items.length;
   const totalGap = GAP_DEGREES * Math.max(0, count - 1);
   const usableSweep =
@@ -178,7 +199,15 @@ export function CircularGallery() {
   return (
     <section className="cg-hero" aria-label="Collections circular gallery">
       <div className="cg-hero__inner">
-        <div className="cg-stage" ref={stageRef}>
+        <div
+          className="cg-stage"
+          ref={stageRef}
+          style={
+            {
+              "--cg-copy-top": stageWidth <= 480 ? "66%" : stageWidth <= 768 ? "68%" : "70%",
+            } as CSSProperties
+          }
+        >
           <svg
             className="cg-svg"
             viewBox={`0 0 ${VB_WIDTH} ${VB_HEIGHT}`}
@@ -190,7 +219,7 @@ export function CircularGallery() {
             <defs>
               {wedges.map((wedge) => {
                 const item = items[wedge.index];
-                const frame = wedgePatternImage(wedge.index, count);
+                const frame = wedgePatternImage(wedge.index, count, stageWidth);
                 const clipId = `cg_pat_clip_${wedge.index}`;
                 return (
                   <pattern
@@ -225,9 +254,9 @@ export function CircularGallery() {
                 const isHovered = hoveredIndex === wedge.index;
                 const midRad = degToRad(wedge.midAngle);
                 const hoverX =
-                  Math.cos(midRad) * outerR * HOVER_OFFSET_RATIO;
+                  Math.cos(midRad) * outerR * hoverOffsetRatio;
                 const hoverY =
-                  Math.sin(midRad) * outerR * HOVER_OFFSET_RATIO;
+                  Math.sin(midRad) * outerR * hoverOffsetRatio;
 
                 return (
                   <motion.path
@@ -235,7 +264,7 @@ export function CircularGallery() {
                     d={wedge.path}
                     fill={`url(#${wedge.patternId})`}
                     stroke="rgba(255,255,255,0.95)"
-                    strokeWidth={STROKE_WIDTH}
+                    strokeWidth={strokeW}
                     strokeLinejoin="miter"
                     role="img"
                     aria-label={item.imageAlt}
@@ -265,6 +294,9 @@ export function CircularGallery() {
                       transformOrigin: `${CX}px ${CY}px`,
                       transformBox: "fill-box",
                       cursor: "pointer",
+                    }}
+                    onPointerDown={() => {
+                      startTransition(() => setHoveredIndex(wedge.index));
                     }}
                     onPointerEnter={() => {
                       startTransition(() => setHoveredIndex(wedge.index));
