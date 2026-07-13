@@ -1,21 +1,21 @@
 .hm-instagram {
   display: none;
-  background: #000000;
+  background: #080808;
 }
 
 @media (max-width: 768px) {
   .hm-instagram {
     display: block;
-    margin-top: 1.25rem;
-    padding: 1.35rem 0.75rem 1.65rem;
+    margin-top: 0;
+    padding: 2.5rem 0.75rem 2.75rem;
     border-top: 1px solid rgba(196, 165, 116, 0.35);
-    background: #000000;
+    background: #080808;
   }
 
   .hm-instagram__header {
     text-align: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.85rem;
+    margin-bottom: 1.15rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
@@ -43,10 +43,10 @@
   .hm-instagram__grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 3px;
-    padding: 3px;
+    gap: 12px;
+    padding: 0;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #0a0a0a;
+    background: #111111;
   }
 
   .hm-instagram__cell {
@@ -70,7 +70,7 @@
     justify-content: center;
     gap: 0.45rem;
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 1.15rem;
     padding: 0.75rem 0.85rem;
     border: 1px solid rgba(255, 255, 255, 0.28);
     font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
