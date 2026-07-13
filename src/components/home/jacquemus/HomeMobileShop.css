@@ -173,7 +173,7 @@
   position: relative;
   display: block;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: none;
   box-sizing: border-box;
   text-decoration: none;
   color: #ffffff;
