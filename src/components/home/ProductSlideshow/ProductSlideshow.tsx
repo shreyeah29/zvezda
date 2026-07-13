@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, Fragment } from "rea
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { getHomeProductSlideshowItems } from "@/data/homeProductSlideshow";
+import { getShowcaseImageTrailItems } from "@/data/homeShowcaseImageTrail";
 import type { SlideshowProduct } from "./types";
 import {
   DRESS_SPRING,
@@ -369,7 +370,7 @@ export function ProductSlideshow({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [mode, goNext, goPrevious]);
 
-  const trailImages = useMemo(() => items.map((item) => item.image), [items]);
+  const trailImages = useMemo(() => getShowcaseImageTrailItems(), []);
 
   if (items.length === 0) return null;
 
