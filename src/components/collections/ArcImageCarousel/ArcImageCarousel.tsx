@@ -29,7 +29,7 @@ const OUTER_SCALE = 0.68;
 const INACTIVE_OPACITY = 0.62;
 const ACTIVE_LIFT = 18;
 const ARC_TOP_PADDING = 140;
-const SPAN_TIGHTEN = 0.65;
+const CONTENT_LIFT = 48;
 const SPRING_STIFFNESS = 170;
 const SPRING_DAMPING = 22;
 
@@ -52,20 +52,36 @@ function cxFromSize(width: number) {
   return width / 2;
 }
 
-function pickArcParams(width: number) {
+function pickArcParams(width: number, itemCount: number) {
+  const count = Math.max(itemCount, 2);
+  const stepDeg = width <= 480 ? 21 : width <= 768 ? 18.5 : 17;
+  const spanDeg = stepDeg * (count - 1);
   if (width <= 480) {
-    return { spanDeg: 155 * SPAN_TIGHTEN, radiusFactor: 0.88, tiltDeg: 0 };
+    return { spanDeg, radiusFactor: 0.88, tiltDeg: 0 };
   }
   if (width <= 768) {
-    return { spanDeg: 205 * SPAN_TIGHTEN, radiusFactor: 0.78, tiltDeg: 0 };
+    return { spanDeg, radiusFactor: 0.78, tiltDeg: 0 };
   }
-  return { spanDeg: 245 * SPAN_TIGHTEN, radiusFactor: 0.72, tiltDeg: 0 };
+  return { spanDeg, radiusFactor: 0.72, tiltDeg: 0 };
+}
+
+function maxRadiusForSpan(spanDeg: number, width: number, cardW: number) {
+  const cx = width / 2;
+  const outerRad = (Math.PI / 180) * (FOCAL_DEG - spanDeg / 2);
+  const cosA = Math.cos(outerRad);
+  if (Math.abs(cosA) < 0.05) return width;
+  return Math.max(200, (cx - 10 - cardW / 2) / Math.abs(cosA));
 }
 
 function cardBaseWidth(width: number) {
-  if (width <= 480) return clamp(width * 0.52, 160, 240);
-  if (width <= 768) return clamp(width * 0.34, 180, 260);
-  return clamp(width * 0.24, 190, 280);
+  const scale = width > 768 ? 0.88 : 1;
+  if (width <= 480) return clamp(width * 0.52 * scale, 148, 220);
+  if (width <= 768) return clamp(width * 0.34 * scale, 162, 232);
+  return clamp(width * 0.24 * scale, 168, 248);
+}
+
+function cardBaseHeightFromWidth(w: number) {
+  return w * 1.25;
 }
 
 function getActiveIndex(rotationDeg: number, baseAngles: number[], focalDeg = FOCAL_DEG) {
@@ -270,11 +286,12 @@ export function ArcImageCarousel({
   const rootRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 900, height: 620 });
+  const [contentTop, setContentTop] = useState(0);
   const [hasEntered, setHasEntered] = useState(reducedMotion ?? false);
 
   const { spanDeg, radiusFactor, tiltDeg } = useMemo(
-    () => pickArcParams(size.width),
-    [size.width],
+    () => pickArcParams(size.width, items.length),
+    [size.width, items.length],
   );
 
   const baseAngles = useMemo(() => {
@@ -285,15 +302,16 @@ export function ArcImageCarousel({
     return Array.from({ length: total }, (_, i) => FOCAL_DEG + (i - mid) * step);
   }, [items.length, spanDeg]);
 
+  const cardW = useMemo(() => clamp(cardBaseWidth(size.width), 148, 248), [size.width]);
+  const cardH = useMemo(() => cardBaseHeightFromWidth(cardW), [cardW]);
+
   const radius = useMemo(() => {
-    const r = size.width * radiusFactor;
-    return clamp(r, 220, 720);
-  }, [size.width, radiusFactor]);
+    const widthRadius = size.width * radiusFactor;
+    const fitRadius = maxRadiusForSpan(spanDeg, size.width, cardW);
+    return clamp(Math.min(widthRadius, fitRadius), 200, 720);
+  }, [size.width, radiusFactor, spanDeg, cardW]);
 
   const centerY = useMemo(() => ARC_TOP_PADDING + radius, [radius]);
-
-  const cardW = useMemo(() => clamp(cardBaseWidth(size.width), 160, 280), [size.width]);
-  const cardH = useMemo(() => cardW, [cardW]);
 
   const stepDeg = useMemo(
     () => (items.length > 1 ? spanDeg / (items.length - 1) : 0),
@@ -315,8 +333,8 @@ export function ArcImageCarousel({
   }, [activeIndex]);
 
   useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
+    const root = rootRef.current;
+    if (!root) return;
     const ro = new ResizeObserver((entries) => {
       const cr = entries?.[0]?.contentRect;
       if (!cr) return;
@@ -325,9 +343,19 @@ export function ArcImageCarousel({
         height: Math.max(1, cr.height),
       });
     });
-    ro.observe(stage);
+    ro.observe(root);
     return () => ro.disconnect();
   }, []);
+
+  useEffect(() => {
+    const topOfArc = centerY - radius;
+    const bottomOfArc = centerY + radius;
+    const safe = Math.min(bottomOfArc - cardH * 0.35, size.height * 0.62);
+    const isMobile = size.width <= 480;
+    const nextTop =
+      Math.max(topOfArc + radius * 0.58, safe) - CONTENT_LIFT + (isMobile ? 72 : 0);
+    setContentTop(nextTop);
+  }, [centerY, radius, cardH, size.height, size.width]);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -542,7 +570,7 @@ export function ArcImageCarousel({
         ))}
       </div>
 
-      <div className="arc-carousel__content">
+      <div className="arc-carousel__content" style={{ top: contentTop }}>
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={`${activeItem?.title ?? "none"}-${activeIndex}`}
