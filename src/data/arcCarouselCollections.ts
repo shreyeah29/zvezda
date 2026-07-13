@@ -22,18 +22,18 @@ export const arcCarouselCollections: ArcCarouselCollection[] = [
     href: "/collections/noir",
   },
   {
+    title: "Amber Solstice",
+    subtitle: "Burnt orange satin glowing in warm candlelight.",
+    image: "/assets/images/products/set-13/BHA_2011.jpg",
+    imageAlt: "Amber Solstice — orange satin gown",
+    href: "/collections/orange",
+  },
+  {
     title: "Crimson Muse",
     subtitle: "Statement pieces crafted for unforgettable evenings.",
     image: "/assets/images/products/set-12/HSP_5750.jpg",
     imageAlt: "Crimson Muse — red evening gown",
     href: "/collections/red",
-  },
-  {
-    title: "Rose Cascade",
-    subtitle: "Soft romantic silhouettes with couture detailing.",
-    image: "/assets/images/products/set-15/HSP_4946.jpg",
-    imageAlt: "Rose Cascade — pink floral gown",
-    href: "/collections/pink",
   },
   {
     title: "Golden Solstice",
@@ -48,5 +48,12 @@ export const arcCarouselCollections: ArcCarouselCollection[] = [
     image: "/assets/images/products/set-9/HSP_3218.jpg",
     imageAlt: "Ivory Noir — ivory and black gown",
     href: "/collections/noir",
+  },
+  {
+    title: "Rose Cascade",
+    subtitle: "Soft romantic silhouettes with couture detailing.",
+    image: "/assets/images/products/set-15/HSP_4946.jpg",
+    imageAlt: "Rose Cascade — pink floral gown",
+    href: "/collections/pink",
   },
 ];

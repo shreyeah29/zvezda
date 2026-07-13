@@ -27,10 +27,12 @@ import "./ArcImageCarousel.css";
 const FOCAL_DEG = -90;
 const CARD_SHADOW = "0 10px 30px rgba(0, 0, 0, 0.12)";
 const CARD_SHADOW_HOVER = "0 16px 40px rgba(0, 0, 0, 0.14)";
-const ACTIVE_SCALE = 1.1;
-const INACTIVE_SCALE = 0.74;
-const INACTIVE_OPACITY = 0.68;
-const ACTIVE_LIFT = 12;
+const ACTIVE_SCALE = 1.2;
+const INACTIVE_SCALE = 0.86;
+const INACTIVE_OPACITY = 0.62;
+const ACTIVE_LIFT = 18;
+const ARC_TOP_PADDING = 108;
+const ITEM_SPACING_DEG = 2;
 const HOVER_LIFT = 8;
 const HOVER_SCALE = 1.03;
 
@@ -53,25 +55,25 @@ function cxFromSize(width: number) {
   return width / 2;
 }
 
-function pickArcParams(width: number, itemCount: number) {
-  const spanForCount = itemCount >= 6 ? 300 : itemCount >= 5 ? 270 : 245;
+function pickArcParams(width: number) {
   if (width <= 480) {
-    return { spanDeg: Math.min(188, spanForCount), radiusFactor: 0.58, tiltDeg: 0 };
+    return { spanDeg: 155, radiusFactor: 0.88, tiltDeg: 0 };
   }
   if (width <= 768) {
-    return { spanDeg: Math.min(238, spanForCount), radiusFactor: 0.52, tiltDeg: 0 };
+    return { spanDeg: 205, radiusFactor: 0.78, tiltDeg: 0 };
   }
-  return { spanDeg: spanForCount, radiusFactor: 0.48, tiltDeg: 0 };
+  return { spanDeg: 245, radiusFactor: 0.72, tiltDeg: 0 };
 }
 
 function cardBaseWidth(width: number) {
-  if (width <= 480) return clamp(width * 0.24, 68, 96);
-  if (width <= 768) return clamp(width * 0.15, 88, 118);
-  return clamp(width * 0.115, 96, 148);
+  const scale = 0.9;
+  if (width <= 480) return clamp(width * 0.52 * scale, 148, 220);
+  if (width <= 768) return clamp(width * 0.34 * scale, 162, 234);
+  return clamp(width * 0.24 * scale, 170, 252);
 }
 
 function cardBaseHeightFromWidth(w: number) {
-  return w * 1.28;
+  return w * 1.25;
 }
 
 function getActiveIndex(rotationDeg: number, baseAngles: number[], focalDeg = FOCAL_DEG) {
@@ -285,31 +287,27 @@ export function ArcImageCarousel({
   const [hasEntered, setHasEntered] = useState(reducedMotion ?? false);
 
   const { spanDeg, radiusFactor, tiltDeg } = useMemo(
-    () => pickArcParams(size.width, items.length),
-    [size.width, items.length],
+    () => pickArcParams(size.width),
+    [size.width],
   );
 
   const baseAngles = useMemo(() => {
     const total = items.length;
     if (total <= 1) return [FOCAL_DEG];
-    const step = spanDeg / (total - 1);
+    const baseStep = spanDeg / (total - 1);
+    const step = baseStep + ITEM_SPACING_DEG;
     const mid = (total - 1) / 2;
     return Array.from({ length: total }, (_, i) => FOCAL_DEG + (i - mid) * step);
   }, [items.length, spanDeg]);
 
   const radius = useMemo(() => {
-    const widthRadius = size.width * radiusFactor;
-    const heightCap = Math.max(120, (size.height - 200) * 0.52);
-    return clamp(Math.min(widthRadius, heightCap), 140, 420);
-  }, [size.width, size.height, radiusFactor]);
+    const r = size.width * radiusFactor;
+    return clamp(r, 220, 720);
+  }, [size.width, radiusFactor]);
 
-  const centerY = useMemo(() => {
-    const topPad = clamp(size.width * 0.05, 36, 72);
-    const stageBudget = Math.max(180, size.height - 210);
-    return topPad + stageBudget * 0.5;
-  }, [size.width, size.height]);
+  const centerY = useMemo(() => ARC_TOP_PADDING + radius, [radius]);
 
-  const cardW = useMemo(() => clamp(cardBaseWidth(size.width), 68, 148), [size.width]);
+  const cardW = useMemo(() => clamp(cardBaseWidth(size.width), 148, 252), [size.width]);
   const cardH = useMemo(() => cardBaseHeightFromWidth(cardW), [cardW]);
 
   const rotation = useMotionValue(0);
