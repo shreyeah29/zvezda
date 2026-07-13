@@ -34,36 +34,28 @@
   z-index: 1;
   transform: translate(-50%, -50%);
   width: max-content;
-  max-width: 96vw;
+  max-width: min(96vw, 100%);
+  padding: 0 clamp(8px, 1.5vw, 24px);
+  box-sizing: border-box;
 }
 
 .ps-word-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.ps-letter-col {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex: 0 0 auto;
-  min-width: 0.82em;
-  padding: 0 0.02em;
-}
-
-.ps-letter-col--empty {
-  min-width: 0.72em;
-}
-
-.ps-backdrop-char {
-  display: block;
   font-family: var(--ps-font);
   font-size: var(--ps-letter-size);
   font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 0.86;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.ps-letter-col {
+  position: relative;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.ps-backdrop-char {
   color: #ececec;
   user-select: none;
   pointer-events: none;

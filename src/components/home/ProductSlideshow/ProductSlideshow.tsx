@@ -320,7 +320,7 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
               return (
                 <div
                   key={`${column.char}-${columnIndex}`}
-                  className={`ps-letter-col${dressIndex === null ? " ps-letter-col--empty" : ""}`}
+                  className="ps-letter-col"
                 >
                   <span className="ps-backdrop-char">{column.char}</span>
                   {item && dressIndex !== null && (
