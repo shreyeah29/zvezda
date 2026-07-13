@@ -17,13 +17,14 @@ const SPRING = {
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
 
-/** Anchor each dress to a letter in Z-V-E-Z-A (skip D). */
-const LETTER_ANCHORS = [
-  { left: "8.5%", bottom: "18%" },   // Z — green
-  { left: "27%", bottom: "16%" },    // V — black
-  { left: "44.5%", bottom: "14%" }, // E — red
-  { left: "62%", bottom: "16%" },    // Z — yellow
-  { left: "90%", bottom: "18%" },    // A — pink
+/** Z V E Z D A — dress index per letter column (skip D). */
+const LETTER_LAYOUT = [
+  { char: "Z", dressIndex: 0 },
+  { char: "V", dressIndex: 1 },
+  { char: "E", dressIndex: 2 },
+  { char: "Z", dressIndex: 3 },
+  { char: "D", dressIndex: null },
+  { char: "A", dressIndex: 4 },
 ] as const;
 
 type Mode = "browse" | "detail";
@@ -142,12 +143,12 @@ function dressMetrics(
 ) {
   if (mode === "browse") {
     if (hoveredIndex === index) {
-      return { height: "28vh", opacity: 1, zIndex: 12 };
+      return { height: "26vh", opacity: 1, zIndex: 12 };
     }
     if (hoveredIndex !== null) {
-      return { height: "18vh", opacity: 0.28, zIndex: 5 };
+      return { height: "17vh", opacity: 0.28, zIndex: 5 };
     }
-    return { height: "23vh", opacity: 1, zIndex: 8 };
+    return { height: "21vh", opacity: 1, zIndex: 8 };
   }
 
   const isActive = index === activeIndex;
@@ -156,6 +157,56 @@ function dressMetrics(
     opacity: isActive ? 1 : 0.25,
     zIndex: isActive ? 20 : 10 - Math.abs(index - activeIndex),
   };
+}
+
+function DressButton({
+  item,
+  index,
+  mode,
+  activeIndex,
+  hoveredIndex,
+  onClick,
+  onHover,
+  onLeave,
+  className,
+}: {
+  item: SlideshowProduct;
+  index: number;
+  mode: Mode;
+  activeIndex: number;
+  hoveredIndex: number | null;
+  onClick: () => void;
+  onHover: () => void;
+  onLeave: () => void;
+  className?: string;
+}) {
+  const metrics = dressMetrics(mode, index, activeIndex, hoveredIndex);
+
+  return (
+    <button
+      type="button"
+      className={className}
+      aria-label={`View ${item.title}`}
+      aria-pressed={mode === "detail" && index === activeIndex}
+      onClick={onClick}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <motion.img
+        src={item.image}
+        alt={item.alt}
+        className="ps-image"
+        draggable={false}
+        animate={{
+          height: metrics.height,
+          opacity: metrics.opacity,
+        }}
+        transition={SPRING}
+        style={{ zIndex: metrics.zIndex }}
+      />
+    </button>
+  );
 }
 
 export function ProductSlideshow({ products }: ProductSlideshowProps) {
@@ -261,43 +312,31 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
     >
       {mode === "browse" ? (
         <div className="ps-word-stage">
-          <div className="ps-backdrop" aria-hidden="true">
-            ZVEZDA
-          </div>
-
-          <div className="ps-letter-track">
-            {items.map((item, index) => {
-              const metrics = dressMetrics(mode, index, activeIndex, hoveredIndex);
-              const anchor = LETTER_ANCHORS[index] ?? LETTER_ANCHORS[0];
+          <div className="ps-word-row" aria-hidden="true">
+            {LETTER_LAYOUT.map((column, columnIndex) => {
+              const dressIndex = column.dressIndex;
+              const item = dressIndex !== null ? items[dressIndex] : null;
 
               return (
-                <button
-                  key={item.slug}
-                  type="button"
-                  className="ps-slot ps-slot--anchored"
-                  style={{
-                    left: anchor.left,
-                    bottom: anchor.bottom,
-                  }}
-                  aria-label={`View ${item.title}`}
-                  onClick={() => handleDressClick(index)}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
+                <div
+                  key={`${column.char}-${columnIndex}`}
+                  className={`ps-letter-col${dressIndex === null ? " ps-letter-col--empty" : ""}`}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <motion.img
-                    src={item.image}
-                    alt={item.alt}
-                    className="ps-image"
-                    draggable={false}
-                    animate={{
-                      height: metrics.height,
-                      opacity: metrics.opacity,
-                    }}
-                    transition={SPRING}
-                    style={{ zIndex: metrics.zIndex }}
-                  />
-                </button>
+                  <span className="ps-backdrop-char">{column.char}</span>
+                  {item && dressIndex !== null && (
+                    <DressButton
+                      item={item}
+                      index={dressIndex}
+                      mode={mode}
+                      activeIndex={activeIndex}
+                      hoveredIndex={hoveredIndex}
+                      onClick={() => handleDressClick(dressIndex)}
+                      onHover={() => setHoveredIndex(dressIndex)}
+                      onLeave={() => setHoveredIndex(null)}
+                      className="ps-slot ps-slot--on-letter"
+                    />
+                  )}
+                </div>
               );
             })}
           </div>
@@ -359,36 +398,20 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
               }
             }}
           >
-            {items.map((item, index) => {
-              const metrics = dressMetrics(mode, index, activeIndex, hoveredIndex);
-
-              return (
-                <button
-                  key={item.slug}
-                  type="button"
-                  className="ps-slot"
-                  aria-label={`View ${item.title}`}
-                  aria-pressed={index === activeIndex}
-                  onClick={() => handleDressClick(index)}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <motion.img
-                    src={item.image}
-                    alt={item.alt}
-                    className="ps-image"
-                    draggable={false}
-                    animate={{
-                      height: metrics.height,
-                      opacity: metrics.opacity,
-                    }}
-                    transition={SPRING}
-                    style={{ zIndex: metrics.zIndex }}
-                  />
-                </button>
-              );
-            })}
+            {items.map((item, index) => (
+              <DressButton
+                key={item.slug}
+                item={item}
+                index={index}
+                mode={mode}
+                activeIndex={activeIndex}
+                hoveredIndex={hoveredIndex}
+                onClick={() => handleDressClick(index)}
+                onHover={() => setHoveredIndex(index)}
+                onLeave={() => setHoveredIndex(null)}
+                className="ps-slot"
+              />
+            ))}
           </motion.div>
         </div>
       )}
