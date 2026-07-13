@@ -62,16 +62,7 @@
   background: none;
   cursor: pointer;
   padding: 0;
-  color: #0c0a09;
-}
-
-.jm-nav__cart.text-white {
-  color: #ffffff;
-}
-
-.jm-nav__cart svg {
   color: inherit;
-  stroke: currentColor;
 }
 
 .jm-nav__cart-dot {
