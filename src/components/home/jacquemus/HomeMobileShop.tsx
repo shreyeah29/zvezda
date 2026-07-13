@@ -66,11 +66,9 @@ export function HomeMobileShop() {
     <section className="hm-shop hm-shop--noir" aria-label="Noir collection">
       <MobileSectionHeading primary="Noir" secondary="Collection" />
       <div className="hm-bento">
-        {[a, b, c, d].map((card, index) => {
+        {[a, b, c, d].map((card) => {
           const product = getProduct(card.slug);
           if (!product) return null;
-
-          const isLarge = index === 0 || index === 2;
 
           return (
             <MobileShopCard
@@ -79,7 +77,6 @@ export function HomeMobileShop() {
               image={card.image}
               alt={product.name}
               title={card.title}
-              size={isLarge ? "large" : "small"}
             />
           );
         })}
