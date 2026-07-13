@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
 .home-product-slideshow {
   position: relative;
@@ -24,26 +24,24 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Browse mode — letter columns with dresses on each glyph              */
+/* Static backdrop word — never animates                                  */
 /* ------------------------------------------------------------------ */
 
 .ps-word-stage {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  inset: 0;
   z-index: 1;
-  transform: translate(-50%, -50%);
-  width: max-content;
-  max-width: min(96vw, 100%);
-  padding: 0 clamp(8px, 1.5vw, 24px);
-  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .ps-word-row {
   font-family: var(--ps-font);
   font-size: var(--ps-letter-size);
-  font-weight: 600;
-  letter-spacing: -0.04em;
+  font-weight: 700;
+  letter-spacing: -0.1em;
   line-height: 0.86;
   white-space: nowrap;
   text-align: center;
@@ -56,15 +54,20 @@
 }
 
 .ps-backdrop-char {
-  color: #ececec;
+  color: #000000;
+  opacity: 0.06;
   user-select: none;
   pointer-events: none;
 }
 
+/* ------------------------------------------------------------------ */
+/* Browse dresses — shared baseline, letter-centered                    */
+/* ------------------------------------------------------------------ */
+
 .ps-slot--on-letter {
   position: absolute;
   left: 50%;
-  bottom: 6%;
+  bottom: 0;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -78,31 +81,6 @@
   cursor: pointer;
   pointer-events: auto;
   -webkit-tap-highlight-color: transparent;
-}
-
-/* ------------------------------------------------------------------ */
-/* Detail backdrop                                                      */
-/* ------------------------------------------------------------------ */
-
-.ps-backdrop {
-  font-family: var(--ps-font);
-  font-size: var(--ps-letter-size);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 0.86;
-  color: #ececec;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-}
-
-.ps-backdrop--detail {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 1;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
 }
 
 /* ------------------------------------------------------------------ */
@@ -154,6 +132,7 @@
   user-select: none;
   -webkit-user-drag: none;
   position: relative;
+  transform-origin: center bottom;
 }
 
 /* ------------------------------------------------------------------ */
@@ -292,6 +271,10 @@
 
   .ps-root {
     --ps-letter-size: clamp(72px, 13.5vw, 150px);
+  }
+
+  .ps-word-row {
+    letter-spacing: -0.08em;
   }
 
   .ps-panel {

@@ -9,22 +9,23 @@ import "./ProductSlideshow.css";
 
 const SPRING = {
   type: "spring" as const,
-  stiffness: 260,
-  damping: 30,
+  stiffness: 160,
+  damping: 18,
   mass: 1,
 };
 
+const BROWSE_DRESS_HEIGHT = "17.2vh";
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
 
-/** Z V E Z D A — dress index per letter column (skip D). */
+/** Z V E Z D A — four dresses on Z, V, Z, A only. */
 const LETTER_LAYOUT = [
   { char: "Z", dressIndex: 0 },
   { char: "V", dressIndex: 1 },
-  { char: "E", dressIndex: 2 },
-  { char: "Z", dressIndex: 3 },
+  { char: "E", dressIndex: null },
+  { char: "Z", dressIndex: 2 },
   { char: "D", dressIndex: null },
-  { char: "A", dressIndex: 4 },
+  { char: "A", dressIndex: 3 },
 ] as const;
 
 type Mode = "browse" | "detail";
@@ -135,25 +136,10 @@ function InfoPanel({
   );
 }
 
-function dressMetrics(
-  mode: Mode,
-  index: number,
-  activeIndex: number,
-  hoveredIndex: number | null,
-) {
-  if (mode === "browse") {
-    if (hoveredIndex === index) {
-      return { height: "26vh", opacity: 1, zIndex: 12 };
-    }
-    if (hoveredIndex !== null) {
-      return { height: "17vh", opacity: 0.28, zIndex: 5 };
-    }
-    return { height: "21vh", opacity: 1, zIndex: 8 };
-  }
-
+function detailDressMetrics(index: number, activeIndex: number) {
   const isActive = index === activeIndex;
   return {
-    height: isActive ? "62vh" : "18vh",
+    height: isActive ? "50.8vh" : "14.8vh",
     opacity: isActive ? 1 : 0.25,
     zIndex: isActive ? 20 : 10 - Math.abs(index - activeIndex),
   };
@@ -180,7 +166,10 @@ function DressButton({
   onLeave: () => void;
   className?: string;
 }) {
-  const metrics = dressMetrics(mode, index, activeIndex, hoveredIndex);
+  const isHovered = hoveredIndex === index;
+  const isDimmed = mode === "browse" && hoveredIndex !== null && !isHovered;
+  const detailMetrics =
+    mode === "detail" ? detailDressMetrics(index, activeIndex) : null;
 
   return (
     <button
@@ -198,12 +187,28 @@ function DressButton({
         alt={item.alt}
         className="ps-image"
         draggable={false}
-        animate={{
-          height: metrics.height,
-          opacity: metrics.opacity,
-        }}
+        animate={
+          mode === "browse"
+            ? {
+                height: BROWSE_DRESS_HEIGHT,
+                opacity: isDimmed ? 0.4 : 1,
+                scale: isHovered ? 1.08 : 1,
+                y: isHovered ? -12 : 0,
+              }
+            : {
+                height: detailMetrics?.height,
+                opacity: detailMetrics?.opacity,
+                scale: 1,
+                y: 0,
+              }
+        }
         transition={SPRING}
-        style={{ zIndex: metrics.zIndex }}
+        style={{
+          zIndex: detailMetrics?.zIndex ?? (isHovered ? 12 : 8),
+          filter: isHovered
+            ? "drop-shadow(0 18px 36px rgba(0, 0, 0, 0.22))"
+            : "none",
+        }}
       />
     </button>
   );
@@ -219,7 +224,7 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
   const wheelCooldown = useRef(false);
 
   const [mode, setMode] = useState<Mode>("browse");
-  const [activeIndex, setActiveIndex] = useState(2);
+  const [activeIndex, setActiveIndex] = useState(1);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [sizes, setSizes] = useState<Record<string, string>>(() =>
     Object.fromEntries(items.map((item) => [item.slug, item.sizes[1] ?? item.sizes[0]])),
@@ -310,42 +315,36 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
       className={`ps-root ps-root--${mode}`}
       onMouseLeave={() => setHoveredIndex(null)}
     >
-      {mode === "browse" ? (
-        <div className="ps-word-stage">
-          <div className="ps-word-row" aria-hidden="true">
-            {LETTER_LAYOUT.map((column, columnIndex) => {
-              const dressIndex = column.dressIndex;
-              const item = dressIndex !== null ? items[dressIndex] : null;
+      <div className="ps-word-stage">
+        <div className="ps-word-row" aria-hidden="true">
+          {LETTER_LAYOUT.map((column, columnIndex) => {
+            const dressIndex = column.dressIndex;
+            const item = dressIndex !== null ? items[dressIndex] : null;
 
-              return (
-                <div
-                  key={`${column.char}-${columnIndex}`}
-                  className="ps-letter-col"
-                >
-                  <span className="ps-backdrop-char">{column.char}</span>
-                  {item && dressIndex !== null && (
-                    <DressButton
-                      item={item}
-                      index={dressIndex}
-                      mode={mode}
-                      activeIndex={activeIndex}
-                      hoveredIndex={hoveredIndex}
-                      onClick={() => handleDressClick(dressIndex)}
-                      onHover={() => setHoveredIndex(dressIndex)}
-                      onLeave={() => setHoveredIndex(null)}
-                      className="ps-slot ps-slot--on-letter"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
+            return (
+              <div
+                key={`${column.char}-${columnIndex}`}
+                className="ps-letter-col"
+              >
+                <span className="ps-backdrop-char">{column.char}</span>
+                {item && dressIndex !== null && mode === "browse" && (
+                  <DressButton
+                    item={item}
+                    index={dressIndex}
+                    mode={mode}
+                    activeIndex={activeIndex}
+                    hoveredIndex={hoveredIndex}
+                    onClick={() => handleDressClick(dressIndex)}
+                    onHover={() => setHoveredIndex(dressIndex)}
+                    onLeave={() => setHoveredIndex(null)}
+                    className="ps-slot ps-slot--on-letter"
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
-      ) : (
-        <div className="ps-backdrop ps-backdrop--detail" aria-hidden="true">
-          ZVEZDA
-        </div>
-      )}
+      </div>
 
       <AnimatePresence>
         {mode === "detail" && (
