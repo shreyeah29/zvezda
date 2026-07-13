@@ -79,6 +79,14 @@ const HomePinkCollectionFeature = dynamic(
   { ssr: false },
 );
 
+const HomeMobileInstagram = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomeMobileInstagram").then((mod) => ({
+      default: mod.HomeMobileInstagram,
+    })),
+  { ssr: false },
+);
+
 const JacquemusFooter = dynamic(
   () =>
     import("@/components/home/jacquemus/JacquemusFooter").then((mod) => ({
@@ -125,6 +133,9 @@ export default function HomePage() {
           </div>
           <div className="home-section home-section--mobile-pink-shop">
             <HomeMobilePinkShop />
+          </div>
+          <div className="home-section home-section--instagram">
+            <HomeMobileInstagram />
           </div>
           <div className="home-section home-section--footer">
             <JacquemusFooter />

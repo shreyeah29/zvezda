@@ -95,11 +95,6 @@ export function HomeHeroVideo() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35" />
       </div>
 
-      <div className="home-hero-mobile-copy" aria-hidden="true">
-        <h2 className="home-hero-mobile-copy__title">Timeless Elegance</h2>
-        <p className="home-hero-mobile-copy__subtitle">Discover the new collection</p>
-      </div>
-
       <motion.button
         type="button"
         onClick={() =>

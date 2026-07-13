@@ -1,6 +1,6 @@
 .hm-shop {
   display: none;
-  background: #000000;
+  background: #ffffff;
 }
 
 .hm-section-heading {
@@ -17,11 +17,11 @@
     align-items: center;
     gap: 0.65rem;
     padding: 0.85rem 0.75rem 0.55rem;
-    color: #c4a574;
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    color: #000000;
+    font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
     font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.24em;
+    font-weight: 500;
+    letter-spacing: 0.2em;
     line-height: 1;
     text-transform: uppercase;
   }
@@ -31,7 +31,7 @@
     content: "";
     flex: 1;
     height: 1px;
-    background: rgba(196, 165, 116, 0.45);
+    background: rgba(0, 0, 0, 0.14);
   }
 
   .hm-section-heading span {
@@ -44,7 +44,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0;
   padding: 0;
-  background: #000000;
+  background: #ffffff;
 }
 
 .hm-shop__cat-card {
@@ -52,11 +52,11 @@
   display: block;
   aspect-ratio: 3 / 4.35;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
   text-decoration: none;
-  color: #ffffff;
-  background: #0a0a0a;
+  color: #000000;
+  background: #ffffff;
 }
 
 .hm-shop__cat-image {
@@ -73,9 +73,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.08) 55%,
-    rgba(0, 0, 0, 0.72) 100%
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 52%,
+    rgba(255, 255, 255, 0.88) 100%
   );
   pointer-events: none;
 }
@@ -94,25 +94,25 @@
 
 .hm-shop__cat-title {
   margin: 0;
-  font-family: var(--font-display, Georgia, "Times New Roman", serif);
+  font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
   font-size: clamp(0.58rem, 2.5vw, 0.68rem);
-  font-weight: 400;
-  letter-spacing: 0.14em;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   line-height: 1.25;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #000000;
 }
 
 .hm-shop__cat-cta {
-  font-family: var(--font-display, Georgia, "Times New Roman", serif);
+  font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
   font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.18em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   line-height: 1;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #000000;
   text-decoration: underline;
-  text-decoration-color: #c4a574;
+  text-decoration-color: rgba(0, 0, 0, 0.55);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }

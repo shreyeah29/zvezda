@@ -15,7 +15,7 @@ const PINK_MOBILE_TITLES = [
 
 function MobileSectionHeading({ label }: { label: string }) {
   return (
-    <div className="hm-section-heading" aria-hidden="true">
+    <div className="hm-section-heading">
       <span>{label}</span>
     </div>
   );
@@ -80,6 +80,7 @@ export function HomeMobilePinkShop() {
 
   return (
     <section className="hm-shop hm-shop--pink" aria-label="Pink collection">
+      <MobileSectionHeading label="Pink Collection" />
       <div className="hm-shop__cat-grid">
         {pinkHighlightCards.map((card, index) => {
           const product = getProduct(card.slug);
