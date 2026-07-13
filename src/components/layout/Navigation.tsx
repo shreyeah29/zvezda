@@ -40,8 +40,14 @@ export function Navigation() {
   }, [pathname]);
 
   useEffect(() => {
+    const getScrollY = () => {
+      const lenis = getLenisInstance();
+      if (lenis && typeof lenis.scroll === "number") return lenis.scroll;
+      return window.scrollY || document.documentElement.scrollTop || 0;
+    };
+
     const updateFromScroll = () => {
-      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      const y = getScrollY();
       setHeaderVisible(y <= TOP_VISIBLE_PX);
 
       if (hasHeroOverlay) {
@@ -53,26 +59,33 @@ export function Navigation() {
 
     updateFromScroll();
     window.addEventListener("scroll", updateFromScroll, { passive: true });
+    window.addEventListener("wheel", updateFromScroll, { passive: true });
+    window.addEventListener("touchmove", updateFromScroll, { passive: true });
 
     let lenisCleanup: (() => void) | undefined;
     let retryId = 0;
+    const onLenisScroll = () => updateFromScroll();
+
     const attachLenis = () => {
       const lenis = getLenisInstance();
       if (!lenis || lenisCleanup) return Boolean(lenisCleanup);
-      lenis.on("scroll", updateFromScroll);
-      lenisCleanup = () => lenis.off("scroll", updateFromScroll);
+      lenis.on("scroll", onLenisScroll);
+      lenisCleanup = () => lenis.off("scroll", onLenisScroll);
+      updateFromScroll();
       return true;
     };
 
     if (!attachLenis()) {
       retryId = window.setInterval(() => {
         if (attachLenis()) window.clearInterval(retryId);
-      }, 120);
+      }, 100);
     }
 
     return () => {
       window.clearInterval(retryId);
       window.removeEventListener("scroll", updateFromScroll);
+      window.removeEventListener("wheel", updateFromScroll);
+      window.removeEventListener("touchmove", updateFromScroll);
       lenisCleanup?.();
     };
   }, [hasHeroOverlay, pathname]);
