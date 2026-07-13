@@ -8,7 +8,7 @@ import { useShowcaseEntrance } from "./useShowcaseEntrance";
 export function HomeProductSlideshow() {
   const products = useMemo(() => getHomeProductSlideshowItems(), []);
   const sectionRef = useRef<HTMLElement>(null);
-  const { entranceStarted, lettersStarted, entranceComplete } =
+  const { entranceStarted, lettersStarted, dressesStarted, entranceComplete } =
     useShowcaseEntrance(sectionRef);
 
   return (
@@ -21,6 +21,7 @@ export function HomeProductSlideshow() {
         products={products}
         entranceStarted={entranceStarted}
         lettersStarted={lettersStarted}
+        dressesStarted={dressesStarted}
         entranceComplete={entranceComplete}
       />
     </section>

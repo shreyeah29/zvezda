@@ -52,6 +52,7 @@ type ProductSlideshowProps = {
   products?: SlideshowProduct[];
   entranceStarted?: boolean;
   lettersStarted?: boolean;
+  dressesStarted?: boolean;
   entranceComplete?: boolean;
 };
 
@@ -182,8 +183,7 @@ function DressButton({
   onHover,
   onLeave,
   className,
-  entranceStarted = true,
-  lettersStarted = true,
+  dressesStarted = true,
   entranceComplete = true,
 }: {
   item: SlideshowProduct;
@@ -195,8 +195,7 @@ function DressButton({
   onHover: () => void;
   onLeave: () => void;
   className?: string;
-  entranceStarted?: boolean;
-  lettersStarted?: boolean;
+  dressesStarted?: boolean;
   entranceComplete?: boolean;
 }) {
   const isHovered = hoveredIndex === index;
@@ -209,7 +208,7 @@ function DressButton({
   const dressDelay = getDressEntranceDelay(index);
   const showBrowseEntrance = mode === "browse" && !entranceComplete;
 
-  const browseEntranceAnimate = lettersStarted
+  const browseEntranceAnimate = dressesStarted
     ? {
         height: browseHeight,
         opacity: 1,
@@ -284,6 +283,7 @@ export function ProductSlideshow({
   products,
   entranceStarted = true,
   lettersStarted = true,
+  dressesStarted = true,
   entranceComplete = true,
 }: ProductSlideshowProps) {
   const items = useMemo(
@@ -398,6 +398,7 @@ export function ProductSlideshow({
           items={trailImages}
           variant={5}
           eventTargetRef={rootRef}
+          className="ps-image-trail"
         />
       )}
 
@@ -461,7 +462,7 @@ export function ProductSlideshow({
                       onHover={() => setHoveredIndex(dressIndex)}
                       onLeave={() => setHoveredIndex(null)}
                       className="ps-slot--on-letter"
-                      entranceStarted={lettersStarted}
+                      dressesStarted={dressesStarted}
                       entranceComplete={entranceComplete}
                     />
                   )}
@@ -485,7 +486,7 @@ export function ProductSlideshow({
                         onHover={() => setHoveredIndex(gapDressIndex)}
                         onLeave={() => setHoveredIndex(null)}
                         className="ps-slot--on-letter"
-                        entranceStarted={lettersStarted}
+                        dressesStarted={dressesStarted}
                         entranceComplete={entranceComplete}
                       />
                     </div>
@@ -563,7 +564,7 @@ export function ProductSlideshow({
                 onHover={() => setHoveredIndex(index)}
                 onLeave={() => setHoveredIndex(null)}
                 className="ps-slot"
-                entranceStarted={lettersStarted}
+                dressesStarted={dressesStarted}
                 entranceComplete={entranceComplete}
               />
             ))}

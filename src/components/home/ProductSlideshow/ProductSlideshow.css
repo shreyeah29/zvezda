@@ -312,3 +312,9 @@
     min-width: 60px;
   }
 }
+
+/* Smaller cursor trail images in the showcase */
+.content.ps-image-trail .content__img {
+  width: 132px;
+  border-radius: 12px;
+}

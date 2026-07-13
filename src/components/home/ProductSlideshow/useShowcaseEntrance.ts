@@ -14,9 +14,9 @@ export const LETTER_SPRING = {
 
 export const DRESS_SPRING = {
   type: "spring" as const,
-  stiffness: 140,
-  damping: 20,
-  mass: 1,
+  stiffness: 52,
+  damping: 24,
+  mass: 1.9,
 };
 
 export const PANEL_SPRING = {
@@ -30,7 +30,8 @@ const LETTER_COUNT = 6;
 export const LETTER_STAGGER_S = 0.42;
 const LETTER_DURATION_S = 1.55;
 const POST_LETTER_PAUSE_S = 0.35;
-const DRESS_STAGGER_S = 0.1;
+const DRESS_STAGGER_S = 0.48;
+const DRESS_ANIM_DURATION_S = 1.35;
 
 /** Green → Black & Orange → Red → Pink → Copper (gap dress). */
 export const DRESS_REVEAL_ORDER = [0, 1, 2, 3, 4] as const;
@@ -39,22 +40,26 @@ export function getLetterEntranceDelay(columnIndex: number): number {
   return GALLERY_ENTRANCE_DURATION_S + columnIndex * LETTER_STAGGER_S;
 }
 
+export function getLettersCompleteTime(): number {
+  return (
+    GALLERY_ENTRANCE_DURATION_S +
+    (LETTER_COUNT - 1) * LETTER_STAGGER_S +
+    LETTER_DURATION_S
+  );
+}
+
+/** Stagger offset from the moment dresses begin (after letters land). */
 export function getDressEntranceDelay(dressIndex: number): number {
   const order = (DRESS_REVEAL_ORDER as readonly number[]).indexOf(dressIndex);
   if (order === -1) return 0;
-
-  const letterEnd =
-    GALLERY_ENTRANCE_DURATION_S +
-    (LETTER_COUNT - 1) * LETTER_STAGGER_S +
-    LETTER_DURATION_S;
-  return letterEnd + POST_LETTER_PAUSE_S + order * DRESS_STAGGER_S;
+  return order * DRESS_STAGGER_S;
 }
 
 export function getEntranceTotalDuration(): number {
-  const lastDressDelay = getDressEntranceDelay(
-    DRESS_REVEAL_ORDER[DRESS_REVEAL_ORDER.length - 1],
-  );
-  return lastDressDelay + 0.55;
+  const dressesStart = getLettersCompleteTime() + POST_LETTER_PAUSE_S;
+  const lastDressDelay =
+    (DRESS_REVEAL_ORDER.length - 1) * DRESS_STAGGER_S + DRESS_ANIM_DURATION_S;
+  return dressesStart + lastDressDelay + 0.2;
 }
 
 export function useShowcaseEntrance(sectionRef: RefObject<HTMLElement | null>) {
@@ -62,6 +67,7 @@ export function useShowcaseEntrance(sectionRef: RefObject<HTMLElement | null>) {
   const hasTriggered = useRef(false);
   const [entranceStarted, setEntranceStarted] = useState(reduced);
   const [lettersStarted, setLettersStarted] = useState(reduced);
+  const [dressesStarted, setDressesStarted] = useState(reduced);
   const [entranceComplete, setEntranceComplete] = useState(reduced);
 
   useEffect(() => {
@@ -95,6 +101,22 @@ export function useShowcaseEntrance(sectionRef: RefObject<HTMLElement | null>) {
   }, [reduced, entranceStarted, lettersStarted]);
 
   useEffect(() => {
+    if (reduced || !lettersStarted || dressesStarted) return;
+
+    const dressesDelayMs =
+      (getLettersCompleteTime() -
+        GALLERY_ENTRANCE_DURATION_S +
+        POST_LETTER_PAUSE_S) *
+      1000;
+
+    const timer = window.setTimeout(() => {
+      setDressesStarted(true);
+    }, dressesDelayMs);
+
+    return () => window.clearTimeout(timer);
+  }, [reduced, lettersStarted, dressesStarted]);
+
+  useEffect(() => {
     if (reduced || !entranceStarted || entranceComplete) return;
 
     const timer = window.setTimeout(() => {
@@ -104,5 +126,5 @@ export function useShowcaseEntrance(sectionRef: RefObject<HTMLElement | null>) {
     return () => window.clearTimeout(timer);
   }, [reduced, entranceStarted, entranceComplete]);
 
-  return { entranceStarted, lettersStarted, entranceComplete };
+  return { entranceStarted, lettersStarted, dressesStarted, entranceComplete };
 }

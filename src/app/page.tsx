@@ -94,10 +94,10 @@ export default function HomePage() {
           <HomeProductSlideshow />
           <HomeScrollGallery />
           <HomeCollectionSplit />
-          <HomeProductRow />
-          <HomeCollectionFeature />
           <HomePinkProductRow />
           <HomePinkCollectionFeature />
+          <HomeProductRow />
+          <HomeCollectionFeature />
           <JacquemusFooter />
         </main>
       </SmoothScroll>
