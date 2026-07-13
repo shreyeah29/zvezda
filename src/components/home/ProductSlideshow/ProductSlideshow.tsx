@@ -5,6 +5,12 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { getHomeProductSlideshowItems } from "@/data/homeProductSlideshow";
 import type { SlideshowProduct } from "./types";
+import {
+  DRESS_SPRING,
+  getDressEntranceDelay,
+  LETTER_SPRING,
+  PANEL_SPRING,
+} from "./useShowcaseEntrance";
 import "./ProductSlideshow.css";
 
 const SPRING = {
@@ -19,6 +25,7 @@ const BROWSE_HERO_DRESS_HEIGHT = "21.1vh";
 const HERO_DRESS_INDEX = 2;
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
+const LETTER_STAGGER_S = 0.08;
 
 /** Z V E Z D A — dresses on Z, V, gaps E–Z & Z–D, and A. */
 const LETTER_LAYOUT = [
@@ -40,10 +47,13 @@ type Mode = "browse" | "detail";
 
 type ProductSlideshowProps = {
   products?: SlideshowProduct[];
-  revealComplete?: boolean;
-  wordRowRef?: React.RefObject<HTMLDivElement | null>;
-  rootRef?: React.RefObject<HTMLDivElement | null>;
+  entranceStarted?: boolean;
+  entranceComplete?: boolean;
 };
+
+function buildLetterRotations(): number[] {
+  return LETTER_LAYOUT.map(() => Math.random() * 4 - 2);
+}
 
 function InfoPanel({
   product,
@@ -51,12 +61,14 @@ function InfoPanel({
   activeColor,
   onSizeChange,
   onColorChange,
+  skipEntranceMotion,
 }: {
   product: SlideshowProduct;
   activeSize: string;
   activeColor: string;
   onSizeChange: (size: string) => void;
   onColorChange: (color: string) => void;
+  skipEntranceMotion?: boolean;
 }) {
   return (
     <aside className="ps-panel">
@@ -65,7 +77,7 @@ function InfoPanel({
           <motion.h2
             key={`title-${product.slug}`}
             className="ps-panel__title"
-            initial={{ y: 16, opacity: 0 }}
+            initial={skipEntranceMotion ? false : { y: 16, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -16, opacity: 0 }}
             transition={SPRING}
@@ -78,7 +90,7 @@ function InfoPanel({
           <motion.p
             key={`desc-${product.slug}`}
             className="ps-panel__description"
-            initial={{ opacity: 0 }}
+            initial={skipEntranceMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
@@ -91,7 +103,7 @@ function InfoPanel({
           <motion.p
             key={`price-${product.slug}`}
             className="ps-panel__price"
-            initial={{ opacity: 0, y: 6 }}
+            initial={skipEntranceMotion ? false : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={SPRING}
@@ -105,7 +117,7 @@ function InfoPanel({
         <motion.div
           key={`variants-${product.slug}`}
           className="ps-panel__block ps-panel__block--variants"
-          initial={{ opacity: 0 }}
+          initial={skipEntranceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.22, ease: "easeInOut" }}
@@ -166,7 +178,8 @@ function DressButton({
   onHover,
   onLeave,
   className,
-  revealComplete = true,
+  entranceStarted = true,
+  entranceComplete = true,
 }: {
   item: SlideshowProduct;
   index: number;
@@ -177,7 +190,8 @@ function DressButton({
   onHover: () => void;
   onLeave: () => void;
   className?: string;
-  revealComplete?: boolean;
+  entranceStarted?: boolean;
+  entranceComplete?: boolean;
 }) {
   const isHovered = hoveredIndex === index;
   const isDimmed = mode === "browse" && hoveredIndex !== null && !isHovered;
@@ -186,6 +200,22 @@ function DressButton({
     mode === "detail" ? detailDressMetrics(index, activeIndex) : null;
 
   const browseHeight = isHeroDress ? BROWSE_HERO_DRESS_HEIGHT : BROWSE_DRESS_HEIGHT;
+  const dressDelay = getDressEntranceDelay(index);
+  const showBrowseEntrance = mode === "browse" && !entranceComplete;
+
+  const browseEntranceAnimate = entranceStarted
+    ? {
+        height: browseHeight,
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      }
+    : {
+        height: browseHeight,
+        opacity: 0,
+        y: 25,
+        scale: 0.95,
+      };
 
   return (
     <button
@@ -194,9 +224,9 @@ function DressButton({
       aria-label={`View ${item.title}`}
       aria-pressed={mode === "detail" && index === activeIndex}
       onClick={onClick}
-      onMouseEnter={() => revealComplete && onHover()}
-      onMouseLeave={() => revealComplete && onLeave()}
-      style={{ pointerEvents: revealComplete ? "auto" : "none" }}
+      onMouseEnter={() => entranceComplete && onHover()}
+      onMouseLeave={() => entranceComplete && onLeave()}
+      style={{ pointerEvents: entranceComplete ? "auto" : "none" }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <motion.img
@@ -204,16 +234,21 @@ function DressButton({
         alt={item.alt}
         className="ps-image"
         draggable={false}
+        initial={
+          showBrowseEntrance
+            ? { opacity: 0, y: 25, scale: 0.95, height: browseHeight }
+            : false
+        }
         animate={
           mode === "browse"
-            ? revealComplete
-              ? {
+            ? showBrowseEntrance
+              ? browseEntranceAnimate
+              : {
                   height: browseHeight,
                   opacity: isDimmed ? 0.4 : 1,
                   scale: isHovered ? 1.08 : 1,
                   y: isHovered ? -12 : 0,
                 }
-              : { height: browseHeight }
             : {
                 height: detailMetrics?.height,
                 opacity: detailMetrics?.opacity,
@@ -221,7 +256,13 @@ function DressButton({
                 y: 0,
               }
         }
-        transition={revealComplete ? SPRING : { duration: 0 }}
+        transition={
+          showBrowseEntrance
+            ? { ...DRESS_SPRING, delay: dressDelay }
+            : entranceComplete
+              ? SPRING
+              : { duration: 0 }
+        }
         style={{
           zIndex: detailMetrics?.zIndex ?? (isHovered ? 12 : 8),
           filter: isHovered
@@ -235,18 +276,17 @@ function DressButton({
 
 export function ProductSlideshow({
   products,
-  revealComplete = true,
-  wordRowRef,
-  rootRef: externalRootRef,
+  entranceStarted = true,
+  entranceComplete = true,
 }: ProductSlideshowProps) {
   const items = useMemo(
     () => (products && products.length > 0 ? products : getHomeProductSlideshowItems()),
     [products],
   );
 
-  const internalRootRef = useRef<HTMLDivElement>(null);
-  const rootRef = externalRootRef ?? internalRootRef;
+  const rootRef = useRef<HTMLDivElement>(null);
   const wheelCooldown = useRef(false);
+  const letterRotations = useRef(buildLetterRotations()).current;
 
   const [mode, setMode] = useState<Mode>("browse");
   const [activeIndex, setActiveIndex] = useState(HERO_DRESS_INDEX);
@@ -267,6 +307,8 @@ export function ProductSlideshow({
   }, []);
 
   const handleDressClick = (index: number) => {
+    if (!entranceComplete) return;
+
     if (mode === "browse") {
       setActiveIndex(index);
       setMode("detail");
@@ -333,15 +375,16 @@ export function ProductSlideshow({
   const activeColor = colors[active.slug] ?? active.colors[0]?.name ?? "";
   const centerOffset = (items.length - 1) / 2;
   const trackShift = mode === "detail" ? (centerOffset - activeIndex) * SLOT_VW : 0;
+  const showLetterEntrance = !entranceComplete;
 
   return (
     <div
       ref={rootRef}
-      className={`ps-root ps-root--${mode}${revealComplete ? "" : " ps-root--revealing"}`}
-      onMouseLeave={() => setHoveredIndex(null)}
+      className={`ps-root ps-root--${mode}`}
+      onMouseLeave={() => entranceComplete && setHoveredIndex(null)}
     >
       <div className="ps-word-stage">
-        <div className="ps-word-row" ref={wordRowRef} aria-hidden="true">
+        <div className="ps-word-row" aria-hidden="true">
           {LETTER_LAYOUT.map((column, columnIndex) => {
             const dressIndex = column.dressIndex;
             const item = dressIndex !== null ? items[dressIndex] : null;
@@ -350,7 +393,40 @@ export function ProductSlideshow({
             return (
               <Fragment key={`${column.char}-${columnIndex}`}>
                 <div className="ps-letter-col">
-                  <span className="ps-backdrop-char">{column.char}</span>
+                  <motion.span
+                    className="ps-backdrop-char"
+                    initial={
+                      showLetterEntrance
+                        ? {
+                            y: -180,
+                            opacity: 0,
+                            filter: "blur(8px)",
+                            rotate: letterRotations[columnIndex] ?? 0,
+                          }
+                        : false
+                    }
+                    animate={
+                      entranceStarted || entranceComplete
+                        ? {
+                            y: 0,
+                            opacity: 0.08,
+                            filter: "blur(0px)",
+                            rotate: 0,
+                          }
+                        : {
+                            y: -180,
+                            opacity: 0,
+                            filter: "blur(8px)",
+                            rotate: letterRotations[columnIndex] ?? 0,
+                          }
+                    }
+                    transition={{
+                      ...LETTER_SPRING,
+                      delay: columnIndex * LETTER_STAGGER_S,
+                    }}
+                  >
+                    {column.char}
+                  </motion.span>
                   {item && dressIndex !== null && mode === "browse" && (
                     <DressButton
                       item={item}
@@ -362,7 +438,8 @@ export function ProductSlideshow({
                       onHover={() => setHoveredIndex(dressIndex)}
                       onLeave={() => setHoveredIndex(null)}
                       className="ps-slot--on-letter"
-                      revealComplete={revealComplete}
+                      entranceStarted={entranceStarted}
+                      entranceComplete={entranceComplete}
                     />
                   )}
                 </div>
@@ -385,7 +462,8 @@ export function ProductSlideshow({
                         onHover={() => setHoveredIndex(gapDressIndex)}
                         onLeave={() => setHoveredIndex(null)}
                         className="ps-slot--on-letter"
-                        revealComplete={revealComplete}
+                        entranceStarted={entranceStarted}
+                        entranceComplete={entranceComplete}
                       />
                     </div>
                   );
@@ -401,10 +479,12 @@ export function ProductSlideshow({
           <motion.div
             key="panel-wrap"
             className="ps-panel-wrap"
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={
+              entranceComplete ? { opacity: 0, y: 10 } : { opacity: 0, x: -16 }
+            }
+            animate={{ opacity: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, x: -16 }}
-            transition={SPRING}
+            transition={entranceComplete ? PANEL_SPRING : SPRING}
           >
             <InfoPanel
               product={active}
@@ -416,6 +496,7 @@ export function ProductSlideshow({
               onColorChange={(color) =>
                 setColors((prev) => ({ ...prev, [active.slug]: color }))
               }
+              skipEntranceMotion={!entranceComplete}
             />
           </motion.div>
         )}
@@ -459,7 +540,8 @@ export function ProductSlideshow({
                 onHover={() => setHoveredIndex(index)}
                 onLeave={() => setHoveredIndex(null)}
                 className="ps-slot"
-                revealComplete={revealComplete}
+                entranceStarted={entranceStarted}
+                entranceComplete={entranceComplete}
               />
             ))}
           </motion.div>
