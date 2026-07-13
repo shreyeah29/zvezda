@@ -95,6 +95,52 @@ function arcPath(
   ].join(" ");
 }
 
+/** Axis-aligned bounds for wedge — used to frame each image inside its segment. */
+function wedgeBounds(
+  cx: number,
+  cy: number,
+  rOuter: number,
+  rInner: number,
+  a0: number,
+  a1: number,
+) {
+  const samples: { x: number; y: number }[] = [];
+  const midR = (rOuter + rInner) / 2;
+  const radii = [rInner, midR, rOuter];
+  const angles = [a0, a1, (a0 + a1) / 2];
+
+  for (const r of radii) {
+    for (const a of angles) {
+      samples.push(polar(cx, cy, r, a));
+    }
+  }
+
+  samples.push(polar(cx, cy, rOuter, a0));
+  samples.push(polar(cx, cy, rOuter, a1));
+  samples.push(polar(cx, cy, rInner, a0));
+  samples.push(polar(cx, cy, rInner, a1));
+
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+
+  for (const p of samples) {
+    minX = Math.min(minX, p.x);
+    minY = Math.min(minY, p.y);
+    maxX = Math.max(maxX, p.x);
+    maxY = Math.max(maxY, p.y);
+  }
+
+  const pad = 1;
+  return {
+    x: minX - pad,
+    y: minY - pad,
+    width: maxX - minX + pad * 2,
+    height: maxY - minY + pad * 2,
+  };
+}
+
 function innerRadiusRatioForWidth(width: number) {
   if (width <= 480) return 0.54;
   if (width <= 900) return 0.55;
@@ -133,7 +179,8 @@ export function CircularGallery() {
   const wedges = useMemo(() => {
     const list: {
       path: string;
-      clipId: string;
+      patternId: string;
+      bounds: ReturnType<typeof wedgeBounds>;
       midAngle: number;
       index: number;
     }[] = [];
@@ -144,7 +191,8 @@ export function CircularGallery() {
       const a1 = a0 + seg;
       list.push({
         path: arcPath(CX, CY, outerR, innerR, a0, a1, CORNER_RADIUS),
-        clipId: `cg_clip_${i}`,
+        patternId: `cg_img_${i}`,
+        bounds: wedgeBounds(CX, CY, outerR, innerR, a0, a1),
         midAngle: (a0 + a1) / 2,
         index: i,
       });
@@ -172,17 +220,35 @@ export function CircularGallery() {
             className="cg-svg"
             viewBox={`0 0 ${VB_WIDTH} ${VB_HEIGHT}`}
             preserveAspectRatio="xMidYMid meet"
-            aria-hidden={false}
             onPointerLeave={() => {
               startTransition(() => setHoveredIndex(null));
             }}
           >
             <defs>
-              {wedges.map((wedge) => (
-                <clipPath key={wedge.clipId} id={wedge.clipId}>
-                  <path d={wedge.path} />
-                </clipPath>
-              ))}
+              {wedges.map((wedge) => {
+                const item = items[wedge.index];
+                const { x, y, width, height } = wedge.bounds;
+                return (
+                  <pattern
+                    key={wedge.patternId}
+                    id={wedge.patternId}
+                    patternUnits="userSpaceOnUse"
+                    x={x}
+                    y={y}
+                    width={width}
+                    height={height}
+                  >
+                    <image
+                      href={item.image}
+                      x={x}
+                      y={y}
+                      width={width}
+                      height={height}
+                      preserveAspectRatio="xMidYMid slice"
+                    />
+                  </pattern>
+                );
+              })}
             </defs>
 
             <g className="cg-wedges">
@@ -195,8 +261,14 @@ export function CircularGallery() {
                   Math.sin(midRad) * outerR * HOVER_OFFSET_RATIO;
 
                 return (
-                  <motion.g
+                  <motion.path
                     key={item.title}
+                    d={wedge.path}
+                    fill={`url(#${wedge.patternId})`}
+                    stroke="rgba(255,255,255,0.95)"
+                    strokeWidth={STROKE_WIDTH}
+                    role="img"
+                    aria-label={item.imageAlt}
                     className="cg-wedge"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -209,7 +281,8 @@ export function CircularGallery() {
                     }}
                     style={{
                       transformOrigin: `${CX}px ${CY}px`,
-                      transformBox: "view-box",
+                      transformBox: "fill-box",
+                      cursor: "pointer",
                     }}
                     onHoverStart={() => {
                       startTransition(() => setHoveredIndex(wedge.index));
@@ -227,35 +300,7 @@ export function CircularGallery() {
                         ease: [0, 0, 0.2, 1],
                       },
                     }}
-                  >
-                    <g clipPath={`url(#${wedge.clipId})`}>
-                      <image
-                        href={item.image}
-                        x={0}
-                        y={0}
-                        width={VB_WIDTH}
-                        height={VB_WIDTH}
-                        preserveAspectRatio="xMidYMid slice"
-                        className="cg-wedge__image"
-                      />
-                    </g>
-                    <path
-                      d={wedge.path}
-                      fill="none"
-                      stroke="rgba(255,255,255,0.95)"
-                      strokeWidth={STROKE_WIDTH}
-                      vectorEffect="non-scaling-stroke"
-                      pointerEvents="none"
-                    />
-                    <path
-                      d={wedge.path}
-                      fill="transparent"
-                      stroke="none"
-                      className="cg-wedge__hit"
-                      role="img"
-                      aria-label={item.imageAlt}
-                    />
-                  </motion.g>
+                  />
                 );
               })}
             </g>

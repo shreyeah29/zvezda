@@ -36,16 +36,6 @@
   cursor: pointer;
 }
 
-.cg-wedge__image {
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.cg-wedge__hit {
-  cursor: pointer;
-}
-
 .cg-copy {
   position: absolute;
   left: 50%;
