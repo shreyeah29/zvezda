@@ -9,7 +9,7 @@ import "./HomeAtelierShop.css";
 const MANIFESTO_IMAGE =
   products.find((p) => p.slug === "set-12")?.detail ??
   products.find((p) => p.slug === "set-8")?.hero ??
-  "/assets/images/film/HSP_4662.jpg";
+  "/assets/images/products/set-12/HSP_5635.jpg";
 
 export function HomeAtelierShop() {
   const featured = useMemo(() => products.slice(0, 4), []);

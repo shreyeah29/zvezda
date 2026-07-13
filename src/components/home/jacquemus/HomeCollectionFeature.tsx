@@ -3,7 +3,7 @@
 import Link from "next/link";
 import "./HomeCollectionFeature.css";
 
-const FEATURE_IMAGE = "/assets/images/film/HSP_3336.jpg";
+const FEATURE_IMAGE = "/assets/images/home-gallery/HSP_2085.jpg";
 const FEATURE_VIDEO = "/assets/videos/film/White&BlackTrio.mp4";
 
 export function HomeCollectionFeature() {

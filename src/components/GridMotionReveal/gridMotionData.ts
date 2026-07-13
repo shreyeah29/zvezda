@@ -14,7 +14,7 @@ export type GridMotionSlots = {
 };
 
 /** Fullscreen center image — film editorial, not used in surrounding grid */
-const SCALER_IMAGE = "/assets/images/film/HSP_4145.jpg";
+const SCALER_IMAGE = "/assets/images/products/set-1/HSP_4590.jpg";
 
 const SCALER: GridMotionItem = {
   src: SCALER_IMAGE,

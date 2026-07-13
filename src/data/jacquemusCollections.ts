@@ -89,7 +89,7 @@ export const jacquemusCollections: JacquemusCollection[] = [
     media: buildCollectionRow(
       {
         src: "/assets/videos/film/GardenTrio.mp4",
-        poster: "/assets/images/film/HSP_4096.jpg",
+        poster: setPhotoPath(getSet(1)!, "HSP_4327.jpg"),
         href: "/products/set-1",
         alt: "Verdant Époque film",
       },

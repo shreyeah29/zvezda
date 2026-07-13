@@ -82,7 +82,7 @@ export const collectionCategories: CollectionCategory[] = [
     displayTitle: "Green",
     subtitle: "Sets 1–4 · Garden Campaign",
     heroVideo: "/assets/videos/film/GardenTrio.mp4",
-    heroPoster: "/assets/images/film/HSP_4096.jpg",
+    heroPoster: "/assets/images/products/set-1/HSP_4327.jpg",
     backgroundColor: "#08120d",
     accentColor: "#6b8f71",
     textColor: "#e8f0ea",
