@@ -84,13 +84,13 @@ const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>>
     height: 2.15,
     preserveAspectRatio: "xMidYMid slice",
   },
-  // Noir Éclat — black gown, subject sits right of frame center
+  // Noir Éclat — black gown, pan left so face clears the right divider
   1: {
-    x: -0.28,
+    x: 0.16,
     y: -0.15,
-    width: 1.55,
+    width: 1.65,
     height: 2.1,
-    preserveAspectRatio: "xMaxYMid slice",
+    preserveAspectRatio: "xMidYMid slice",
   },
 };
 
