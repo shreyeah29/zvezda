@@ -15,8 +15,8 @@ export const arcCarouselCollections: ArcCarouselCollection[] = [
   {
     title: "Noir Éclat",
     subtitle: "Bold black eveningwear with timeless sophistication.",
-    image: "/assets/images/products/set-14/HSP_2470.jpg",
-    imageAlt: "Noir Éclat — black evening gown",
+    image: "/assets/images/products/set-14/BHA_2106.jpg",
+    imageAlt: "Noir Éclat — black evening gown profile",
   },
   {
     title: "Crimson Muse",
