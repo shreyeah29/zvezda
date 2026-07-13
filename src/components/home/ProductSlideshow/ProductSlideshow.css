@@ -315,6 +315,6 @@
 
 /* Smaller cursor trail images in the showcase */
 .content.ps-image-trail .content__img {
-  width: 132px;
-  border-radius: 12px;
+  width: 80px;
+  border-radius: 10px;
 }

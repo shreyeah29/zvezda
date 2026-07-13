@@ -22,14 +22,6 @@ const HomeProductSlideshow = dynamic(
   { ssr: false },
 );
 
-const HomeScrollGallery = dynamic(
-  () =>
-    import("@/components/home/jacquemus/HomeScrollGallery").then((mod) => ({
-      default: mod.HomeScrollGallery,
-    })),
-  { ssr: false },
-);
-
 const HomeCollectionSplit = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeCollectionSplit").then((mod) => ({
@@ -92,7 +84,6 @@ export default function HomePage() {
         <main id="main-content" className="jacquemus-home">
           <HomeHeroVideo />
           <HomeProductSlideshow />
-          <HomeScrollGallery />
           <HomeCollectionSplit />
           <HomePinkProductRow />
           <HomePinkCollectionFeature />
