@@ -99,20 +99,25 @@ export function Navigation() {
               type="button"
               data-cart-target
               onClick={() => setCartOpen(true)}
-              className={cn("jm-nav__icon jm-nav__cart", mutedClass)}
+              className={cn("jm-nav__icon jm-nav__cart", textClass)}
               aria-label={`Cart, ${cartCount} items`}
             >
-              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+              >
                 <path
                   d="M7.2 7.25h12.1l-1.15 9.1a1.6 1.6 0 0 1-1.58 1.4H9.55a1.6 1.6 0 0 1-1.58-1.35L6.35 4.75H3.75"
-                  fill="none"
-                  stroke="currentColor"
                   strokeWidth="1.35"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                <circle cx="10.2" cy="19.35" r="1.05" fill="currentColor" />
-                <circle cx="16.55" cy="19.35" r="1.05" fill="currentColor" />
+                <circle cx="10.2" cy="19.35" r="1.05" fill="currentColor" stroke="none" />
+                <circle cx="16.55" cy="19.35" r="1.05" fill="currentColor" stroke="none" />
               </svg>
               {displayCount > 0 && <span className="jm-nav__cart-dot" aria-hidden="true" />}
             </button>
