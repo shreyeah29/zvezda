@@ -1,10 +1,10 @@
-/* Mobile-only homepage layout — #080808 product sections. */
+/* Mobile-only homepage layout — gallery white (Option A). */
 
 @media (max-width: 768px) {
   .jacquemus-home {
     display: flex;
     flex-direction: column;
-    background: #080808;
+    background: #ffffff;
   }
 
   .jacquemus-home .home-section--mobile-bw-shop,
@@ -14,7 +14,7 @@
   }
 
   .jacquemus-home .home-section--instagram {
-    padding-top: 0.5rem;
+    padding-top: 0;
   }
 
   .jacquemus-home .home-section--hero {
@@ -49,11 +49,11 @@
     display: none !important;
   }
 
-  /* Collection split — stacked banners, faces centered */
+  /* Collection split — clean white gallery framing */
   .jacquemus-home .jm-collection-split {
     margin: 0;
     padding: 0;
-    background: #080808;
+    background: #ffffff;
   }
 
   .jacquemus-home .jm-collection-split__grid {
@@ -61,31 +61,27 @@
     grid-template-columns: 1fr;
     height: auto;
     min-height: 0;
-    gap: 0;
+    gap: 10px;
+    padding: 0 0.75rem;
   }
 
   .jacquemus-home .jm-collection-split__panel {
-    position: relative;
-    aspect-ratio: 16 / 11;
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: auto;
     min-height: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    border: 1px solid #dddddd;
+    background: #ffffff;
   }
 
   .jacquemus-home .jm-collection-split__panel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.42) 0%,
-      rgba(0, 0, 0, 0.18) 42%,
-      rgba(0, 0, 0, 0.02) 72%
-    );
-    pointer-events: none;
+    display: none;
   }
 
   .jacquemus-home .jm-collection-split__image {
+    aspect-ratio: 16 / 10;
+    height: auto;
     object-position: center 28%;
   }
 
@@ -98,35 +94,39 @@
   }
 
   .jacquemus-home .jm-split-panel__copy {
-    top: 50%;
-    bottom: auto;
-    left: 1rem;
-    z-index: 2;
-    transform: translateY(-50%);
-    gap: 0.5rem;
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 0.85rem;
+    background: #ffffff;
+    border-top: 1px solid #dddddd;
+    transform: none;
   }
 
   .jacquemus-home .jm-split-panel__title {
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
-    font-size: clamp(0.72rem, 3.2vw, 0.82rem);
-    font-weight: 400;
-    letter-spacing: 0.18em;
+    font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45);
+    color: #0c0a09;
+    text-shadow: none;
   }
 
   .jacquemus-home .jm-split-panel__cta {
     display: inline-block;
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
     font-size: 9px;
     font-weight: 400;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+    color: #0c0a09;
+    text-shadow: none;
     text-decoration: underline;
-    text-decoration-color: #c4a574;
+    text-decoration-color: #0c0a09;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
   }

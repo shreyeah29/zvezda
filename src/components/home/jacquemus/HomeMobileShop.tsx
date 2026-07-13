@@ -8,19 +8,10 @@ import "./HomeMobileShop.css";
 
 const PINK_SUPPORT_TITLES = ["Blush Coordination", "Petal Garden"];
 
-function MobileSectionHeading({
-  primary,
-  secondary,
-}: {
-  primary: string;
-  secondary: string;
-}) {
+function MobileSectionHeading({ label }: { label: string }) {
   return (
     <div className="hm-section-heading">
-      <div className="hm-section-heading__lines" aria-hidden="true">
-        <span className="hm-section-heading__primary">{primary}</span>
-        <span className="hm-section-heading__secondary">{secondary}</span>
-      </div>
+      <h2 className="hm-section-heading__title">{label}</h2>
     </div>
   );
 }
@@ -45,7 +36,6 @@ function MobileShopCard({
       <div className="hm-shop__cat-media">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={image} alt={alt} className="hm-shop__cat-image" loading="lazy" />
-        <div className="hm-shop__cat-scrim" aria-hidden="true" />
       </div>
       <div className="hm-shop__cat-copy">
         <h3 className="hm-shop__cat-title">{title}</h3>
@@ -64,7 +54,7 @@ export function HomeMobileShop() {
 
   return (
     <section className="hm-shop hm-shop--noir" aria-label="Noir collection">
-      <MobileSectionHeading primary="Noir" secondary="Collection" />
+      <MobileSectionHeading label="Noir Collection" />
       <div className="hm-bento">
         {[a, b, c, d].map((card, index) => {
           const product = getProduct(card.slug);
@@ -99,21 +89,21 @@ export function HomeMobilePinkShop() {
 
   return (
     <section className="hm-shop hm-shop--pink" aria-label="Pink collection">
-      <MobileSectionHeading primary="Pink" secondary="Collection" />
+      <MobileSectionHeading label="Pink Collection" />
 
       {hero && heroProduct && (
         <Link href={`/products/${hero.slug}`} className="hm-pink__hero">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={hero.image}
-            alt={heroProduct.name}
-            className="hm-pink__hero-image"
-            loading="lazy"
-          />
-          <div className="hm-pink__hero-scrim" aria-hidden="true" />
+          <div className="hm-pink__hero-media">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={hero.image}
+              alt={heroProduct.name}
+              className="hm-pink__hero-image"
+              loading="lazy"
+            />
+          </div>
           <div className="hm-pink__hero-copy">
-            <span className="hm-pink__hero-line">Pink</span>
-            <span className="hm-pink__hero-line">Collection</span>
+            <h3 className="hm-pink__hero-title">Rose Cascade</h3>
             <span className="hm-pink__hero-cta">Shop now</span>
           </div>
         </Link>

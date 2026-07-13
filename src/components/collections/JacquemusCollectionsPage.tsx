@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { jacquemusCollections } from "@/data/jacquemusCollections";
-import { ScaleEffectGallery, orderGalleryMedia } from "@/components/collections/ScaleEffectGallery";
-import { useMaxWidth } from "@/hooks/useMaxWidth";
 import "@/components/home/jacquemus/jacquemus-theme.css";
 import "./JacquemusCollectionsPage.css";
 
@@ -38,10 +36,8 @@ function CollectionMedia({ item }: { item: (typeof jacquemusCollections)[0]["med
 }
 
 export function JacquemusCollectionsPage() {
-  const isMobile = useMaxWidth(768);
-
   return (
-    <div className={`jm-collections jacquemus-home${isMobile ? " jm-collections--mobile-scale" : ""}`}>
+    <div className="jm-collections jacquemus-home">
       {jacquemusCollections.map((collection) => (
         <section key={collection.id} className="jm-collections__section" aria-label={collection.name}>
           <div className="jm-collections__layout">
@@ -51,15 +47,11 @@ export function JacquemusCollectionsPage() {
               <p className="jm-collections__detail">{collection.detail}</p>
             </header>
 
-            {isMobile ? (
-              <ScaleEffectGallery media={orderGalleryMedia(collection.media)} />
-            ) : (
-              <div className="jm-collections__track">
-                {collection.media.map((item, index) => (
-                  <CollectionMedia key={`${collection.id}-${item.src}-${index}`} item={item} />
-                ))}
-              </div>
-            )}
+            <div className="jm-collections__track">
+              {collection.media.map((item, index) => (
+                <CollectionMedia key={`${collection.id}-${item.src}-${index}`} item={item} />
+              ))}
+            </div>
           </div>
         </section>
       ))}

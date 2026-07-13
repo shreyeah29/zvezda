@@ -1,22 +1,21 @@
 .hm-instagram {
   display: none;
-  background: #080808;
+  background: #ffffff;
 }
 
 @media (max-width: 768px) {
   .hm-instagram {
     display: block;
     margin-top: 0;
-    padding: 2.5rem 0.75rem 2.75rem;
-    border-top: 1px solid rgba(196, 165, 116, 0.35);
-    background: #080808;
+    padding: 3rem 0.75rem 3rem;
+    background: #ffffff;
   }
 
   .hm-instagram__header {
-    text-align: center;
     margin-bottom: 1.15rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid #e8e8e8;
+    text-align: left;
   }
 
   .hm-instagram__title {
@@ -24,36 +23,37 @@
     font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
     font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     line-height: 1.2;
     text-transform: uppercase;
-    color: #ffffff;
+    color: #0c0a09;
   }
 
   .hm-instagram__handle {
-    margin: 0.45rem 0 0;
+    margin: 0.4rem 0 0;
     font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
     font-size: 10px;
     font-weight: 400;
-    letter-spacing: 0.12em;
-    color: rgba(196, 165, 116, 0.9);
+    letter-spacing: 0.1em;
+    color: rgba(0, 0, 0, 0.55);
     text-transform: lowercase;
   }
 
   .hm-instagram__grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
     padding: 0;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #111111;
+    border: none;
+    background: transparent;
   }
 
   .hm-instagram__cell {
     display: block;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #111111;
+    border: 1px solid #dddddd;
+    background: #f5f5f5;
   }
 
   .hm-instagram__image {
@@ -68,11 +68,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.45rem;
     width: 100%;
     margin-top: 1.15rem;
     padding: 0.75rem 0.85rem;
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1px solid #dddddd;
     font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
     font-size: 9px;
     font-weight: 500;
@@ -80,7 +79,7 @@
     line-height: 1;
     text-transform: uppercase;
     text-decoration: none;
-    color: #ffffff;
-    background: transparent;
+    color: #0c0a09;
+    background: #ffffff;
   }
 }
