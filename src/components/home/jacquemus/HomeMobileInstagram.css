@@ -1,17 +1,22 @@
 .hm-instagram {
   display: none;
-  background: #ffffff;
+  background: #000000;
 }
 
 @media (max-width: 768px) {
   .hm-instagram {
     display: block;
-    padding: 1.25rem 0.75rem 1.5rem;
+    margin-top: 1.25rem;
+    padding: 1.35rem 0.75rem 1.65rem;
+    border-top: 1px solid rgba(196, 165, 116, 0.35);
+    background: #000000;
   }
 
   .hm-instagram__header {
     text-align: center;
-    margin-bottom: 0.85rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .hm-instagram__title {
@@ -22,16 +27,16 @@
     letter-spacing: 0.2em;
     line-height: 1.2;
     text-transform: uppercase;
-    color: #000000;
+    color: #ffffff;
   }
 
   .hm-instagram__handle {
-    margin: 0.4rem 0 0;
+    margin: 0.45rem 0 0;
     font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
     font-size: 10px;
     font-weight: 400;
     letter-spacing: 0.12em;
-    color: rgba(0, 0, 0, 0.55);
+    color: rgba(196, 165, 116, 0.9);
     text-transform: lowercase;
   }
 
@@ -39,13 +44,16 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 3px;
+    padding: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #0a0a0a;
   }
 
   .hm-instagram__cell {
     display: block;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #f2f2f2;
+    background: #111111;
   }
 
   .hm-instagram__image {
@@ -62,9 +70,9 @@
     justify-content: center;
     gap: 0.45rem;
     width: 100%;
-    margin-top: 0.85rem;
-    padding: 0.7rem 0.85rem;
-    border: 1px solid rgba(0, 0, 0, 0.22);
+    margin-top: 1rem;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
     font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
     font-size: 9px;
     font-weight: 500;
@@ -72,7 +80,7 @@
     line-height: 1;
     text-transform: uppercase;
     text-decoration: none;
-    color: #000000;
-    background: #ffffff;
+    color: #ffffff;
+    background: transparent;
   }
 }

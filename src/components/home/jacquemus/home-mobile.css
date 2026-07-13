@@ -1,10 +1,10 @@
-/* Mobile-only homepage layout — uses site fonts and white product sections. */
+/* Mobile-only homepage layout — black product sections, site fonts on labels. */
 
 @media (max-width: 768px) {
   .jacquemus-home {
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: #000000;
   }
 
   .jacquemus-home .home-section--hero {
@@ -43,7 +43,7 @@
   .jacquemus-home .jm-collection-split {
     margin: 0;
     padding: 0;
-    background: #ffffff;
+    background: #000000;
   }
 
   .jacquemus-home .jm-collection-split__grid {
@@ -58,7 +58,7 @@
     position: relative;
     aspect-ratio: 16 / 11;
     min-height: 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .jacquemus-home .jm-collection-split__panel::before {
