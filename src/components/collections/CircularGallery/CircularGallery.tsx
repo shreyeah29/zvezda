@@ -175,13 +175,6 @@ export function CircularGallery() {
   const activeIndex = hoveredIndex ?? defaultIndex;
   const activeItem = items[activeIndex] ?? items[0];
 
-  const orderedWedges = useMemo(() => {
-    if (hoveredIndex === null) return wedges;
-    const hovered = wedges.find((w) => w.index === hoveredIndex);
-    if (!hovered) return wedges;
-    return [...wedges.filter((w) => w.index !== hoveredIndex), hovered];
-  }, [wedges, hoveredIndex]);
-
   return (
     <section className="cg-hero" aria-label="Collections circular gallery">
       <div className="cg-hero__inner">
@@ -227,13 +220,8 @@ export function CircularGallery() {
             </defs>
 
             <g className="cg-wedges">
-              {orderedWedges.map((wedge) => {
+              {wedges.map((wedge) => {
                 const item = items[wedge.index];
-                const midRad = degToRad(wedge.midAngle);
-                const hoverX =
-                  Math.cos(midRad) * outerR * HOVER_OFFSET_RATIO;
-                const hoverY =
-                  Math.sin(midRad) * outerR * HOVER_OFFSET_RATIO;
 
                 return (
                   <motion.path
@@ -263,13 +251,7 @@ export function CircularGallery() {
                     onHoverStart={() => {
                       startTransition(() => setHoveredIndex(wedge.index));
                     }}
-                    onHoverEnd={() => {
-                      startTransition(() => setHoveredIndex(null));
-                    }}
                     whileHover={{
-                      scale: HOVER_SCALE,
-                      x: hoverX,
-                      y: hoverY,
                       filter: "brightness(1.06)",
                       transition: {
                         duration: HOVER_DURATION,
