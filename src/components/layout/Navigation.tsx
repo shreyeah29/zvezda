@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,6 +38,7 @@ export function Navigation() {
 
   useEffect(() => {
     setHeaderVisible(true);
+    setMenuOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -90,7 +92,7 @@ export function Navigation() {
     };
   }, [hasHeroOverlay, pathname]);
 
-  const showHeader = headerVisible || menuOpen || cartOpen;
+  const showHeader = headerVisible || cartOpen;
   const heroOverlay = hasHeroOverlay && heroOverlayNav;
   const textClass = heroOverlay ? "text-white" : "text-black";
   const mutedClass = heroOverlay ? "text-white/80 hover:text-white" : "text-black/70 hover:text-black";
@@ -126,10 +128,7 @@ export function Navigation() {
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-2.5 md:gap-4">
-            <Link
-              href="/shop"
-              className={cn("jm-nav__link jm-nav__shop", mutedClass)}
-            >
+            <Link href="/shop" className={cn("jm-nav__link jm-nav__shop", mutedClass)}>
               Shop
             </Link>
             <Link
@@ -193,13 +192,74 @@ function JacquemusMobileNav({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const [mounted, setMounted] = useState(false);
   const lineClass = heroOverlay ? "bg-white/85" : "bg-black/80";
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
     document.body.classList.add("dg-scroll-lock");
     return () => document.body.classList.remove("dg-scroll-lock");
   }, [open]);
+
+  const menuOverlay =
+    mounted &&
+    createPortal(
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            key="jm-mobile-menu"
+            className="jm-mobile-menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            <div className="jm-mobile-menu__inner">
+              <div className="jm-mobile-menu__top">
+                <button
+                  type="button"
+                  onClick={() => onOpenChange(false)}
+                  className="jm-nav__link jm-mobile-menu__close"
+                >
+                  Close
+                </button>
+              </div>
+              <nav className="jm-mobile-menu__nav" aria-label="Mobile">
+                {[
+                  ...JM_LINKS,
+                  { href: "/shop", label: "Shop" },
+                  { href: "/wishlist", label: "Wishlist" },
+                ].map((link) => (
+                  <Link
+                    key={`${link.href}-${link.label}`}
+                    href={link.href}
+                    onClick={() => onOpenChange(false)}
+                    className="jm-mobile-menu__link"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    onOpenChange(false);
+                    onOpenCart();
+                  }}
+                  className="jm-mobile-menu__link jm-mobile-menu__link--button"
+                >
+                  Cart
+                </button>
+              </nav>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>,
+      document.body,
+    );
 
   return (
     <>
@@ -212,39 +272,7 @@ function JacquemusMobileNav({
         <span className={cn("block h-px w-5", lineClass)} />
         <span className={cn("block h-px w-3.5", lineClass)} />
       </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="fixed inset-0 z-[80] bg-white"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="flex h-full flex-col p-6">
-              <div className="flex justify-end">
-                <button type="button" onClick={() => onOpenChange(false)} className="jm-nav__link text-black">
-                  Close
-                </button>
-              </div>
-              <nav className="mt-8 flex flex-col gap-4">
-                {[...JM_LINKS, { href: "/wishlist", label: "Wishlist" }].map((link) => (
-                  <Link
-                    key={`${link.href}-${link.label}`}
-                    href={link.href}
-                    onClick={() => onOpenChange(false)}
-                    className="jm-nav__link text-lg text-black"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                <button type="button" onClick={onOpenCart} className="jm-nav__link text-left text-lg text-black">
-                  Cart
-                </button>
-              </nav>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {menuOverlay}
     </>
   );
 }
