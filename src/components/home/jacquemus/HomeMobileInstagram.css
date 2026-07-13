@@ -7,20 +7,9 @@
   .hm-instagram {
     display: block;
     margin-top: 0;
-    padding: 1.5rem 0.75rem 2.75rem;
+    padding: 1.5rem 0.75rem 0;
     border-top: none;
     background: #ffffff;
-  }
-
-  .hm-instagram__header {
-    margin: 0 -0.75rem 1.35rem;
-    padding: 0.4rem 0 0.9rem;
-    border-bottom: none;
-    overflow: hidden;
-  }
-
-  .hm-instagram__ticker-pro {
-    padding-block: 1.1rem 1.35rem;
   }
 
   .hm-instagram__title-row {
@@ -90,5 +79,15 @@
     text-decoration: none;
     color: #0c0a09;
     background: transparent;
+  }
+
+  .hm-instagram__ticker-wrap {
+    margin: 1.5rem -0.75rem 0;
+    padding: 0.25rem 0 0.5rem;
+    overflow: hidden;
+  }
+
+  .hm-instagram__ticker-pro {
+    padding-block: 0.85rem 1.1rem;
   }
 }

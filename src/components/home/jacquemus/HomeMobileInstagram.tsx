@@ -51,10 +51,6 @@ export function HomeMobileInstagram() {
 
   return (
     <section className="hm-instagram" aria-label="Follow our journey on Instagram">
-      <div className="hm-instagram__header">
-        <ScrollTickerPro className="hm-instagram__ticker-pro" />
-      </div>
-
       <div className="hm-instagram__title-row">
         <InstagramGlyph />
         <h2 className="hm-instagram__heading">Instagram</h2>
@@ -79,6 +75,10 @@ export function HomeMobileInstagram() {
       <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="hm-instagram__cta">
         View more on Instagram
       </a>
+
+      <div className="hm-instagram__ticker-wrap">
+        <ScrollTickerPro className="hm-instagram__ticker-pro" />
+      </div>
     </section>
   );
 }
