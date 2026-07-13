@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { getHomeProductSlideshowItems } from "@/data/homeProductSlideshow";
@@ -14,8 +14,10 @@ const SPRING = {
   mass: 1,
 };
 
-/** Horizontal slot rhythm — equal spacing between every dress */
-const SLOT_VW = 11;
+const SLOT_VW = 13;
+const WHEEL_COOLDOWN_MS = 520;
+
+type Mode = "browse" | "detail";
 
 type ProductSlideshowProps = {
   products?: SlideshowProduct[];
@@ -123,13 +125,42 @@ function InfoPanel({
   );
 }
 
+function dressMetrics(
+  mode: Mode,
+  index: number,
+  activeIndex: number,
+  hoveredIndex: number | null,
+) {
+  if (mode === "browse") {
+    if (hoveredIndex === index) {
+      return { height: "34vh", opacity: 1, zIndex: 12 };
+    }
+    if (hoveredIndex !== null) {
+      return { height: "24vh", opacity: 0.28, zIndex: 5 };
+    }
+    return { height: "28vh", opacity: 1, zIndex: 8 };
+  }
+
+  const isActive = index === activeIndex;
+  return {
+    height: isActive ? "62vh" : "18vh",
+    opacity: isActive ? 1 : 0.25,
+    zIndex: isActive ? 20 : 10 - Math.abs(index - activeIndex),
+  };
+}
+
 export function ProductSlideshow({ products }: ProductSlideshowProps) {
   const items = useMemo(
     () => (products && products.length > 0 ? products : getHomeProductSlideshowItems()),
     [products],
   );
 
+  const rootRef = useRef<HTMLDivElement>(null);
+  const wheelCooldown = useRef(false);
+
+  const [mode, setMode] = useState<Mode>("browse");
   const [activeIndex, setActiveIndex] = useState(Math.floor(items.length / 2));
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [sizes, setSizes] = useState<Record<string, string>>(() =>
     Object.fromEntries(items.map((item) => [item.slug, item.sizes[1] ?? item.sizes[0]])),
   );
@@ -137,38 +168,152 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
     Object.fromEntries(items.map((item) => [item.slug, item.colors[0]?.name ?? ""])),
   );
 
+  const goTo = useCallback(
+    (index: number) => {
+      setActiveIndex(Math.max(0, Math.min(items.length - 1, index)));
+    },
+    [items.length],
+  );
+
+  const goNext = useCallback(() => {
+    setActiveIndex((current) => Math.min(items.length - 1, current + 1));
+  }, [items.length]);
+
+  const goPrevious = useCallback(() => {
+    setActiveIndex((current) => Math.max(0, current - 1));
+  }, []);
+
+  const handleDressClick = (index: number) => {
+    if (mode === "browse") {
+      setActiveIndex(index);
+      setMode("detail");
+      return;
+    }
+
+    if (index === activeIndex) {
+      setMode("browse");
+      setHoveredIndex(null);
+      return;
+    }
+
+    setActiveIndex(index);
+  };
+
+  useEffect(() => {
+    if (mode !== "detail") return;
+
+    const root = rootRef.current;
+    if (!root) return;
+
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      if (wheelCooldown.current) return;
+
+      const delta = event.deltaY !== 0 ? event.deltaY : event.deltaX;
+      if (Math.abs(delta) < 8) return;
+
+      wheelCooldown.current = true;
+      if (delta > 0) goNext();
+      else goPrevious();
+
+      window.setTimeout(() => {
+        wheelCooldown.current = false;
+      }, WHEEL_COOLDOWN_MS);
+    };
+
+    root.addEventListener("wheel", onWheel, { passive: false });
+    return () => root.removeEventListener("wheel", onWheel);
+  }, [mode, goNext, goPrevious]);
+
+  useEffect(() => {
+    if (mode !== "detail") return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMode("browse");
+        setHoveredIndex(null);
+      } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        goNext();
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        goPrevious();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mode, goNext, goPrevious]);
+
   if (items.length === 0) return null;
 
   const active = items[activeIndex] ?? items[0];
   const activeSize = sizes[active.slug] ?? active.sizes[0];
   const activeColor = colors[active.slug] ?? active.colors[0]?.name ?? "";
-
   const centerOffset = (items.length - 1) / 2;
+  const trackShift = mode === "detail" ? (centerOffset - activeIndex) * SLOT_VW : 0;
 
   return (
-    <div className="ps-root">
+    <div
+      ref={rootRef}
+      className={`ps-root ps-root--${mode}`}
+      onMouseLeave={() => setHoveredIndex(null)}
+    >
       <div className="ps-backdrop" aria-hidden="true">
-        PRODUCTS
+        ZVEZDA
       </div>
 
-      <InfoPanel
-        product={active}
-        activeSize={activeSize}
-        activeColor={activeColor}
-        onSizeChange={(size) => setSizes((prev) => ({ ...prev, [active.slug]: size }))}
-        onColorChange={(color) =>
-          setColors((prev) => ({ ...prev, [active.slug]: color }))
-        }
-      />
+      <AnimatePresence>
+        {mode === "detail" && (
+          <motion.div
+            key="panel-wrap"
+            className="ps-panel-wrap"
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -16 }}
+            transition={SPRING}
+          >
+            <InfoPanel
+              product={active}
+              activeSize={activeSize}
+              activeColor={activeColor}
+              onSizeChange={(size) =>
+                setSizes((prev) => ({ ...prev, [active.slug]: size }))
+              }
+              onColorChange={(color) =>
+                setColors((prev) => ({ ...prev, [active.slug]: color }))
+              }
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="ps-stage">
         <motion.div
           className="ps-track"
-          animate={{ x: `${(centerOffset - activeIndex) * SLOT_VW}vw` }}
+          animate={{ x: `${trackShift}vw` }}
           transition={SPRING}
+          drag={mode === "detail" ? "x" : false}
+          dragConstraints={{ left: -80, right: 80 }}
+          dragElastic={0.12}
+          dragMomentum={false}
+          onDragEnd={(_, info) => {
+            if (mode !== "detail") return;
+            const threshold = 40;
+            const velocityThreshold = 280;
+            if (
+              info.offset.x < -threshold ||
+              info.velocity.x < -velocityThreshold
+            ) {
+              goNext();
+            } else if (
+              info.offset.x > threshold ||
+              info.velocity.x > velocityThreshold
+            ) {
+              goPrevious();
+            }
+          }}
         >
           {items.map((item, index) => {
-            const isActive = index === activeIndex;
+            const metrics = dressMetrics(mode, index, activeIndex, hoveredIndex);
 
             return (
               <button
@@ -176,8 +321,10 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
                 type="button"
                 className="ps-slot"
                 aria-label={`View ${item.title}`}
-                aria-pressed={isActive}
-                onClick={() => setActiveIndex(index)}
+                aria-pressed={mode === "detail" && index === activeIndex}
+                onClick={() => handleDressClick(index)}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <motion.img
@@ -186,10 +333,11 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
                   className="ps-image"
                   draggable={false}
                   animate={{
-                    height: isActive ? "42vh" : "17vh",
-                    opacity: isActive ? 1 : 0.25,
+                    height: metrics.height,
+                    opacity: metrics.opacity,
                   }}
                   transition={SPRING}
+                  style={{ zIndex: metrics.zIndex }}
                 />
               </button>
             );

@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
 
-/* Section wrapper on the homepage */
 .home-product-slideshow {
   position: relative;
   width: 100%;
@@ -24,13 +23,13 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Backdrop typography                                                  */
+/* Backdrop typography — dresses sit on this word                       */
 /* ------------------------------------------------------------------ */
 
 .ps-backdrop {
   position: absolute;
   left: 50%;
-  top: 52%;
+  top: 54%;
   z-index: 1;
   transform: translate(-50%, -50%);
   font-family: var(--ps-font);
@@ -55,20 +54,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
 .ps-track {
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  margin-top: 2vh;
+  pointer-events: auto;
+  touch-action: pan-y;
+}
+
+.ps-root--browse .ps-track {
+  margin-top: 0;
 }
 
 .ps-slot {
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: 11vw;
-  min-width: 96px;
+  width: 13vw;
+  min-width: 88px;
   margin: 0;
   padding: 0;
   border: 0;
@@ -83,25 +91,34 @@
   width: auto;
   max-width: none;
   object-fit: contain;
+  object-position: center bottom;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  position: relative;
 }
 
 /* ------------------------------------------------------------------ */
 /* Information panel                                                    */
 /* ------------------------------------------------------------------ */
 
+.ps-panel-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
 .ps-panel {
   position: absolute;
   left: clamp(24px, 5vw, 72px);
   top: 50%;
-  z-index: 30;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 22px;
   width: min(280px, 26vw);
+  pointer-events: auto;
 }
 
 .ps-panel__block {
@@ -198,6 +215,11 @@
   .ps-panel {
     width: min(240px, 30vw);
   }
+
+  .ps-slot {
+    width: 15vw;
+    min-width: 72px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -222,10 +244,11 @@
 
   .ps-slot {
     width: 18vw;
-    min-width: 64px;
+    min-width: 60px;
   }
 
   .ps-backdrop {
-    top: 44%;
+    top: 50%;
+    font-size: clamp(64px, 16vw, 120px);
   }
 }
