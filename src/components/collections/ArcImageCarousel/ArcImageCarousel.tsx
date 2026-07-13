@@ -8,7 +8,6 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   AnimatePresence,
   animate,
@@ -28,10 +27,10 @@ import "./ArcImageCarousel.css";
 const FOCAL_DEG = -90;
 const CARD_SHADOW = "0 10px 30px rgba(0, 0, 0, 0.12)";
 const CARD_SHADOW_HOVER = "0 16px 40px rgba(0, 0, 0, 0.14)";
-const ACTIVE_SCALE = 1.2;
-const INACTIVE_SCALE = 0.86;
-const INACTIVE_OPACITY = 0.62;
-const ACTIVE_LIFT = 18;
+const ACTIVE_SCALE = 1.1;
+const INACTIVE_SCALE = 0.74;
+const INACTIVE_OPACITY = 0.68;
+const ACTIVE_LIFT = 12;
 const HOVER_LIFT = 8;
 const HOVER_SCALE = 1.03;
 
@@ -54,24 +53,25 @@ function cxFromSize(width: number) {
   return width / 2;
 }
 
-function pickArcParams(width: number) {
+function pickArcParams(width: number, itemCount: number) {
+  const spanForCount = itemCount >= 6 ? 300 : itemCount >= 5 ? 270 : 245;
   if (width <= 480) {
-    return { spanDeg: 155, radiusFactor: 0.88, tiltDeg: 0 };
+    return { spanDeg: Math.min(188, spanForCount), radiusFactor: 0.58, tiltDeg: 0 };
   }
   if (width <= 768) {
-    return { spanDeg: 205, radiusFactor: 0.78, tiltDeg: 0 };
+    return { spanDeg: Math.min(238, spanForCount), radiusFactor: 0.52, tiltDeg: 0 };
   }
-  return { spanDeg: 245, radiusFactor: 0.72, tiltDeg: 0 };
+  return { spanDeg: spanForCount, radiusFactor: 0.48, tiltDeg: 0 };
 }
 
 function cardBaseWidth(width: number) {
-  if (width <= 480) return clamp(width * 0.52, 160, 240);
-  if (width <= 768) return clamp(width * 0.34, 180, 260);
-  return clamp(width * 0.24, 190, 280);
+  if (width <= 480) return clamp(width * 0.24, 68, 96);
+  if (width <= 768) return clamp(width * 0.15, 88, 118);
+  return clamp(width * 0.115, 96, 148);
 }
 
 function cardBaseHeightFromWidth(w: number) {
-  return w * 1.25;
+  return w * 1.28;
 }
 
 function getActiveIndex(rotationDeg: number, baseAngles: number[], focalDeg = FOCAL_DEG) {
@@ -277,18 +277,16 @@ type ArcImageCarouselProps = {
 export function ArcImageCarousel({
   items = arcCarouselCollections,
 }: ArcImageCarouselProps) {
-  const router = useRouter();
   const reducedMotion = useReducedMotion();
   const rootRef = useRef<HTMLDivElement>(null);
-  const contentElRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 900, height: 620 });
-  const [contentTop, setContentTop] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hasEntered, setHasEntered] = useState(reducedMotion ?? false);
 
   const { spanDeg, radiusFactor, tiltDeg } = useMemo(
-    () => pickArcParams(size.width),
-    [size.width],
+    () => pickArcParams(size.width, items.length),
+    [size.width, items.length],
   );
 
   const baseAngles = useMemo(() => {
@@ -300,12 +298,18 @@ export function ArcImageCarousel({
   }, [items.length, spanDeg]);
 
   const radius = useMemo(() => {
-    const r = size.width * radiusFactor;
-    return clamp(r, 220, 720);
-  }, [size.width, radiusFactor]);
+    const widthRadius = size.width * radiusFactor;
+    const heightCap = Math.max(120, (size.height - 200) * 0.52);
+    return clamp(Math.min(widthRadius, heightCap), 140, 420);
+  }, [size.width, size.height, radiusFactor]);
 
-  const centerY = useMemo(() => 140 + radius, [radius]);
-  const cardW = useMemo(() => clamp(cardBaseWidth(size.width), 120, 380), [size.width]);
+  const centerY = useMemo(() => {
+    const topPad = clamp(size.width * 0.05, 36, 72);
+    const stageBudget = Math.max(180, size.height - 210);
+    return topPad + stageBudget * 0.5;
+  }, [size.width, size.height]);
+
+  const cardW = useMemo(() => clamp(cardBaseWidth(size.width), 68, 148), [size.width]);
   const cardH = useMemo(() => cardBaseHeightFromWidth(cardW), [cardW]);
 
   const rotation = useMotionValue(0);
@@ -323,8 +327,8 @@ export function ArcImageCarousel({
   }, [activeIndex]);
 
   useEffect(() => {
-    if (!rootRef.current) return;
-    const el = rootRef.current;
+    const stage = stageRef.current;
+    if (!stage) return;
     const ro = new ResizeObserver((entries) => {
       const cr = entries?.[0]?.contentRect;
       if (!cr) return;
@@ -333,7 +337,7 @@ export function ArcImageCarousel({
         height: Math.max(1, cr.height),
       });
     });
-    ro.observe(el);
+    ro.observe(stage);
     return () => ro.disconnect();
   }, []);
 
@@ -362,15 +366,6 @@ export function ArcImageCarousel({
     }
   });
 
-  useEffect(() => {
-    const topOfArc = centerY - radius;
-    const bottomOfArc = centerY + radius;
-    const safe = Math.min(bottomOfArc - cardH * 0.35, size.height * 0.6);
-    const isMobile = size.width <= 480;
-    const nextTop =
-      Math.max(topOfArc + radius * 0.58, safe) - 48 + (isMobile ? 96 : 0);
-    setContentTop(nextTop);
-  }, [centerY, radius, cardH, size.height, size.width]);
 
   const animateRotationTo = useCallback(
     (target: number, onComplete?: () => void) => {
@@ -448,19 +443,10 @@ export function ArcImageCarousel({
 
   const handleCardClick = useCallback(
     (index: number) => {
-      const href = items[index]?.href;
-      if (!href) return;
-
-      if (index === activeIndexRef.current) {
-        router.push(href);
-        return;
-      }
-
-      goToIndex(index, () => {
-        router.push(href);
-      });
+      if (index === activeIndexRef.current) return;
+      goToIndex(index);
     },
-    [items, goToIndex, router],
+    [goToIndex],
   );
 
   const onPointerDown = useCallback(
@@ -561,7 +547,7 @@ export function ArcImageCarousel({
     >
       <div className="arc-carousel__glow" aria-hidden="true" />
 
-      <div className="arc-carousel__stage">
+      <div className="arc-carousel__stage" ref={stageRef}>
         {items.map((item, index) => (
           <ArcItem
             key={`${item.title}-${index}`}
@@ -582,11 +568,10 @@ export function ArcImageCarousel({
         ))}
       </div>
 
-      <div className="arc-carousel__content" style={{ top: contentTop }}>
+      <div className="arc-carousel__content">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={`${activeItem?.title ?? "none"}-${activeIndex}`}
-            ref={contentElRef}
             className="arc-carousel__content-inner"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
