@@ -15,7 +15,7 @@ export const arcCarouselCollections: ArcCarouselCollection[] = [
   {
     title: "Amber Solstice",
     subtitle: "Warm amber silhouettes in golden Provençal light.",
-    image: "/assets/images/products/set-13/HSP_2932.jpg",
+    image: "/assets/images/products/set-13/BHA_2011.jpg",
     imageAlt: "Amber Solstice — orange evening gown",
   },
   {
