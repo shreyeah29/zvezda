@@ -84,12 +84,12 @@ const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>>
     height: 2.15,
     preserveAspectRatio: "xMidYMid slice",
   },
-  // Amber Solstice — HSP_2889, nudge right to drop pillar hand
+  // Amber Solstice — HSP_2889, shift left so right edge isn't clipped
   1: {
-    x: 0.08,
+    x: -0.06,
     y: -0.02,
-    width: 1.02,
-    height: 1.02,
+    width: 1.1,
+    height: 1.05,
     preserveAspectRatio: "xMidYMid slice",
   },
 };
