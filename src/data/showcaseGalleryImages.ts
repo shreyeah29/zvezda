@@ -1,5 +1,6 @@
 import { sets, setPhotoPath } from "./sets";
 import { homeScrollGallerySlides } from "./homeScrollGallery";
+import filmWebManifest from "./filmWebManifest.json";
 
 export type GalleryCrop = "portrait" | "square" | "landscape";
 
@@ -65,6 +66,10 @@ function collectDeployedEditorials(): string[] {
 
   for (const extra of DEPLOYED_EXTRAS) {
     paths.add(extra);
+  }
+
+  for (const src of filmWebManifest) {
+    paths.add(src);
   }
 
   return [...paths];
