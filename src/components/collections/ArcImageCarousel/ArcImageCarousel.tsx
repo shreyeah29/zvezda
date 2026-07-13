@@ -28,8 +28,9 @@ const ACTIVE_SCALE = 1;
 const OUTER_SCALE = 0.68;
 const INACTIVE_OPACITY = 0.62;
 const ACTIVE_LIFT = 18;
-const ARC_TOP_PADDING = 140;
-const CONTENT_LIFT = 48;
+const ARC_TOP_PADDING = 210;
+const ARC_DROP_OFFSET = 36;
+const CONTENT_GAP = 18;
 const SPRING_STIFFNESS = 170;
 const SPRING_DAMPING = 22;
 
@@ -311,7 +312,10 @@ export function ArcImageCarousel({
     return clamp(Math.min(widthRadius, fitRadius), 200, 720);
   }, [size.width, radiusFactor, spanDeg, cardW]);
 
-  const centerY = useMemo(() => ARC_TOP_PADDING + radius, [radius]);
+  const centerY = useMemo(
+    () => ARC_TOP_PADDING + ARC_DROP_OFFSET + radius,
+    [radius],
+  );
 
   const stepDeg = useMemo(
     () => (items.length > 1 ? spanDeg / (items.length - 1) : 0),
@@ -348,14 +352,10 @@ export function ArcImageCarousel({
   }, []);
 
   useEffect(() => {
-    const topOfArc = centerY - radius;
-    const bottomOfArc = centerY + radius;
-    const safe = Math.min(bottomOfArc - cardH * 0.35, size.height * 0.62);
-    const isMobile = size.width <= 480;
-    const nextTop =
-      Math.max(topOfArc + radius * 0.58, safe) - CONTENT_LIFT + (isMobile ? 72 : 0);
-    setContentTop(nextTop);
-  }, [centerY, radius, cardH, size.height, size.width]);
+    const focalTop = centerY - radius - cardH / 2 - ACTIVE_LIFT;
+    const gap = size.width <= 480 ? 12 : CONTENT_GAP;
+    setContentTop(focalTop + cardH + gap);
+  }, [centerY, radius, cardH, size.width]);
 
   useEffect(() => {
     if (reducedMotion) {

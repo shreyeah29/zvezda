@@ -8,7 +8,7 @@
   background: #ffffff;
   color: #000000;
   font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
-  padding-top: clamp(4.75rem, 9vh, 6rem);
+  padding-top: clamp(5rem, 10vh, 6.25rem);
   box-sizing: border-box;
   touch-action: pan-y;
   outline: none;
@@ -74,7 +74,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
 }
 
@@ -101,7 +101,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: clamp(16px, 2.5vh, 24px);
+  bottom: clamp(20px, 3vh, 32px);
   z-index: 3;
   display: flex;
   justify-content: center;
