@@ -16,6 +16,7 @@ const SPRING = {
 
 const BROWSE_DRESS_HEIGHT = "19.2vh";
 const BROWSE_HERO_DRESS_HEIGHT = "21.1vh";
+const HERO_DRESS_INDEX = 2;
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
 
@@ -175,7 +176,7 @@ function DressButton({
 }) {
   const isHovered = hoveredIndex === index;
   const isDimmed = mode === "browse" && hoveredIndex !== null && !isHovered;
-  const isHeroDress = index === 1;
+  const isHeroDress = index === HERO_DRESS_INDEX;
   const detailMetrics =
     mode === "detail" ? detailDressMetrics(index, activeIndex) : null;
 
