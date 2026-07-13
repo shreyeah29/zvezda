@@ -104,20 +104,18 @@ export function ScrollTickerPro({ bands = DEFAULT_BANDS, className }: ScrollTick
     <div className={className ? `stp ${className}` : "stp"} aria-hidden="true">
       <div className="stp__stage">
         {bands.map((band, index) => (
-          <div
-            key={band.id}
-            className={`stp__band stp__band--${index + 1}`}
-            style={{ backgroundColor: band.color }}
-          >
-            <ScrollTicker
-              className="stp__ticker"
-              baseSpeed={band.speed ?? 55}
-              gap={22}
-              boostIntensity={1.4}
-              initialDirection={band.direction ?? (index % 2 === 0 ? "left" : "right")}
-            >
-              <BandContent label={band.label} />
-            </ScrollTicker>
+          <div key={band.id} className={`stp__rail stp__rail--${index + 1}`}>
+            <div className="stp__band" style={{ backgroundColor: band.color }}>
+              <ScrollTicker
+                className="stp__ticker"
+                baseSpeed={band.speed ?? 55}
+                gap={22}
+                boostIntensity={1.4}
+                initialDirection={band.direction ?? (index % 2 === 0 ? "left" : "right")}
+              >
+                <BandContent label={band.label} />
+              </ScrollTicker>
+            </div>
           </div>
         ))}
       </div>

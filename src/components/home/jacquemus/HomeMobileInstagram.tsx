@@ -16,6 +16,30 @@ const INSTAGRAM_PICKS = [
   "set-11",
 ] as const;
 
+function InstagramGlyph() {
+  return (
+    <svg
+      className="hm-instagram__heading-icon"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect
+        x="3.5"
+        y="3.5"
+        width="17"
+        height="17"
+        rx="5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+      <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function HomeMobileInstagram() {
   const isMobile = useMaxWidth(768);
 
@@ -29,6 +53,11 @@ export function HomeMobileInstagram() {
     <section className="hm-instagram" aria-label="Follow our journey on Instagram">
       <div className="hm-instagram__header">
         <ScrollTickerPro className="hm-instagram__ticker-pro" />
+      </div>
+
+      <div className="hm-instagram__title-row">
+        <InstagramGlyph />
+        <h2 className="hm-instagram__heading">Instagram</h2>
       </div>
 
       <div className="hm-instagram__grid">
