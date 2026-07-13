@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { MiniCart } from "@/components/commerce/MiniCart";
 import { FlyToCartLayer, FlyToWishlistLayer } from "@/components/commerce/CommerceAnimations";
 import { useCommerce } from "@/context/CommerceContext";
+import { getLenisInstance } from "@/lib/lenisInstance";
 import { cn } from "@/lib/utils";
 import "./JacquemusNav.css";
 
@@ -14,6 +15,9 @@ const JM_LINKS = [
   { href: "/", label: "Home" },
   { href: "/collections", label: "Collections" },
 ];
+
+/** Keep header visible only near the very top of the page. */
+const TOP_VISIBLE_PX = 24;
 
 export function Navigation() {
   const pathname = usePathname();
@@ -24,26 +28,56 @@ export function Navigation() {
   const [cartOpen, setCartOpen] = useState(false);
   const [displayCount, setDisplayCount] = useState(cartCount);
   const [heroOverlayNav, setHeroOverlayNav] = useState(hasHeroOverlay);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     setDisplayCount(cartCount);
   }, [cartCount]);
 
   useEffect(() => {
-    if (!hasHeroOverlay) {
-      setHeroOverlayNav(false);
-      return;
-    }
+    setHeaderVisible(true);
+  }, [pathname]);
 
-    const updateHeroNav = () => {
-      setHeroOverlayNav(window.scrollY < window.innerHeight * 0.85);
+  useEffect(() => {
+    const updateFromScroll = () => {
+      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      setHeaderVisible(y <= TOP_VISIBLE_PX);
+
+      if (hasHeroOverlay) {
+        setHeroOverlayNav(y < window.innerHeight * 0.85);
+      } else {
+        setHeroOverlayNav(false);
+      }
     };
 
-    updateHeroNav();
-    window.addEventListener("scroll", updateHeroNav, { passive: true });
-    return () => window.removeEventListener("scroll", updateHeroNav);
+    updateFromScroll();
+    window.addEventListener("scroll", updateFromScroll, { passive: true });
+
+    let lenisCleanup: (() => void) | undefined;
+    let retryId = 0;
+    const attachLenis = () => {
+      const lenis = getLenisInstance();
+      if (!lenis || lenisCleanup) return Boolean(lenisCleanup);
+      lenis.on("scroll", updateFromScroll);
+      lenisCleanup = () => lenis.off("scroll", updateFromScroll);
+      return true;
+    };
+
+    if (!attachLenis()) {
+      retryId = window.setInterval(() => {
+        if (attachLenis()) window.clearInterval(retryId);
+      }, 120);
+    }
+
+    return () => {
+      window.clearInterval(retryId);
+      window.removeEventListener("scroll", updateFromScroll);
+      lenisCleanup?.();
+    };
   }, [hasHeroOverlay, pathname]);
 
+  const showHeader = headerVisible || menuOpen || cartOpen;
   const heroOverlay = hasHeroOverlay && heroOverlayNav;
   const textClass = heroOverlay ? "text-white" : "text-black";
   const mutedClass = heroOverlay ? "text-white/80 hover:text-white" : "text-black/70 hover:text-black";
@@ -54,7 +88,13 @@ export function Navigation() {
       <FlyToWishlistLayer />
       <MiniCart open={cartOpen} onClose={() => setCartOpen(false)} />
 
-      <header className="pointer-events-none fixed top-0 right-0 left-0 z-50 bg-transparent px-4 md:px-6">
+      <header
+        className={cn(
+          "pointer-events-none fixed top-0 right-0 left-0 z-50 bg-transparent px-4 md:px-6",
+          "jm-nav-header",
+          showHeader ? "jm-nav-header--visible" : "jm-nav-header--hidden",
+        )}
+      >
         <div className="pointer-events-auto mx-auto flex w-full max-w-[100%] items-center justify-between py-2.5">
           <Link href="/" className={cn("jm-nav__logo", textClass)}>
             ZVEZDA
@@ -116,7 +156,12 @@ export function Navigation() {
               </svg>
               {displayCount > 0 && <span className="jm-nav__cart-dot" aria-hidden="true" />}
             </button>
-            <JacquemusMobileNav heroOverlay={heroOverlay} onOpenCart={() => setCartOpen(true)} />
+            <JacquemusMobileNav
+              heroOverlay={heroOverlay}
+              onOpenCart={() => setCartOpen(true)}
+              open={menuOpen}
+              onOpenChange={setMenuOpen}
+            />
           </div>
         </div>
       </header>
@@ -127,11 +172,14 @@ export function Navigation() {
 function JacquemusMobileNav({
   heroOverlay,
   onOpenCart,
+  open,
+  onOpenChange,
 }: {
   heroOverlay: boolean;
   onOpenCart: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) {
-  const [open, setOpen] = useState(false);
   const lineClass = heroOverlay ? "bg-white/85" : "bg-black/80";
 
   useEffect(() => {
@@ -144,7 +192,7 @@ function JacquemusMobileNav({
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => onOpenChange(true)}
         className="inline-flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5 lg:hidden"
         aria-label="Open menu"
       >
@@ -161,7 +209,7 @@ function JacquemusMobileNav({
           >
             <div className="flex h-full flex-col p-6">
               <div className="flex justify-end">
-                <button type="button" onClick={() => setOpen(false)} className="jm-nav__link text-black">
+                <button type="button" onClick={() => onOpenChange(false)} className="jm-nav__link text-black">
                   Close
                 </button>
               </div>
@@ -170,7 +218,7 @@ function JacquemusMobileNav({
                   <Link
                     key={`${link.href}-${link.label}`}
                     href={link.href}
-                    onClick={() => setOpen(false)}
+                    onClick={() => onOpenChange(false)}
                     className="jm-nav__link text-lg text-black"
                   >
                     {link.label}
