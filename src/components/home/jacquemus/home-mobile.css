@@ -9,6 +9,7 @@
 
   .jacquemus-home .home-section--mobile-bw-shop,
   .jacquemus-home .home-section--mobile-pink-shop,
+  .jacquemus-home .home-section--mobile-pink-video,
   .jacquemus-home .home-section--instagram {
     margin-top: 0;
   }
@@ -33,12 +34,16 @@
     order: 4;
   }
 
-  .jacquemus-home .home-section--instagram {
+  .jacquemus-home .home-section--mobile-pink-video {
     order: 5;
   }
 
-  .jacquemus-home .home-section--footer {
+  .jacquemus-home .home-section--instagram {
     order: 6;
+  }
+
+  .jacquemus-home .home-section--footer {
+    order: 7;
   }
 
   .jacquemus-home .home-section--showcase,

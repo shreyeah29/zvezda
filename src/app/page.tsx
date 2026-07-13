@@ -39,6 +39,14 @@ const HomeMobilePinkShop = dynamic(
   { ssr: false },
 );
 
+const HomeMobilePinkVideo = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomeMobilePinkVideo").then((mod) => ({
+      default: mod.HomeMobilePinkVideo,
+    })),
+  { ssr: false },
+);
+
 const HomeCollectionSplit = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeCollectionSplit").then((mod) => ({
@@ -133,6 +141,9 @@ export default function HomePage() {
           </div>
           <div className="home-section home-section--mobile-pink-shop">
             <HomeMobilePinkShop />
+          </div>
+          <div className="home-section home-section--mobile-pink-video">
+            <HomeMobilePinkVideo />
           </div>
           <div className="home-section home-section--instagram">
             <HomeMobileInstagram />

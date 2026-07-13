@@ -2,6 +2,7 @@
 
 import { useMaxWidth } from "@/hooks/useMaxWidth";
 import { products } from "@/data/products";
+import { ScrollTicker } from "@/components/ui/ScrollTicker";
 import "./HomeMobileInstagram.css";
 
 const INSTAGRAM_URL = "https://www.instagram.com/zvezda_atelier/";
@@ -15,6 +16,8 @@ const INSTAGRAM_PICKS = [
   "set-11",
 ] as const;
 
+const TICKER_ITEMS = ["Follow our journey", "@zvezda.atelier", "ZVEZDA"] as const;
+
 export function HomeMobileInstagram() {
   const isMobile = useMaxWidth(768);
 
@@ -27,8 +30,20 @@ export function HomeMobileInstagram() {
   return (
     <section className="hm-instagram" aria-label="Follow our journey on Instagram">
       <div className="hm-instagram__header">
-        <h2 className="hm-instagram__title">Follow our journey</h2>
-        <p className="hm-instagram__handle">@zvezda.atelier</p>
+        <ScrollTicker
+          className="hm-instagram__ticker"
+          baseSpeed={70}
+          gap={28}
+          boostIntensity={1.2}
+          initialDirection="left"
+        >
+          {TICKER_ITEMS.map((label) => (
+            <span key={label} className="scroll-ticker__item">
+              <span>{label}</span>
+              <span className="scroll-ticker__dot" aria-hidden="true" />
+            </span>
+          ))}
+        </ScrollTicker>
       </div>
 
       <div className="hm-instagram__grid">
