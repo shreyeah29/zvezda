@@ -41,3 +41,18 @@
 .jm-footer__nav a:hover {
   opacity: 0.55;
 }
+
+.jm-footer__mobile,
+.jm-footer__social {
+  display: none;
+}
+
+.jm-footer__desktop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+}

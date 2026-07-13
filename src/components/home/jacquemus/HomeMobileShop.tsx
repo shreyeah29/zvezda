@@ -6,37 +6,66 @@ import { getProduct } from "@/data/products";
 import { pinkHighlightCards, shopHighlightCards } from "@/data/shopHighlightCards";
 import "./HomeMobileShop.css";
 
+const PINK_MOBILE_TITLES = [
+  "Pink Collection",
+  "Rose Cascade Collection",
+  "Blush Coordination",
+  "Petal Garden & Rose Mirage",
+];
+
+function MobileSectionHeading({ label }: { label: string }) {
+  return (
+    <div className="hm-section-heading" aria-hidden="true">
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function MobileShopCard({
+  href,
+  image,
+  alt,
+  title,
+}: {
+  href: string;
+  image: string;
+  alt: string;
+  title: string;
+}) {
+  return (
+    <Link href={href} className="hm-shop__cat-card">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={image} alt={alt} className="hm-shop__cat-image" loading="lazy" />
+      <div className="hm-shop__cat-scrim" aria-hidden="true" />
+      <div className="hm-shop__cat-copy">
+        <h3 className="hm-shop__cat-title">{title}</h3>
+        <span className="hm-shop__cat-cta">Shop now</span>
+      </div>
+    </Link>
+  );
+}
+
 export function HomeMobileShop() {
   const isMobile = useMaxWidth(768);
 
   if (!isMobile) return null;
 
   return (
-    <section className="hm-shop hm-shop--bw" aria-label="Black and white collection">
+    <section className="hm-shop hm-shop--bw" aria-label="Noir collection">
+      <MobileSectionHeading label="Noir Collection" />
       <div className="hm-shop__cat-grid">
         {shopHighlightCards.map((card) => {
           const product = getProduct(card.slug);
           if (!product) return null;
 
           return (
-            <Link
+            <MobileShopCard
               key={card.slug}
               href={`/products/${card.slug}`}
-              className="hm-shop__cat-card"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={card.image}
-                alt={product.name}
-                className="hm-shop__cat-image"
-                loading="lazy"
-              />
-              <div className="hm-shop__cat-scrim" aria-hidden="true" />
-              <div className="hm-shop__cat-band">
-                <h3 className="hm-shop__cat-title">{card.title}</h3>
-              </div>
-              <span className="hm-shop__cat-cta">Shop now</span>
-            </Link>
+              image={card.image}
+              alt={product.name}
+              title={card.title}
+            />
           );
         })}
       </div>
@@ -52,29 +81,18 @@ export function HomeMobilePinkShop() {
   return (
     <section className="hm-shop hm-shop--pink" aria-label="Pink collection">
       <div className="hm-shop__cat-grid">
-        {pinkHighlightCards.map((card) => {
+        {pinkHighlightCards.map((card, index) => {
           const product = getProduct(card.slug);
           if (!product) return null;
 
           return (
-            <Link
+            <MobileShopCard
               key={card.slug}
               href={`/products/${card.slug}`}
-              className="hm-shop__cat-card"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={card.image}
-                alt={product.name}
-                className="hm-shop__cat-image"
-                loading="lazy"
-              />
-              <div className="hm-shop__cat-scrim" aria-hidden="true" />
-              <div className="hm-shop__cat-band">
-                <h3 className="hm-shop__cat-title">{card.title}</h3>
-              </div>
-              <span className="hm-shop__cat-cta">Shop now</span>
-            </Link>
+              image={card.image}
+              alt={product.name}
+              title={PINK_MOBILE_TITLES[index] ?? card.title}
+            />
           );
         })}
       </div>

@@ -1,4 +1,4 @@
-/* Mobile-only homepage tuning — desktop styles unchanged above 768px */
+/* Mobile-only homepage — matches ZVEZDA phone mockup. Desktop unchanged above 768px. */
 
 @media (max-width: 768px) {
   .jacquemus-home {
@@ -41,38 +41,203 @@
     display: none !important;
   }
 
-  .jacquemus-home .jm-collection-split,
+  /* Collection split — stacked banners */
+  .jacquemus-home .jm-collection-split {
+    margin: 0;
+    padding: 0;
+    background: #000000;
+  }
+
+  .jacquemus-home .jm-collection-split__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+    gap: 0;
+  }
+
+  .jacquemus-home .jm-collection-split__panel {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    min-height: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .jacquemus-home .jm-split-panel__copy {
+    top: 50%;
+    bottom: auto;
+    left: 1rem;
+    transform: translateY(-50%);
+    gap: 0.55rem;
+  }
+
+  .jacquemus-home .jm-split-panel__title {
+    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-size: clamp(0.72rem, 3.2vw, 0.82rem);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .jacquemus-home .jm-split-panel__cta {
+    display: inline-block;
+    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-decoration: underline;
+    text-decoration-color: #c4a574;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  /* Feature sections — stacked film blocks */
   .jacquemus-home .jm-collection-feature {
     margin: 0;
     padding: 0;
+    background: #000000;
   }
 
-  .jacquemus-home .jm-collection-split__grid,
+  .jacquemus-home .hm-section-heading--feature {
+    display: flex;
+  }
+
   .jacquemus-home .jm-collection-feature__grid {
-    height: 50svh;
-    min-height: 50svh;
+    display: grid;
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+    gap: 0;
+  }
+
+  .jacquemus-home .jm-collection-feature__panel {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    min-height: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .jacquemus-home .jm-collection-feature__panel .jm-caption {
+    display: none;
+  }
+
+  .jacquemus-home .jm-feature-mobile-label {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    z-index: 3;
+    transform: translateX(-50%);
+    display: block;
+    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-decoration: underline;
+    text-decoration-color: #c4a574;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .jacquemus-home .jm-feature-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .jacquemus-home .jm-feature-play::before {
+    content: "";
+    margin-left: 2px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 8px solid rgba(255, 255, 255, 0.9);
   }
 
   .jacquemus-home .jm-section-rule {
     display: none;
   }
 
-  .jacquemus-home .jm-caption {
-    bottom: 0.6rem;
-    left: 0.6rem;
-    font-size: 9px;
-  }
-
+  /* Footer — dark mockup style */
   .jacquemus-home .jm-footer {
-    padding: 1.25rem 0.85rem;
-    background: #ffffff;
+    padding: 2rem 1rem 1.5rem;
+    background: #000000;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .jacquemus-home .jm-footer__inner {
-    gap: 1rem;
+  .jacquemus-home .jm-footer__desktop {
+    display: none;
   }
 
-  .jacquemus-home .jm-footer__nav {
-    gap: 0.75rem 1.25rem;
+  .jacquemus-home .jm-footer__mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+  }
+
+  .jacquemus-home .jm-footer__mobile-logo {
+    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-size: clamp(2rem, 9vw, 2.35rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .jacquemus-home .jm-footer__mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .jacquemus-home .jm-footer__mobile-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .jacquemus-home .jm-footer__mobile-link span:last-child {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 14px;
+  }
+
+  .jacquemus-home .jm-footer__social {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    padding-top: 0.35rem;
+  }
+
+  .jacquemus-home .jm-footer__social a {
+    font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
   }
 }

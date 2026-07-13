@@ -12,10 +12,14 @@ export function HomeCollectionFeature() {
 
   return (
     <section className="jm-collection-feature" aria-label="New collection">
+      <div className="hm-section-heading hm-section-heading--feature" aria-hidden="true">
+        <span>New Collection</span>
+      </div>
       <div className="jm-collection-feature__grid">
         <div className="jm-collection-feature__panel jm-collection-feature__panel--image">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={FEATURE_IMAGE} alt="New collection editorial" className="jm-collection-feature__media" />
+          <span className="jm-feature-mobile-label">New Collection</span>
         </div>
         <div className="jm-collection-feature__panel jm-collection-feature__panel--video">
           <video
@@ -31,6 +35,8 @@ export function HomeCollectionFeature() {
           >
             <source src={FEATURE_VIDEO} type="video/mp4" />
           </video>
+          <span className="jm-feature-play" aria-hidden="true" />
+          <span className="jm-feature-mobile-label">Watch the film</span>
           <Link href="/collections/garden" className="jm-caption">
             New Collection
           </Link>

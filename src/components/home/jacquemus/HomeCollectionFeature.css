@@ -53,3 +53,9 @@
 .jm-collection-feature__panel--video .jm-caption:hover {
   opacity: 0.75;
 }
+
+.jm-feature-mobile-label,
+.jm-feature-play,
+.hm-section-heading--feature {
+  display: none;
+}

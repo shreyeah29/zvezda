@@ -11,7 +11,7 @@ export function HomePinkCollectionFeature() {
   const featureVideoRef = useInlineVideoAutoplay();
 
   return (
-    <section className="jm-collection-feature" aria-label="Pink collection">
+    <section className="jm-collection-feature jm-collection-feature--pink" aria-label="Pink collection">
       <div className="jm-collection-feature__grid">
         <div className="jm-collection-feature__panel jm-collection-feature__panel--video">
           <video
@@ -27,6 +27,8 @@ export function HomePinkCollectionFeature() {
           >
             <source src={FEATURE_VIDEO} type="video/mp4" />
           </video>
+          <span className="jm-feature-play" aria-hidden="true" />
+          <span className="jm-feature-mobile-label">Pink Collection</span>
           <Link href="/products/set-15" className="jm-caption">
             Pink Collection
           </Link>

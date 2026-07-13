@@ -16,7 +16,10 @@ export function HomeCollectionSplit() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={panel.image} alt={panel.label} className="jm-collection-split__image" />
-            <span className="jm-caption">{panel.label}</span>
+            <div className="jm-split-panel__copy">
+              <span className="jm-split-panel__title">{panel.label}</span>
+              <span className="jm-split-panel__cta">Explore now</span>
+            </div>
           </Link>
         ))}
       </div>

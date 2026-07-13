@@ -33,3 +33,27 @@
 .jm-collection-split__panel:hover .jm-collection-split__image {
   transform: scale(1.02);
 }
+
+.jm-split-panel__copy {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  pointer-events: none;
+}
+
+.jm-split-panel__title {
+  font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--jm-white, #ffffff);
+  letter-spacing: 0.01em;
+}
+
+.jm-split-panel__cta {
+  display: none;
+}
