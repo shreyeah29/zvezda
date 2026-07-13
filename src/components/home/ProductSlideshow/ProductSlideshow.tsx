@@ -9,11 +9,12 @@ import type { SlideshowProduct } from "./types";
 import {
   DRESS_SPRING,
   getDressEntranceDelay,
+  getLetterEntranceDelay,
   LETTER_SPRING,
-  LETTER_STAGGER_S,
   PANEL_SPRING,
 } from "./useShowcaseEntrance";
 import ImageTrail from "@/components/ui/ImageTrail/ImageTrail";
+import { ShowcaseGalleryFrame } from "./ShowcaseGalleryFrame";
 import "./ProductSlideshow.css";
 
 const SPRING = {
@@ -50,6 +51,7 @@ type Mode = "browse" | "detail";
 type ProductSlideshowProps = {
   products?: SlideshowProduct[];
   entranceStarted?: boolean;
+  lettersStarted?: boolean;
   entranceComplete?: boolean;
 };
 
@@ -181,6 +183,7 @@ function DressButton({
   onLeave,
   className,
   entranceStarted = true,
+  lettersStarted = true,
   entranceComplete = true,
 }: {
   item: SlideshowProduct;
@@ -193,6 +196,7 @@ function DressButton({
   onLeave: () => void;
   className?: string;
   entranceStarted?: boolean;
+  lettersStarted?: boolean;
   entranceComplete?: boolean;
 }) {
   const isHovered = hoveredIndex === index;
@@ -205,7 +209,7 @@ function DressButton({
   const dressDelay = getDressEntranceDelay(index);
   const showBrowseEntrance = mode === "browse" && !entranceComplete;
 
-  const browseEntranceAnimate = entranceStarted
+  const browseEntranceAnimate = lettersStarted
     ? {
         height: browseHeight,
         opacity: 1,
@@ -279,6 +283,7 @@ function DressButton({
 export function ProductSlideshow({
   products,
   entranceStarted = true,
+  lettersStarted = true,
   entranceComplete = true,
 }: ProductSlideshowProps) {
   const items = useMemo(
@@ -396,6 +401,11 @@ export function ProductSlideshow({
         />
       )}
 
+      <ShowcaseGalleryFrame
+        visible={entranceStarted}
+        active={mode === "browse"}
+      />
+
       <div className="ps-word-stage">
         <div className="ps-word-row" aria-hidden="true">
           {LETTER_LAYOUT.map((column, columnIndex) => {
@@ -419,7 +429,7 @@ export function ProductSlideshow({
                         : false
                     }
                     animate={
-                      entranceStarted || entranceComplete
+                      lettersStarted || entranceComplete
                         ? {
                             y: 0,
                             opacity: 0.08,
@@ -435,7 +445,7 @@ export function ProductSlideshow({
                     }
                     transition={{
                       ...LETTER_SPRING,
-                      delay: columnIndex * LETTER_STAGGER_S,
+                      delay: getLetterEntranceDelay(columnIndex),
                     }}
                   >
                     {column.char}
@@ -451,7 +461,7 @@ export function ProductSlideshow({
                       onHover={() => setHoveredIndex(dressIndex)}
                       onLeave={() => setHoveredIndex(null)}
                       className="ps-slot--on-letter"
-                      entranceStarted={entranceStarted}
+                      entranceStarted={lettersStarted}
                       entranceComplete={entranceComplete}
                     />
                   )}
@@ -475,7 +485,7 @@ export function ProductSlideshow({
                         onHover={() => setHoveredIndex(gapDressIndex)}
                         onLeave={() => setHoveredIndex(null)}
                         className="ps-slot--on-letter"
-                        entranceStarted={entranceStarted}
+                        entranceStarted={lettersStarted}
                         entranceComplete={entranceComplete}
                       />
                     </div>
@@ -553,7 +563,7 @@ export function ProductSlideshow({
                 onHover={() => setHoveredIndex(index)}
                 onLeave={() => setHoveredIndex(null)}
                 className="ps-slot"
-                entranceStarted={entranceStarted}
+                entranceStarted={lettersStarted}
                 entranceComplete={entranceComplete}
               />
             ))}

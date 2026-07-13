@@ -1,0 +1,122 @@
+.ps-gallery-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ps-gallery-frame__middle {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.ps-gallery-well {
+  min-width: clamp(300px, 54vw, 760px);
+  background: #ffffff;
+  pointer-events: none;
+}
+
+.ps-gallery-strip {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.ps-gallery-strip--horizontal {
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  height: clamp(54px, 9.5vh, 92px);
+  overflow: hidden;
+}
+
+.ps-gallery-strip--horizontal .ps-gallery-cell {
+  flex: 1 1 auto;
+  height: 100%;
+}
+
+.ps-gallery-strip--horizontal .ps-gallery-cell--portrait {
+  min-width: clamp(34px, 4.5vw, 52px);
+  max-width: clamp(48px, 6vw, 72px);
+}
+
+.ps-gallery-strip--horizontal .ps-gallery-cell--square {
+  min-width: clamp(48px, 8vh, 84px);
+  max-width: clamp(54px, 9.5vh, 92px);
+}
+
+.ps-gallery-strip--horizontal .ps-gallery-cell--landscape {
+  min-width: clamp(58px, 8vw, 96px);
+  max-width: clamp(88px, 12vw, 140px);
+}
+
+.ps-gallery-strip--vertical {
+  flex-direction: column;
+  align-items: stretch;
+  width: clamp(46px, 7.2vw, 76px);
+  height: 100%;
+  overflow: hidden;
+}
+
+.ps-gallery-strip--vertical .ps-gallery-cell {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.ps-gallery-strip--vertical .ps-gallery-cell--portrait {
+  min-height: clamp(58px, 9vh, 88px);
+  max-height: clamp(78px, 12vh, 112px);
+}
+
+.ps-gallery-strip--vertical .ps-gallery-cell--square {
+  min-height: clamp(40px, 6.5vw, 68px);
+  max-height: clamp(46px, 7.2vw, 76px);
+}
+
+.ps-gallery-strip--vertical .ps-gallery-cell--landscape {
+  min-height: clamp(32px, 4.8vw, 48px);
+  max-height: clamp(40px, 5.5vw, 56px);
+}
+
+.ps-gallery-cell {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 0;
+  cursor: default;
+  transform-origin: center center;
+  will-change: transform, filter;
+}
+
+.ps-gallery-cell__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 768px) {
+  .ps-gallery-well {
+    min-width: clamp(220px, 62vw, 420px);
+  }
+
+  .ps-gallery-strip--horizontal {
+    height: clamp(42px, 8vh, 68px);
+  }
+
+  .ps-gallery-strip--vertical {
+    width: clamp(34px, 9vw, 52px);
+  }
+}
