@@ -15,6 +15,7 @@ const SPRING = {
 };
 
 const BROWSE_DRESS_HEIGHT = "17.2vh";
+const BROWSE_HERO_DRESS_HEIGHT = "18.92vh";
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
 
@@ -168,8 +169,11 @@ function DressButton({
 }) {
   const isHovered = hoveredIndex === index;
   const isDimmed = mode === "browse" && hoveredIndex !== null && !isHovered;
+  const isHeroDress = index === 1;
   const detailMetrics =
     mode === "detail" ? detailDressMetrics(index, activeIndex) : null;
+
+  const browseHeight = isHeroDress ? BROWSE_HERO_DRESS_HEIGHT : BROWSE_DRESS_HEIGHT;
 
   return (
     <button
@@ -190,7 +194,7 @@ function DressButton({
         animate={
           mode === "browse"
             ? {
-                height: BROWSE_DRESS_HEIGHT,
+                height: browseHeight,
                 opacity: isDimmed ? 0.4 : 1,
                 scale: isHovered ? 1.08 : 1,
                 y: isHovered ? -12 : 0,

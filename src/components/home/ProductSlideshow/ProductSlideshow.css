@@ -12,7 +12,7 @@
 
 .ps-root {
   --ps-font: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --ps-letter-size: clamp(112px, 17.5vw, 248px);
+  --ps-letter-size: clamp(132px, 20vw, 300px);
 
   position: relative;
   width: 100%;
@@ -41,10 +41,11 @@
   font-family: var(--ps-font);
   font-size: var(--ps-letter-size);
   font-weight: 700;
-  letter-spacing: -0.1em;
-  line-height: 0.86;
+  letter-spacing: -0.04em;
+  line-height: 0.79;
   white-space: nowrap;
   text-align: center;
+  margin-top: 50px;
 }
 
 .ps-letter-col {
@@ -55,7 +56,7 @@
 
 .ps-backdrop-char {
   color: #000000;
-  opacity: 0.06;
+  opacity: 0.08;
   user-select: none;
   pointer-events: none;
 }
@@ -250,7 +251,7 @@
 
 @media (max-width: 1024px) {
   .ps-root {
-    --ps-letter-size: clamp(92px, 15vw, 210px);
+    --ps-letter-size: clamp(110px, 17.5vw, 254px);
   }
 
   .ps-panel {
@@ -270,11 +271,12 @@
   }
 
   .ps-root {
-    --ps-letter-size: clamp(72px, 13.5vw, 150px);
+    --ps-letter-size: clamp(86px, 15.5vw, 182px);
   }
 
   .ps-word-row {
-    letter-spacing: -0.08em;
+    letter-spacing: -0.04em;
+    margin-top: 40px;
   }
 
   .ps-panel {
