@@ -84,13 +84,13 @@ const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>>
     height: 2.15,
     preserveAspectRatio: "xMidYMid slice",
   },
-  // Amber Solstice — full-length, face + amber wrap in second wedge
+  // Amber Solstice — HSP_2889 full-length, center subject in wedge
   1: {
-    x: 0.06,
-    y: -0.05,
-    width: 1.5,
-    height: 2.35,
-    preserveAspectRatio: "xMidYMin slice",
+    x: -0.32,
+    y: -0.72,
+    width: 1.75,
+    height: 2.65,
+    preserveAspectRatio: "xMidYMid slice",
   },
 };
 
