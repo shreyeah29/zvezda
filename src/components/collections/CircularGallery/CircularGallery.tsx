@@ -1,118 +1,252 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, startTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { arcCarouselCollections } from "@/data/arcCarouselCollections";
 import "./CircularGallery.css";
 
-/** Tangent rotations / polar offsets from top-center (−90°). */
-const CARD_ANGLES = [-54, -36, -18, 0, 18, 36, 54] as const;
-
-const CARD_WIDTH = 190;
-const CARD_HEIGHT = 260;
-const RADIUS = 520;
-const LOAD_STAGGER = 0.08;
-const LOAD_DURATION = 0.8;
+const VB_WIDTH = 1000;
+const VB_HEIGHT = 520;
+const CX = VB_WIDTH / 2;
+const CY = 500;
+const START_ANGLE = -180;
+const SWEEP_ANGLE = 180;
+const GAP_DEGREES = 0;
+const INNER_RADIUS_RATIO = 0.56;
+const OUTER_PADDING = 8;
+const CORNER_RADIUS = 10;
+const STROKE_WIDTH = 2;
+const HOVER_SCALE = 1.02;
+const HOVER_OFFSET_RATIO = 0.06;
 const HOVER_DURATION = 0.35;
 const TEXT_FADE = 0.25;
+const LOAD_STAGGER = 0.08;
+const LOAD_DURATION = 0.8;
 
-function degToRad(deg: number) {
-  return (deg * Math.PI) / 180;
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
+
+function degToRad(d: number) {
+  return (d * Math.PI) / 180;
+}
+
+function polar(cx: number, cy: number, r: number, angleDeg: number) {
+  const a = degToRad(angleDeg);
+  return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
+}
+
+function arcPath(
+  cx: number,
+  cy: number,
+  rOuter: number,
+  rInner: number,
+  a0: number,
+  a1: number,
+  cornerRadius: number,
+) {
+  const sweep = a1 - a0;
+  const absSweep = Math.abs(sweep);
+  const largeArc = absSweep > 180 ? 1 : 0;
+  const sweepFlagOuter = sweep >= 0 ? 1 : 0;
+  const sweepFlagInner = sweep >= 0 ? 0 : 1;
+
+  const p0o = polar(cx, cy, rOuter, a0);
+  const p1o = polar(cx, cy, rOuter, a1);
+  const p0i = polar(cx, cy, rInner, a0);
+  const p1i = polar(cx, cy, rInner, a1);
+
+  const cr = clamp(cornerRadius, 0, Math.max(0, (rOuter - rInner) * 0.48));
+  if (cr <= 0) {
+    return [
+      `M ${p0o.x} ${p0o.y}`,
+      `A ${rOuter} ${rOuter} 0 ${largeArc} ${sweepFlagOuter} ${p1o.x} ${p1o.y}`,
+      `L ${p1i.x} ${p1i.y}`,
+      `A ${rInner} ${rInner} 0 ${largeArc} ${sweepFlagInner} ${p0i.x} ${p0i.y}`,
+      "Z",
+    ].join(" ");
+  }
+
+  const insetOuter = (cr / rOuter) * (180 / Math.PI);
+  const insetInner = (cr / rInner) * (180 / Math.PI);
+  const a0o = a0 + (sweep >= 0 ? insetOuter : -insetOuter);
+  const a1o = a1 - (sweep >= 0 ? insetOuter : -insetOuter);
+  const a0i = a0 + (sweep >= 0 ? insetInner : -insetInner);
+  const a1i = a1 - (sweep >= 0 ? insetInner : -insetInner);
+
+  const q0o = polar(cx, cy, rOuter, a0o);
+  const q1o = polar(cx, cy, rOuter, a1o);
+  const q0i = polar(cx, cy, rInner, a0i);
+  const q1i = polar(cx, cy, rInner, a1i);
+  const p0oIn = polar(cx, cy, rOuter, a0);
+  const p1oIn = polar(cx, cy, rOuter, a1);
+  const p0iIn = polar(cx, cy, rInner, a0);
+  const p1iIn = polar(cx, cy, rInner, a1);
+  const cornerArc = cr;
+
+  return [
+    `M ${q0o.x} ${q0o.y}`,
+    `A ${rOuter} ${rOuter} 0 ${largeArc} ${sweepFlagOuter} ${q1o.x} ${q1o.y}`,
+    `A ${cornerArc} ${cornerArc} 0 0 ${sweepFlagOuter} ${p1iIn.x} ${p1iIn.y}`,
+    `L ${q1i.x} ${q1i.y}`,
+    `A ${rInner} ${rInner} 0 ${largeArc} ${sweepFlagInner} ${q0i.x} ${q0i.y}`,
+    `A ${cornerArc} ${cornerArc} 0 0 ${sweepFlagOuter} ${p0oIn.x} ${p0oIn.y}`,
+    "Z",
+  ].join(" ");
+}
+
+function innerRadiusRatioForWidth(width: number) {
+  if (width <= 480) return 0.54;
+  if (width <= 900) return 0.55;
+  return INNER_RADIUS_RATIO;
 }
 
 export function CircularGallery() {
   const items = arcCarouselCollections.slice(0, 7);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [stageWidth, setStageWidth] = useState(1200);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const cards = useMemo(() => {
-    return items.map((item, index) => {
-      const offset = CARD_ANGLES[index] ?? 0;
-      const polarDeg = -90 + offset;
-      const rad = degToRad(polarDeg);
-      return {
-        item,
-        index,
-        rotation: offset,
-        x: Math.cos(rad) * RADIUS,
-        y: Math.sin(rad) * RADIUS,
-      };
-    });
-  }, [items]);
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
 
-  const activeIndex = hoveredIndex ?? Math.floor(items.length / 2);
+    const ro = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width;
+      if (width && width > 0) setStageWidth(width);
+    });
+    ro.observe(stage);
+    return () => ro.disconnect();
+  }, []);
+
+  const innerRatio = innerRadiusRatioForWidth(stageWidth);
+  const count = items.length;
+  const totalGap = GAP_DEGREES * Math.max(0, count - 1);
+  const usableSweep =
+    SWEEP_ANGLE >= 0
+      ? Math.max(0, SWEEP_ANGLE - totalGap)
+      : Math.min(0, SWEEP_ANGLE + totalGap);
+  const seg = usableSweep / count;
+  const outerR = VB_WIDTH / 2 - OUTER_PADDING;
+  const innerR = clamp(innerRatio, 0.05, 0.95) * outerR;
+
+  const wedges = useMemo(() => {
+    const list: {
+      path: string;
+      fillId: string;
+      midAngle: number;
+      index: number;
+    }[] = [];
+
+    for (let i = 0; i < count; i += 1) {
+      const a0 =
+        START_ANGLE + i * (seg + (SWEEP_ANGLE >= 0 ? GAP_DEGREES : -GAP_DEGREES));
+      const a1 = a0 + seg;
+      list.push({
+        path: arcPath(CX, CY, outerR, innerR, a0, a1, CORNER_RADIUS),
+        fillId: `cg_img_${i}`,
+        midAngle: (a0 + a1) / 2,
+        index: i,
+      });
+    }
+
+    return list;
+  }, [count, seg, outerR, innerR]);
+
+  const defaultIndex = Math.floor(count / 2);
+  const activeIndex = hoveredIndex ?? defaultIndex;
   const activeItem = items[activeIndex] ?? items[0];
 
-  const stageHeight = RADIUS + CARD_HEIGHT * 0.35 + 160;
-  const stageWidth = RADIUS * 2 + CARD_WIDTH;
-
   return (
-    <section className="cg-hero" aria-label="Collections gallery">
+    <section className="cg-hero" aria-label="Collections circular gallery">
       <div className="cg-hero__inner">
-        <div
-          className="cg-stage"
-          style={
-            {
-              "--cg-radius": `${RADIUS}px`,
-              "--cg-card-w": `${CARD_WIDTH}px`,
-              "--cg-card-h": `${CARD_HEIGHT}px`,
-              "--cg-stage-w": `${stageWidth}px`,
-              "--cg-stage-h": `${stageHeight}px`,
-              "--cg-origin-y": `${RADIUS}px`,
-            } as CSSProperties
-          }
-        >
-          <div className="cg-stage__arc">
-            {cards.map(({ item, index, rotation, x, y }) => (
-              <motion.div
-                key={item.title}
-                className="cg-card"
-                initial={{ opacity: 0, y: 40, rotate: rotation }}
-                animate={{ opacity: 1, y: 0, rotate: rotation }}
-                transition={{
-                  duration: LOAD_DURATION,
-                  delay: index * LOAD_STAGGER,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                style={
-                  {
-                    width: CARD_WIDTH,
-                    height: CARD_HEIGHT,
-                    left: `calc(50% + ${x}px - ${CARD_WIDTH / 2}px)`,
-                    top: `calc(var(--cg-origin-y) + ${y}px - ${CARD_HEIGHT / 2}px)`,
-                  } as CSSProperties
-                }
-              >
-                <motion.button
-                  type="button"
-                  className="cg-card__hit"
-                  aria-label={item.imageAlt}
-                  aria-pressed={hoveredIndex === index}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  onFocus={() => setHoveredIndex(index)}
-                  onBlur={() => setHoveredIndex(null)}
-                  whileHover={{
-                    y: -16,
-                    scale: 1.06,
-                    filter: "brightness(1.05)",
-                    boxShadow: "0 35px 70px rgba(0,0,0,0.18)",
-                  }}
-                  transition={{
-                    duration: HOVER_DURATION,
-                    ease: "easeOut",
-                  }}
+        <div className="cg-stage" ref={stageRef}>
+          <svg
+            className="cg-svg"
+            viewBox={`0 0 ${VB_WIDTH} ${VB_HEIGHT}`}
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden={false}
+            onPointerLeave={() => {
+              startTransition(() => setHoveredIndex(null));
+            }}
+          >
+            <defs>
+              {items.map((item, i) => (
+                <pattern
+                  key={item.title}
+                  id={`cg_img_${i}`}
+                  patternUnits="objectBoundingBox"
+                  patternContentUnits="objectBoundingBox"
+                  width="1"
+                  height="1"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.image}
-                    alt={item.imageAlt}
-                    className="cg-card__img"
-                    draggable={false}
+                  <image
+                    href={item.image}
+                    x="0"
+                    y="0"
+                    width="1"
+                    height="1"
+                    preserveAspectRatio="xMidYMid slice"
                   />
-                </motion.button>
-              </motion.div>
-            ))}
-          </div>
+                </pattern>
+              ))}
+            </defs>
+
+            <g>
+              {wedges.map((wedge) => {
+                const item = items[wedge.index];
+                const midRad = degToRad(wedge.midAngle);
+                const hoverX =
+                  Math.cos(midRad) * outerR * HOVER_OFFSET_RATIO;
+                const hoverY =
+                  Math.sin(midRad) * outerR * HOVER_OFFSET_RATIO;
+                const isActive = hoveredIndex === wedge.index;
+
+                return (
+                  <motion.path
+                    key={item.title}
+                    d={wedge.path}
+                    fill={`url(#${wedge.fillId})`}
+                    stroke="rgba(255,255,255,0.95)"
+                    strokeWidth={STROKE_WIDTH}
+                    role="img"
+                    aria-label={item.imageAlt}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{
+                      opacity: {
+                        duration: LOAD_DURATION,
+                        delay: wedge.index * LOAD_STAGGER,
+                        ease: [0.22, 1, 0.36, 1],
+                      },
+                    }}
+                    style={{
+                      transformOrigin: `${CX}px ${CY}px`,
+                      transformBox: "fill-box",
+                      cursor: "pointer",
+                      zIndex: isActive ? 10 : 1,
+                    }}
+                    onHoverStart={() => {
+                      startTransition(() => setHoveredIndex(wedge.index));
+                    }}
+                    onHoverEnd={() => {
+                      startTransition(() => setHoveredIndex(null));
+                    }}
+                    whileHover={{
+                      scale: HOVER_SCALE,
+                      x: hoverX,
+                      y: hoverY,
+                      filter: "brightness(1.06)",
+                      transition: {
+                        duration: HOVER_DURATION,
+                        ease: [0, 0, 0.2, 1],
+                      },
+                    }}
+                  />
+                );
+              })}
+            </g>
+          </svg>
 
           <div className="cg-copy" aria-live="polite">
             <AnimatePresence mode="wait" initial={false}>
