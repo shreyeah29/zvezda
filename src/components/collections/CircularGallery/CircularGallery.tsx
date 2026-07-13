@@ -222,6 +222,12 @@ export function CircularGallery() {
             <g className="cg-wedges">
               {wedges.map((wedge) => {
                 const item = items[wedge.index];
+                const isHovered = hoveredIndex === wedge.index;
+                const midRad = degToRad(wedge.midAngle);
+                const hoverX =
+                  Math.cos(midRad) * outerR * HOVER_OFFSET_RATIO;
+                const hoverY =
+                  Math.sin(midRad) * outerR * HOVER_OFFSET_RATIO;
 
                 return (
                   <motion.path
@@ -235,12 +241,24 @@ export function CircularGallery() {
                     aria-label={item.imageAlt}
                     className="cg-wedge"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    animate={{
+                      opacity: 1,
+                      scale: isHovered ? HOVER_SCALE : 1,
+                      x: isHovered ? hoverX : 0,
+                      y: isHovered ? hoverY : 0,
+                      filter: isHovered
+                        ? "brightness(1.06)"
+                        : "brightness(1)",
+                    }}
                     transition={{
                       opacity: {
                         duration: LOAD_DURATION,
                         delay: wedge.index * LOAD_STAGGER,
                         ease: [0.22, 1, 0.36, 1],
+                      },
+                      default: {
+                        duration: HOVER_DURATION,
+                        ease: [0, 0, 0.2, 1],
                       },
                     }}
                     style={{
@@ -248,15 +266,8 @@ export function CircularGallery() {
                       transformBox: "fill-box",
                       cursor: "pointer",
                     }}
-                    onHoverStart={() => {
+                    onPointerEnter={() => {
                       startTransition(() => setHoveredIndex(wedge.index));
-                    }}
-                    whileHover={{
-                      filter: "brightness(1.06)",
-                      transition: {
-                        duration: HOVER_DURATION,
-                        ease: [0, 0, 0.2, 1],
-                      },
                     }}
                   />
                 );
