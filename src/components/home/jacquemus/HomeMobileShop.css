@@ -69,13 +69,13 @@
     color: #0c0a09;
   }
 
-  /* Noir — equal 2×2 grid */
+  /* Noir — equal 2×2 grid, edge-to-edge */
   .hm-bento {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: repeat(2, auto);
-    gap: 4px;
-    padding: 0 0.75rem;
+    gap: 0;
+    padding: 0;
   }
 
   .hm-bento .hm-shop__cat-card {
@@ -84,14 +84,14 @@
     height: auto;
   }
 
-  /* Pink — editorial hero + supporting row */
+  /* Pink — editorial hero + supporting row, edge-to-edge */
   .hm-pink__hero {
     position: relative;
     display: block;
     aspect-ratio: 4 / 5;
-    margin: 0 0.75rem 4px;
+    margin: 0;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: none;
     text-decoration: none;
     color: #ffffff;
     background: #111111;
@@ -164,8 +164,8 @@
   .hm-pink__support {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 4px;
-    padding: 0 0.75rem;
+    gap: 0;
+    padding: 0;
   }
 }
 
