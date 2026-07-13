@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState, Fragment } from "rea
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { getHomeProductSlideshowItems } from "@/data/homeProductSlideshow";
-import { getShowcaseImageTrailItems } from "@/data/homeShowcaseImageTrail";
 import type { SlideshowProduct } from "./types";
 import {
   DRESS_SPRING,
@@ -13,7 +12,6 @@ import {
   LETTER_SPRING,
   PANEL_SPRING,
 } from "./useShowcaseEntrance";
-import ImageTrail from "@/components/ui/ImageTrail/ImageTrail";
 import { ShowcaseGalleryFrame } from "./ShowcaseGalleryFrame";
 import "./ProductSlideshow.css";
 
@@ -374,8 +372,6 @@ export function ProductSlideshow({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [mode, goNext, goPrevious]);
 
-  const trailImages = useMemo(() => getShowcaseImageTrailItems(), []);
-
   if (items.length === 0) return null;
 
   const active = items[activeIndex] ?? items[0];
@@ -384,7 +380,6 @@ export function ProductSlideshow({
   const centerOffset = (items.length - 1) / 2;
   const trackShift = mode === "detail" ? (centerOffset - activeIndex) * SLOT_VW : 0;
   const showLetterEntrance = !entranceComplete;
-  const showImageTrail = mode === "browse" && entranceComplete;
 
   return (
     <div
@@ -392,15 +387,6 @@ export function ProductSlideshow({
       className={`ps-root ps-root--${mode}`}
       onMouseLeave={() => entranceComplete && setHoveredIndex(null)}
     >
-      {showImageTrail && (
-        <ImageTrail
-          items={trailImages}
-          variant={5}
-          eventTargetRef={rootRef}
-          className="ps-image-trail"
-        />
-      )}
-
       <ShowcaseGalleryFrame
         visible={entranceStarted}
         active={mode === "browse"}

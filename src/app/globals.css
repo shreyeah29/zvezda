@@ -200,6 +200,23 @@
     overflow: hidden;
   }
 
+  .hero-screen video {
+    pointer-events: none;
+  }
+
+  .hero-screen video::-webkit-media-controls {
+    display: none !important;
+  }
+
+  .hero-screen video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    -webkit-appearance: none;
+  }
+
+  .hero-screen video::-webkit-media-controls-overlay-play-button {
+    display: none !important;
+  }
+
   .h-screen {
     height: 100svh;
     height: 100dvh;

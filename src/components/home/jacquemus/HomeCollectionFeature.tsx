@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "./HomeCollectionFeature.css";
 
 const FEATURE_IMAGE = "/assets/images/home/collection-split/HSP_3336.jpg";
 const FEATURE_VIDEO = "/assets/videos/film/White&BlackTrio.mp4";
 
 export function HomeCollectionFeature() {
+  const featureVideoRef = useInlineVideoAutoplay();
+
   return (
     <section className="jm-collection-feature" aria-label="New collection">
       <div className="jm-collection-feature__grid">
@@ -15,7 +18,17 @@ export function HomeCollectionFeature() {
           <img src={FEATURE_IMAGE} alt="New collection editorial" className="jm-collection-feature__media" />
         </div>
         <div className="jm-collection-feature__panel jm-collection-feature__panel--video">
-          <video autoPlay muted loop playsInline className="jm-collection-feature__media">
+          <video
+            ref={featureVideoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            controls={false}
+            disablePictureInPicture
+            className="jm-collection-feature__media jm-collection-feature__video"
+          >
             <source src={FEATURE_VIDEO} type="video/mp4" />
           </video>
           <Link href="/collections/garden" className="jm-caption">

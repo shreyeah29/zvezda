@@ -1,29 +1,43 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { videos } from "@/data/brand";
+import "./HomeHeroVideo.css";
 
 const HERO_POSTER = "/assets/images/products/set-12/HSP_5750.jpg";
 
 export function HomeHeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    video.setAttribute("x-webkit-airplay", "deny");
+
+    const markPlaying = () => setIsPlaying(true);
+
     const playVideo = () => {
-      if (video.paused) {
-        void video.play().catch(() => undefined);
-      }
+      video.muted = true;
+      void video.play().then(markPlaying).catch(() => undefined);
     };
 
     playVideo();
+    video.load();
 
-    video.addEventListener("canplay", playVideo);
+    video.addEventListener("loadedmetadata", playVideo);
     video.addEventListener("loadeddata", playVideo);
+    video.addEventListener("canplay", playVideo);
+    video.addEventListener("canplaythrough", playVideo);
+    video.addEventListener("playing", markPlaying);
 
     const onVisibilityChange = () => {
       if (!document.hidden) playVideo();
@@ -35,14 +49,17 @@ export function HomeHeroVideo() {
       ([entry]) => {
         if (entry?.isIntersecting) playVideo();
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 },
     );
 
     observer.observe(video);
 
     return () => {
-      video.removeEventListener("canplay", playVideo);
+      video.removeEventListener("loadedmetadata", playVideo);
       video.removeEventListener("loadeddata", playVideo);
+      video.removeEventListener("canplay", playVideo);
+      video.removeEventListener("canplaythrough", playVideo);
+      video.removeEventListener("playing", markPlaying);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       observer.disconnect();
     };
@@ -56,7 +73,7 @@ export function HomeHeroVideo() {
     >
       <div className="absolute inset-0 h-full w-full">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className={`hero-screen__poster absolute inset-0 bg-cover bg-center${isPlaying ? " hero-screen__poster--hidden" : ""}`}
           style={{ backgroundImage: `url(${HERO_POSTER})` }}
           aria-hidden="true"
         />
@@ -66,9 +83,12 @@ export function HomeHeroVideo() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           poster={HERO_POSTER}
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          controls={false}
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          className="hero-screen__video absolute inset-0 h-full w-full object-cover object-center"
         >
           <source src={videos.hero} type="video/mp4" />
         </video>
@@ -86,7 +106,13 @@ export function HomeHeroVideo() {
         transition={{ delay: 0.8, duration: 1 }}
         aria-label="Scroll to explore"
       >
-        <span className="text-[11px] text-white/90 transition-colors group-hover:text-white" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', letterSpacing: "0.08em" }}>
+        <span
+          className="text-[11px] text-white/90 transition-colors group-hover:text-white"
+          style={{
+            fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+            letterSpacing: "0.08em",
+          }}
+        >
           Scroll to explore
         </span>
         <motion.span

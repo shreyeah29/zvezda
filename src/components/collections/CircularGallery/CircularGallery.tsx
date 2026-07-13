@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState, startTransition, type CSSProperties } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { arcCarouselCollections } from "@/data/arcCarouselCollections";
+import { getShowcaseImageTrailItems } from "@/data/homeShowcaseImageTrail";
+import ImageTrail from "@/components/ui/ImageTrail/ImageTrail";
 import "./CircularGallery.css";
 
 const VB_WIDTH = 1000;
@@ -140,7 +142,9 @@ function strokeWidthForWidth(width: number) {
 
 export function CircularGallery() {
   const items = arcCarouselCollections.slice(0, 7);
+  const heroRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const trailImages = useMemo(() => getShowcaseImageTrailItems(), []);
   const [stageWidth, setStageWidth] = useState(1200);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -197,7 +201,13 @@ export function CircularGallery() {
   const activeItem = items[activeIndex] ?? items[0];
 
   return (
-    <section className="cg-hero" aria-label="Collections circular gallery">
+    <section ref={heroRef} className="cg-hero" aria-label="Collections circular gallery">
+      <ImageTrail
+        items={trailImages}
+        variant={5}
+        eventTargetRef={heroRef}
+        className="cg-image-trail"
+      />
       <div className="cg-hero__inner">
         <div
           className="cg-stage"

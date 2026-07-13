@@ -1,0 +1,24 @@
+.hero-screen__poster {
+  transition: opacity 0.3s ease;
+}
+
+.hero-screen__poster--hidden {
+  opacity: 0;
+}
+
+.hero-screen__video {
+  pointer-events: none;
+}
+
+.hero-screen__video::-webkit-media-controls {
+  display: none !important;
+}
+
+.hero-screen__video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+.hero-screen__video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+}

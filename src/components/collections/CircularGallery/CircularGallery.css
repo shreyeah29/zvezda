@@ -1,11 +1,17 @@
 .cg-hero {
   --cg-max: 1500px;
   --cg-copy-top: 70%;
+  position: relative;
   width: 100%;
   background: #ffffff;
   color: #000000;
   box-sizing: border-box;
   padding: clamp(5.5rem, 10vh, 6.5rem) clamp(0.75rem, 2vw, 1.5rem) 0;
+}
+
+.content.cg-image-trail .content__img {
+  width: 80px;
+  border-radius: 10px;
 }
 
 .cg-hero__inner {
