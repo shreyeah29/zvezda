@@ -86,10 +86,10 @@ const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>>
   },
   // Amber Solstice — HSP_2889, nudge right to drop pillar hand
   1: {
-    x: 0.32,
-    y: -0.05,
-    width: 1.38,
-    height: 1.3,
+    x: 0.08,
+    y: -0.02,
+    width: 1.02,
+    height: 1.02,
     preserveAspectRatio: "xMidYMid slice",
   },
 };
