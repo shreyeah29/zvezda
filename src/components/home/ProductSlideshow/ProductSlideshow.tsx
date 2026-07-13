@@ -12,6 +12,7 @@ import {
   LETTER_STAGGER_S,
   PANEL_SPRING,
 } from "./useShowcaseEntrance";
+import ImageTrail from "@/components/ui/ImageTrail/ImageTrail";
 import "./ProductSlideshow.css";
 
 const SPRING = {
@@ -368,6 +369,8 @@ export function ProductSlideshow({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [mode, goNext, goPrevious]);
 
+  const trailImages = useMemo(() => items.map((item) => item.image), [items]);
+
   if (items.length === 0) return null;
 
   const active = items[activeIndex] ?? items[0];
@@ -376,6 +379,7 @@ export function ProductSlideshow({
   const centerOffset = (items.length - 1) / 2;
   const trackShift = mode === "detail" ? (centerOffset - activeIndex) * SLOT_VW : 0;
   const showLetterEntrance = !entranceComplete;
+  const showImageTrail = mode === "browse" && entranceComplete;
 
   return (
     <div
@@ -383,6 +387,14 @@ export function ProductSlideshow({
       className={`ps-root ps-root--${mode}`}
       onMouseLeave={() => entranceComplete && setHoveredIndex(null)}
     >
+      {showImageTrail && (
+        <ImageTrail
+          items={trailImages}
+          variant={5}
+          eventTargetRef={rootRef}
+        />
+      )}
+
       <div className="ps-word-stage">
         <div className="ps-word-row" aria-hidden="true">
           {LETTER_LAYOUT.map((column, columnIndex) => {
