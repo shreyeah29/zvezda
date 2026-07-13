@@ -9,6 +9,10 @@ const SLIDESHOW_PIECES = [
   },
   { slug: "set-12", image: "/assets/images/home/slideshow/crimson.png" },
   { slug: "set-15", image: "/assets/images/home/slideshow/rose-cascade.png" },
+  {
+    slug: "set-13",
+    image: "/assets/images/home/slideshow/7352E45B-C94E-4FBB-91F9-F40957379272.png",
+  },
 ] as const;
 
 const SIZE_OPTIONS = ["S", "M", "L", "XL"];

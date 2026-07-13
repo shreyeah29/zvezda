@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, Fragment } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { getHomeProductSlideshowItems } from "@/data/homeProductSlideshow";
@@ -19,15 +19,21 @@ const BROWSE_HERO_DRESS_HEIGHT = "18.92vh";
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
 
-/** Z V E Z D A — four dresses on Z, V, Z, A only. */
+/** Z V E Z D A — dresses on Z, V, gaps E–Z & Z–D, and A. */
 const LETTER_LAYOUT = [
   { char: "Z", dressIndex: 0 },
   { char: "V", dressIndex: 1 },
   { char: "E", dressIndex: null },
-  { char: "Z", dressIndex: 2 },
+  { char: "Z", dressIndex: null },
   { char: "D", dressIndex: null },
   { char: "A", dressIndex: 3 },
 ] as const;
+
+/** Dresses anchored in the space after a letter column. */
+const GAPS_AFTER_COLUMN: Record<number, readonly number[]> = {
+  2: [2],
+  3: [4],
+};
 
 type Mode = "browse" | "detail";
 
@@ -324,27 +330,50 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
           {LETTER_LAYOUT.map((column, columnIndex) => {
             const dressIndex = column.dressIndex;
             const item = dressIndex !== null ? items[dressIndex] : null;
+            const gapDresses = GAPS_AFTER_COLUMN[columnIndex] ?? [];
 
             return (
-              <div
-                key={`${column.char}-${columnIndex}`}
-                className="ps-letter-col"
-              >
-                <span className="ps-backdrop-char">{column.char}</span>
-                {item && dressIndex !== null && mode === "browse" && (
-                  <DressButton
-                    item={item}
-                    index={dressIndex}
-                    mode={mode}
-                    activeIndex={activeIndex}
-                    hoveredIndex={hoveredIndex}
-                    onClick={() => handleDressClick(dressIndex)}
-                    onHover={() => setHoveredIndex(dressIndex)}
-                    onLeave={() => setHoveredIndex(null)}
-                    className="ps-slot--on-letter"
-                  />
-                )}
-              </div>
+              <Fragment key={`${column.char}-${columnIndex}`}>
+                <div className="ps-letter-col">
+                  <span className="ps-backdrop-char">{column.char}</span>
+                  {item && dressIndex !== null && mode === "browse" && (
+                    <DressButton
+                      item={item}
+                      index={dressIndex}
+                      mode={mode}
+                      activeIndex={activeIndex}
+                      hoveredIndex={hoveredIndex}
+                      onClick={() => handleDressClick(dressIndex)}
+                      onHover={() => setHoveredIndex(dressIndex)}
+                      onLeave={() => setHoveredIndex(null)}
+                      className="ps-slot--on-letter"
+                    />
+                  )}
+                </div>
+                {gapDresses.map((gapDressIndex) => {
+                  const gapItem = items[gapDressIndex];
+                  if (!gapItem || mode !== "browse") return null;
+
+                  return (
+                    <div
+                      key={`gap-${columnIndex}-${gapDressIndex}`}
+                      className="ps-gap-col"
+                    >
+                      <DressButton
+                        item={gapItem}
+                        index={gapDressIndex}
+                        mode={mode}
+                        activeIndex={activeIndex}
+                        hoveredIndex={hoveredIndex}
+                        onClick={() => handleDressClick(gapDressIndex)}
+                        onHover={() => setHoveredIndex(gapDressIndex)}
+                        onLeave={() => setHoveredIndex(null)}
+                        className="ps-slot--on-letter"
+                      />
+                    </div>
+                  );
+                })}
+              </Fragment>
             );
           })}
         </div>
@@ -403,7 +432,7 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
           >
             {items.map((item, index) => (
               <DressButton
-                key={item.slug}
+                key={`${item.slug}-${item.image}`}
                 item={item}
                 index={index}
                 mode={mode}

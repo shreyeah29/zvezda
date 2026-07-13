@@ -54,6 +54,13 @@
   vertical-align: bottom;
 }
 
+.ps-gap-col {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  vertical-align: bottom;
+}
+
 .ps-backdrop-char {
   color: #000000;
   opacity: 0.08;
