@@ -66,26 +66,51 @@ function arcPath(
   ].join(" ");
 }
 
+type WedgePatternFrame = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  preserveAspectRatio: "xMidYMin slice" | "xMidYMid slice" | "xMaxYMid slice";
+};
+
+/** Per-segment focal tweaks — only where the default crop misses the subject. */
+const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>> = {
+  // Emerald Reverie — green gown, far left wedge
+  0: {
+    x: -0.02,
+    y: -0.12,
+    width: 1.45,
+    height: 2.15,
+    preserveAspectRatio: "xMidYMid slice",
+  },
+  // Noir Éclat — black gown, subject sits right of frame center
+  1: {
+    x: -0.28,
+    y: -0.15,
+    width: 1.55,
+    height: 2.1,
+    preserveAspectRatio: "xMaxYMid slice",
+  },
+};
+
 /**
  * Pattern-space image frame inside each wedge bbox.
  * Tall, top-anchored crop (cover) so dresses stay visible — not face-only.
  */
-function wedgePatternImage(index: number, count: number) {
+function wedgePatternImage(index: number, count: number): WedgePatternFrame {
   const center = (count - 1) / 2;
   const offsetFromCenter = (index - center) / Math.max(center, 1);
 
-  const width = 1.3;
-  const height = 2.1;
-  const x = (1 - width) / 2 - offsetFromCenter * 0.06;
-  const y = -0.42;
-
-  return {
-    x,
-    y,
-    width,
-    height,
-    preserveAspectRatio: "xMidYMin slice" as const,
+  const defaults: WedgePatternFrame = {
+    width: 1.3,
+    height: 2.1,
+    x: (1 - 1.3) / 2 - offsetFromCenter * 0.06,
+    y: -0.42,
+    preserveAspectRatio: "xMidYMin slice",
   };
+
+  return { ...defaults, ...WEDGE_IMAGE_OVERRIDES[index] };
 }
 
 function innerRadiusRatioForWidth(width: number) {
