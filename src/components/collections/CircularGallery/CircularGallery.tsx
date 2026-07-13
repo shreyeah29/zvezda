@@ -14,7 +14,8 @@ const SWEEP_ANGLE = 180;
 const GAP_DEGREES = 0;
 const INNER_RADIUS_RATIO = 0.56;
 const OUTER_PADDING = 8;
-const CORNER_RADIUS = 10;
+/** Sharp radial wedges — no rounded corner arcs (those create capsule/blob shapes). */
+const CORNER_RADIUS = 0;
 const STROKE_WIDTH = 2;
 const HOVER_SCALE = 1.02;
 const HOVER_OFFSET_RATIO = 0.06;
@@ -36,6 +37,7 @@ function polar(cx: number, cy: number, r: number, angleDeg: number) {
   return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
 }
 
+/** Annular sector — outer arc, radial sides, inner arc. Straight radial edges. */
 function arcPath(
   cx: number,
   cy: number,
@@ -43,7 +45,6 @@ function arcPath(
   rInner: number,
   a0: number,
   a1: number,
-  cornerRadius: number,
 ) {
   const sweep = a1 - a0;
   const absSweep = Math.abs(sweep);
@@ -56,88 +57,34 @@ function arcPath(
   const p0i = polar(cx, cy, rInner, a0);
   const p1i = polar(cx, cy, rInner, a1);
 
-  const cr = clamp(cornerRadius, 0, Math.max(0, (rOuter - rInner) * 0.48));
-  if (cr <= 0) {
-    return [
-      `M ${p0o.x} ${p0o.y}`,
-      `A ${rOuter} ${rOuter} 0 ${largeArc} ${sweepFlagOuter} ${p1o.x} ${p1o.y}`,
-      `L ${p1i.x} ${p1i.y}`,
-      `A ${rInner} ${rInner} 0 ${largeArc} ${sweepFlagInner} ${p0i.x} ${p0i.y}`,
-      "Z",
-    ].join(" ");
-  }
-
-  const insetOuter = (cr / rOuter) * (180 / Math.PI);
-  const insetInner = (cr / rInner) * (180 / Math.PI);
-  const a0o = a0 + (sweep >= 0 ? insetOuter : -insetOuter);
-  const a1o = a1 - (sweep >= 0 ? insetOuter : -insetOuter);
-  const a0i = a0 + (sweep >= 0 ? insetInner : -insetInner);
-  const a1i = a1 - (sweep >= 0 ? insetInner : -insetInner);
-
-  const q0o = polar(cx, cy, rOuter, a0o);
-  const q1o = polar(cx, cy, rOuter, a1o);
-  const q0i = polar(cx, cy, rInner, a0i);
-  const q1i = polar(cx, cy, rInner, a1i);
-  const p0oIn = polar(cx, cy, rOuter, a0);
-  const p1oIn = polar(cx, cy, rOuter, a1);
-  const p0iIn = polar(cx, cy, rInner, a0);
-  const p1iIn = polar(cx, cy, rInner, a1);
-  const cornerArc = cr;
-
   return [
-    `M ${q0o.x} ${q0o.y}`,
-    `A ${rOuter} ${rOuter} 0 ${largeArc} ${sweepFlagOuter} ${q1o.x} ${q1o.y}`,
-    `A ${cornerArc} ${cornerArc} 0 0 ${sweepFlagOuter} ${p1iIn.x} ${p1iIn.y}`,
-    `L ${q1i.x} ${q1i.y}`,
-    `A ${rInner} ${rInner} 0 ${largeArc} ${sweepFlagInner} ${q0i.x} ${q0i.y}`,
-    `A ${cornerArc} ${cornerArc} 0 0 ${sweepFlagOuter} ${p0oIn.x} ${p0oIn.y}`,
+    `M ${p0o.x} ${p0o.y}`,
+    `A ${rOuter} ${rOuter} 0 ${largeArc} ${sweepFlagOuter} ${p1o.x} ${p1o.y}`,
+    `L ${p1i.x} ${p1i.y}`,
+    `A ${rInner} ${rInner} 0 ${largeArc} ${sweepFlagInner} ${p0i.x} ${p0i.y}`,
     "Z",
   ].join(" ");
 }
 
-/** Axis-aligned bounds for wedge — used to frame each image inside its segment. */
-function wedgeBounds(
-  cx: number,
-  cy: number,
-  rOuter: number,
-  rInner: number,
-  a0: number,
-  a1: number,
-) {
-  const samples: { x: number; y: number }[] = [];
-  const midR = (rOuter + rInner) / 2;
-  const radii = [rInner, midR, rOuter];
-  const angles = [a0, a1, (a0 + a1) / 2];
+/**
+ * Pattern-space image frame inside each wedge bbox.
+ * Tall, top-anchored crop (cover) so dresses stay visible — not face-only.
+ */
+function wedgePatternImage(index: number, count: number) {
+  const center = (count - 1) / 2;
+  const offsetFromCenter = (index - center) / Math.max(center, 1);
 
-  for (const r of radii) {
-    for (const a of angles) {
-      samples.push(polar(cx, cy, r, a));
-    }
-  }
+  const width = 1.3;
+  const height = 2.1;
+  const x = (1 - width) / 2 - offsetFromCenter * 0.06;
+  const y = -0.42;
 
-  samples.push(polar(cx, cy, rOuter, a0));
-  samples.push(polar(cx, cy, rOuter, a1));
-  samples.push(polar(cx, cy, rInner, a0));
-  samples.push(polar(cx, cy, rInner, a1));
-
-  let minX = Infinity;
-  let minY = Infinity;
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-
-  for (const p of samples) {
-    minX = Math.min(minX, p.x);
-    minY = Math.min(minY, p.y);
-    maxX = Math.max(maxX, p.x);
-    maxY = Math.max(maxY, p.y);
-  }
-
-  const pad = 1;
   return {
-    x: minX - pad,
-    y: minY - pad,
-    width: maxX - minX + pad * 2,
-    height: maxY - minY + pad * 2,
+    x,
+    y,
+    width,
+    height,
+    preserveAspectRatio: "xMidYMin slice" as const,
   };
 }
 
@@ -180,7 +127,6 @@ export function CircularGallery() {
     const list: {
       path: string;
       patternId: string;
-      bounds: ReturnType<typeof wedgeBounds>;
       midAngle: number;
       index: number;
     }[] = [];
@@ -190,9 +136,8 @@ export function CircularGallery() {
         START_ANGLE + i * (seg + (SWEEP_ANGLE >= 0 ? GAP_DEGREES : -GAP_DEGREES));
       const a1 = a0 + seg;
       list.push({
-        path: arcPath(CX, CY, outerR, innerR, a0, a1, CORNER_RADIUS),
+        path: arcPath(CX, CY, outerR, innerR, a0, a1),
         patternId: `cg_img_${i}`,
-        bounds: wedgeBounds(CX, CY, outerR, innerR, a0, a1),
         midAngle: (a0 + a1) / 2,
         index: i,
       });
@@ -227,24 +172,23 @@ export function CircularGallery() {
             <defs>
               {wedges.map((wedge) => {
                 const item = items[wedge.index];
-                const { x, y, width, height } = wedge.bounds;
+                const frame = wedgePatternImage(wedge.index, count);
                 return (
                   <pattern
                     key={wedge.patternId}
                     id={wedge.patternId}
-                    patternUnits="userSpaceOnUse"
-                    x={x}
-                    y={y}
-                    width={width}
-                    height={height}
+                    patternUnits="objectBoundingBox"
+                    patternContentUnits="objectBoundingBox"
+                    width="1"
+                    height="1"
                   >
                     <image
                       href={item.image}
-                      x={x}
-                      y={y}
-                      width={width}
-                      height={height}
-                      preserveAspectRatio="xMidYMid slice"
+                      x={frame.x}
+                      y={frame.y}
+                      width={frame.width}
+                      height={frame.height}
+                      preserveAspectRatio={frame.preserveAspectRatio}
                     />
                   </pattern>
                 );
@@ -267,6 +211,7 @@ export function CircularGallery() {
                     fill={`url(#${wedge.patternId})`}
                     stroke="rgba(255,255,255,0.95)"
                     strokeWidth={STROKE_WIDTH}
+                    strokeLinejoin="miter"
                     role="img"
                     aria-label={item.imageAlt}
                     className="cg-wedge"
