@@ -235,18 +235,18 @@
 }
 
 .hm-shop__cat-card--small .hm-shop__cat-title {
-  font-size: clamp(0.5rem, 2.1vw, 0.58rem);
+  font-size: clamp(0.62rem, 2.6vw, 0.72rem);
   letter-spacing: 0.1em;
 }
 
 .hm-shop__cat-card--small .hm-shop__cat-cta {
-  font-size: 7px;
+  font-size: 8px;
 }
 
 .hm-shop__cat-title {
   margin: 0;
   font-family: var(--font-display, Georgia, "Times New Roman", serif);
-  font-size: clamp(0.58rem, 2.5vw, 0.68rem);
+  font-size: clamp(0.78rem, 3.2vw, 0.92rem);
   font-weight: 400;
   letter-spacing: 0.14em;
   line-height: 1.25;
@@ -256,7 +256,7 @@
 
 .hm-shop__cat-cta {
   font-family: var(--font-display, Georgia, "Times New Roman", serif);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.18em;
   line-height: 1;
