@@ -8,7 +8,7 @@ export type HomeCollectionPanel = {
 export const homeCollectionPanels: HomeCollectionPanel[] = [
   {
     label: "Party Collection",
-    image: "/assets/images/home/collection-split/HSP_3336.jpg",
+    image: "/assets/images/products/set-12/HSP_5750.jpg",
     productSlug: "set-12",
   },
   {
