@@ -116,9 +116,12 @@
 
 @media (max-width: 768px) {
   .jm-collections {
+    padding-top: 0.5rem;
+  }
+
+  .jm-collections--mobile-scale {
     --jm-cell-width: min(352px, 78vw);
     --jm-cell-height: calc(var(--jm-cell-width) * 440 / 352);
-    padding-top: 0.5rem;
   }
 
   .jm-collections__section {
@@ -151,7 +154,9 @@
     font-size: 10px;
     line-height: 1.4;
   }
+}
 
+@media (min-width: 769px) {
   .jm-collections__track {
     height: var(--jm-cell-height);
   }
