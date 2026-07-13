@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { HomeHeroVideo } from "@/components/home/HomeHeroVideo";
 import "@/components/home/jacquemus/jacquemus-theme.css";
+import "@/components/home/jacquemus/home-mobile.css";
 
 const SmoothScroll = dynamic(
   () =>
@@ -18,6 +19,14 @@ const HomeProductSlideshow = dynamic(
   () =>
     import("@/components/home/ProductSlideshow").then((mod) => ({
       default: mod.HomeProductSlideshow,
+    })),
+  { ssr: false },
+);
+
+const HomeMobileShop = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomeMobileShop").then((mod) => ({
+      default: mod.HomeMobileShop,
     })),
   { ssr: false },
 );
@@ -85,6 +94,7 @@ export default function HomePage() {
           <HomeHeroVideo />
           <HomeProductSlideshow />
           <HomeCollectionSplit />
+          <HomeMobileShop />
           <HomePinkProductRow />
           <HomePinkCollectionFeature />
           <HomeProductRow />

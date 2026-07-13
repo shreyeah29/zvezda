@@ -258,3 +258,9 @@
   background: #000000;
   color: #ffffff;
 }
+
+@media (max-width: 768px) {
+  .home-product-slideshow {
+    display: none !important;
+  }
+}

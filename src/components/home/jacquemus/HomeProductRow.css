@@ -113,6 +113,12 @@
   white-space: nowrap;
 }
 
+@media (max-width: 768px) {
+  .jm-product-row {
+    display: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .jm-product-row__image,
   .jm-product-row__hover-meta {

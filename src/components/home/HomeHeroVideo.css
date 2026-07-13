@@ -22,3 +22,10 @@
 .hero-screen__video::-webkit-media-controls-overlay-play-button {
   display: none !important;
 }
+
+@media (max-width: 768px) {
+  .hero-screen .group {
+    bottom: 1.25rem;
+    gap: 0.5rem;
+  }
+}
