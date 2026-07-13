@@ -337,7 +337,7 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
                     onClick={() => handleDressClick(dressIndex)}
                     onHover={() => setHoveredIndex(dressIndex)}
                     onLeave={() => setHoveredIndex(null)}
-                    className="ps-slot ps-slot--on-letter"
+                    className="ps-slot--on-letter"
                   />
                 )}
               </div>
