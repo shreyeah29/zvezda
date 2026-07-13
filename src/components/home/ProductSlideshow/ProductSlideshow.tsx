@@ -9,6 +9,7 @@ import {
   DRESS_SPRING,
   getDressEntranceDelay,
   LETTER_SPRING,
+  LETTER_STAGGER_S,
   PANEL_SPRING,
 } from "./useShowcaseEntrance";
 import "./ProductSlideshow.css";
@@ -25,7 +26,6 @@ const BROWSE_HERO_DRESS_HEIGHT = "21.1vh";
 const HERO_DRESS_INDEX = 2;
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
-const LETTER_STAGGER_S = 0.08;
 
 /** Z V E Z D A — dresses on Z, V, gaps E–Z & Z–D, and A. */
 const LETTER_LAYOUT = [

@@ -5,9 +5,9 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export const LETTER_SPRING = {
   type: "spring" as const,
-  stiffness: 110,
-  damping: 22,
-  mass: 1.15,
+  stiffness: 48,
+  damping: 28,
+  mass: 2.1,
 };
 
 export const DRESS_SPRING = {
@@ -25,9 +25,9 @@ export const PANEL_SPRING = {
 };
 
 const LETTER_COUNT = 6;
-const LETTER_STAGGER_S = 0.08;
-const LETTER_DURATION_S = 0.6;
-const POST_LETTER_PAUSE_S = 0.2;
+export const LETTER_STAGGER_S = 0.42;
+const LETTER_DURATION_S = 1.55;
+const POST_LETTER_PAUSE_S = 0.35;
 const DRESS_STAGGER_S = 0.1;
 
 /** Green → Black & Orange → Red → Pink → Copper (gap dress). */
