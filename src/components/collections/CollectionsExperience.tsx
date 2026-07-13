@@ -1,8 +1,10 @@
 "use client";
 
+import "@/components/home/jacquemus/jacquemus-theme.css";
 import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
+import { ArcImageCarousel } from "@/components/collections/ArcImageCarousel";
 import { JacquemusCollectionsPage } from "@/components/collections/JacquemusCollectionsPage";
 
 export function CollectionsExperience() {
@@ -10,6 +12,7 @@ export function CollectionsExperience() {
     <SessionLoadGate>
       <SmoothScroll>
         <main id="main-content">
+          <ArcImageCarousel />
           <JacquemusCollectionsPage />
         </main>
         <JacquemusFooter />
