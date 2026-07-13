@@ -64,6 +64,9 @@ function ConfettiBurst({
   );
 }
 
+const WISHLIST_FLY_DURATION = 2.15;
+const CART_FLY_DURATION = 2.15;
+
 export function FlyToCartLayer() {
   const { flyPayload, clearFlyPayload, setCartPulse } = useCommerce();
   const [mounted, setMounted] = useState(false);
@@ -75,7 +78,7 @@ export function FlyToCartLayer() {
     const timer = setTimeout(() => {
       clearFlyPayload();
       setCartPulse(false);
-    }, 720);
+    }, CART_FLY_DURATION * 1000 + 700);
     return () => clearTimeout(timer);
   }, [flyPayload, clearFlyPayload, setCartPulse]);
 
@@ -87,27 +90,38 @@ export function FlyToCartLayer() {
   const endY = cartRect ? cartRect.top + cartRect.height / 2 : 32;
   const startX = flyPayload.from.left + flyPayload.from.width / 2;
   const startY = flyPayload.from.top + flyPayload.from.height / 2;
+  const path = buildWaveFlowPath(startX, startY, endX, endY);
 
   return createPortal(
     <motion.div
-      className="pointer-events-none fixed z-[200] h-14 w-11 overflow-hidden rounded-md border border-cream/20 shadow-2xl"
+      className="pointer-events-none fixed z-[200] h-14 w-11 overflow-hidden rounded-md border border-cream/20 shadow-2xl will-change-transform"
       initial={{
-        left: startX,
-        top: startY,
+        left: path[0].x,
+        top: path[0].y,
         x: "-50%",
         y: "-50%",
-        scale: 1,
+        scale: path[0].scale,
         opacity: 1,
+        rotate: path[0].rotate,
       }}
       animate={{
-        left: endX,
-        top: endY,
+        left: path.map((point) => point.x),
+        top: path.map((point) => point.y),
         x: "-50%",
         y: "-50%",
-        scale: 0.25,
-        opacity: 0.15,
+        scale: path.map((point) => point.scale * 0.28),
+        opacity: path.map((_, index) => {
+          const t = index / (path.length - 1);
+          if (t < 0.88) return 1;
+          return 1 - ((t - 0.88) / 0.12) * 0.85;
+        }),
+        rotate: path.map((point) => point.rotate),
       }}
-      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: CART_FLY_DURATION,
+        ease: "linear",
+        times: path.map((_, index) => index / (path.length - 1)),
+      }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={flyPayload.image} alt="" className="h-full w-full object-cover object-top" />
@@ -175,8 +189,6 @@ function buildWaveFlowPath(startX: number, startY: number, endX: number, endY: n
 
   return points;
 }
-
-const WISHLIST_FLY_DURATION = 2.15;
 
 export function FlyToWishlistLayer() {
   const { wishlistFlyPayload, clearWishlistFlyPayload, setWishlistPulse } = useCommerce();

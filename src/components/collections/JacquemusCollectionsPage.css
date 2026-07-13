@@ -118,17 +118,38 @@
   .jm-collections {
     --jm-cell-width: min(352px, 78vw);
     --jm-cell-height: calc(var(--jm-cell-width) * 440 / 352);
+    padding-top: 0.5rem;
+  }
+
+  .jm-collections__section {
+    padding-inline: 0.75rem;
   }
 
   .jm-collections__layout {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.65rem;
     min-height: auto;
   }
 
   .jm-collections__info {
     position: static;
-    padding: 1rem 0 0.25rem;
+    padding: 0.35rem 0 0;
+  }
+
+  .jm-collections__title {
+    font-size: 1.1rem;
+    line-height: 1.12;
+  }
+
+  .jm-collections__season {
+    margin-top: 0.45rem;
+    font-size: 10px;
+  }
+
+  .jm-collections__detail {
+    margin-top: 0.3rem;
+    font-size: 10px;
+    line-height: 1.4;
   }
 
   .jm-collections__track {

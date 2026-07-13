@@ -12,7 +12,9 @@
 .hm-shop__cat-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  gap: 3px;
+  padding: 3px;
+  background: #0a0a0a;
 }
 
 .hm-shop__cat-card {
@@ -21,6 +23,8 @@
   aspect-ratio: 3 / 4.25;
   overflow: hidden;
   border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
   text-decoration: none;
   color: #ffffff;
   background: #111111;

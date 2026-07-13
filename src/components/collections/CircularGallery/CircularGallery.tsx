@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, startTransition, type CSSProperti
 import { AnimatePresence, motion } from "framer-motion";
 import { arcCarouselCollections } from "@/data/arcCarouselCollections";
 import { getShowcaseImageTrailItems } from "@/data/homeShowcaseImageTrail";
+import { useMaxWidth } from "@/hooks/useMaxWidth";
 import ImageTrail from "@/components/ui/ImageTrail/ImageTrail";
 import "./CircularGallery.css";
 
@@ -142,6 +143,7 @@ function strokeWidthForWidth(width: number) {
 
 export function CircularGallery() {
   const items = arcCarouselCollections.slice(0, 7);
+  const isMobile = useMaxWidth(768);
   const heroRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const trailImages = useMemo(() => getShowcaseImageTrailItems(), []);
@@ -202,12 +204,14 @@ export function CircularGallery() {
 
   return (
     <section ref={heroRef} className="cg-hero" aria-label="Collections circular gallery">
-      <ImageTrail
-        items={trailImages}
-        variant={5}
-        eventTargetRef={heroRef}
-        className="cg-image-trail"
-      />
+      {!isMobile && (
+        <ImageTrail
+          items={trailImages}
+          variant={5}
+          eventTargetRef={heroRef}
+          className="cg-image-trail"
+        />
+      )}
       <div className="cg-hero__inner">
         <div
           className="cg-stage"

@@ -100,7 +100,11 @@
 
 @media (max-width: 768px) {
   .cg-hero {
-    padding-top: clamp(5rem, 11svh, 5.75rem);
+    padding: clamp(4.5rem, 10svh, 5rem) 0 0;
+  }
+
+  .content.cg-image-trail {
+    display: none !important;
   }
 
   .cg-hero__inner {
@@ -113,23 +117,25 @@
   }
 
   .cg-copy {
-    width: min(86%, 340px);
-    gap: 0.4rem;
+    width: min(80%, 280px);
+    gap: 0.3rem;
   }
 
   .cg-copy__title {
-    font-size: clamp(1.45rem, 5.5vw, 1.85rem);
+    font-size: clamp(1.05rem, 4.2vw, 1.25rem);
+    line-height: 1.08;
   }
 
   .cg-copy__subtitle {
-    font-size: clamp(0.82rem, 3.2vw, 0.95rem);
-    max-width: 30ch;
+    font-size: clamp(0.68rem, 2.6vw, 0.78rem);
+    max-width: 24ch;
+    line-height: 1.35;
   }
 }
 
 @media (max-width: 480px) {
   .cg-hero {
-    padding: clamp(4.75rem, 12svh, 5.25rem) 0 0;
+    padding: clamp(4.25rem, 11svh, 4.75rem) 0 0;
   }
 
   .cg-hero__inner {
@@ -143,19 +149,19 @@
   }
 
   .cg-copy {
-    width: min(90%, 300px);
-    gap: 0.35rem;
+    width: min(84%, 250px);
+    gap: 0.25rem;
   }
 
   .cg-copy__title {
-    font-size: clamp(1.3rem, 6.2vw, 1.55rem);
-    line-height: 1.1;
+    font-size: clamp(0.98rem, 4.8vw, 1.12rem);
+    line-height: 1.08;
   }
 
   .cg-copy__subtitle {
-    font-size: 0.78rem;
-    line-height: 1.4;
-    max-width: 26ch;
+    font-size: 0.68rem;
+    line-height: 1.32;
+    max-width: 22ch;
   }
 }
 
@@ -165,11 +171,11 @@
   }
 
   .cg-copy__title {
-    font-size: 1.28rem;
+    font-size: 0.96rem;
   }
 
   .cg-copy__subtitle {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
   }
 }
 
