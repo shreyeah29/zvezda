@@ -34,9 +34,10 @@ function MobileShopCard({
 }) {
   return (
     <Link href={href} className="hm-shop__cat-card">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={image} alt={alt} className="hm-shop__cat-image" loading="lazy" />
-      <div className="hm-shop__cat-scrim" aria-hidden="true" />
+      <div className="hm-shop__cat-media">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={image} alt={alt} className="hm-shop__cat-image" loading="lazy" />
+      </div>
       <div className="hm-shop__cat-copy">
         <h3 className="hm-shop__cat-title">{title}</h3>
         <span className="hm-shop__cat-cta">Shop now</span>

@@ -97,10 +97,10 @@
   }
 
   .jacquemus-home .jm-split-panel__title {
-    font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-family: var(--font-display, Georgia, "Times New Roman", serif);
     font-size: clamp(0.72rem, 3.2vw, 0.82rem);
-    font-weight: 500;
-    letter-spacing: 0.16em;
+    font-weight: 400;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #ffffff;
     text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45);
@@ -108,15 +108,15 @@
 
   .jacquemus-home .jm-split-panel__cta {
     display: inline-block;
-    font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-family: var(--font-display, Georgia, "Times New Roman", serif);
     font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
+    font-weight: 400;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #ffffff;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
     text-decoration: underline;
-    text-decoration-color: rgba(255, 255, 255, 0.85);
+    text-decoration-color: #c4a574;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
   }
