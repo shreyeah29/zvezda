@@ -84,12 +84,12 @@ const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>>
     height: 2.15,
     preserveAspectRatio: "xMidYMid slice",
   },
-  // Amber Solstice — HSP_2889 full-length, center subject in wedge
+  // Amber Solstice — HSP_2889, zoomed on torso (clip prevents pattern wrap)
   1: {
-    x: -0.32,
-    y: -0.72,
-    width: 1.75,
-    height: 2.65,
+    x: 0.2,
+    y: -0.08,
+    width: 1.35,
+    height: 1.28,
     preserveAspectRatio: "xMidYMid slice",
   },
 };
@@ -198,6 +198,7 @@ export function CircularGallery() {
               {wedges.map((wedge) => {
                 const item = items[wedge.index];
                 const frame = wedgePatternImage(wedge.index, count);
+                const clipId = `cg_pat_clip_${wedge.index}`;
                 return (
                   <pattern
                     key={wedge.patternId}
@@ -207,14 +208,19 @@ export function CircularGallery() {
                     width="1"
                     height="1"
                   >
-                    <image
-                      href={item.image}
-                      x={frame.x}
-                      y={frame.y}
-                      width={frame.width}
-                      height={frame.height}
-                      preserveAspectRatio={frame.preserveAspectRatio}
-                    />
+                    <clipPath id={clipId}>
+                      <rect x="0" y="0" width="1" height="1" />
+                    </clipPath>
+                    <g clipPath={`url(#${clipId})`}>
+                      <image
+                        href={item.image}
+                        x={frame.x}
+                        y={frame.y}
+                        width={frame.width}
+                        height={frame.height}
+                        preserveAspectRatio={frame.preserveAspectRatio}
+                      />
+                    </g>
                   </pattern>
                 );
               })}
