@@ -133,7 +133,7 @@ export function CircularGallery() {
   const wedges = useMemo(() => {
     const list: {
       path: string;
-      fillId: string;
+      clipId: string;
       midAngle: number;
       index: number;
     }[] = [];
@@ -144,7 +144,7 @@ export function CircularGallery() {
       const a1 = a0 + seg;
       list.push({
         path: arcPath(CX, CY, outerR, innerR, a0, a1, CORNER_RADIUS),
-        fillId: `cg_img_${i}`,
+        clipId: `cg_clip_${i}`,
         midAngle: (a0 + a1) / 2,
         index: i,
       });
@@ -156,6 +156,13 @@ export function CircularGallery() {
   const defaultIndex = Math.floor(count / 2);
   const activeIndex = hoveredIndex ?? defaultIndex;
   const activeItem = items[activeIndex] ?? items[0];
+
+  const orderedWedges = useMemo(() => {
+    if (hoveredIndex === null) return wedges;
+    const hovered = wedges.find((w) => w.index === hoveredIndex);
+    if (!hovered) return wedges;
+    return [...wedges.filter((w) => w.index !== hoveredIndex), hovered];
+  }, [wedges, hoveredIndex]);
 
   return (
     <section className="cg-hero" aria-label="Collections circular gallery">
@@ -171,46 +178,26 @@ export function CircularGallery() {
             }}
           >
             <defs>
-              {items.map((item, i) => (
-                <pattern
-                  key={item.title}
-                  id={`cg_img_${i}`}
-                  patternUnits="objectBoundingBox"
-                  patternContentUnits="objectBoundingBox"
-                  width="1"
-                  height="1"
-                >
-                  <image
-                    href={item.image}
-                    x="0"
-                    y="0"
-                    width="1"
-                    height="1"
-                    preserveAspectRatio="xMidYMid slice"
-                  />
-                </pattern>
+              {wedges.map((wedge) => (
+                <clipPath key={wedge.clipId} id={wedge.clipId}>
+                  <path d={wedge.path} />
+                </clipPath>
               ))}
             </defs>
 
-            <g>
-              {wedges.map((wedge) => {
+            <g className="cg-wedges">
+              {orderedWedges.map((wedge) => {
                 const item = items[wedge.index];
                 const midRad = degToRad(wedge.midAngle);
                 const hoverX =
                   Math.cos(midRad) * outerR * HOVER_OFFSET_RATIO;
                 const hoverY =
                   Math.sin(midRad) * outerR * HOVER_OFFSET_RATIO;
-                const isActive = hoveredIndex === wedge.index;
 
                 return (
-                  <motion.path
+                  <motion.g
                     key={item.title}
-                    d={wedge.path}
-                    fill={`url(#${wedge.fillId})`}
-                    stroke="rgba(255,255,255,0.95)"
-                    strokeWidth={STROKE_WIDTH}
-                    role="img"
-                    aria-label={item.imageAlt}
+                    className="cg-wedge"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{
@@ -222,9 +209,7 @@ export function CircularGallery() {
                     }}
                     style={{
                       transformOrigin: `${CX}px ${CY}px`,
-                      transformBox: "fill-box",
-                      cursor: "pointer",
-                      zIndex: isActive ? 10 : 1,
+                      transformBox: "view-box",
                     }}
                     onHoverStart={() => {
                       startTransition(() => setHoveredIndex(wedge.index));
@@ -242,7 +227,35 @@ export function CircularGallery() {
                         ease: [0, 0, 0.2, 1],
                       },
                     }}
-                  />
+                  >
+                    <g clipPath={`url(#${wedge.clipId})`}>
+                      <image
+                        href={item.image}
+                        x={0}
+                        y={0}
+                        width={VB_WIDTH}
+                        height={VB_WIDTH}
+                        preserveAspectRatio="xMidYMid slice"
+                        className="cg-wedge__image"
+                      />
+                    </g>
+                    <path
+                      d={wedge.path}
+                      fill="none"
+                      stroke="rgba(255,255,255,0.95)"
+                      strokeWidth={STROKE_WIDTH}
+                      vectorEffect="non-scaling-stroke"
+                      pointerEvents="none"
+                    />
+                    <path
+                      d={wedge.path}
+                      fill="transparent"
+                      stroke="none"
+                      className="cg-wedge__hit"
+                      role="img"
+                      aria-label={item.imageAlt}
+                    />
+                  </motion.g>
                 );
               })}
             </g>
