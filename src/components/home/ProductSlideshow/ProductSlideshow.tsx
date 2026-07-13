@@ -30,20 +30,19 @@ const HERO_DRESS_INDEX = 2;
 const SLOT_VW = 13;
 const WHEEL_COOLDOWN_MS = 520;
 
-/** Z V E Z D A — dresses on Z, V, gaps E–Z & Z–D, and A. */
+/** Z V E Z D A — dresses on Z, V, gap E–Z, D, and A. */
 const LETTER_LAYOUT = [
   { char: "Z", dressIndex: 0 },
   { char: "V", dressIndex: 1 },
   { char: "E", dressIndex: null },
   { char: "Z", dressIndex: null },
-  { char: "D", dressIndex: null },
+  { char: "D", dressIndex: 4 },
   { char: "A", dressIndex: 3 },
 ] as const;
 
 /** Dresses anchored in the space after a letter column. */
 const GAPS_AFTER_COLUMN: Record<number, readonly number[]> = {
   2: [2],
-  3: [4],
 };
 
 type Mode = "browse" | "detail";
