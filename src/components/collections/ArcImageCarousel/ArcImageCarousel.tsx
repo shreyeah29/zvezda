@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
 } from "react";
-import Link from "next/link";
 import {
   AnimatePresence,
   animate,
@@ -25,16 +24,14 @@ import {
 import "./ArcImageCarousel.css";
 
 const FOCAL_DEG = -90;
-const CARD_SHADOW = "0 10px 30px rgba(0, 0, 0, 0.12)";
-const CARD_SHADOW_HOVER = "0 16px 40px rgba(0, 0, 0, 0.14)";
-const ACTIVE_SCALE = 1.2;
-const INACTIVE_SCALE = 0.86;
+const ACTIVE_SCALE = 1;
+const OUTER_SCALE = 0.68;
 const INACTIVE_OPACITY = 0.62;
 const ACTIVE_LIFT = 18;
-const ARC_TOP_PADDING = 108;
-const ITEM_SPACING_DEG = 2;
-const HOVER_LIFT = 8;
-const HOVER_SCALE = 1.03;
+const ARC_TOP_PADDING = 140;
+const SPAN_TIGHTEN = 0.65;
+const SPRING_STIFFNESS = 170;
+const SPRING_DAMPING = 22;
 
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
@@ -57,23 +54,18 @@ function cxFromSize(width: number) {
 
 function pickArcParams(width: number) {
   if (width <= 480) {
-    return { spanDeg: 155, radiusFactor: 0.88, tiltDeg: 0 };
+    return { spanDeg: 155 * SPAN_TIGHTEN, radiusFactor: 0.88, tiltDeg: 0 };
   }
   if (width <= 768) {
-    return { spanDeg: 205, radiusFactor: 0.78, tiltDeg: 0 };
+    return { spanDeg: 205 * SPAN_TIGHTEN, radiusFactor: 0.78, tiltDeg: 0 };
   }
-  return { spanDeg: 245, radiusFactor: 0.72, tiltDeg: 0 };
+  return { spanDeg: 245 * SPAN_TIGHTEN, radiusFactor: 0.72, tiltDeg: 0 };
 }
 
 function cardBaseWidth(width: number) {
-  const scale = 0.9;
-  if (width <= 480) return clamp(width * 0.52 * scale, 148, 220);
-  if (width <= 768) return clamp(width * 0.34 * scale, 162, 234);
-  return clamp(width * 0.24 * scale, 170, 252);
-}
-
-function cardBaseHeightFromWidth(w: number) {
-  return w * 1.25;
+  if (width <= 480) return clamp(width * 0.52, 160, 240);
+  if (width <= 768) return clamp(width * 0.34, 180, 260);
+  return clamp(width * 0.24, 190, 280);
 }
 
 function getActiveIndex(rotationDeg: number, baseAngles: number[], focalDeg = FOCAL_DEG) {
@@ -137,8 +129,8 @@ type ArcItemProps = {
   cardW: number;
   cardH: number;
   arcTiltDeg: number;
-  isHovered: boolean;
-  onHover: (index: number | null) => void;
+  stepDeg: number;
+  isActive: boolean;
   onClick: (index: number) => void;
 };
 
@@ -153,8 +145,8 @@ function ArcItem({
   cardW,
   cardH,
   arcTiltDeg,
-  isHovered,
-  onHover,
+  stepDeg,
+  isActive,
   onClick,
 }: ArcItemProps) {
   const angleDeg = baseAngles[index] ?? FOCAL_DEG;
@@ -183,13 +175,13 @@ function ArcItem({
 
   const scale = useCallback(
     (rot: number) => {
-      const a = angleDeg + rot;
-      const dist = shortestAngleDistanceDeg(a, FOCAL_DEG);
-      const e = softEmphasisFromDistance(dist, 60);
-      const base = lerp(INACTIVE_SCALE, ACTIVE_SCALE, e);
-      return isHovered ? base * HOVER_SCALE : base;
+      const dist = shortestAngleDistanceDeg(angleDeg + rot, FOCAL_DEG);
+      if (dist <= stepDeg * 0.55) {
+        return lerp(0.82, ACTIVE_SCALE, softEmphasisFromDistance(dist, stepDeg * 0.55));
+      }
+      return lerp(OUTER_SCALE, 0.82, softEmphasisFromDistance(dist - stepDeg, stepDeg * 2.4));
     },
-    [angleDeg, isHovered],
+    [angleDeg, stepDeg],
   );
 
   const opacity = useCallback(
@@ -207,10 +199,9 @@ function ArcItem({
       const a = angleDeg + rot;
       const dist = shortestAngleDistanceDeg(a, FOCAL_DEG);
       const e = softEmphasisFromDistance(dist, 55);
-      const base = -ACTIVE_LIFT * e;
-      return isHovered ? base - HOVER_LIFT : base;
+      return -ACTIVE_LIFT * e;
     },
-    [angleDeg, isHovered],
+    [angleDeg],
   );
 
   const zIndex = useCallback(
@@ -218,9 +209,9 @@ function ArcItem({
       const a = angleDeg + rot;
       const dist = shortestAngleDistanceDeg(a, FOCAL_DEG);
       const e = softEmphasisFromDistance(dist, 80);
-      return Math.round(10 + e * 1000 + (isHovered ? 50 : 0));
+      return Math.round(10 + e * 1000);
     },
-    [angleDeg, isHovered],
+    [angleDeg],
   );
 
   const xMv = useTransform(rotation, x);
@@ -236,11 +227,8 @@ function ArcItem({
       type="button"
       className="arc-carousel__card"
       aria-label={`Select ${item.title}`}
+      aria-current={isActive ? "true" : undefined}
       onPointerDown={(e) => e.stopPropagation()}
-      onMouseEnter={() => onHover(index)}
-      onMouseLeave={() => onHover(null)}
-      onFocus={() => onHover(index)}
-      onBlur={() => onHover(null)}
       onClick={() => onClick(index)}
       style={{
         left: xMv,
@@ -255,10 +243,9 @@ function ArcItem({
       }}
     >
       <div
-        className="arc-carousel__card-inner"
-        style={{
-          boxShadow: isHovered ? CARD_SHADOW_HOVER : CARD_SHADOW,
-        }}
+        className={`arc-carousel__card-inner${
+          isActive ? " arc-carousel__card-inner--active" : ""
+        }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -283,7 +270,6 @@ export function ArcImageCarousel({
   const rootRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 900, height: 620 });
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hasEntered, setHasEntered] = useState(reducedMotion ?? false);
 
   const { spanDeg, radiusFactor, tiltDeg } = useMemo(
@@ -294,8 +280,7 @@ export function ArcImageCarousel({
   const baseAngles = useMemo(() => {
     const total = items.length;
     if (total <= 1) return [FOCAL_DEG];
-    const baseStep = spanDeg / (total - 1);
-    const step = baseStep + ITEM_SPACING_DEG;
+    const step = spanDeg / (total - 1);
     const mid = (total - 1) / 2;
     return Array.from({ length: total }, (_, i) => FOCAL_DEG + (i - mid) * step);
   }, [items.length, spanDeg]);
@@ -307,8 +292,13 @@ export function ArcImageCarousel({
 
   const centerY = useMemo(() => ARC_TOP_PADDING + radius, [radius]);
 
-  const cardW = useMemo(() => clamp(cardBaseWidth(size.width), 148, 252), [size.width]);
-  const cardH = useMemo(() => cardBaseHeightFromWidth(cardW), [cardW]);
+  const cardW = useMemo(() => clamp(cardBaseWidth(size.width), 160, 280), [size.width]);
+  const cardH = useMemo(() => cardW, [cardW]);
+
+  const stepDeg = useMemo(
+    () => (items.length > 1 ? spanDeg / (items.length - 1) : 0),
+    [items.length, spanDeg],
+  );
 
   const rotation = useMotionValue(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -364,7 +354,6 @@ export function ArcImageCarousel({
     }
   });
 
-
   const animateRotationTo = useCallback(
     (target: number, onComplete?: () => void) => {
       animRef.current?.stop();
@@ -378,8 +367,8 @@ export function ArcImageCarousel({
 
       animRef.current = animate(rotation, target, {
         type: "spring",
-        stiffness: 520,
-        damping: 52,
+        stiffness: SPRING_STIFFNESS,
+        damping: SPRING_DAMPING,
         mass: 1,
         onComplete: () => {
           animRef.current = null;
@@ -416,28 +405,17 @@ export function ArcImageCarousel({
   }, [items.length, rotation, baseAngles, animateRotationTo]);
 
   const goToIndex = useCallback(
-    (idx: number, onComplete?: () => void) => {
+    (idx: number) => {
       if (items.length <= 1) return;
       const next = clamp(idx, 0, items.length - 1);
       const base = rotationToBringIndexToFocal(next, baseAngles, FOCAL_DEG);
       const target = nearestWrappedRotation(rotation.get(), base);
       animateRotationTo(target, () => {
         setActiveIndex(next);
-        onComplete?.();
       });
     },
     [items.length, rotation, baseAngles, animateRotationTo],
   );
-
-  const goPrev = useCallback(() => {
-    const next = (activeIndexRef.current - 1 + items.length) % items.length;
-    goToIndex(next);
-  }, [items.length, goToIndex]);
-
-  const goNext = useCallback(() => {
-    const next = (activeIndexRef.current + 1) % items.length;
-    goToIndex(next);
-  }, [items.length, goToIndex]);
 
   const handleCardClick = useCallback(
     (index: number) => {
@@ -543,12 +521,10 @@ export function ArcImageCarousel({
       onWheel={onWheel}
       onKeyDown={onKeyDown}
     >
-      <div className="arc-carousel__glow" aria-hidden="true" />
-
       <div className="arc-carousel__stage" ref={stageRef}>
         {items.map((item, index) => (
           <ArcItem
-            key={`${item.title}-${index}`}
+            key={item.title}
             item={item}
             index={index}
             rotation={rotation}
@@ -559,8 +535,8 @@ export function ArcImageCarousel({
             cardW={cardW}
             cardH={cardH}
             arcTiltDeg={tiltDeg}
-            isHovered={hoveredIndex === index}
-            onHover={setHoveredIndex}
+            stepDeg={stepDeg}
+            isActive={index === activeIndex}
             onClick={handleCardClick}
           />
         ))}
@@ -579,74 +555,8 @@ export function ArcImageCarousel({
               ease: [0.2, 0.8, 0.2, 1],
             }}
           >
-            <div className="arc-carousel__title-row">
-              <button
-                type="button"
-                className="arc-carousel__nav"
-                aria-label="Previous collection"
-                disabled={items.length <= 1}
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  goPrev();
-                }}
-              >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-
-              <h2 className="arc-carousel__title">{activeItem?.title ?? ""}</h2>
-
-              <button
-                type="button"
-                className="arc-carousel__nav"
-                aria-label="Next collection"
-                disabled={items.length <= 1}
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  goNext();
-                }}
-              >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
-            </div>
-
+            <h2 className="arc-carousel__title">{activeItem?.title ?? ""}</h2>
             <p className="arc-carousel__subtitle">{activeItem?.subtitle ?? ""}</p>
-
-            {activeItem?.href ? (
-              <Link
-                href={activeItem.href}
-                className="arc-carousel__cta"
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={(e) => e.stopPropagation()}
-              >
-                Explore Collection →
-              </Link>
-            ) : null}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -654,7 +564,7 @@ export function ArcImageCarousel({
       <div className="arc-carousel__dots" aria-hidden="true">
         {items.map((item, index) => (
           <div
-            key={`${item.title}-dot-${index}`}
+            key={`${item.title}-dot`}
             className={`arc-carousel__dot${
               index === activeIndex ? " arc-carousel__dot--active" : ""
             }`}
