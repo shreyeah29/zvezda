@@ -84,12 +84,20 @@ const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>>
     height: 2.15,
     preserveAspectRatio: "xMidYMid slice",
   },
-  // Amber Solstice — face + dress, second wedge from left
+  // Amber Solstice — pull crop down so face stays inside wedge
   1: {
-    x: -0.06,
-    y: -0.2,
-    width: 1.45,
-    height: 2.25,
+    x: -0.04,
+    y: 0.1,
+    width: 1.42,
+    height: 2.4,
+    preserveAspectRatio: "xMidYMin slice",
+  },
+  // Ivory Noir — over-shoulder, face sits high in frame
+  5: {
+    x: -0.1,
+    y: 0.12,
+    width: 1.5,
+    height: 2.4,
     preserveAspectRatio: "xMidYMin slice",
   },
 };
