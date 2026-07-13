@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
-export const GALLERY_ENTRANCE_DURATION_S = 0.95;
+export const GALLERY_ENTRANCE_DURATION_S = 1.1;
 
 export const LETTER_SPRING = {
   type: "spring" as const,
@@ -36,8 +36,9 @@ const DRESS_ANIM_DURATION_S = 1.35;
 /** Green → Black & Orange → Red → Pink → Copper (gap dress). */
 export const DRESS_REVEAL_ORDER = [0, 1, 2, 3, 4] as const;
 
+/** Stagger offset from the moment letters begin (after gallery strips land). */
 export function getLetterEntranceDelay(columnIndex: number): number {
-  return GALLERY_ENTRANCE_DURATION_S + columnIndex * LETTER_STAGGER_S;
+  return columnIndex * LETTER_STAGGER_S;
 }
 
 export function getLettersCompleteTime(): number {
@@ -104,8 +105,8 @@ export function useShowcaseEntrance(sectionRef: RefObject<HTMLElement | null>) {
     if (reduced || !lettersStarted || dressesStarted) return;
 
     const dressesDelayMs =
-      (getLettersCompleteTime() -
-        GALLERY_ENTRANCE_DURATION_S +
+      ((LETTER_COUNT - 1) * LETTER_STAGGER_S +
+        LETTER_DURATION_S +
         POST_LETTER_PAUSE_S) *
       1000;
 
