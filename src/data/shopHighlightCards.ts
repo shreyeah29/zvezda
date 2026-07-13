@@ -5,31 +5,31 @@ export type ShopHighlightCard = {
   image: string;
 };
 
-/** Individual hero shots — green, black & white, red, orange */
+/** Curated Noir & Ivoire homepage row */
 export const shopHighlightCards: ShopHighlightCard[] = [
   {
-    setId: 1,
-    slug: "set-1",
-    title: "Fardin Elegance",
-    image: "/assets/images/products/set-1/HSP_4327.jpg",
+    setId: 10,
+    slug: "set-10",
+    title: "Noir V",
+    image: "/assets/images/products/set-10/HSP_3554.jpg",
+  },
+  {
+    setId: 14,
+    slug: "set-14",
+    title: "Noir VI",
+    image: "/assets/images/products/set-14/HSP_2470.jpg",
   },
   {
     setId: 8,
     slug: "set-8",
     title: "Eclipse Royale",
-    image: "/assets/images/products/set-8/HSP_2981.jpg",
+    image: "/assets/images/products/set-8/HSP_3076.jpg",
   },
   {
-    setId: 12,
-    slug: "set-12",
-    title: "Crimson",
-    image: "/assets/images/products/set-12/HSP_5750.jpg",
-  },
-  {
-    setId: 13,
-    slug: "set-13",
-    title: "Ember",
-    image: "/assets/images/products/set-13/BHA_2011.jpg",
+    setId: 9,
+    slug: "set-9",
+    title: "Ivory Eclipse",
+    image: "/assets/images/products/set-9/HSP_3218.jpg",
   },
 ];
 

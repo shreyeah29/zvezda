@@ -1,12 +1,11 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { getProduct } from "@/data/products";
 import { pinkHighlightCards, shopHighlightCards, type ShopHighlightCard } from "@/data/shopHighlightCards";
 import { getSet, setPhotoPath } from "@/data/sets";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
-import { JacquemusQuickView } from "./JacquemusQuickView";
 import "./HomeProductRow.css";
 
 function formatJacquemusPrice(price: number, currency: string) {
@@ -39,9 +38,7 @@ export function HomeProductRow({
   ariaLabel = "Featured products",
   showSectionRule = true,
 }: HomeProductRowProps) {
-  const [quickViewSlug, setQuickViewSlug] = useState<string | null>(null);
-  const quickViewProduct = quickViewSlug ? getProduct(quickViewSlug) : null;
-  const quickViewCard = cards.find((c) => c.slug === quickViewSlug);
+  const router = useRouter();
 
   const cardImages = useMemo(
     () =>
@@ -51,10 +48,6 @@ export function HomeProductRow({
       })),
     [cards],
   );
-
-  const openQuickView = useCallback((slug: string) => {
-    setQuickViewSlug(slug);
-  }, []);
 
   return (
     <section className="jm-product-row" aria-label={ariaLabel}>
@@ -71,8 +64,8 @@ export function HomeProductRow({
               <button
                 type="button"
                 className="jm-product-row__hit"
-                onClick={() => openQuickView(card.slug)}
-                aria-label={`Quick view ${product.name}`}
+                onClick={() => router.push(`/products/${card.slug}`)}
+                aria-label={`View ${product.name}`}
               >
                 <div className="jm-product-row__media">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -114,16 +107,6 @@ export function HomeProductRow({
         })}
       </div>
       {showSectionRule && <hr className="jm-section-rule" aria-hidden="true" />}
-
-      <AnimatePresence>
-        {quickViewProduct && quickViewCard && (
-          <JacquemusQuickView
-            product={quickViewProduct}
-            imageSrc={quickViewCard.image}
-            onClose={() => setQuickViewSlug(null)}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 }
