@@ -1,15 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
+.home-product-slideshow-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin-top: -12svh;
+}
+
 .home-product-slideshow {
   position: relative;
   width: 100%;
   height: 70svh;
   min-height: 420px;
-  padding: 50px 0 40px;
+  padding: 36px 0 28px;
   box-sizing: border-box;
   flex-shrink: 0;
   overflow: hidden;
+  background: transparent;
+}
+
+.home-product-slideshow__wash {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   background: #ffffff;
+  pointer-events: none;
+  opacity: 0;
 }
 
 .ps-root {
@@ -18,9 +34,10 @@
   --ps-composition-shift: -30px;
 
   position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  background: #ffffff;
+  background: transparent;
   color: #000000;
   font-family: var(--ps-font);
   overflow: hidden;
@@ -69,6 +86,22 @@
   opacity: 0.08;
   user-select: none;
   pointer-events: none;
+}
+
+.ps-root--revealing .ps-word-row {
+  transform: scale(0.08);
+  filter: blur(7px);
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  transform-origin: 50% 50%;
+}
+
+.ps-root--revealing .ps-backdrop-char {
+  opacity: 0.02;
+}
+
+.ps-root--revealing .ps-slot--on-letter .ps-image {
+  opacity: 0;
 }
 
 /* ------------------------------------------------------------------ */
@@ -279,7 +312,7 @@
   .home-product-slideshow {
     height: 68svh;
     min-height: 380px;
-    padding: 40px 0 32px;
+    padding: 32px 0 24px;
   }
 
   .ps-root {

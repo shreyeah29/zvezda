@@ -40,6 +40,9 @@ type Mode = "browse" | "detail";
 
 type ProductSlideshowProps = {
   products?: SlideshowProduct[];
+  revealComplete?: boolean;
+  wordRowRef?: React.RefObject<HTMLDivElement | null>;
+  rootRef?: React.RefObject<HTMLDivElement | null>;
 };
 
 function InfoPanel({
@@ -163,6 +166,7 @@ function DressButton({
   onHover,
   onLeave,
   className,
+  revealComplete = true,
 }: {
   item: SlideshowProduct;
   index: number;
@@ -173,6 +177,7 @@ function DressButton({
   onHover: () => void;
   onLeave: () => void;
   className?: string;
+  revealComplete?: boolean;
 }) {
   const isHovered = hoveredIndex === index;
   const isDimmed = mode === "browse" && hoveredIndex !== null && !isHovered;
@@ -189,8 +194,9 @@ function DressButton({
       aria-label={`View ${item.title}`}
       aria-pressed={mode === "detail" && index === activeIndex}
       onClick={onClick}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
+      onMouseEnter={() => revealComplete && onHover()}
+      onMouseLeave={() => revealComplete && onLeave()}
+      style={{ pointerEvents: revealComplete ? "auto" : "none" }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <motion.img
@@ -200,12 +206,14 @@ function DressButton({
         draggable={false}
         animate={
           mode === "browse"
-            ? {
-                height: browseHeight,
-                opacity: isDimmed ? 0.4 : 1,
-                scale: isHovered ? 1.08 : 1,
-                y: isHovered ? -12 : 0,
-              }
+            ? revealComplete
+              ? {
+                  height: browseHeight,
+                  opacity: isDimmed ? 0.4 : 1,
+                  scale: isHovered ? 1.08 : 1,
+                  y: isHovered ? -12 : 0,
+                }
+              : { height: browseHeight }
             : {
                 height: detailMetrics?.height,
                 opacity: detailMetrics?.opacity,
@@ -213,7 +221,7 @@ function DressButton({
                 y: 0,
               }
         }
-        transition={SPRING}
+        transition={revealComplete ? SPRING : { duration: 0 }}
         style={{
           zIndex: detailMetrics?.zIndex ?? (isHovered ? 12 : 8),
           filter: isHovered
@@ -225,17 +233,23 @@ function DressButton({
   );
 }
 
-export function ProductSlideshow({ products }: ProductSlideshowProps) {
+export function ProductSlideshow({
+  products,
+  revealComplete = true,
+  wordRowRef,
+  rootRef: externalRootRef,
+}: ProductSlideshowProps) {
   const items = useMemo(
     () => (products && products.length > 0 ? products : getHomeProductSlideshowItems()),
     [products],
   );
 
-  const rootRef = useRef<HTMLDivElement>(null);
+  const internalRootRef = useRef<HTMLDivElement>(null);
+  const rootRef = externalRootRef ?? internalRootRef;
   const wheelCooldown = useRef(false);
 
   const [mode, setMode] = useState<Mode>("browse");
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(HERO_DRESS_INDEX);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [sizes, setSizes] = useState<Record<string, string>>(() =>
     Object.fromEntries(items.map((item) => [item.slug, item.sizes[1] ?? item.sizes[0]])),
@@ -323,11 +337,11 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
   return (
     <div
       ref={rootRef}
-      className={`ps-root ps-root--${mode}`}
+      className={`ps-root ps-root--${mode}${revealComplete ? "" : " ps-root--revealing"}`}
       onMouseLeave={() => setHoveredIndex(null)}
     >
       <div className="ps-word-stage">
-        <div className="ps-word-row" aria-hidden="true">
+        <div className="ps-word-row" ref={wordRowRef} aria-hidden="true">
           {LETTER_LAYOUT.map((column, columnIndex) => {
             const dressIndex = column.dressIndex;
             const item = dressIndex !== null ? items[dressIndex] : null;
@@ -348,6 +362,7 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
                       onHover={() => setHoveredIndex(dressIndex)}
                       onLeave={() => setHoveredIndex(null)}
                       className="ps-slot--on-letter"
+                      revealComplete={revealComplete}
                     />
                   )}
                 </div>
@@ -370,6 +385,7 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
                         onHover={() => setHoveredIndex(gapDressIndex)}
                         onLeave={() => setHoveredIndex(null)}
                         className="ps-slot--on-letter"
+                        revealComplete={revealComplete}
                       />
                     </div>
                   );
@@ -443,6 +459,7 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
                 onHover={() => setHoveredIndex(index)}
                 onLeave={() => setHoveredIndex(null)}
                 className="ps-slot"
+                revealComplete={revealComplete}
               />
             ))}
           </motion.div>
