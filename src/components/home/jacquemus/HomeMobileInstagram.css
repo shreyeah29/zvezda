@@ -7,20 +7,20 @@
   .hm-instagram {
     display: block;
     margin-top: 0;
-    padding: 2.5rem 0.75rem 2.75rem;
-    border-top: 1px solid rgba(196, 165, 116, 0.35);
+    padding: 1.5rem 0.75rem 2.75rem;
+    border-top: none;
     background: #ffffff;
   }
 
   .hm-instagram__header {
-    margin: 0 0 1.15rem;
-    padding: 0.85rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    margin: 0 -0.75rem 1.35rem;
+    padding: 0.4rem 0 0.9rem;
+    border-bottom: none;
     overflow: hidden;
   }
 
-  .hm-instagram__ticker {
-    height: 1.5rem;
+  .hm-instagram__ticker-pro {
+    padding-block: 1.1rem 1.35rem;
   }
 
   .hm-instagram__grid {

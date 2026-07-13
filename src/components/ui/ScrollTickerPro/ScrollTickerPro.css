@@ -1,0 +1,83 @@
+.stp {
+  width: 100%;
+  background: #ffffff;
+  overflow: hidden;
+  padding: 1.5rem 0 1.75rem;
+}
+
+.stp__stage {
+  position: relative;
+  width: 145%;
+  left: 50%;
+  transform: translateX(-50%) rotate(7.5deg);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.stp__band {
+  position: relative;
+  width: 100%;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin-top: -14px;
+  box-shadow: 0 10px 22px rgba(12, 10, 9, 0.07);
+}
+
+.stp__band--1 {
+  z-index: 3;
+  margin-top: 0;
+}
+
+.stp__band--2 {
+  z-index: 2;
+}
+
+.stp__band--3 {
+  z-index: 1;
+}
+
+.stp__ticker {
+  width: 100%;
+  height: 100%;
+}
+
+.stp__ticker .scroll-ticker__track,
+.stp__ticker .scroll-ticker__strip {
+  height: 100%;
+  align-items: center;
+}
+
+.stp-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding-inline: 0.2rem;
+}
+
+.stp-item__text {
+  font-family: var(--font-display, Georgia, "Times New Roman", serif);
+  font-size: clamp(1.2rem, 5.6vw, 1.55rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: #111111;
+  white-space: nowrap;
+  text-transform: none;
+}
+
+.stp-icon {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+}
+
+.stp-icon__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
