@@ -13,10 +13,10 @@ export const arcCarouselCollections: ArcCarouselCollection[] = [
     imageAlt: "Emerald Reverie — garden green gown",
   },
   {
-    title: "Noir Éclat",
-    subtitle: "Bold black eveningwear with timeless sophistication.",
-    image: "/assets/images/products/set-14/BHA_2106.jpg",
-    imageAlt: "Noir Éclat — black evening gown profile",
+    title: "Amber Solstice",
+    subtitle: "Warm amber silhouettes in golden Provençal light.",
+    image: "/assets/images/products/set-13/HSP_2932.jpg",
+    imageAlt: "Amber Solstice — orange evening gown",
   },
   {
     title: "Crimson Muse",

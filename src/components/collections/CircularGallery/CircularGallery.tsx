@@ -84,13 +84,13 @@ const WEDGE_IMAGE_OVERRIDES: Partial<Record<number, Partial<WedgePatternFrame>>>
     height: 2.15,
     preserveAspectRatio: "xMidYMid slice",
   },
-  // Noir Éclat — profile shot, face + beaded bodice centered in wedge
+  // Amber Solstice — face + dress, second wedge from left
   1: {
-    x: -0.14,
-    y: -0.06,
-    width: 1.48,
-    height: 2.15,
-    preserveAspectRatio: "xMidYMid slice",
+    x: -0.06,
+    y: -0.2,
+    width: 1.45,
+    height: 2.25,
+    preserveAspectRatio: "xMidYMin slice",
   },
 };
 
