@@ -1,65 +1,160 @@
-.circular-gallery-hero {
-  position: relative;
+.cg-hero {
+  --cg-max: 1500px;
   width: 100%;
   background: #ffffff;
   color: #000000;
-  font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
-  padding: clamp(5rem, 10vh, 6.5rem) clamp(1rem, 4vw, 2.5rem)
-    clamp(2.5rem, 5vh, 3.5rem);
   box-sizing: border-box;
+  padding: clamp(7.5rem, 14vh, 9rem) clamp(1rem, 3vw, 2rem)
+    clamp(2.5rem, 5vh, 3.5rem);
 }
 
-.circular-gallery-hero__stage {
-  position: relative;
-  width: min(100%, 1120px);
+.cg-hero__inner {
+  width: min(100%, var(--cg-max));
   margin: 0 auto;
-  aspect-ratio: 900 / 520;
-  max-height: min(54svh, 540px);
 }
 
-.circular-gallery-hero__svg {
-  display: block;
+.cg-stage {
+  position: relative;
+  width: min(100%, var(--cg-stage-w, 1230px));
+  height: var(--cg-stage-h, 720px);
+  margin: 0 auto;
+  max-width: 80vw;
+}
+
+.cg-stage__arc {
   position: absolute;
   inset: 0;
+  pointer-events: none;
+}
+
+.cg-card {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.cg-card:hover,
+.cg-card:focus-within {
+  z-index: 6;
+}
+
+.cg-card__hit {
+  display: block;
   width: 100%;
   height: 100%;
-  overflow: visible;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #f3f3f3;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: none;
+  transform-origin: center center;
 }
 
-.circular-gallery-hero__content {
-  margin: clamp(1.25rem, 3vh, 2rem) auto 0;
-  max-width: 720px;
+.cg-card__hit:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.35);
+  outline-offset: 3px;
+}
+
+.cg-card__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cg-copy {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--cg-origin-y) - 28px);
+  transform: translate(-50%, -40%);
+  z-index: 2;
+  width: min(92%, 520px);
   text-align: center;
-  padding: 0 clamp(1rem, 4vw, 2rem);
+  pointer-events: none;
 }
 
-.circular-gallery-hero__title {
+.cg-copy__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.cg-copy__title {
   margin: 0;
   font-family: var(--font-display, Georgia, "Times New Roman", serif);
-  font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+  font-size: 48px;
   font-weight: 400;
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.1;
   color: #000000;
 }
 
-.circular-gallery-hero__subtitle {
-  margin: 0.65rem 0 0;
-  font-size: clamp(0.88rem, 1.5vw, 0.95rem);
+.cg-copy__subtitle {
+  margin: 0;
+  max-width: 34ch;
+  font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 22px;
   font-weight: 400;
   letter-spacing: -0.01em;
-  line-height: 1.5;
+  line-height: 1.4;
   color: #999999;
 }
 
-@media (max-width: 768px) {
-  .circular-gallery-hero__stage {
-    max-height: min(46svh, 420px);
+/* Tablet — slightly smaller radius feel via stage scale */
+@media (max-width: 1100px) {
+  .cg-stage {
+    max-width: 88vw;
+    height: calc(var(--cg-stage-h) * 0.82);
+    transform: scale(0.82);
+    transform-origin: top center;
+    margin-bottom: calc(var(--cg-stage-h) * -0.14);
+  }
+
+  .cg-copy__title {
+    font-size: clamp(32px, 4.5vw, 40px);
+  }
+
+  .cg-copy__subtitle {
+    font-size: clamp(16px, 2.2vw, 20px);
   }
 }
 
-@media (max-width: 480px) {
-  .circular-gallery-hero__stage {
-    max-height: min(40svh, 340px);
+@media (max-width: 768px) {
+  .cg-hero {
+    padding-top: clamp(6.25rem, 12vh, 7.5rem);
+  }
+
+  .cg-stage {
+    max-width: 96vw;
+    height: calc(var(--cg-stage-h) * 0.62);
+    transform: scale(0.62);
+    transform-origin: top center;
+    margin-bottom: calc(var(--cg-stage-h) * -0.28);
+  }
+
+  .cg-copy {
+    top: calc(var(--cg-origin-y) - 12px);
+  }
+
+  .cg-copy__title {
+    font-size: 28px;
+  }
+
+  .cg-copy__subtitle {
+    font-size: 15px;
   }
 }
