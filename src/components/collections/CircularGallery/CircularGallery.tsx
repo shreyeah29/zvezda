@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, startTransition, type CSSProperties } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { arcCarouselCollections } from "@/data/arcCarouselCollections";
 import { getShowcaseImageTrailItems } from "@/data/homeShowcaseImageTrail";
 import { useMaxWidth } from "@/hooks/useMaxWidth";
@@ -144,11 +145,13 @@ function strokeWidthForWidth(width: number) {
 export function CircularGallery() {
   const items = arcCarouselCollections.slice(0, 7);
   const isMobile = useMaxWidth(768);
+  const router = useRouter();
   const heroRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const trailImages = useMemo(() => getShowcaseImageTrailItems(), []);
   const [stageWidth, setStageWidth] = useState(1200);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const pointerDownRef = useRef<{ index: number; x: number; y: number } | null>(null);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -280,8 +283,9 @@ export function CircularGallery() {
                     stroke="rgba(255,255,255,0.95)"
                     strokeWidth={strokeW}
                     strokeLinejoin="miter"
-                    role="img"
-                    aria-label={item.imageAlt}
+                    role="link"
+                    tabIndex={0}
+                    aria-label={`View ${item.title} product`}
                     className="cg-wedge"
                     initial={{ opacity: 0 }}
                     animate={{
@@ -309,11 +313,31 @@ export function CircularGallery() {
                       transformBox: "fill-box",
                       cursor: "pointer",
                     }}
-                    onPointerDown={() => {
-                      startTransition(() => setHoveredIndex(wedge.index));
-                    }}
                     onPointerEnter={() => {
                       startTransition(() => setHoveredIndex(wedge.index));
+                    }}
+                    onPointerDown={(event) => {
+                      pointerDownRef.current = {
+                        index: wedge.index,
+                        x: event.clientX,
+                        y: event.clientY,
+                      };
+                      startTransition(() => setHoveredIndex(wedge.index));
+                    }}
+                    onPointerUp={(event) => {
+                      const start = pointerDownRef.current;
+                      pointerDownRef.current = null;
+                      if (!start || start.index !== wedge.index) return;
+                      const dx = event.clientX - start.x;
+                      const dy = event.clientY - start.y;
+                      if (dx * dx + dy * dy > 100) return;
+                      router.push(`/products/${item.productSlug}`);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        router.push(`/products/${item.productSlug}`);
+                      }
                     }}
                   />
                 );
