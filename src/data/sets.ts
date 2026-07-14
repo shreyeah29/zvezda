@@ -224,6 +224,13 @@ export function setVideoPath(set: SetManifest, filename?: string) {
   return `/assets/videos/products/${set.slug}/${file}`;
 }
 
+/** Lightweight H.264 loops for ambient kinetic backgrounds (web-optimized). */
+export function setAmbientVideoPath(set: SetManifest, filename?: string) {
+  const file = filename ?? set.video;
+  if (!file) return undefined;
+  return `/assets/videos/products/ambient/${set.slug}/${file}`;
+}
+
 export function setHeroPhoto(set: SetManifest) {
   return setPhotoPath(set, set.photos[0]);
 }

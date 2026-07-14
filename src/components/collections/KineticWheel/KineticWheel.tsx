@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { getKineticPieces, type KineticPiece } from "./kineticData";
+import { AmbientVideoLayer } from "./AmbientVideoLayer";
 import { useMaxWidth } from "@/hooks/useMaxWidth";
 import "./KineticWheel.css";
 
@@ -114,53 +115,6 @@ function WheelItem({ piece, distance, spacing, curveStrength, onSelect }: WheelI
         {piece.product.name}
       </span>
     </button>
-  );
-}
-
-function AmbientVideo({
-  src,
-  objectPosition,
-  instant = false,
-}: {
-  src: string;
-  objectPosition?: string;
-  instant?: boolean;
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = true;
-    const play = video.play();
-    if (play && typeof play.catch === "function") {
-      play.catch(() => {
-        /* autoplay may be blocked until interaction */
-      });
-    }
-    return () => {
-      video.pause();
-    };
-  }, [src]);
-
-  return (
-    <motion.video
-      key={src}
-      ref={videoRef}
-      className="kw__video"
-      src={src}
-      muted
-      playsInline
-      loop
-      autoPlay
-      preload="auto"
-      aria-hidden
-      style={objectPosition ? { objectPosition } : undefined}
-      initial={instant ? false : { opacity: 0, scale: 1.03 }}
-      animate={{ opacity: 0.78, scale: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: instant ? 0.28 : 0.95, ease: [0.45, 0, 0.55, 1] }}
-    />
   );
 }
 
@@ -440,6 +394,15 @@ export function KineticWheel() {
     return items;
   }, [virtualCenter, count]);
 
+  const neighborSrcs = useMemo(() => {
+    const urls: string[] = [];
+    for (const offset of [-2, -1, 1, 2]) {
+      const piece = pieces[wrapIndex(activeIndex + offset, count)];
+      if (piece?.video) urls.push(piece.video);
+    }
+    return urls;
+  }, [activeIndex, count, pieces]);
+
   if (count === 0 || !activePiece) return null;
 
   return (
@@ -448,18 +411,11 @@ export function KineticWheel() {
       aria-label="Kinetic product wheel"
       data-lenis-prevent
     >
-      <div className="kw__video-layer" aria-hidden="true">
-        <AnimatePresence mode="sync">
-          {activePiece.video ? (
-            <AmbientVideo
-              key={activePiece.video}
-              src={activePiece.video}
-              objectPosition={activePiece.product.videoObjectPosition}
-              instant={isMobile}
-            />
-          ) : null}
-        </AnimatePresence>
-      </div>
+      <AmbientVideoLayer
+        src={activePiece.video}
+        neighborSrcs={neighborSrcs}
+        objectPosition={activePiece.product.videoObjectPosition}
+      />
 
       <div
         className="kw__mood"

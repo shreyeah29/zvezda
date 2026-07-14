@@ -42,7 +42,14 @@
   object-fit: cover;
   object-position: center 20%;
   filter: saturate(0.95) contrast(1.02);
-  will-change: opacity, transform;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  will-change: opacity;
+}
+
+.kw__video.is-front {
+  opacity: 0.78;
+  z-index: 1;
 }
 
 .kw__shell {
