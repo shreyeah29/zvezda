@@ -76,7 +76,7 @@ function itemStyle(
     rotate,
     blur,
     active,
-    fontSizeBoost: active ? (compact ? 1.14 : 1.08) : 1,
+    fontSizeBoost: active ? (compact ? 1.35 : 1.08) : 1,
   };
 }
 
@@ -102,7 +102,9 @@ function WheelItem({
   const style = itemStyle(distance, spacing, curveStrength, compact);
   const [hovered, setHovered] = useState(false);
   const labelSize = compact
-    ? `calc(clamp(0.52rem, 2.1vw, 0.64rem) * ${style.fontSizeBoost})`
+    ? style.active
+      ? "0.8rem"
+      : "0.58rem"
     : `calc(clamp(0.95rem, 1.35vw, 1.2rem) * ${style.fontSizeBoost})`;
   const activeColor = lightLabels ? "#fafaf9" : "#0c0a09";
   const idleColor = lightLabels ? "rgba(250, 250, 249, 0.78)" : "rgba(12, 10, 9, 0.48)";
