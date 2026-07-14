@@ -434,7 +434,8 @@
     height: 100%;
     min-height: 0;
     gap: 0.55rem;
-    justify-content: flex-start;
+    justify-content: flex-end;
+    align-items: flex-end;
   }
 
   .kw--mobile .kw__gallery {
@@ -460,78 +461,60 @@
   }
 
   .kw--mobile .kw__copy--action {
-    position: absolute;
-    left: 50%;
-    top: 42%;
-    transform: translate(-50%, -50%);
-    align-items: center;
-    justify-content: center;
-    width: auto;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 0 0.15rem 1.65rem;
     z-index: 4;
   }
 
   .kw--mobile .kw__copy--action > div {
     display: flex;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
   .kw--mobile .kw__cta--button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.3rem;
     margin-top: 0;
-    padding: 0.5rem 0.9rem;
+    padding: 0.48rem 0.85rem;
     min-width: 0;
-    border: none;
-    border-radius: 0;
-    background: rgba(250, 250, 249, 0.94);
-    color: #0c0a09;
-    box-shadow: 0 6px 18px rgba(8, 6, 5, 0.18);
+    border: 1px solid currentColor;
+    background: transparent;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 0.55rem;
     font-weight: 400;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     text-decoration: none;
-    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-  }
-
-  .kw--mobile .kw__cta--button::after {
-    content: "→";
-    display: inline-block;
-    font-size: 0.58rem;
-    line-height: 1;
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    color: var(--kw-ink);
+    transition: background 0.3s ease, color 0.3s ease, opacity 0.3s ease;
   }
 
   .kw--mobile .kw__cta--button:active {
-    transform: scale(0.97);
-    background: #ffffff;
-    box-shadow: 0 6px 18px rgba(8, 6, 5, 0.18);
-  }
-
-  .kw--mobile .kw__cta--button:active::after {
-    transform: translateX(3px);
+    background: var(--kw-ink);
+    color: #fff;
   }
 
   .kw--mobile.kw--has-video .kw__cta--button,
   .kw--mobile.kw--has-still .kw__cta--button {
-    color: #0c0a09;
-    border-color: transparent;
-    background: rgba(250, 250, 249, 0.94);
-    backdrop-filter: blur(10px);
+    color: #fafaf9;
+    border-color: rgba(250, 250, 249, 0.85);
+    background: rgba(12, 10, 9, 0.22);
+    backdrop-filter: blur(6px);
   }
 
   .kw--mobile.kw--has-video .kw__cta--button:active,
   .kw--mobile.kw--has-still .kw__cta--button:active {
-    background: #ffffff;
+    background: #fafaf9;
     color: #0c0a09;
   }
 
   .kw--mobile .kw__showcase--video {
-    justify-content: flex-start;
+    justify-content: flex-end;
+    align-items: flex-end;
     padding-bottom: 0;
   }
 
