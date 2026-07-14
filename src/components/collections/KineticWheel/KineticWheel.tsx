@@ -123,14 +123,17 @@ function Showcase({
   parallaxY,
   zoom,
   compact = false,
+  neighborSrcs = [],
 }: {
   piece: KineticPiece;
   parallaxY: number;
   zoom: number;
   compact?: boolean;
+  neighborSrcs?: string[];
 }) {
+  const hasVideo = Boolean(piece.video);
   const images = piece.images;
-  const supportCount = Math.min(2, Math.max(0, images.length - 1));
+  const supportCount = hasVideo ? 0 : Math.min(2, Math.max(0, images.length - 1));
   const hasSupport = supportCount > 0;
   const hero = images[0];
   const supportA = images[1];
@@ -138,67 +141,80 @@ function Showcase({
 
   return (
     <div className="kw__showcase">
-      <div
-        className={`kw__gallery${hasSupport ? "" : " kw__gallery--solo"}${
-          supportCount === 1 ? " kw__gallery--duo" : ""
-        }`}
-      >
-        <div className="kw__hero">
-          <AnimatePresence mode="sync" initial={false}>
-            <motion.img
-              key={`${piece.product.slug}-hero`}
-              src={hero}
-              alt={piece.product.name}
-              className="kw__img"
-              initial={compact ? false : { opacity: 0, scale: 0.96 }}
-              animate={{
-                opacity: 1,
-                scale: zoom,
-                y: compact ? 0 : parallaxY,
-              }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
-              draggable={false}
+      {hasVideo ? (
+        <div className="kw__gallery kw__gallery--solo kw__gallery--video">
+          <div className="kw__hero kw__hero--video">
+            <AmbientVideoLayer
+              src={piece.video}
+              neighborSrcs={neighborSrcs}
+              objectPosition={piece.product.videoObjectPosition}
+              variant="feature"
             />
-          </AnimatePresence>
+          </div>
         </div>
-
-        {hasSupport && supportA && (
-          <div className={`kw__support${supportCount === 1 ? " kw__support--span" : ""}`}>
+      ) : (
+        <div
+          className={`kw__gallery${hasSupport ? "" : " kw__gallery--solo"}${
+            supportCount === 1 ? " kw__gallery--duo" : ""
+          }`}
+        >
+          <div className="kw__hero">
             <AnimatePresence mode="sync" initial={false}>
               <motion.img
-                key={`${piece.product.slug}-a`}
-                src={supportA}
-                alt=""
+                key={`${piece.product.slug}-hero`}
+                src={hero}
+                alt={piece.product.name}
                 className="kw__img"
                 initial={compact ? false : { opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
+                animate={{
+                  opacity: 1,
+                  scale: zoom,
+                  y: compact ? 0 : parallaxY,
+                }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
                 draggable={false}
               />
             </AnimatePresence>
           </div>
-        )}
 
-        {supportCount > 1 && supportB && (
-          <div className="kw__support">
-            <AnimatePresence mode="sync" initial={false}>
-              <motion.img
-                key={`${piece.product.slug}-b`}
-                src={supportB}
-                alt=""
-                className="kw__img"
-                initial={compact ? false : { opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
-                draggable={false}
-              />
-            </AnimatePresence>
-          </div>
-        )}
-      </div>
+          {hasSupport && supportA && (
+            <div className={`kw__support${supportCount === 1 ? " kw__support--span" : ""}`}>
+              <AnimatePresence mode="sync" initial={false}>
+                <motion.img
+                  key={`${piece.product.slug}-a`}
+                  src={supportA}
+                  alt=""
+                  className="kw__img"
+                  initial={compact ? false : { opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
+                  draggable={false}
+                />
+              </AnimatePresence>
+            </div>
+          )}
+
+          {supportCount > 1 && supportB && (
+            <div className="kw__support">
+              <AnimatePresence mode="sync" initial={false}>
+                <motion.img
+                  key={`${piece.product.slug}-b`}
+                  src={supportB}
+                  alt=""
+                  className="kw__img"
+                  initial={compact ? false : { opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
+                  draggable={false}
+                />
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="kw__copy">
         <AnimatePresence mode="wait" initial={false}>
@@ -211,7 +227,7 @@ function Showcase({
           >
             <p className="kw__collection">{piece.product.collectionLabel} Collection</p>
             <h2 className="kw__name">{piece.product.name}</h2>
-            {!compact && <p className="kw__tagline">{piece.tagline}</p>}
+            <p className="kw__tagline">{piece.tagline}</p>
             <Link href={`/products/${piece.product.slug}`} className="kw__cta">
               View Product
               <span className="kw__cta-arrow" aria-hidden="true">
@@ -411,12 +427,6 @@ export function KineticWheel() {
       aria-label="Kinetic product wheel"
       data-lenis-prevent
     >
-      <AmbientVideoLayer
-        src={activePiece.video}
-        neighborSrcs={neighborSrcs}
-        objectPosition={activePiece.product.videoObjectPosition}
-      />
-
       <div
         className="kw__mood"
         style={
@@ -468,7 +478,13 @@ export function KineticWheel() {
           </div>
         </div>
 
-        <Showcase piece={activePiece} parallaxY={parallaxY} zoom={zoom} compact={isMobile} />
+        <Showcase
+          piece={activePiece}
+          parallaxY={parallaxY}
+          zoom={zoom}
+          compact={isMobile}
+          neighborSrcs={neighborSrcs}
+        />
       </div>
 
       <p className="kw__hint">Scroll to explore · Tap to view</p>

@@ -6,6 +6,8 @@ type AmbientVideoLayerProps = {
   src?: string;
   neighborSrcs?: string[];
   objectPosition?: string;
+  /** backdrop = full-bleed wash; feature = primary media panel */
+  variant?: "backdrop" | "feature";
 };
 
 const readyUrls = new Set<string>();
@@ -40,6 +42,7 @@ export function AmbientVideoLayer({
   src,
   neighborSrcs = [],
   objectPosition,
+  variant = "feature",
 }: AmbientVideoLayerProps) {
   const aRef = useRef<HTMLVideoElement>(null);
   const bRef = useRef<HTMLVideoElement>(null);
@@ -135,7 +138,10 @@ export function AmbientVideoLayer({
   const pos = objectPosition ? { objectPosition } : undefined;
 
   return (
-    <div className="kw__video-layer" aria-hidden="true">
+    <div
+      className={`kw__video-layer kw__video-layer--${variant}`}
+      aria-hidden={variant === "backdrop" ? true : undefined}
+    >
       <video
         ref={aRef}
         className={`kw__video${front === "a" ? " is-front" : ""}`}
