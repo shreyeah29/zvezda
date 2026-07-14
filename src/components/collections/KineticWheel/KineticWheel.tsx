@@ -123,13 +123,11 @@ function Showcase({
   parallaxY,
   zoom,
   compact = false,
-  neighborSrcs = [],
 }: {
   piece: KineticPiece;
   parallaxY: number;
   zoom: number;
   compact?: boolean;
-  neighborSrcs?: string[];
 }) {
   const hasVideo = Boolean(piece.video);
   const images = piece.images;
@@ -140,19 +138,8 @@ function Showcase({
   const supportB = images[2];
 
   return (
-    <div className="kw__showcase">
-      {hasVideo ? (
-        <div className="kw__gallery kw__gallery--solo kw__gallery--video">
-          <div className="kw__hero kw__hero--video">
-            <AmbientVideoLayer
-              src={piece.video}
-              neighborSrcs={neighborSrcs}
-              objectPosition={piece.product.videoObjectPosition}
-              variant="feature"
-            />
-          </div>
-        </div>
-      ) : (
+    <div className={`kw__showcase${hasVideo ? " kw__showcase--video" : ""}`}>
+      {!hasVideo && (
         <div
           className={`kw__gallery${hasSupport ? "" : " kw__gallery--solo"}${
             supportCount === 1 ? " kw__gallery--duo" : ""
@@ -421,12 +408,23 @@ export function KineticWheel() {
 
   if (count === 0 || !activePiece) return null;
 
+  const hasVideo = Boolean(activePiece.video);
+
   return (
     <section
-      className={`kw${isMobile ? " kw--mobile" : ""}`}
+      className={`kw${isMobile ? " kw--mobile" : ""}${hasVideo ? " kw--has-video" : ""}`}
       aria-label="Kinetic product wheel"
       data-lenis-prevent
     >
+      {hasVideo ? (
+        <AmbientVideoLayer
+          src={activePiece.video}
+          neighborSrcs={neighborSrcs}
+          objectPosition={activePiece.product.videoObjectPosition}
+          variant="backdrop"
+        />
+      ) : null}
+
       <div
         className="kw__mood"
         style={
@@ -483,7 +481,6 @@ export function KineticWheel() {
           parallaxY={parallaxY}
           zoom={zoom}
           compact={isMobile}
-          neighborSrcs={neighborSrcs}
         />
       </div>
 

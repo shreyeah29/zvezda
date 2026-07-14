@@ -6,7 +6,7 @@ type AmbientVideoLayerProps = {
   src?: string;
   neighborSrcs?: string[];
   objectPosition?: string;
-  /** backdrop = full-bleed wash; feature = primary media panel */
+  /** Full-bleed section layer (default). */
   variant?: "backdrop" | "feature";
 };
 
@@ -42,7 +42,7 @@ export function AmbientVideoLayer({
   src,
   neighborSrcs = [],
   objectPosition,
-  variant = "feature",
+  variant = "backdrop",
 }: AmbientVideoLayerProps) {
   const aRef = useRef<HTMLVideoElement>(null);
   const bRef = useRef<HTMLVideoElement>(null);
