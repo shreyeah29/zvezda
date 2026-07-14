@@ -150,6 +150,7 @@ export const sets: SetManifest[] = [
     group: "red",
     collection: "red",
     photos: ["HSP_5547.jpg", "HSP_5549.jpg", "HSP_5571.jpg", "HSP_5635.jpg", "HSP_5750.jpg"],
+    video: "RedDressSolo.mp4",
   },
   {
     id: 13,

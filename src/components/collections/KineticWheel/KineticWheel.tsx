@@ -46,13 +46,23 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
 
-function itemStyle(distance: number, spacing: number, curveStrength: number) {
+function itemStyle(
+  distance: number,
+  spacing: number,
+  curveStrength: number,
+  compact = false,
+) {
   const abs = Math.abs(distance);
   const t = clamp(abs / 3.2, 0, 1);
   const active = abs < 0.45;
-  const scale = active ? 1 : 1 - t * 0.28;
-  const opacity = active ? 1 : 0.3 + (1 - t) * 0.12;
-  const blur = active ? 0 : t * MAX_BLUR;
+  const scale = active ? 1 : 1 - t * (compact ? 0.14 : 0.28);
+  // Keep inactive names readable — especially over full-bleed video.
+  const opacity = active
+    ? 1
+    : compact
+      ? 0.72 + (1 - t) * 0.18
+      : 0.3 + (1 - t) * 0.12;
+  const blur = active ? 0 : t * (compact ? 0.6 : MAX_BLUR);
   // Convex outward (Framer Kinetic Wheel): center bulges right, edges fall left
   const arc = Math.cos(clamp(distance, -3.4, 3.4) * 0.42);
   const x = curveStrength * arc;
@@ -66,7 +76,7 @@ function itemStyle(distance: number, spacing: number, curveStrength: number) {
     rotate,
     blur,
     active,
-    fontSizeBoost: active ? 1.06 : 1 - t * 0.08,
+    fontSizeBoost: active ? (compact ? 1.02 : 1.06) : 1 - t * (compact ? 0.04 : 0.08),
   };
 }
 
@@ -75,12 +85,27 @@ type WheelItemProps = {
   distance: number;
   spacing: number;
   curveStrength: number;
+  compact?: boolean;
+  lightLabels?: boolean;
   onSelect: () => void;
 };
 
-function WheelItem({ piece, distance, spacing, curveStrength, onSelect }: WheelItemProps) {
-  const style = itemStyle(distance, spacing, curveStrength);
+function WheelItem({
+  piece,
+  distance,
+  spacing,
+  curveStrength,
+  compact = false,
+  lightLabels = false,
+  onSelect,
+}: WheelItemProps) {
+  const style = itemStyle(distance, spacing, curveStrength, compact);
   const [hovered, setHovered] = useState(false);
+  const labelSize = compact
+    ? `calc(clamp(0.52rem, 2.1vw, 0.64rem) * ${style.fontSizeBoost})`
+    : `calc(clamp(0.95rem, 1.35vw, 1.2rem) * ${style.fontSizeBoost})`;
+  const activeColor = lightLabels ? "#fafaf9" : "#0c0a09";
+  const idleColor = lightLabels ? "rgba(250, 250, 249, 0.78)" : "rgba(12, 10, 9, 0.48)";
 
   return (
     <button
@@ -93,7 +118,7 @@ function WheelItem({ piece, distance, spacing, curveStrength, onSelect }: WheelI
         transform: `translate3d(${style.x}px, calc(-50% + ${style.y}px), 0) rotate(${style.rotate}deg) scale(${
           style.scale * (hovered && !style.active ? 1.03 : 1)
         })`,
-        opacity: hovered && !style.active ? Math.min(1, style.opacity + 0.18) : style.opacity,
+        opacity: hovered && !style.active ? Math.min(1, style.opacity + 0.12) : style.opacity,
         filter: style.blur > 0.05 ? `blur(${style.blur}px)` : "none",
         zIndex: style.active ? 5 : Math.round(4 - Math.abs(distance)),
       }}
@@ -108,8 +133,8 @@ function WheelItem({ piece, distance, spacing, curveStrength, onSelect }: WheelI
       <span
         className="kw__item-label"
         style={{
-          fontSize: `calc(clamp(0.95rem, 1.35vw, 1.2rem) * ${style.fontSizeBoost})`,
-          color: style.active ? "#0c0a09" : "rgba(12, 10, 9, 0.48)",
+          fontSize: labelSize,
+          color: style.active ? activeColor : idleColor,
         }}
       >
         {piece.product.name}
@@ -131,20 +156,16 @@ function Showcase({
 }) {
   const hasVideo = Boolean(piece.video);
   const images = piece.images;
-  const supportCount = hasVideo ? 0 : Math.min(2, Math.max(0, images.length - 1));
-  const hasSupport = supportCount > 0;
+  // Single hero still only — no collage. On compact/mobile, still is a full-bleed layer.
+  const showInlineStill = !hasVideo && !compact;
   const hero = images[0];
-  const supportA = images[1];
-  const supportB = images[2];
 
   return (
-    <div className={`kw__showcase${hasVideo ? " kw__showcase--video" : ""}`}>
-      {!hasVideo && (
-        <div
-          className={`kw__gallery${hasSupport ? "" : " kw__gallery--solo"}${
-            supportCount === 1 ? " kw__gallery--duo" : ""
-          }`}
-        >
+    <div
+      className={`kw__showcase${hasVideo || compact ? " kw__showcase--video" : ""}`}
+    >
+      {showInlineStill && hero && (
+        <div className="kw__gallery kw__gallery--solo">
           <div className="kw__hero">
             <AnimatePresence mode="sync" initial={false}>
               <motion.img
@@ -152,54 +173,18 @@ function Showcase({
                 src={hero}
                 alt={piece.product.name}
                 className="kw__img"
-                initial={compact ? false : { opacity: 0, scale: 0.96 }}
+                initial={{ opacity: 0, scale: 0.96 }}
                 animate={{
                   opacity: 1,
                   scale: zoom,
-                  y: compact ? 0 : parallaxY,
+                  y: parallaxY,
                 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
+                transition={{ duration: 0.55, ease: [0.45, 0, 0.55, 1] }}
                 draggable={false}
               />
             </AnimatePresence>
           </div>
-
-          {hasSupport && supportA && (
-            <div className={`kw__support${supportCount === 1 ? " kw__support--span" : ""}`}>
-              <AnimatePresence mode="sync" initial={false}>
-                <motion.img
-                  key={`${piece.product.slug}-a`}
-                  src={supportA}
-                  alt=""
-                  className="kw__img"
-                  initial={compact ? false : { opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
-                  draggable={false}
-                />
-              </AnimatePresence>
-            </div>
-          )}
-
-          {supportCount > 1 && supportB && (
-            <div className="kw__support">
-              <AnimatePresence mode="sync" initial={false}>
-                <motion.img
-                  key={`${piece.product.slug}-b`}
-                  src={supportB}
-                  alt=""
-                  className="kw__img"
-                  initial={compact ? false : { opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
-                  draggable={false}
-                />
-              </AnimatePresence>
-            </div>
-          )}
         </div>
       )}
 
@@ -418,10 +403,14 @@ export function KineticWheel() {
   if (count === 0 || !activePiece) return null;
 
   const hasVideo = Boolean(activePiece.video);
+  const stillSrc = !hasVideo ? activePiece.images[0] : undefined;
+  const hasFullBleedMedia = hasVideo || Boolean(stillSrc);
 
   return (
     <section
-      className={`kw${isMobile ? " kw--mobile" : ""}${hasVideo ? " kw--has-video" : ""}`}
+      className={`kw${isMobile ? " kw--mobile" : ""}${hasVideo ? " kw--has-video" : ""}${
+        stillSrc && isMobile ? " kw--has-still" : ""
+      }`}
       aria-label="Kinetic product wheel"
       data-lenis-prevent
     >
@@ -432,6 +421,24 @@ export function KineticWheel() {
           objectPosition={activePiece.product.videoObjectPosition}
           variant="backdrop"
         />
+      ) : null}
+
+      {stillSrc && isMobile ? (
+        <div className="kw__still-layer" aria-hidden="true">
+          <AnimatePresence mode="sync" initial={false}>
+            <motion.img
+              key={stillSrc}
+              src={stillSrc}
+              alt=""
+              className="kw__still-img"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, scale: zoom }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.45, 0, 0.55, 1] }}
+              draggable={false}
+            />
+          </AnimatePresence>
+        </div>
       ) : null}
 
       <div
@@ -479,6 +486,8 @@ export function KineticWheel() {
                 distance={distance}
                 spacing={itemSpacing}
                 curveStrength={curveStrength}
+                compact={isMobile}
+                lightLabels={hasFullBleedMedia && isMobile}
                 onSelect={() => openProduct(index)}
               />
             ))}
