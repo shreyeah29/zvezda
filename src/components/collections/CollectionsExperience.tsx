@@ -5,6 +5,7 @@ import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { CircularGallery } from "@/components/collections/CircularGallery";
+import { KineticWheel } from "@/components/collections/KineticWheel";
 import { JacquemusCollectionsPage } from "@/components/collections/JacquemusCollectionsPage";
 import { useMaxWidth } from "@/hooks/useMaxWidth";
 
@@ -16,6 +17,7 @@ export function CollectionsExperience() {
       <SmoothScroll>
         <main id="main-content">
           {!isMobile && <CircularGallery />}
+          {!isMobile && <KineticWheel />}
           <JacquemusCollectionsPage />
         </main>
         <JacquemusFooter />
