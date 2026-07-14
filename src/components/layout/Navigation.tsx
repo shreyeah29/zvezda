@@ -95,7 +95,6 @@ export function Navigation() {
 
   const showHeader = headerVisible || cartOpen;
   const heroOverlay = hasHeroOverlay && heroOverlayNav;
-  const textClass = heroOverlay ? "text-white" : "text-black";
   const mutedClass = heroOverlay ? "text-white/80 hover:text-white" : "text-black/70 hover:text-black";
 
   return (
@@ -109,6 +108,7 @@ export function Navigation() {
           "pointer-events-none fixed top-0 right-0 left-0 z-50 bg-transparent px-4 md:px-6",
           "jm-nav-header",
           showHeader ? "jm-nav-header--visible" : "jm-nav-header--hidden",
+          heroOverlay && "jm-nav-header--on-hero",
         )}
       >
         <div className="pointer-events-auto mx-auto flex w-full max-w-[100%] items-center justify-between py-2.5">

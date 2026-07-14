@@ -99,7 +99,19 @@
   background: none;
   cursor: pointer;
   padding: 0;
-  color: inherit;
+}
+
+/* Keep cart + icons white on the dark hero even if button UA color wins */
+.jm-nav-header--on-hero .jm-nav__icon,
+.jm-nav-header--on-hero .jm-nav__cart,
+.jm-nav-header--on-hero .jm-nav__link {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.jm-nav-header--on-hero .jm-nav__icon:hover,
+.jm-nav-header--on-hero .jm-nav__cart:hover,
+.jm-nav-header--on-hero .jm-nav__link:hover {
+  color: #ffffff;
 }
 
 .jm-nav__cart-dot {
