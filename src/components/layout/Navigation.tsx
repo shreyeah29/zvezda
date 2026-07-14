@@ -135,7 +135,7 @@ export function Navigation() {
               <Link
                 key={`${link.href}-${link.label}`}
                 href={link.href}
-                className={cn("jm-nav__link", mutedClass)}
+                className={cn("jm-nav__link jm-nav__shop", mutedClass)}
               >
                 {link.label}
               </Link>
