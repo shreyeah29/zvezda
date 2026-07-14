@@ -14,7 +14,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { getKineticPieces, type KineticPiece } from "./kineticData";
 import "./KineticWheel.css";
 
-const ITEM_SPACING = 92;
+const ITEM_SPACING = 84;
 const VISIBLE_RADIUS = 5;
 const FRICTION = 0.92;
 const WHEEL_GAIN = 0.55;
@@ -22,6 +22,17 @@ const DRAG_GAIN = 1.05;
 const SNAP_SOFT = 0.085;
 const CURVE_STRENGTH = 92;
 const MAX_BLUR = 2.4;
+
+function ZvezdaStar({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="10" height="10" aria-hidden="true">
+      <path
+        d="M12 1.2 L13.35 9.55 L21.8 12 L13.35 14.45 L12 22.8 L10.65 14.45 L2.2 12 L10.65 9.55 Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
 
 function wrapIndex(index: number, length: number) {
   return ((index % length) + length) % length;
@@ -58,11 +69,10 @@ function itemStyle(distance: number) {
 type WheelItemProps = {
   piece: KineticPiece;
   distance: number;
-  indexLabel: string;
   onSelect: () => void;
 };
 
-function WheelItem({ piece, distance, indexLabel, onSelect }: WheelItemProps) {
+function WheelItem({ piece, distance, onSelect }: WheelItemProps) {
   const style = itemStyle(distance);
   const [hovered, setHovered] = useState(false);
 
@@ -86,10 +96,9 @@ function WheelItem({ piece, distance, indexLabel, onSelect }: WheelItemProps) {
       onClick={onSelect}
       aria-current={style.active ? "true" : undefined}
     >
-      <span className="kw__item-index" aria-hidden="true">
-        {indexLabel}
+      <span className="kw__item-star" aria-hidden="true">
+        <ZvezdaStar />
       </span>
-      <span className="kw__item-rule" aria-hidden="true" />
       <span
         className="kw__item-label"
         style={{
@@ -99,7 +108,6 @@ function WheelItem({ piece, distance, indexLabel, onSelect }: WheelItemProps) {
       >
         {piece.product.name}
       </span>
-      <span className="kw__item-rule" aria-hidden="true" />
     </button>
   );
 }
@@ -504,7 +512,6 @@ export function KineticWheel() {
                 key={key}
                 piece={pieces[index]}
                 distance={distance}
-                indexLabel={String(index + 1).padStart(2, "0")}
                 onSelect={() => openProduct(index)}
               />
             ))}

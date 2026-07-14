@@ -90,7 +90,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.35rem;
+  gap: 0.28rem;
   width: max-content;
   max-width: min(100%, 26rem);
   transform-origin: left center;
@@ -106,33 +106,26 @@
   font: inherit;
 }
 
-.kw__item-index {
-  display: none;
-  font-family: var(--font-kinetic), Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  color: rgba(12, 10, 9, 0.42);
-}
-
-.kw__item.is-active .kw__item-index {
-  display: block;
-}
-
-.kw__item-rule {
-  display: block;
-  width: 0;
-  height: 1px;
-  background: rgba(12, 10, 9, 0.85);
+.kw__item-star {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 0;
+  margin-left: 0.1rem;
+  color: #0c0a09;
   opacity: 0;
+  transform: scale(0.6);
   transition:
-    width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.35s ease;
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.35s ease;
+  overflow: hidden;
 }
 
-.kw__item.is-active .kw__item-rule {
-  width: min(100%, 7.5rem);
+.kw__item.is-active .kw__item-star {
+  height: 10px;
   opacity: 1;
+  transform: scale(1);
 }
 
 .kw__item-label {
