@@ -30,13 +30,13 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+  grid-template-columns: minmax(0, 0.36fr) minmax(0, 0.64fr);
   align-items: center;
-  gap: clamp(1.5rem, 3vw, 3rem);
-  width: min(100%, 1480px);
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  width: min(100%, 1560px);
   height: 100%;
   margin-inline: auto;
-  padding: clamp(5.5rem, 9vh, 6.5rem) clamp(1.5rem, 3.5vw, 3rem) clamp(2rem, 4vh, 3rem);
+  padding: clamp(5rem, 8vh, 6rem) clamp(1.25rem, 3vw, 2.5rem) clamp(1.5rem, 3vh, 2.25rem);
   box-sizing: border-box;
 }
 
@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: min(78vh, 720px);
+  height: min(84vh, 820px);
   min-height: 420px;
   outline: none;
   cursor: grab;
@@ -87,7 +87,7 @@
   display: block;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: clamp(1.35rem, 2.1vw, 1.85rem);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -96,7 +96,7 @@
 }
 
 .kw__item.is-active .kw__item-label {
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .kw__item:focus-visible {
@@ -109,18 +109,18 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: clamp(1.1rem, 2vh, 1.65rem);
+  gap: clamp(0.85rem, 1.5vh, 1.25rem);
   min-width: 0;
-  height: min(78vh, 720px);
+  height: min(84vh, 820px);
 }
 
 .kw__gallery {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.34fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.38fr);
   grid-template-rows: 1fr 1fr;
-  gap: 0.65rem;
-  height: min(58vh, 520px);
-  min-height: 320px;
+  gap: 0.55rem;
+  height: min(68vh, 640px);
+  min-height: 420px;
 }
 
 .kw__gallery--solo {
