@@ -3,6 +3,8 @@
   background: #ffffff;
   color: #0c0a09;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
 .mini-cart__header {
@@ -50,6 +52,8 @@
 .mini-cart__body {
   flex: 1;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 1.5rem;
 }
 
