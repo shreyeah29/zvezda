@@ -203,7 +203,7 @@ function Showcase({
         </div>
       )}
 
-      <div className="kw__copy">
+      <div className={`kw__copy${compact ? " kw__copy--action" : ""}`}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={piece.product.slug}
@@ -212,14 +212,23 @@ function Showcase({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <p className="kw__collection">{piece.product.collectionLabel} Collection</p>
-            <h2 className="kw__name">{piece.product.name}</h2>
-            <p className="kw__tagline">{piece.tagline}</p>
-            <Link href={`/products/${piece.product.slug}`} className="kw__cta">
+            {!compact && (
+              <>
+                <p className="kw__collection">{piece.product.collectionLabel} Collection</p>
+                <h2 className="kw__name">{piece.product.name}</h2>
+                <p className="kw__tagline">{piece.tagline}</p>
+              </>
+            )}
+            <Link
+              href={`/products/${piece.product.slug}`}
+              className={`kw__cta${compact ? " kw__cta--button" : ""}`}
+            >
               View Product
-              <span className="kw__cta-arrow" aria-hidden="true">
-                →
-              </span>
+              {!compact && (
+                <span className="kw__cta-arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
             </Link>
           </motion.div>
         </AnimatePresence>

@@ -388,13 +388,13 @@
     order: 0;
     height: 100%;
     min-height: 0;
-    gap: 0.45rem;
+    gap: 0.55rem;
     justify-content: center;
   }
 
   .kw--mobile .kw__gallery {
-    height: min(52dvh, 420px);
-    min-height: 220px;
+    height: min(58dvh, 460px);
+    min-height: 240px;
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.4fr);
     grid-template-rows: 1fr 1fr;
     gap: 0.35rem;
@@ -414,31 +414,57 @@
     max-width: none;
   }
 
-  .kw--mobile .kw__collection {
-    font-size: 0.58rem;
-    letter-spacing: 0.12em;
+  .kw--mobile .kw__copy--action {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
 
-  .kw--mobile .kw__name {
-    margin-top: 0.25rem;
-    font-size: clamp(1.15rem, 4.6vw, 1.55rem);
+  .kw--mobile .kw__copy--action > div {
+    display: flex;
+    width: 100%;
+    justify-content: center;
   }
 
-  .kw--mobile .kw__tagline {
-    display: block;
-    margin-top: 0.35rem;
-    font-size: 0.78rem;
-    line-height: 1.45;
-    max-width: 100%;
+  .kw--mobile .kw__cta--button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    padding: 0.72rem 1.35rem;
+    min-width: min(100%, 11.5rem);
+    border: 1px solid currentColor;
+    background: transparent;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--kw-ink);
+    transition: background 0.3s ease, color 0.3s ease, opacity 0.3s ease;
   }
 
-  .kw--mobile .kw__cta {
-    margin-top: 0.4rem;
-    font-size: 0.62rem;
+  .kw--mobile .kw__cta--button:active {
+    background: var(--kw-ink);
+    color: #fff;
+  }
+
+  .kw--mobile.kw--has-video .kw__cta--button {
+    color: #fafaf9;
+    border-color: rgba(250, 250, 249, 0.85);
+    background: rgba(12, 10, 9, 0.22);
+    backdrop-filter: blur(6px);
+  }
+
+  .kw--mobile.kw--has-video .kw__cta--button:active {
+    background: #fafaf9;
+    color: #0c0a09;
   }
 
   .kw--mobile .kw__showcase--video {
     justify-content: flex-end;
+    padding-bottom: 0.35rem;
   }
 
   .kw--mobile .kw__item {
