@@ -12,15 +12,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { getKineticPieces, type KineticPiece } from "./kineticData";
+import { useMaxWidth } from "@/hooks/useMaxWidth";
 import "./KineticWheel.css";
 
-const ITEM_SPACING = 84;
+const ITEM_SPACING_DESKTOP = 84;
+const ITEM_SPACING_MOBILE = 64;
 const VISIBLE_RADIUS = 5;
 const FRICTION = 0.92;
 const WHEEL_GAIN = 0.55;
 const DRAG_GAIN = 1.05;
 const SNAP_SOFT = 0.085;
-const CURVE_STRENGTH = 92;
+const CURVE_STRENGTH_DESKTOP = 92;
+const CURVE_STRENGTH_MOBILE = 48;
 const MAX_BLUR = 2.4;
 
 function ZvezdaStar({ className }: { className?: string }) {
@@ -42,7 +45,7 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
 
-function itemStyle(distance: number) {
+function itemStyle(distance: number, spacing: number, curveStrength: number) {
   const abs = Math.abs(distance);
   const t = clamp(abs / 3.2, 0, 1);
   const active = abs < 0.45;
@@ -51,12 +54,12 @@ function itemStyle(distance: number) {
   const blur = active ? 0 : t * MAX_BLUR;
   // Convex outward (Framer Kinetic Wheel): center bulges right, edges fall left
   const arc = Math.cos(clamp(distance, -3.4, 3.4) * 0.42);
-  const x = CURVE_STRENGTH * arc;
-  const rotate = distance * 5.2;
+  const x = curveStrength * arc;
+  const rotate = distance * (curveStrength > 60 ? 5.2 : 3.2);
 
   return {
     x,
-    y: distance * ITEM_SPACING,
+    y: distance * spacing,
     scale,
     opacity,
     rotate,
@@ -69,11 +72,13 @@ function itemStyle(distance: number) {
 type WheelItemProps = {
   piece: KineticPiece;
   distance: number;
+  spacing: number;
+  curveStrength: number;
   onSelect: () => void;
 };
 
-function WheelItem({ piece, distance, onSelect }: WheelItemProps) {
-  const style = itemStyle(distance);
+function WheelItem({ piece, distance, spacing, curveStrength, onSelect }: WheelItemProps) {
+  const style = itemStyle(distance, spacing, curveStrength);
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -161,13 +166,15 @@ function Showcase({
   piece,
   parallaxY,
   zoom,
+  compact = false,
 }: {
   piece: KineticPiece;
   parallaxY: number;
   zoom: number;
+  compact?: boolean;
 }) {
   const images = piece.images;
-  const supportCount = Math.min(2, Math.max(0, images.length - 1));
+  const supportCount = compact ? 0 : Math.min(2, Math.max(0, images.length - 1));
   const hasSupport = supportCount > 0;
   const hero = images[0];
   const supportA = images[1];
@@ -292,6 +299,11 @@ export function KineticWheel() {
   const pieces = useMemo(() => getKineticPieces(), []);
   const count = pieces.length;
   const router = useRouter();
+  const isMobile = useMaxWidth(768);
+  const itemSpacing = isMobile ? ITEM_SPACING_MOBILE : ITEM_SPACING_DESKTOP;
+  const curveStrength = isMobile ? CURVE_STRENGTH_MOBILE : CURVE_STRENGTH_DESKTOP;
+  const spacingRef = useRef(itemSpacing);
+  spacingRef.current = itemSpacing;
 
   const positionRef = useRef(0);
   const velocityRef = useRef(0);
@@ -310,7 +322,8 @@ export function KineticWheel() {
 
   const syncActive = useCallback(
     (pos: number) => {
-      const idx = wrapIndex(Math.round(pos / ITEM_SPACING), count);
+      const spacing = spacingRef.current;
+      const idx = wrapIndex(Math.round(pos / spacing), count);
       startTransition(() => setActiveIndex(idx));
     },
     [count],
@@ -319,11 +332,12 @@ export function KineticWheel() {
   const tick = useCallback(() => {
     let pos = positionRef.current;
     let vel = velocityRef.current;
+    const spacing = spacingRef.current;
 
     if (!draggingRef.current) {
       // Soft snap toward nearest item while preserving continuous inertia feel
       if (Math.abs(vel) < 0.35) {
-        const target = Math.round(pos / ITEM_SPACING) * ITEM_SPACING;
+        const target = Math.round(pos / spacing) * spacing;
         const delta = target - pos;
         vel += delta * SNAP_SOFT;
       }
@@ -402,12 +416,13 @@ export function KineticWheel() {
   };
 
   const goToIndex = (index: number) => {
-    const current = Math.round(positionRef.current / ITEM_SPACING);
+    const spacing = spacingRef.current;
+    const current = Math.round(positionRef.current / spacing);
     const wrappedCurrent = wrapIndex(current, count);
     let delta = index - wrappedCurrent;
     if (delta > count / 2) delta -= count;
     if (delta < -count / 2) delta += count;
-    const target = (current + delta) * ITEM_SPACING;
+    const target = (current + delta) * spacing;
     const start = positionRef.current;
     const diff = target - start;
     const duration = 520;
@@ -435,7 +450,7 @@ export function KineticWheel() {
     router.push(`/products/${piece.product.slug}`);
   };
 
-  const virtualCenter = position / ITEM_SPACING;
+  const virtualCenter = position / itemSpacing;
 
   const visibleItems = useMemo(() => {
     const items: { key: string; index: number; distance: number }[] = [];
@@ -453,7 +468,7 @@ export function KineticWheel() {
 
   return (
     <section
-      className="kw"
+      className={`kw${isMobile ? " kw--mobile" : ""}`}
       aria-label="Kinetic product wheel"
       data-lenis-prevent
     >
@@ -512,16 +527,18 @@ export function KineticWheel() {
                 key={key}
                 piece={pieces[index]}
                 distance={distance}
+                spacing={itemSpacing}
+                curveStrength={curveStrength}
                 onSelect={() => openProduct(index)}
               />
             ))}
           </div>
         </div>
 
-        <Showcase piece={activePiece} parallaxY={parallaxY} zoom={zoom} />
+        <Showcase piece={activePiece} parallaxY={parallaxY} zoom={zoom} compact={isMobile} />
       </div>
 
-      <p className="kw__hint">Scroll to explore · Click to view</p>
+      <p className="kw__hint">Scroll to explore · Tap to view</p>
     </section>
   );
 }

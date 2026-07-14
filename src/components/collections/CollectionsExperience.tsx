@@ -15,12 +15,14 @@ export function CollectionsExperience() {
   return (
     <SessionLoadGate>
       <SmoothScroll>
-        <main id="main-content">
+        <main id="main-content" className={isMobile ? "collections-main--mobile-wheel" : undefined}>
+          {/* Desktop: circular gallery → kinetic wheel → collections list */}
           {!isMobile && <CircularGallery />}
-          {!isMobile && <KineticWheel />}
-          <JacquemusCollectionsPage />
+          <KineticWheel />
+          {!isMobile && <JacquemusCollectionsPage />}
         </main>
-        <JacquemusFooter />
+        {/* Phone: wheel is the only section — no footer strip */}
+        {!isMobile && <JacquemusFooter />}
       </SmoothScroll>
     </SessionLoadGate>
   );
