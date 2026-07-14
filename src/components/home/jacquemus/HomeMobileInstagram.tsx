@@ -6,7 +6,31 @@ import "./HomeMobileInstagram.css";
 
 const INSTAGRAM_URL = "https://www.instagram.com/zvezda_atelier/";
 
-const INSTAGRAM_PICKS = ["set-15", "set-12", "set-1", "set-13"] as const;
+const INSTAGRAM_PICKS = ["set-15", "set-12", "set-1"] as const;
+
+function InstagramGlyph() {
+  return (
+    <svg
+      className="hm-instagram__icon"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect
+        x="3.5"
+        y="3.5"
+        width="17"
+        height="17"
+        rx="5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="17.15" cy="6.85" r="1.05" fill="currentColor" />
+    </svg>
+  );
+}
 
 export function HomeMobileInstagram() {
   const isMobile = useMaxWidth(768);
@@ -18,7 +42,14 @@ export function HomeMobileInstagram() {
   );
 
   return (
-    <section className="hm-instagram" aria-label="Follow ZVEZDA Atelier on Instagram">
+    <section className="hm-instagram" aria-labelledby="hm-instagram-heading">
+      <div className="hm-instagram__header">
+        <InstagramGlyph />
+        <h2 id="hm-instagram-heading" className="hm-instagram__heading">
+          Instagram
+        </h2>
+      </div>
+
       <div className="hm-instagram__strip" role="list">
         {images.map((product) => (
           <a
@@ -36,12 +67,9 @@ export function HomeMobileInstagram() {
         ))}
       </div>
 
-      <div className="hm-instagram__meta">
-        <p className="hm-instagram__label">Atelier journal</p>
-        <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="hm-instagram__handle">
-          @zvezda_atelier
-        </a>
-      </div>
+      <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="hm-instagram__handle">
+        @zvezda_atelier
+      </a>
     </section>
   );
 }
