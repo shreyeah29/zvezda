@@ -110,9 +110,6 @@ export default function HomePage() {
           <div className="home-section home-section--hero">
             <HomeHeroVideo />
           </div>
-          <div className="home-section home-section--showcase">
-            <HomeProductSlideshow />
-          </div>
           <div className="home-section home-section--split">
             <HomeCollectionSplit />
           </div>
