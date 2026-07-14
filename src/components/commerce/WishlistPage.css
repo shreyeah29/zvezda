@@ -188,7 +188,7 @@
 }
 
 /* Keep Add to Bag compact on smaller wishlist cards */
-.wishlist-page__actions .editorial-spacing {
+.wishlist-page__actions .add-to-cart-btn {
   padding-block: 0.65rem;
   font-size: 9px;
 }

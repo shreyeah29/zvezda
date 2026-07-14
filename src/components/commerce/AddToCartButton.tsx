@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useCommerce } from "@/context/CommerceContext";
 import { getProduct } from "@/data/products";
+import "./AddToCartButton.css";
 
 type AddToCartButtonProps = {
   slug: string;
@@ -57,7 +58,7 @@ export function AddToCartButton({
             : { scale: 1 }
       }
       transition={{ type: "spring", stiffness: 420, damping: 24 }}
-      className={`editorial-spacing relative overflow-hidden bg-cream py-4 text-[9px] text-ink transition-opacity hover:opacity-90 disabled:cursor-wait ${className}`}
+      className={`add-to-cart-btn relative overflow-hidden bg-cream py-4 text-[10px] font-normal uppercase tracking-[0.06em] text-ink transition-opacity hover:opacity-90 disabled:cursor-wait ${className}`}
     >
       <motion.span
         key={state}
