@@ -46,18 +46,12 @@
   height: 100%;
   object-fit: cover;
   object-position: center 18%;
-  filter: saturate(0.98) contrast(1.02);
   opacity: 0;
   transition: opacity 0.28s ease;
   will-change: opacity;
 }
 
-.kw__video-layer--backdrop .kw__video.is-front {
-  opacity: 0.78;
-  z-index: 1;
-}
-
-.kw__video-layer--feature .kw__video.is-front {
+.kw__video.is-front {
   opacity: 1;
   z-index: 1;
 }
@@ -463,9 +457,5 @@
 
   .kw--mobile .kw__video {
     object-position: center center;
-  }
-
-  .kw--mobile .kw__mood {
-    opacity: 0.85;
   }
 }
