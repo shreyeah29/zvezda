@@ -15,14 +15,6 @@ const SmoothScroll = dynamic(
   { ssr: false },
 );
 
-const HomeProductSlideshow = dynamic(
-  () =>
-    import("@/components/home/ProductSlideshow").then((mod) => ({
-      default: mod.HomeProductSlideshow,
-    })),
-  { ssr: false },
-);
-
 const HomeMobileShop = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeMobileShop").then((mod) => ({
