@@ -88,7 +88,8 @@ export function HomeHeroVideo() {
           controls={false}
           disablePictureInPicture
           controlsList="nodownload nofullscreen noremoteplayback"
-          className="hero-screen__video absolute inset-0 h-full w-full object-cover object-center"
+          className="hero-screen__video absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: "center 28%" }}
         >
           <source src={videos.hero} type="video/mp4" />
         </video>
