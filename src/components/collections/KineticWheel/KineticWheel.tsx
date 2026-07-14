@@ -38,9 +38,10 @@ function itemStyle(distance: number) {
   const scale = active ? 1 : 1 - t * 0.28;
   const opacity = active ? 1 : 0.3 + (1 - t) * 0.12;
   const blur = active ? 0 : t * MAX_BLUR;
-  // Kinetic arc: center closer to showcase (right), edges bow left
-  const x = CURVE_STRENGTH * (1 - Math.cos(clamp(distance, -3.4, 3.4) * 0.42));
-  const rotate = distance * -4.5;
+  // Convex outward (Framer Kinetic Wheel): center bulges right, edges fall left
+  const arc = Math.cos(clamp(distance, -3.4, 3.4) * 0.42);
+  const x = CURVE_STRENGTH * arc;
+  const rotate = distance * 5.2;
 
   return {
     x,
@@ -86,7 +87,7 @@ function WheelItem({ piece, distance, onSelect }: WheelItemProps) {
       <span
         className="kw__item-label"
         style={{
-          fontSize: `calc(clamp(1.85rem, 2.85vw, 2.85rem) * ${style.fontSizeBoost})`,
+          fontSize: `calc(clamp(1.35rem, 2.1vw, 1.85rem) * ${style.fontSizeBoost})`,
           color: style.active ? "#0c0a09" : "rgba(12, 10, 9, 0.55)",
         }}
       >
