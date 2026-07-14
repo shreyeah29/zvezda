@@ -23,7 +23,7 @@ const WHEEL_GAIN = 0.55;
 const DRAG_GAIN = 1.05;
 const SNAP_SOFT = 0.085;
 const CURVE_STRENGTH_DESKTOP = 92;
-const CURVE_STRENGTH_MOBILE = 48;
+const CURVE_STRENGTH_MOBILE = 28;
 const MAX_BLUR = 2.4;
 
 function ZvezdaStar({ className }: { className?: string }) {
@@ -120,9 +120,11 @@ function WheelItem({ piece, distance, spacing, curveStrength, onSelect }: WheelI
 function AmbientVideo({
   src,
   objectPosition,
+  instant = false,
 }: {
   src: string;
   objectPosition?: string;
+  instant?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -151,13 +153,13 @@ function AmbientVideo({
       playsInline
       loop
       autoPlay
-      preload="metadata"
+      preload="auto"
       aria-hidden
       style={objectPosition ? { objectPosition } : undefined}
-      initial={{ opacity: 0, scale: 1.03 }}
+      initial={instant ? false : { opacity: 0, scale: 1.03 }}
       animate={{ opacity: 0.78, scale: 1 }}
-      exit={{ opacity: 0, scale: 1.02 }}
-      transition={{ duration: 0.95, ease: [0.45, 0, 0.55, 1] }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: instant ? 0.28 : 0.95, ease: [0.45, 0, 0.55, 1] }}
     />
   );
 }
@@ -174,7 +176,7 @@ function Showcase({
   compact?: boolean;
 }) {
   const images = piece.images;
-  const supportCount = compact ? 0 : Math.min(2, Math.max(0, images.length - 1));
+  const supportCount = Math.min(2, Math.max(0, images.length - 1));
   const hasSupport = supportCount > 0;
   const hero = images[0];
   const supportA = images[1];
@@ -186,21 +188,22 @@ function Showcase({
         className={`kw__gallery${hasSupport ? "" : " kw__gallery--solo"}${
           supportCount === 1 ? " kw__gallery--duo" : ""
         }`}
-      >        <div className="kw__hero">
-          <AnimatePresence mode="sync">
+      >
+        <div className="kw__hero">
+          <AnimatePresence mode="sync" initial={false}>
             <motion.img
               key={`${piece.product.slug}-hero`}
               src={hero}
               alt={piece.product.name}
               className="kw__img"
-              initial={{ opacity: 0, scale: 0.96 }}
+              initial={compact ? false : { opacity: 0, scale: 0.96 }}
               animate={{
                 opacity: 1,
                 scale: zoom,
-                y: parallaxY,
+                y: compact ? 0 : parallaxY,
               }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.55, ease: [0.45, 0, 0.55, 1] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
               draggable={false}
             />
           </AnimatePresence>
@@ -208,16 +211,16 @@ function Showcase({
 
         {hasSupport && supportA && (
           <div className={`kw__support${supportCount === 1 ? " kw__support--span" : ""}`}>
-            <AnimatePresence mode="sync">
+            <AnimatePresence mode="sync" initial={false}>
               <motion.img
                 key={`${piece.product.slug}-a`}
                 src={supportA}
                 alt=""
                 className="kw__img"
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={compact ? false : { opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.55, ease: [0.45, 0, 0.55, 1], delay: 0.05 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
                 draggable={false}
               />
             </AnimatePresence>
@@ -226,16 +229,16 @@ function Showcase({
 
         {supportCount > 1 && supportB && (
           <div className="kw__support">
-            <AnimatePresence mode="sync">
+            <AnimatePresence mode="sync" initial={false}>
               <motion.img
                 key={`${piece.product.slug}-b`}
                 src={supportB}
                 alt=""
                 className="kw__img"
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={compact ? false : { opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.55, ease: [0.45, 0, 0.55, 1], delay: 0.1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: compact ? 0.28 : 0.55, ease: [0.45, 0, 0.55, 1] }}
                 draggable={false}
               />
             </AnimatePresence>
@@ -244,50 +247,23 @@ function Showcase({
       </div>
 
       <div className="kw__copy">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={piece.product.slug}
-            initial={{ opacity: 0 }}
+            initial={compact ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.25 }}
           >
-            <motion.p
-              className="kw__collection"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {piece.product.collectionLabel} Collection
-            </motion.p>
-            <motion.h2
-              className="kw__name"
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {piece.product.name}
-            </motion.h2>
-            <motion.p
-              className="kw__tagline"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {piece.tagline}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.35, delay: 0.24 }}
-            >
-              <Link href={`/products/${piece.product.slug}`} className="kw__cta">
-                View Product
-                <span className="kw__cta-arrow" aria-hidden="true">
-                  →
-                </span>
-              </Link>
-            </motion.div>
+            <p className="kw__collection">{piece.product.collectionLabel} Collection</p>
+            <h2 className="kw__name">{piece.product.name}</h2>
+            {!compact && <p className="kw__tagline">{piece.tagline}</p>}
+            <Link href={`/products/${piece.product.slug}`} className="kw__cta">
+              View Product
+              <span className="kw__cta-arrow" aria-hidden="true">
+                →
+              </span>
+            </Link>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -479,6 +455,7 @@ export function KineticWheel() {
               key={activePiece.video}
               src={activePiece.video}
               objectPosition={activePiece.product.videoObjectPosition}
+              instant={isMobile}
             />
           ) : null}
         </AnimatePresence>
