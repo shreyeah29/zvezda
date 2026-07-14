@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { videos } from "@/data/brand";
+import { useMaxWidth } from "@/hooks/useMaxWidth";
 import "./HomeHeroVideo.css";
 
 const HERO_POSTER = "/assets/images/products/set-12/HSP_5750.jpg";
@@ -11,10 +12,14 @@ export function HomeHeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const isMobile = useMaxWidth(768);
+  const heroSrc = isMobile ? videos.heroMobile : videos.hero;
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    setIsPlaying(false);
 
     video.muted = true;
     video.defaultMuted = true;
@@ -63,7 +68,7 @@ export function HomeHeroVideo() {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       observer.disconnect();
     };
-  }, []);
+  }, [heroSrc]);
 
   return (
     <section
@@ -78,6 +83,7 @@ export function HomeHeroVideo() {
           aria-hidden="true"
         />
         <video
+          key={heroSrc}
           ref={videoRef}
           autoPlay
           muted
@@ -88,10 +94,12 @@ export function HomeHeroVideo() {
           controls={false}
           disablePictureInPicture
           controlsList="nodownload nofullscreen noremoteplayback"
-          className="hero-screen__video absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: "center 28%" }}
+          className={`hero-screen__video absolute inset-0 h-full w-full object-cover${
+            isMobile ? " hero-screen__video--mobile" : ""
+          }`}
+          style={{ objectPosition: isMobile ? "center 22%" : "center 28%" }}
         >
-          <source src={videos.hero} type="video/mp4" />
+          <source src={heroSrc} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35" />
       </div>
