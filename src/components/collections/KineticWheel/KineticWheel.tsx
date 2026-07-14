@@ -14,7 +14,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { getKineticPieces, type KineticPiece } from "./kineticData";
 import "./KineticWheel.css";
 
-const ITEM_SPACING = 78;
+const ITEM_SPACING = 92;
 const VISIBLE_RADIUS = 5;
 const FRICTION = 0.92;
 const WHEEL_GAIN = 0.55;
@@ -58,10 +58,11 @@ function itemStyle(distance: number) {
 type WheelItemProps = {
   piece: KineticPiece;
   distance: number;
+  indexLabel: string;
   onSelect: () => void;
 };
 
-function WheelItem({ piece, distance, onSelect }: WheelItemProps) {
+function WheelItem({ piece, distance, indexLabel, onSelect }: WheelItemProps) {
   const style = itemStyle(distance);
   const [hovered, setHovered] = useState(false);
 
@@ -74,7 +75,7 @@ function WheelItem({ piece, distance, onSelect }: WheelItemProps) {
       aria-selected={style.active}
       style={{
         transform: `translate3d(${style.x}px, calc(-50% + ${style.y}px), 0) rotate(${style.rotate}deg) scale(${
-          style.scale * (hovered && !style.active ? 1.035 : 1)
+          style.scale * (hovered && !style.active ? 1.03 : 1)
         })`,
         opacity: hovered && !style.active ? Math.min(1, style.opacity + 0.18) : style.opacity,
         filter: style.blur > 0.05 ? `blur(${style.blur}px)` : "none",
@@ -85,15 +86,20 @@ function WheelItem({ piece, distance, onSelect }: WheelItemProps) {
       onClick={onSelect}
       aria-current={style.active ? "true" : undefined}
     >
+      <span className="kw__item-index" aria-hidden="true">
+        {indexLabel}
+      </span>
+      <span className="kw__item-rule" aria-hidden="true" />
       <span
         className="kw__item-label"
         style={{
-          fontSize: `calc(clamp(1.35rem, 2.1vw, 1.85rem) * ${style.fontSizeBoost})`,
-          color: style.active ? "#0c0a09" : "rgba(12, 10, 9, 0.55)",
+          fontSize: `calc(clamp(0.95rem, 1.35vw, 1.2rem) * ${style.fontSizeBoost})`,
+          color: style.active ? "#0c0a09" : "rgba(12, 10, 9, 0.48)",
         }}
       >
         {piece.product.name}
       </span>
+      <span className="kw__item-rule" aria-hidden="true" />
     </button>
   );
 }
@@ -231,22 +237,22 @@ function Showcase({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
           >
-            <motion.h2
-              className="kw__name"
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {piece.product.name}
-            </motion.h2>
             <motion.p
               className="kw__collection"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
               {piece.product.collectionLabel} Collection
             </motion.p>
+            <motion.h2
+              className="kw__name"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {piece.product.name}
+            </motion.h2>
             <motion.p
               className="kw__tagline"
               initial={{ opacity: 0, y: 8 }}
@@ -498,6 +504,7 @@ export function KineticWheel() {
                 key={key}
                 piece={pieces[index]}
                 distance={distance}
+                indexLabel={String(index + 1).padStart(2, "0")}
                 onSelect={() => openProduct(index)}
               />
             ))}

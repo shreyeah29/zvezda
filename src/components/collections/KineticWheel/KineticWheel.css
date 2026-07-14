@@ -87,13 +87,17 @@
   position: absolute;
   left: 0;
   top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
   width: max-content;
-  max-width: min(100%, 22rem);
+  max-width: min(100%, 26rem);
   transform-origin: left center;
   will-change: transform, opacity, filter;
   text-decoration: none;
   color: inherit;
-  padding: 0.15rem 0.25rem;
+  padding: 0.2rem 0.25rem;
   margin: 0;
   border: 0;
   background: none;
@@ -102,20 +106,50 @@
   font: inherit;
 }
 
+.kw__item-index {
+  display: none;
+  font-family: var(--font-kinetic), Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: rgba(12, 10, 9, 0.42);
+}
+
+.kw__item.is-active .kw__item-index {
+  display: block;
+}
+
+.kw__item-rule {
+  display: block;
+  width: 0;
+  height: 1px;
+  background: rgba(12, 10, 9, 0.85);
+  opacity: 0;
+  transition:
+    width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+}
+
+.kw__item.is-active .kw__item-rule {
+  width: min(100%, 7.5rem);
+  opacity: 1;
+}
+
 .kw__item-label {
   display: block;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: clamp(1.35rem, 2.1vw, 1.85rem);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  font-family: var(--font-kinetic), Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: clamp(0.95rem, 1.35vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .kw__item.is-active .kw__item-label {
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .kw__item:focus-visible {
@@ -190,12 +224,22 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0.35rem;
-  max-width: 28rem;
-  min-height: 7.5rem;
+  max-width: 30rem;
+  min-height: 8rem;
+}
+
+.kw__collection {
+  margin: 0;
+  font-family: var(--font-kinetic), Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(12, 10, 9, 0.5);
 }
 
 .kw__name {
-  margin: 0;
+  margin: 0.45rem 0 0;
   font-family: var(--font-display), "Cormorant Garamond", Georgia, serif;
   font-size: clamp(2rem, 3.2vw, 3.15rem);
   font-weight: 400;
@@ -204,21 +248,13 @@
   color: var(--kw-ink);
 }
 
-.kw__collection {
-  margin: 0.15rem 0 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.95rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: rgba(12, 10, 9, 0.55);
-}
-
 .kw__tagline {
-  margin: 0.55rem 0 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0.65rem 0 0;
+  max-width: 22rem;
+  font-family: var(--font-kinetic), Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.95rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.55;
   color: rgba(12, 10, 9, 0.62);
 }
 
@@ -226,11 +262,11 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  margin-top: 0.85rem;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.8rem;
-  font-weight: 400;
-  letter-spacing: 0.08em;
+  margin-top: 0.95rem;
+  font-family: var(--font-kinetic), Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--kw-ink);
@@ -270,7 +306,7 @@
   }
 
   .kw__item-label {
-    font-size: clamp(1.2rem, 1.9vw, 1.55rem);
+    font-size: clamp(0.85rem, 1.25vw, 1.05rem);
   }
 
   .kw__name {
