@@ -12,10 +12,17 @@
   .jacquemus-home .home-section--mobile-pink-video,
   .jacquemus-home .home-section--instagram {
     margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .jacquemus-home .home-section--mobile-pink-shop,
+  .jacquemus-home .home-section--mobile-pink-video {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .jacquemus-home .home-section--instagram {
-    padding-top: 0.5rem;
+    padding-top: 0;
   }
 
   .jacquemus-home .home-section--hero {

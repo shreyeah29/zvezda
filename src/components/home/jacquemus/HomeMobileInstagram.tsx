@@ -6,38 +6,7 @@ import "./HomeMobileInstagram.css";
 
 const INSTAGRAM_URL = "https://www.instagram.com/zvezda_atelier/";
 
-const INSTAGRAM_PICKS = [
-  "set-12",
-  "set-8",
-  "set-1",
-  "set-13",
-  "set-5",
-  "set-11",
-] as const;
-
-function InstagramGlyph() {
-  return (
-    <svg
-      className="hm-instagram__heading-icon"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <rect
-        x="3.5"
-        y="3.5"
-        width="17"
-        height="17"
-        rx="5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" />
-    </svg>
-  );
-}
+const INSTAGRAM_PICKS = ["set-15", "set-12", "set-1", "set-13"] as const;
 
 export function HomeMobileInstagram() {
   const isMobile = useMaxWidth(768);
@@ -49,13 +18,8 @@ export function HomeMobileInstagram() {
   );
 
   return (
-    <section className="hm-instagram" aria-label="Follow our journey on Instagram">
-      <div className="hm-instagram__title-row">
-        <InstagramGlyph />
-        <h2 className="hm-instagram__heading">Instagram</h2>
-      </div>
-
-      <div className="hm-instagram__grid">
+    <section className="hm-instagram" aria-label="Follow ZVEZDA Atelier on Instagram">
+      <div className="hm-instagram__strip" role="list">
         {images.map((product) => (
           <a
             key={product!.slug}
@@ -63,7 +27,8 @@ export function HomeMobileInstagram() {
             target="_blank"
             rel="noreferrer"
             className="hm-instagram__cell"
-            aria-label={`View ${product!.name} on Instagram`}
+            role="listitem"
+            aria-label={`Open Instagram — ${product!.name}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={product!.hero} alt="" className="hm-instagram__image" loading="lazy" />
@@ -71,9 +36,12 @@ export function HomeMobileInstagram() {
         ))}
       </div>
 
-      <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="hm-instagram__cta">
-        View more on Instagram
-      </a>
+      <div className="hm-instagram__meta">
+        <p className="hm-instagram__label">Atelier journal</p>
+        <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="hm-instagram__handle">
+          @zvezda_atelier
+        </a>
+      </div>
     </section>
   );
 }
