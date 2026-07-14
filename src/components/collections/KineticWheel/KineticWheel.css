@@ -41,18 +41,8 @@
   height: 100%;
   object-fit: cover;
   object-position: center 20%;
-  filter: saturate(0.92) contrast(1.02);
+  filter: saturate(0.95) contrast(1.02);
   will-change: opacity, transform;
-}
-
-.kw__video-veil {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.55) 42%, rgba(255, 255, 255, 0.72) 100%),
-    rgba(255, 255, 255, 0.42);
 }
 
 .kw__shell {

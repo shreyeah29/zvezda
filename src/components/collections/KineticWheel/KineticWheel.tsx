@@ -136,7 +136,7 @@ function AmbientVideo({
       aria-hidden
       style={objectPosition ? { objectPosition } : undefined}
       initial={{ opacity: 0, scale: 1.03 }}
-      animate={{ opacity: 0.18, scale: 1 }}
+      animate={{ opacity: 0.78, scale: 1 }}
       exit={{ opacity: 0, scale: 1.02 }}
       transition={{ duration: 0.95, ease: [0.45, 0, 0.55, 1] }}
     />
@@ -454,7 +454,6 @@ export function KineticWheel() {
           ) : null}
         </AnimatePresence>
       </div>
-      <div className="kw__video-veil" aria-hidden="true" />
 
       <div
         className="kw__mood"
