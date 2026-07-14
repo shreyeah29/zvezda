@@ -76,7 +76,7 @@ function itemStyle(
     rotate,
     blur,
     active,
-    fontSizeBoost: active ? (compact ? 1.02 : 1.06) : 1 - t * (compact ? 0.04 : 0.08),
+    fontSizeBoost: active ? (compact ? 1.14 : 1.08) : 1,
   };
 }
 
