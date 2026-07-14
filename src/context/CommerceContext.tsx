@@ -143,6 +143,7 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
 
   const triggerFlyToCart = useCallback((payload: FlyPayload) => {
     setFlyPayload(payload);
+    setCartPulse(true);
   }, []);
 
   const clearFlyPayload = useCallback(() => setFlyPayload(null), []);

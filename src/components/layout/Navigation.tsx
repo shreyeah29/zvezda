@@ -13,6 +13,9 @@ import { brand } from "@/data/brand";
 import { cn } from "@/lib/utils";
 import "./JacquemusNav.css";
 
+const HEART_PATH =
+  "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z";
+
 const JM_LINKS = [
   { href: "/", label: "Home" },
   { href: "/collections", label: "Collections" },
@@ -26,16 +29,21 @@ export function Navigation() {
   const isHome = pathname === "/";
   const isProductPage = pathname.startsWith("/products/");
   const hasHeroOverlay = isHome || isProductPage;
-  const { cartCount } = useCommerce();
+  const { cartCount, cartPulse } = useCommerce();
   const [cartOpen, setCartOpen] = useState(false);
   const [displayCount, setDisplayCount] = useState(cartCount);
   const [heroOverlayNav, setHeroOverlayNav] = useState(hasHeroOverlay);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartBurst, setCartBurst] = useState(false);
 
   useEffect(() => {
     setDisplayCount(cartCount);
   }, [cartCount]);
+
+  useEffect(() => {
+    if (cartPulse) setCartBurst(true);
+  }, [cartPulse]);
 
   useEffect(() => {
     setHeaderVisible(true);
@@ -146,20 +154,30 @@ export function Navigation() {
             >
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <path
-                  d="M12 20.5s-7.2-4.74-9.6-8.64C.62 8.74 2.24 5.5 5.7 5.5c1.92 0 3.18 1.02 4.3 2.34C11.12 6.52 12.38 5.5 14.3 5.5c3.46 0 5.08 3.24 3.3 6.36C19.2 15.76 12 20.5 12 20.5z"
+                  d={HEART_PATH}
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="1.35"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
             </Link>
-            <button
+            <motion.button
               type="button"
               data-cart-target
               onClick={() => setCartOpen(true)}
               className={cn("jm-nav__icon jm-nav__cart", mutedClass)}
               aria-label={`Cart, ${cartCount} items`}
+              animate={
+                cartBurst || cartPulse
+                  ? { scale: [1, 1.28, 1] }
+                  : { scale: 1 }
+              }
+              transition={{ type: "spring", stiffness: 520, damping: 18 }}
+              onAnimationComplete={() => {
+                if (cartBurst) setCartBurst(false);
+              }}
             >
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <path
@@ -174,7 +192,7 @@ export function Navigation() {
                 <circle cx="16.55" cy="19.35" r="1.05" fill="currentColor" />
               </svg>
               {displayCount > 0 && <span className="jm-nav__cart-dot" aria-hidden="true" />}
-            </button>
+            </motion.button>
             <JacquemusMobileNav
               heroOverlay={heroOverlay}
               onOpenCart={() => setCartOpen(true)}

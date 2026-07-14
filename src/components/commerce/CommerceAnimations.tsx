@@ -9,6 +9,11 @@ import { useCommerce } from "@/context/CommerceContext";
 
 const CONFETTI_COLORS = ["#c4a574", "#f5f0e8", "#8b1a2b", "#e8dcc8", "#ffffff"];
 const WISHLIST_CONFETTI = ["#e85d8a", "#f4a4b8", "#ff6b9d", "#ffc2d4", "#ffffff", "#c4a574"];
+const CART_CONFETTI = ["#0c0a09", "#c4a574", "#f5f0e8", "#8b1a2b", "#e8dcc8", "#ffffff"];
+
+/** Clean symmetrical heart — no lobe bump */
+const HEART_PATH =
+  "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z";
 
 function ConfettiBurst({
   active,
@@ -67,19 +72,44 @@ function ConfettiBurst({
 const WISHLIST_FLY_DURATION = 2.15;
 const CART_FLY_DURATION = 2.15;
 
+function FlyingBag({ size = 22 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+      <path
+        d="M7.2 7.25h12.1l-1.15 9.1a1.6 1.6 0 0 1-1.58 1.4H9.55a1.6 1.6 0 0 1-1.58-1.35L6.35 4.75H3.75"
+        fill="none"
+        stroke="#0c0a09"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="10.2" cy="19.35" r="1.1" fill="#0c0a09" />
+      <circle cx="16.55" cy="19.35" r="1.1" fill="#0c0a09" />
+    </svg>
+  );
+}
+
 export function FlyToCartLayer() {
   const { flyPayload, clearFlyPayload, setCartPulse } = useCommerce();
   const [mounted, setMounted] = useState(false);
+  const [navBurst, setNavBurst] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!flyPayload) return;
     const timer = setTimeout(() => {
+      setNavBurst(true);
+    }, CART_FLY_DURATION * 1000 - 120);
+    const clearTimer = setTimeout(() => {
       clearFlyPayload();
       setCartPulse(false);
+      setNavBurst(false);
     }, CART_FLY_DURATION * 1000 + 700);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(clearTimer);
+    };
   }, [flyPayload, clearFlyPayload, setCartPulse]);
 
   if (!mounted || !flyPayload) return null;
@@ -93,39 +123,57 @@ export function FlyToCartLayer() {
   const path = buildWaveFlowPath(startX, startY, endX, endY);
 
   return createPortal(
-    <motion.div
-      className="pointer-events-none fixed z-[200] h-14 w-11 overflow-hidden rounded-md border border-cream/20 shadow-2xl will-change-transform"
-      initial={{
-        left: path[0].x,
-        top: path[0].y,
-        x: "-50%",
-        y: "-50%",
-        scale: path[0].scale,
-        opacity: 1,
-        rotate: path[0].rotate,
-      }}
-      animate={{
-        left: path.map((point) => point.x),
-        top: path.map((point) => point.y),
-        x: "-50%",
-        y: "-50%",
-        scale: path.map((point) => point.scale * 0.28),
-        opacity: path.map((_, index) => {
-          const t = index / (path.length - 1);
-          if (t < 0.88) return 1;
-          return 1 - ((t - 0.88) / 0.12) * 0.85;
-        }),
-        rotate: path.map((point) => point.rotate),
-      }}
-      transition={{
-        duration: CART_FLY_DURATION,
-        ease: "linear",
-        times: path.map((_, index) => index / (path.length - 1)),
-      }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={flyPayload.image} alt="" className="h-full w-full object-cover object-top" />
-    </motion.div>,
+    <>
+      <motion.div
+        className="pointer-events-none fixed z-[200] flex items-center justify-center will-change-transform"
+        initial={{
+          left: path[0].x,
+          top: path[0].y,
+          x: "-50%",
+          y: "-50%",
+          scale: path[0].scale,
+          opacity: 0.95,
+          rotate: path[0].rotate,
+          filter: "drop-shadow(0 6px 16px rgba(12, 10, 9, 0.18))",
+        }}
+        animate={{
+          left: path.map((point) => point.x),
+          top: path.map((point) => point.y),
+          x: "-50%",
+          y: "-50%",
+          scale: path.map((point) => point.scale),
+          opacity: path.map((_, index) => {
+            const t = index / (path.length - 1);
+            if (t < 0.88) return 1;
+            return 1 - ((t - 0.88) / 0.12) * 0.72;
+          }),
+          rotate: path.map((point) => point.rotate),
+          filter: [
+            "drop-shadow(0 6px 16px rgba(12, 10, 9, 0.18))",
+            "drop-shadow(0 10px 22px rgba(12, 10, 9, 0.12))",
+            "drop-shadow(0 2px 8px rgba(12, 10, 9, 0.05))",
+          ],
+        }}
+        transition={{
+          duration: CART_FLY_DURATION,
+          ease: "linear",
+          times: path.map((_, index) => index / (path.length - 1)),
+        }}
+      >
+        <FlyingBag size={26} />
+      </motion.div>
+      {navBurst && cartRect && (
+        <div
+          className="pointer-events-none fixed z-[201] -translate-x-1/2 -translate-y-1/2"
+          style={{
+            left: cartRect.left + cartRect.width / 2,
+            top: cartRect.top + cartRect.height / 2,
+          }}
+        >
+          <ConfettiBurst active colors={CART_CONFETTI} onComplete={() => setNavBurst(false)} />
+        </div>
+      )}
+    </>,
     document.body,
   );
 }
@@ -134,7 +182,7 @@ function FlyingHeart({ size = 22 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
       <path
-        d="M12 20.5s-7.2-4.74-9.6-8.64C.62 8.74 2.24 5.5 5.7 5.5c1.92 0 3.18 1.02 4.3 2.34C11.12 6.52 12.38 5.5 14.3 5.5c3.46 0 5.08 3.24 3.3 6.36C19.2 15.76 12 20.5 12 20.5z"
+        d={HEART_PATH}
         fill="#e85d8a"
         stroke="#f4a4b8"
         strokeWidth="1"
@@ -293,10 +341,11 @@ function HeartIcon({ filled }: { filled: boolean }) {
   return (
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
       <path
-        d="M12 20.5s-7.2-4.74-9.6-8.64C.62 8.74 2.24 5.5 5.7 5.5c1.92 0 3.18 1.02 4.3 2.34C11.12 6.52 12.38 5.5 14.3 5.5c3.46 0 5.08 3.24 3.3 6.36C19.2 15.76 12 20.5 12 20.5z"
+        d={HEART_PATH}
         fill={filled ? "currentColor" : "none"}
         stroke="currentColor"
-        strokeWidth="1.35"
+        strokeWidth="1.5"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
