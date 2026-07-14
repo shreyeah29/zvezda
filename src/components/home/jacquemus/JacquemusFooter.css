@@ -14,14 +14,27 @@
 }
 
 .jm-footer__logo {
-  font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #000000;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
   text-decoration: none;
   flex-shrink: 0;
+  transition: opacity 0.3s ease;
+}
+
+.jm-footer__logo:hover {
+  opacity: 0.7;
+}
+
+.jm-footer__logo-img {
+  display: block;
+  height: 1.35rem;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  object-position: left center;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .jm-footer__nav {
@@ -59,8 +72,12 @@
   }
 
   .jm-footer__logo {
-    font-size: 13px;
-    text-align: center;
+    justify-content: center;
+  }
+
+  .jm-footer__logo-img {
+    height: 1.2rem;
+    max-width: 140px;
   }
 
   .jm-footer__nav {

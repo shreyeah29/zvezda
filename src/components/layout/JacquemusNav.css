@@ -32,18 +32,22 @@
 }
 
 .jm-nav__logo {
-  font-family: var(--font-modern-romance), "Times New Roman", Georgia, serif;
-  font-size: clamp(2rem, 4.2vw, 2.85rem);
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
   text-decoration: none;
   transition: opacity 0.3s ease;
 }
 
-.jm-nav__logo.text-black {
-  color: #2e2e2e;
+.jm-nav__logo-img {
+  display: block;
+  height: clamp(1.65rem, 3.6vw, 2.35rem);
+  width: auto;
+  max-width: min(42vw, 220px);
+  object-fit: contain;
+  object-position: left center;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .jm-nav__logo:hover {

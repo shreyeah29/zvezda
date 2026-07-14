@@ -9,6 +9,7 @@ import { MiniCart } from "@/components/commerce/MiniCart";
 import { FlyToCartLayer, FlyToWishlistLayer } from "@/components/commerce/CommerceAnimations";
 import { useCommerce } from "@/context/CommerceContext";
 import { getLenisInstance } from "@/lib/lenisInstance";
+import { brand } from "@/data/brand";
 import { cn } from "@/lib/utils";
 import "./JacquemusNav.css";
 
@@ -111,8 +112,14 @@ export function Navigation() {
         )}
       >
         <div className="pointer-events-auto mx-auto flex w-full max-w-[100%] items-center justify-between py-2.5">
-          <Link href="/" className={cn("jm-nav__logo", textClass)}>
-            ZVEZDA
+          <Link href="/" className="jm-nav__logo" aria-label="ZVEZDA Atelier home">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={heroOverlay ? brand.logo.white : brand.logo.dark}
+              alt="ZVEZDA Atelier"
+              className="jm-nav__logo-img"
+              draggable={false}
+            />
           </Link>
 
           <nav className="jm-nav__links hidden lg:flex" aria-label="Primary">

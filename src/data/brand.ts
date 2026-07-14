@@ -7,6 +7,7 @@ export const brand = {
   logo: {
     champagne: "/assets/brand/zvezda-logo-champagne.png",
     white: "/assets/brand/zvezda-logo-white.png",
+    dark: "/assets/brand/zvezda-logo-dark.png",
   },
   colors: {
     black: "#0a0a0a",
