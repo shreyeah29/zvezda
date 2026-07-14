@@ -7,7 +7,7 @@
   .hm-instagram {
     display: block;
     margin-top: 0;
-    padding: 1.5rem 0.75rem 0;
+    padding: 1.5rem 0.75rem 2.75rem;
     border-top: none;
     background: #ffffff;
   }
@@ -68,6 +68,7 @@
     gap: 0.45rem;
     width: 100%;
     margin-top: 1.15rem;
+    margin-bottom: 0;
     padding: 0.75rem 0.85rem;
     border: 1px solid rgba(0, 0, 0, 0.28);
     font-family: var(--jm-font, "Helvetica Neue", Helvetica, Arial, sans-serif);
@@ -79,15 +80,5 @@
     text-decoration: none;
     color: #0c0a09;
     background: transparent;
-  }
-
-  .hm-instagram__ticker-wrap {
-    margin: 1.5rem -0.75rem 0;
-    padding: 0.25rem 0 0.5rem;
-    overflow: hidden;
-  }
-
-  .hm-instagram__ticker-pro {
-    padding-block: 0.85rem 1.1rem;
   }
 }

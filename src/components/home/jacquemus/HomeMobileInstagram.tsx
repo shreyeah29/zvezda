@@ -2,7 +2,6 @@
 
 import { useMaxWidth } from "@/hooks/useMaxWidth";
 import { products } from "@/data/products";
-import { ScrollTickerPro } from "@/components/ui/ScrollTickerPro";
 import "./HomeMobileInstagram.css";
 
 const INSTAGRAM_URL = "https://www.instagram.com/zvezda_atelier/";
@@ -75,10 +74,6 @@ export function HomeMobileInstagram() {
       <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="hm-instagram__cta">
         View more on Instagram
       </a>
-
-      <div className="hm-instagram__ticker-wrap">
-        <ScrollTickerPro className="hm-instagram__ticker-pro" />
-      </div>
     </section>
   );
 }
