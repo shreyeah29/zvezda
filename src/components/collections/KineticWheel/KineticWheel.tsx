@@ -71,7 +71,8 @@ function WheelItem({ piece, distance, onSelect }: WheelItemProps) {
       id={`kw-item-${piece.product.slug}`}
       className={`kw__item${style.active ? " is-active" : ""}`}
       role="option"
-      aria-selected={style.active}      style={{
+      aria-selected={style.active}
+      style={{
         transform: `translate3d(${style.x}px, calc(-50% + ${style.y}px), 0) rotate(${style.rotate}deg) scale(${
           style.scale * (hovered && !style.active ? 1.035 : 1)
         })`,
@@ -94,6 +95,51 @@ function WheelItem({ piece, distance, onSelect }: WheelItemProps) {
         {piece.product.name}
       </span>
     </button>
+  );
+}
+
+function AmbientVideo({
+  src,
+  objectPosition,
+}: {
+  src: string;
+  objectPosition?: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    const play = video.play();
+    if (play && typeof play.catch === "function") {
+      play.catch(() => {
+        /* autoplay may be blocked until interaction */
+      });
+    }
+    return () => {
+      video.pause();
+    };
+  }, [src]);
+
+  return (
+    <motion.video
+      key={src}
+      ref={videoRef}
+      className="kw__video"
+      src={src}
+      muted
+      playsInline
+      loop
+      autoPlay
+      preload="metadata"
+      aria-hidden
+      style={objectPosition ? { objectPosition } : undefined}
+      initial={{ opacity: 0, scale: 1.03 }}
+      animate={{ opacity: 0.18, scale: 1 }}
+      exit={{ opacity: 0, scale: 1.02 }}
+      transition={{ duration: 0.95, ease: [0.45, 0, 0.55, 1] }}
+    />
   );
 }
 
@@ -397,6 +443,19 @@ export function KineticWheel() {
       aria-label="Kinetic product wheel"
       data-lenis-prevent
     >
+      <div className="kw__video-layer" aria-hidden="true">
+        <AnimatePresence mode="sync">
+          {activePiece.video ? (
+            <AmbientVideo
+              key={activePiece.video}
+              src={activePiece.video}
+              objectPosition={activePiece.product.videoObjectPosition}
+            />
+          ) : null}
+        </AnimatePresence>
+      </div>
+      <div className="kw__video-veil" aria-hidden="true" />
+
       <div
         className="kw__mood"
         style={

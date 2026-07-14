@@ -42,6 +42,7 @@ export type KineticPiece = {
   product: Product;
   tagline: string;
   images: string[];
+  video?: string;
   mood: KineticMood;
 };
 
@@ -56,6 +57,7 @@ export function getKineticPieces(): KineticPiece[] {
         kineticTaglines[product.setId] ??
         "Couture silhouette from the Zvezda atelier.",
       images,
+      video: product.video,
       mood: kineticMoodByCollection[product.collection] ?? kineticMoodByCollection.noir,
     };
   });

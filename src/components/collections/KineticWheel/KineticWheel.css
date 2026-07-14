@@ -16,7 +16,7 @@
   pointer-events: none;
   position: absolute;
   inset: -20% -10%;
-  z-index: 0;
+  z-index: 2;
   background: radial-gradient(
     ellipse 55% 70% at 72% 48%,
     var(--kw-glow, transparent) 0%,
@@ -26,9 +26,38 @@
   will-change: opacity, background;
 }
 
+.kw__video-layer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.kw__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  filter: saturate(0.92) contrast(1.02);
+  will-change: opacity, transform;
+}
+
+.kw__video-veil {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.55) 42%, rgba(255, 255, 255, 0.72) 100%),
+    rgba(255, 255, 255, 0.42);
+}
+
 .kw__shell {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: grid;
   grid-template-columns: minmax(0, 0.36fr) minmax(0, 0.64fr);
   align-items: center;
