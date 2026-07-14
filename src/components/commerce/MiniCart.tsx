@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useCommerce } from "@/context/CommerceContext";
 import { getProduct, formatPrice } from "@/data/products";
+import { getLenisInstance } from "@/lib/lenisInstance";
 import "./MiniCart.css";
 
 type MiniCartProps = {
@@ -25,6 +26,36 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
+  // Lock page / Lenis while the drawer is open so cart scroll doesn't chain.
+  useEffect(() => {
+    if (!open) return;
+
+    const lenis = getLenisInstance();
+    lenis?.stop();
+
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    const prevPaddingRight = body.style.paddingRight;
+    const scrollbarGap = Math.max(0, window.innerWidth - html.clientWidth);
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    if (scrollbarGap > 0) {
+      body.style.paddingRight = `${scrollbarGap}px`;
+    }
+    body.classList.add("dg-scroll-lock");
+
+    return () => {
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+      body.style.paddingRight = prevPaddingRight;
+      body.classList.remove("dg-scroll-lock");
+      getLenisInstance()?.start();
+    };
+  }, [open]);
+
   return (
     <AnimatePresence>
       {open && (
@@ -38,6 +69,7 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
             onClick={onClose}
+            data-lenis-prevent
           />
           <motion.aside
             ref={panelRef}
@@ -49,6 +81,7 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: "100%", opacity: 0.8 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
+            data-lenis-prevent
           >
             <div className="mini-cart__header">
               <p className="mini-cart__title">Cart</p>
@@ -57,7 +90,7 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
               </button>
             </div>
 
-            <div className="mini-cart__body">
+            <div className="mini-cart__body" data-lenis-prevent>
               {cart.length === 0 ? (
                 <p className="mini-cart__empty">Your cart is empty.</p>
               ) : (
