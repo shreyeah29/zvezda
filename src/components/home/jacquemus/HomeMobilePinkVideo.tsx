@@ -3,7 +3,7 @@
 import { useMaxWidth } from "@/hooks/useMaxWidth";
 import "./HomeMobilePinkVideo.css";
 
-const PINK_VIDEO_SRC = "/assets/videos/products/set-15/PinkSolo1.mp4";
+const PINK_VIDEO_SRC = "/assets/videos/products/ambient/set-15/PinkSolo1.mp4";
 
 export function HomeMobilePinkVideo() {
   const isMobile = useMaxWidth(768);

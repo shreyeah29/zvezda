@@ -4,6 +4,7 @@ import {
   setHeroPhoto,
   setGalleryPhotos,
   setVideoPath,
+  setAmbientVideoPath,
   type SetManifest,
   type SetGroup,
 } from "./sets";
@@ -114,8 +115,11 @@ function setToProduct(set: SetManifest): Product {
     hero: setHeroPhoto(set),
     detail,
     gallery: gallery.length > 1 ? gallery.slice(1) : gallery,
-    video: setVideoPath(set),
-    videoAlt: set.videoAlt ? setVideoPath(set, set.videoAlt) : undefined,
+    // Prefer lightweight web encodes for PDP playback; masters stay on disk for future use.
+    video: setAmbientVideoPath(set) ?? setVideoPath(set),
+    videoAlt: set.videoAlt
+      ? setAmbientVideoPath(set, set.videoAlt) ?? setVideoPath(set, set.videoAlt)
+      : undefined,
     videoObjectPosition: set.videoObjectPosition,
   };
 }

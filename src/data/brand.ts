@@ -19,9 +19,9 @@ export const brand = {
 } as const;
 
 export const videos = {
-  /** Desktop homepage hero */
-  hero: "/assets/videos/RedDressSolo.mp4",
-  /** Phone homepage hero — previous set-12 film */
-  heroMobile: "/assets/videos/products/set-12/RedDressSolo.mp4",
+  /** Desktop homepage hero — web-optimized H.264 */
+  hero: "/assets/videos/web/RedDressSolo.mp4",
+  /** Phone homepage hero — ambient set-12 encode */
+  heroMobile: "/assets/videos/products/ambient/set-12/RedDressSolo.mp4",
   garden: "/assets/videos/GardenSolo3.mp4",
 } as const;
