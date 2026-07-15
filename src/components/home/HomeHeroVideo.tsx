@@ -115,15 +115,7 @@ export function HomeHeroVideo() {
         transition={{ delay: 0.8, duration: 1 }}
         aria-label="Scroll to explore"
       >
-        <span
-          className="text-[11px] text-white/90 transition-colors group-hover:text-white"
-          style={{
-            fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-            letterSpacing: "0.08em",
-          }}
-        >
-          Scroll to explore
-        </span>
+        <span className="hero-screen__scroll-label">Scroll to explore</span>
         <motion.span
           className="flex h-11 w-6 items-start justify-center rounded-full border border-white/45 p-1.5"
           aria-hidden="true"
