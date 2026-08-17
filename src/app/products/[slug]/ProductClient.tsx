@@ -3,7 +3,9 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProduct, getProductsByCollection, type Product } from "@/data/products";
+import { getProductsByCollection, type Product } from "@/data/products";
+import { findProduct } from "@/data/findProduct";
+import { getShopRelated, getShopProduct } from "@/data/shopCatalog";
 import { getCollection } from "@/data/collections";
 import { ProductGalleryLayout } from "@/components/product/ProductGalleryLayout";
 import "@/components/product/ProductRelated.css";
@@ -26,20 +28,23 @@ function uniqueImages(images: string[]) {
 }
 
 export function ProductClient({ slug }: { slug: string }) {
-  const product = getProduct(slug);
+  const product = findProduct(slug);
   if (!product) notFound();
 
   const collection = getCollection(product.collection);
   const hasVideo = Boolean(product.video);
+  const isShop = Boolean(getShopProduct(slug));
 
   const allImages = useMemo(
     () => uniqueImages([product.hero, product.detail, ...product.gallery]),
     [product],
   );
 
-  const related = getProductsByCollection(product.collection)
-    .filter((p) => p.slug !== slug)
-    .slice(0, 4);
+  const related = isShop
+    ? getShopRelated(slug, 4)
+    : getProductsByCollection(product.collection)
+        .filter((p) => p.slug !== slug)
+        .slice(0, 4);
 
   return (
     <main id="main-content" className="min-h-screen bg-[#fafaf9]">
@@ -66,14 +71,16 @@ export function ProductClient({ slug }: { slug: string }) {
         <ProductGalleryLayout
           product={product}
           images={allImages}
-          collectionTitle={collection?.title}
+          collectionTitle={isShop ? product.collectionLabel : collection?.title}
         />
       </section>
 
       {related.length > 0 && (
         <section className="product-related">
           <div className="product-related__inner">
-            <p className="product-related__heading">From the Collection</p>
+            <p className="product-related__heading">
+              {isShop ? "More from the Atelier" : "From the Collection"}
+            </p>
             <div className="product-related__grid">
               {related.map((p) => (
                 <RelatedCard key={p.slug} product={p} />
@@ -85,7 +92,7 @@ export function ProductClient({ slug }: { slug: string }) {
 
       <footer className="border-t border-black/10 px-6 py-12 text-center md:px-10">
         <Link href="/shop" className="text-[11px] text-black/55 transition-colors hover:text-black">
-          Back to Collection
+          {isShop ? "Back to Shop" : "Back to Collection"}
         </Link>
       </footer>
     </main>

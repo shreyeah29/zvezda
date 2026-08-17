@@ -9,6 +9,11 @@ import {
   type SetGroup,
 } from "./sets";
 
+export type PriceOption = {
+  label: string;
+  amount: number;
+};
+
 export type Product = {
   slug: string;
   setId: number;
@@ -26,6 +31,10 @@ export type Product = {
   video?: string;
   videoAlt?: string;
   videoObjectPosition?: string;
+  priceOnRequest?: boolean;
+  priceOptions?: PriceOption[];
+  sizeOptions?: string[];
+  sizeNote?: string;
 };
 
 const editorialNames: Record<number, string> = {
@@ -135,9 +144,16 @@ export function getProductsByCollection(collectionSlug: string) {
 }
 
 export function formatPrice(price: number, currency = "USD") {
-  return new Intl.NumberFormat("en-US", {
+  const locale = currency === "INR" ? "en-IN" : "en-US";
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
     minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(price);
+}
+
+export function formatProductPrice(product: Pick<Product, "price" | "currency" | "priceOnRequest">) {
+  if (product.priceOnRequest) return "Price on request";
+  return formatPrice(product.price, product.currency);
 }

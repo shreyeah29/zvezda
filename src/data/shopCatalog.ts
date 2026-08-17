@@ -1,0 +1,417 @@
+import type { Product } from "./products";
+
+type ShopDraft = {
+  id: number;
+  slug: string;
+  name: string;
+  photos: string[];
+  price?: number;
+  priceOptions?: Product["priceOptions"];
+  sizeOptions?: string[];
+  sizeNote?: string;
+  description: string;
+  fabric: string;
+  video?: string;
+};
+
+function shopImage(slug: string, filename: string) {
+  return `/assets/images/shop/${slug}/${filename}`;
+}
+
+function fromDraft(draft: ShopDraft): Product {
+  const photos = draft.photos.map((file) => shopImage(draft.slug, file));
+  const hero = photos[0] ?? "";
+  const detail = photos[1] ?? hero;
+
+  return {
+    slug: draft.slug,
+    setId: draft.id,
+    name: draft.name,
+    collection: "atelier",
+    collectionLabel: "Zvezda Atelier",
+    price: draft.price ?? 0,
+    currency: "INR",
+    priceOnRequest: draft.price == null,
+    priceOptions: draft.priceOptions,
+    sizeOptions: draft.sizeOptions,
+    sizeNote: draft.sizeNote,
+    description: draft.description,
+    story: draft.description,
+    fabric: draft.fabric,
+    hero,
+    detail,
+    gallery: photos.slice(1),
+    video: draft.video,
+  };
+}
+
+const drafts: ShopDraft[] = [
+  {
+    id: 101,
+    slug: "rosa-imperiale",
+    name: "Rosa impériale",
+    photos: ["HSP_2850.jpg", "HSP_2866.jpg", "HSP_2887.jpg"],
+    price: 35000,
+    priceOptions: [
+      { label: "Gown", amount: 35000 },
+      { label: "Cape", amount: 150000 },
+    ],
+    sizeOptions: ["8", "10", "12"],
+    description:
+      "A masterpiece of contrast and texture, this black and crimson couture gown features intricate hand sculpted floral appliqués, shoulder sleeves, and a dramatic flowing train. The bold silhouette and rich satin finish create an unforgettable look that embodies romance, artistry, and timeless elegance.",
+    fabric: "Italian crape and dutch satin",
+    video: "/assets/videos/products/ambient/set-6/OrangeSolo2.mp4",
+  },
+  {
+    id: 102,
+    slug: "starlit-halter-gown",
+    name: "Starlit halter gown",
+    photos: ["BHA_1933.jpg", "HSP_2470.jpg", "HSP_2528.jpg"],
+    price: 51999,
+    sizeOptions: ["8", "10"],
+    description:
+      "A striking black gown featuring a sleek column silhouette and a dramatic jeweled halter neckline. The cascading crystal embellishments add a touch of glamour, while the clean, sculpted design keeps the look effortlessly sophisticated.",
+    fabric: "Italian crape",
+  },
+  {
+    id: 103,
+    slug: "the-scarlett-heiress-dress",
+    name: "The scarlett heiress dress",
+    photos: ["BHA_2027.jpg", "BHA_2049.jpg", "HSP_2610.jpg"],
+    price: 65000,
+    sizeOptions: ["8", "10"],
+    description:
+      "Settles into quiet strength in a ruched satin bodice that contours with ease, defined by a softly accentuated waist. The gown unfolds into a voluminous, structured form — holding shape, depth, and a sense of grounded elegance.",
+    fabric: "Dutch-satin",
+    video: "/assets/videos/products/ambient/set-13/OrangeSolo1.mp4",
+  },
+  {
+    id: 104,
+    slug: "blooming-rosalia-3d-gown",
+    name: "Blooming Rosalia 3D gown",
+    photos: ["BHA_4523.jpg", "BHA_4531.jpg", "BHA_4839.jpg", "BHA_4851.jpg"],
+    price: 290000,
+    sizeOptions: ["8", "10"],
+    description:
+      "A garden in crimson motion. Hand-sculpted florals bloom across layers of passion, held together by delicate structure and sparkle. A dress that feels alive — bold, romantic, unforgettable.",
+    fabric: "Dutch-satin",
+  },
+  {
+    id: 105,
+    slug: "velvet-blooms-dress",
+    name: "Velvet blooms dress",
+    photos: ["BHA_5556.jpg", "HSP_2205.jpg", "HSP_2208.jpg"],
+    price: 82999,
+    sizeOptions: ["8", "10", "12"],
+    description:
+      "A striking black gown brought to life with sculptural pink floral appliqués along the shoulders, a daring thigh-high slit, and an unexpected open back. A balance of dark elegance and delicate romance, designed to make an entrance.",
+    fabric: "Italian crape and velvet",
+  },
+  {
+    id: 106,
+    slug: "ivory-eclipse",
+    name: "Ivory eclipse",
+    photos: ["HSP_3158.jpg", "HSP_3176.jpg", "HSP_3218.jpg", "HSP_3227.jpg"],
+    price: 89000,
+    sizeOptions: ["8", "10"],
+    description:
+      "Midnight and moonlight in quiet contrast. A sculpted strapless bodice in deep black brings structure and poise, flowing seamlessly into layered white drapes beneath. Soft cascading folds introduce movement and lightness, creating a striking balance between depth and delicacy.",
+    fabric: "Italian crape color block",
+    video: "/assets/videos/products/ambient/set-9/White&Black2.mp4",
+  },
+  {
+    id: 107,
+    slug: "eclipse-royale",
+    name: "Eclipse Royale",
+    photos: ["HSP_2982.jpg", "HSP_3056.jpg", "HSP_3076.jpg"],
+    price: 78900,
+    sizeOptions: ["8", "10"],
+    description:
+      "A striking play of midnight and ivory — featuring a sculpted strapless bodice, delicate floral waist embellishments, and a dramatic flowing cape that moves with effortless elegance.",
+    fabric: "Italian crape color block",
+    video: "/assets/videos/products/ambient/set-8/White&Black1.mp4",
+  },
+  {
+    id: 108,
+    slug: "allure-slit",
+    name: "Allure slit",
+    photos: ["HSP_3554.jpg", "HSP_3587.jpg"],
+    price: 42000,
+    sizeOptions: ["8", "10", "12"],
+    description:
+      "Black as eternity, bold as fire, this gown drapes in its spell. The pearl-trimmed edges shimmer like moonlit waves, the cutouts sculpt a dream of shadows, and the slit is the flame that keeps the night alive.",
+    fabric: "Italian crape",
+  },
+  {
+    id: 109,
+    slug: "blush-noir-2-piece-set",
+    name: "Blush noir — 2 piece set",
+    photos: ["HSP_2254.jpg", "HSP_2294.jpg", "HSP_2390.jpg"],
+    price: 28850,
+    sizeOptions: ["8"],
+    description:
+      "Off-shoulder midnight blush, wrapped in time, a touch of dusk, a hint of rhyme. Not just a dress, but a feeling worn. Like twilight paused before the dawn.",
+    fabric: "Pure organza and Italian crape",
+  },
+  {
+    id: 110,
+    slug: "blush-elan",
+    name: "Blush elan",
+    photos: ["HSP_1743.jpg", "HSP_1798.jpg", "HSP_1804.jpg"],
+    price: 66750,
+    sizeOptions: ["8", "10", "12"],
+    description:
+      "A gown kissed by the blush of roses, falling into rivers of fabric. It holds her, frees her, crowns her — a masterpiece in motion.",
+    fabric: "",
+  },
+  {
+    id: 111,
+    slug: "pearl-tailored-set",
+    name: "Pearl tailored set",
+    photos: ["IMG_7860.jpg", "IMG_7861.jpg", "IMG_7864.jpg", "IMG_7865.jpg"],
+    price: 42199,
+    priceOptions: [
+      { label: "Jacket & top", amount: 42199 },
+      { label: "Pants", amount: 13000 },
+    ],
+    sizeOptions: ["6", "8", "10", "12"],
+    sizeNote: "Jackets (white) 6, 8, 10, 12 · Jackets (grey) 6, 8, 12 · Pants (white) 6, 8, 10, 12 · Pants (grey) 6, 10, 12",
+    description:
+      "Ivory drapes that speak in whispers of grace, an embroidered jacket tracing light like a dream, tailored lines meet tender folds, where strength and softness find their rhythm.",
+    fabric: "Italian crape",
+  },
+  {
+    id: 112,
+    slug: "jardin-elegance-dress",
+    name: "Jardin elegance dress",
+    photos: ["HSP_4309.jpg", "HSP_4327.jpg", "HSP_4590.jpg"],
+    price: 68000,
+    sizeOptions: ["8", "10"],
+    description:
+      "An elegant moss-olive gown designed with a flowing, floor-length fall that moves effortlessly. The bodice is delicately hand-embellished with intricate florals and subtle shimmer, adding texture and quiet opulence. Fine straps and a softly defined waist enhance the form, while the graceful drape of the skirt creates a timeless, ethereal presence — refined, feminine, and luxuriously understated.",
+    fabric: "Bemberg silk",
+    video: "/assets/videos/products/ambient/set-1/GardenSolo3.mp4",
+  },
+  {
+    id: 113,
+    slug: "verdant-whisper-gown",
+    name: "Verdant whisper gown",
+    photos: ["HSP_4810.jpg", "HSP_4819.jpg", "HSP_4828.jpg"],
+    price: 98500,
+    sizeOptions: ["8", "10"],
+    description:
+      "A bloom of blush and intricate florals. Hand-embellished details shimmer across the bodice, flowing into layers of garden-inspired fabric that move with effortless grace.",
+    fabric: "Satin and brocade",
+    video: "/assets/videos/products/ambient/set-2/GardenSolo2.mp4",
+  },
+  {
+    id: 114,
+    slug: "olive-tiered-zephyr-mini-dress",
+    name: "Olive tiered zephyr mini dress",
+    photos: ["HSP_3876.jpg", "HSP_3929.jpg", "HSP_3971.jpg"],
+    price: 36950,
+    sizeOptions: ["8"],
+    description:
+      "An olive satin mini dress designed to captivate, featuring a sculpted bodice that contours the silhouette with effortless elegance. Delicate embellished straps add a touch of refinement, while the voluminous tiered skirt brings playful movement and dramatic flair to this striking silhouette.",
+    fabric: "Mikado",
+    video: "/assets/videos/products/ambient/set-3/GardenSolo1.mp4",
+  },
+  {
+    id: 115,
+    slug: "blush-mirage",
+    name: "Blush mirage",
+    photos: ["HSP_4492.jpg", "HSP_4495.jpg", "VAM_6670.jpg"],
+    price: 45000,
+    sizeOptions: ["8", "10"],
+    description:
+      "A delicate blush creation featuring a sculpted neckline, a softly contoured bodice, and a subtle crystal accent that defines the waist, flowing into graceful layered movement.",
+    fabric: "Satin and shimmer georgette",
+    video: "/assets/videos/products/ambient/set-5/PeachSolo1.mp4",
+  },
+  {
+    id: 116,
+    slug: "rosewood-heirloom",
+    name: "Rosewood heirloom",
+    photos: ["HSP_5080.jpg", "HSP_5151.jpg", "HSP_5165.jpg", "HSP_5186.jpg"],
+    price: 119000,
+    sizeOptions: ["8"],
+    description:
+      "A soft blush-pink gown adorned with intricate silver floral embroidery and delicate embellishments. The structured bodice flows into a graceful, feminine silhouette, creating an elegant look inspired by the beauty of a blooming garden.",
+    fabric: "Dutch satin",
+    video: "/assets/videos/products/ambient/set-18/PinkSolo2.mp4",
+  },
+  {
+    id: 117,
+    slug: "crimson-petal-serenade",
+    name: "Crimson petal serenade",
+    photos: ["HSP_5008.jpg", "HSP_5015.jpg", "HSP_5054.jpg", "VAM_6961.jpg"],
+    price: 65550,
+    sizeOptions: ["8", "10"],
+    description:
+      "A lustrous pink satin gown with delicate crystal detailing along the neckline and a beautifully draped asymmetric skirt. The soft ruching and flowing ruffles add movement, creating a look that feels feminine, refined, and effortlessly glamorous.",
+    fabric: "Dutch satin",
+    video: "/assets/videos/products/ambient/set-15/PinkSolo1.mp4",
+  },
+  {
+    id: 118,
+    slug: "rosalind-jacket-blush-column-jumpsuit",
+    name: "Rosalind jacket and blush column jumpsuit",
+    photos: ["HSP_5292.jpg", "HSP_5309.jpg", "HSP_5368.jpg", "HSP_5404.jpg"],
+    price: 38999,
+    priceOptions: [
+      { label: "Jumpsuit", amount: 38999 },
+      { label: "Jacket", amount: 92999 },
+    ],
+    sizeOptions: ["6", "8", "10", "12"],
+    sizeNote: "Jacket 6–8 · Jumpsuit 8–12",
+    description:
+      "A soft rose jumpsuit that celebrates ease and elegance in one breath, sculpted to flatter yet designed to move with grace. Paired with a hand-embroidered sequin cape that gleams like scattered starlight, the look transforms simplicity into statement. It's where texture meets tone, and shimmer meets subtlety — a love letter to modern couture in pastel form.",
+    fabric: "Suede",
+    video: "/assets/videos/products/ambient/set-17/PinkSOlo3.mp4",
+  },
+  {
+    id: 119,
+    slug: "daughters-of-spring-pink",
+    name: "Daughters of spring (pink)",
+    photos: ["HSP_5988.jpg", "HSP_6019.jpg"],
+    price: 67999,
+    sizeOptions: ["8"],
+    sizeNote: "Pink crop top & skirt 8 · Pink dress 8",
+    description:
+      "Two hues, one fairytale. Blush rose and mint unfolding in delicate floral detailing, each petal resting like a quiet secret on satin. A look that moves with effortless grace, blossoming softly in pastel light.",
+    fabric: "Milano satin",
+    video: "/assets/videos/products/ambient/set-16/PinkCoord1.mp4",
+  },
+  {
+    id: 120,
+    slug: "daughters-of-spring-green",
+    name: "Daughters of spring (green)",
+    photos: ["HSP_5940.jpg", "HSP_5954.jpg"],
+    price: 67999,
+    sizeOptions: ["6", "8", "10"],
+    sizeNote: "Green dress 6, 8, 10",
+    description:
+      "Two hues, one fairytale. Blush rose and mint unfolding in delicate floral detailing, each petal resting like a quiet secret on satin. A look that moves with effortless grace, blossoming softly in pastel light.",
+    fabric: "Milano satin",
+  },
+  {
+    id: 121,
+    slug: "molten-muse",
+    name: "Molten muse",
+    photos: ["HSP_5858.jpg", "HSP_5874.jpg", "HSP_5916.jpg"],
+    price: 36000,
+    sizeOptions: ["6", "8"],
+    description:
+      "Wrapped in golden satin that flows with ease, the dress moves softly with every step. A halter neckline catching the light just right, inviting you into a moment that feels calm and radiant.",
+    fabric: "Milano satin",
+    video: "/assets/videos/products/ambient/set-11/YellowSolo1.mp4",
+  },
+  {
+    id: 122,
+    slug: "carmine-ascend",
+    name: "Carmine ascend",
+    photos: ["IMG_6791.jpg", "IMG_6792.jpg", "IMG_9950.jpg"],
+    price: 49000,
+    sizeOptions: ["8", "10"],
+    description: "",
+    fabric: "Milano satin",
+  },
+  {
+    id: 123,
+    slug: "green-pearl-dress",
+    name: "Green pearl dress",
+    photos: ["IMG_2132.jpg", "IMG_2133.jpg", "IMG_2134.jpg", "IMG_6804.jpg"],
+    price: 28000,
+    sizeOptions: ["8", "10"],
+    description:
+      "A dreamy pistachio gown with a graceful drape and pearls resting gently along the neckline — proof that the finest kind of luxury never has to be loud.",
+    fabric: "Raw silk",
+  },
+  {
+    id: 124,
+    slug: "fire-and-ice",
+    name: "Fire and ice",
+    photos: ["IMG_7658.jpg", "IMG_7659.jpg", "IMG_7660.jpg", "IMG_7661.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A little frost, a little flame. The ice blue that symbolises calm, clarity, elegance and quiet strength and the golden fire of passion, ambition and intensity on a neutral beige palette.",
+    fabric: "Georgette",
+  },
+  {
+    id: 125,
+    slug: "petal-dress",
+    name: "Petal dress",
+    photos: [
+      "IMG_6665.jpg",
+      "IMG_6666.jpg",
+      "IMG_6785.jpg",
+      "IMG_7844.jpg",
+      "IMG_7845.jpg",
+      "IMG_7846.jpg",
+      "IMG_7847.jpg",
+    ],
+    sizeOptions: ["8", "10", "12"],
+    description:
+      "Inspired by the layered elegance of a romantic garden rose, this couture gown captures the journey from a richly layered heart to soft, unfolding petals. Custom made and meticulously handcrafted over two months, this is a vision brought to life, one petal at a time.",
+    fabric: "Organza silk",
+  },
+  {
+    id: 126,
+    slug: "denim-dress",
+    name: "Denim dress",
+    photos: ["IMG_7857.jpg", "IMG_7858.jpg", "IMG_7859.jpg"],
+    price: 56999,
+    sizeOptions: ["8", "10"],
+    description:
+      "An ice-blue one-shoulder mini dress with delicate floral embroidery, crystal embellishments, a sculpted waist, and a playful peplum silhouette.",
+    fabric: "Sequin denim",
+  },
+  {
+    id: 127,
+    slug: "butterfly-inspired",
+    name: "Butterfly inspired",
+    photos: ["IMG_6783.jpg", "IMG_7323.jpg", "IMG_7326.jpg", "IMG_7842.jpg", "IMG_7843.jpg"],
+    sizeOptions: ["8", "10", "12"],
+    description:
+      "A dreamy steel-blue butterfly-inspired gown with intricate silver embroidery, a sculpted corset, and delicate wing-like scalloped detailing. Finished with a flowing skirt for an ethereal, graceful silhouette.",
+    fabric: "Organza and tulle",
+  },
+  {
+    id: 128,
+    slug: "zeenat",
+    name: "Zeenat",
+    photos: ["IMG_6794.jpg", "IMG_6795.jpg", "IMG_6797.jpg", "IMG_8911.jpg"],
+    sizeOptions: ["8", "10", "12"],
+    description:
+      "Sculpted champagne drapes traced with crystal florals, flowing into a hand-embellished silhouette that glimmers like antique couture. A balance of softness, structure, and quiet opulence — designed to leave an impression without ever asking for attention.",
+    fabric: "Dutch satin and sequin lace",
+  },
+  {
+    id: 129,
+    slug: "set-25",
+    name: "Set 25",
+    photos: ["IMG_7332.jpg", "IMG_7333.jpg"],
+    sizeOptions: ["8", "10", "12"],
+    description: "",
+    fabric: "",
+  },
+  {
+    id: 130,
+    slug: "set-26",
+    name: "Set 26",
+    photos: ["IMG_7329.jpg", "IMG_7330.jpg", "IMG_7331.jpg"],
+    sizeOptions: ["8", "10", "12"],
+    description: "",
+    fabric: "",
+  },
+];
+
+export const shopProducts: Product[] = drafts.map(fromDraft);
+
+export function getShopProduct(slug: string) {
+  return shopProducts.find((product) => product.slug === slug);
+}
+
+export function getShopRelated(slug: string, limit = 4) {
+  return shopProducts.filter((product) => product.slug !== slug).slice(0, limit);
+}

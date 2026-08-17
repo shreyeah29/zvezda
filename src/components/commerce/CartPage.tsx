@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { useCommerce } from "@/context/CommerceContext";
-import { getProduct, formatPrice } from "@/data/products";
+import { formatPrice, formatProductPrice } from "@/data/products";
+import { findProduct } from "@/data/findProduct";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import "./CartPage.css";
@@ -52,7 +53,7 @@ export function CartPage() {
                 <ul className="cart-page__list">
                   <AnimatePresence mode="popLayout">
                     {cart.map((item) => {
-                      const product = getProduct(item.slug);
+                      const product = findProduct(item.slug);
                       if (!product) return null;
                       const key = `${item.slug}-${item.size}`;
                       return (
@@ -75,7 +76,7 @@ export function CartPage() {
                             </Link>
                             <p className="cart-page__size">Size {item.size}</p>
                             <p className="cart-page__unit-price">
-                              {formatPrice(product.price, product.currency)} each
+                              {formatProductPrice(product)} each
                             </p>
                           </div>
                           <div className="cart-page__controls">
@@ -131,7 +132,10 @@ export function CartPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="cart-page__subtotal-value"
                   >
-                    {formatPrice(cartSubtotal, "USD")}
+                    {formatPrice(
+                      cartSubtotal,
+                      findProduct(cart[0]?.slug)?.currency ?? "USD",
+                    )}
                   </motion.p>
                 </div>
                 <motion.button

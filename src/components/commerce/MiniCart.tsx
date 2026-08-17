@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useCommerce } from "@/context/CommerceContext";
-import { getProduct, formatPrice } from "@/data/products";
+import { formatPrice, formatProductPrice } from "@/data/products";
+import { findProduct } from "@/data/findProduct";
 import { getLenisInstance } from "@/lib/lenisInstance";
 import "./MiniCart.css";
 
@@ -96,7 +97,7 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
               ) : (
                 <ul className="mini-cart__list">
                   {cart.map((item) => {
-                    const product = getProduct(item.slug);
+                    const product = findProduct(item.slug);
                     if (!product) return null;
                     const key = `${item.slug}-${item.size}`;
                     return (
@@ -160,7 +161,12 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
               <div className="mini-cart__footer">
                 <div className="mini-cart__subtotal-row">
                   <p className="mini-cart__subtotal-label">Subtotal</p>
-                  <p className="mini-cart__subtotal-value">{formatPrice(cartSubtotal, "USD")}</p>
+                  <p className="mini-cart__subtotal-value">
+                    {formatPrice(
+                      cartSubtotal,
+                      findProduct(cart[0]?.slug)?.currency ?? "USD",
+                    )}
+                  </p>
                 </div>
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Link href="/cart" onClick={onClose} className="mini-cart__checkout">

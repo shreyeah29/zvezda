@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useCallback, useState } from "react";
 import type { Product } from "@/data/products";
-import { formatPrice } from "@/data/products";
+import { formatProductPrice } from "@/data/products";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
 
@@ -125,7 +125,7 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
             compact ? "" : ""
           }`}
         >
-          {formatPrice(product.price, product.currency)}
+          {formatProductPrice(product)}
         </p>
       </div>
 

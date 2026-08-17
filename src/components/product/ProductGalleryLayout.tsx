@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import type { Product } from "@/data/products";
-import { formatPrice } from "@/data/products";
+import { formatPrice, formatProductPrice } from "@/data/products";
 import "./ProductGalleryLayout.css";
 
 const SIZES = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
@@ -56,13 +56,17 @@ export function ProductGalleryLayout({
 }: ProductGalleryLayoutProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("M");
+  const [selectedSize, setSelectedSize] = useState(
+    product.sizeOptions?.[0] ?? "M",
+  );
   const [quantity, setQuantity] = useState(1);
   const [descOpen, setDescOpen] = useState(true);
   const prevIndex = useRef(0);
 
+  const sizeChoices = product.sizeOptions?.length ? product.sizeOptions : SIZES;
   const colors = COLLECTION_COLORS[product.collection] ?? ["#c4a574"];
   const activeImage = images[activeIndex] ?? product.hero;
+  const showColors = Boolean(COLLECTION_COLORS[product.collection]);
 
   const selectImage = (index: number) => {
     if (index === activeIndex) return;
@@ -133,9 +137,19 @@ export function ProductGalleryLayout({
           <p className="jm-product-gallery__label">{collectionTitle ?? product.collectionLabel}</p>
           <h1 className="jm-product-gallery__title mt-3">{product.name}</h1>
           <p className="jm-product-gallery__price mt-4">
-            {formatPrice(product.price, product.currency)}
+            {formatProductPrice(product)}
           </p>
+          {product.priceOptions && product.priceOptions.length > 1 && (
+            <ul className="mt-3 space-y-1">
+              {product.priceOptions.map((option) => (
+                <li key={option.label} className="text-[12px] text-black/65">
+                  {option.label} — {formatPrice(option.amount, product.currency)}
+                </li>
+              ))}
+            </ul>
+          )}
 
+          {showColors && (
           <div className="mt-8">
             <p className="jm-product-gallery__label mb-3">Color</p>
             <div className="flex gap-2">
@@ -154,6 +168,7 @@ export function ProductGalleryLayout({
               ))}
             </div>
           </div>
+          )}
 
           <div className="mt-8">
             <div className="mb-3 flex items-center justify-between">
@@ -163,7 +178,7 @@ export function ProductGalleryLayout({
               </button>
             </div>
             <div className="grid grid-cols-4 gap-2">
-              {SIZES.map((size) => (
+              {sizeChoices.map((size) => (
                 <button
                   key={size}
                   type="button"
@@ -176,6 +191,9 @@ export function ProductGalleryLayout({
                 </button>
               ))}
             </div>
+            {product.sizeNote && (
+              <p className="mt-2 text-[11px] leading-relaxed text-black/55">{product.sizeNote}</p>
+            )}
             <button type="button" className="jm-product-gallery__outline-btn mt-2 w-full">
               Custom Size
             </button>
@@ -204,7 +222,11 @@ export function ProductGalleryLayout({
             </div>
           </div>
 
-          <p className="mt-4 text-[11px] text-black/60">Made to order · 6–8 weeks</p>
+          <p className="mt-4 text-[11px] text-black/60">
+            {product.collection === "atelier"
+              ? "Made to order · 3–4 weeks"
+              : "Made to order · 6–8 weeks"}
+          </p>
 
           <div className="mt-6 flex flex-col gap-3">
             <AddToCartButton
@@ -223,6 +245,7 @@ export function ProductGalleryLayout({
             <span className="text-[11px] text-black/70">Add to Wishlist</span>
           </div>
 
+          {product.story || product.fabric ? (
           <div className="jm-product-gallery__accordion mt-10 pt-6">
             <button
               type="button"
@@ -241,12 +264,17 @@ export function ProductGalleryLayout({
                   transition={{ duration: 0.35, ease: EASE }}
                   className="overflow-hidden"
                 >
-                  <p className="jm-product-gallery__body mt-4">{product.story}</p>
-                  <p className="jm-product-gallery__body mt-4 text-[13px]">{product.fabric}</p>
+                  {product.story ? (
+                    <p className="jm-product-gallery__body mt-4">{product.story}</p>
+                  ) : null}
+                  {product.fabric ? (
+                    <p className="jm-product-gallery__body mt-4 text-[13px]">{product.fabric}</p>
+                  ) : null}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+          ) : null}
         </div>
       </div>
     </div>

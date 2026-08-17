@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { products } from "@/data/products";
+import { shopProducts } from "@/data/shopCatalog";
 import { ShopProductCard } from "@/components/shop/ShopProductCard";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
@@ -22,7 +22,7 @@ function ShopExperienceContent() {
             </header>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-4 md:gap-x-5 md:gap-y-12">
-              {products.map((product, index) => (
+              {shopProducts.map((product, index) => (
                 <ShopProductCard key={product.slug} product={product} index={index} compact />
               ))}
             </div>

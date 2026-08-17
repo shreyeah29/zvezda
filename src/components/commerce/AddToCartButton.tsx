@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useCommerce } from "@/context/CommerceContext";
-import { getProduct } from "@/data/products";
+import { findProduct } from "@/data/findProduct";
 import "./AddToCartButton.css";
 
 type AddToCartButtonProps = {
@@ -27,7 +27,7 @@ export function AddToCartButton({
 
   const handleClick = async () => {
     if (state !== "idle") return;
-    const product = getProduct(slug);
+    const product = findProduct(slug);
     if (!product || !buttonRef.current) return;
 
     setState("loading");

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { useCommerce } from "@/context/CommerceContext";
-import { getProduct, formatPrice } from "@/data/products";
+import { formatProductPrice } from "@/data/products";
+import { findProduct } from "@/data/findProduct";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
@@ -12,7 +13,7 @@ import "./WishlistPage.css";
 
 export function WishlistPage() {
   const { wishlist, toggleWishlist } = useCommerce();
-  const products = wishlist.map(getProduct).filter(Boolean);
+  const products = wishlist.map(findProduct).filter(Boolean);
 
   return (
     <SmoothScroll>
@@ -66,7 +67,7 @@ export function WishlistPage() {
                           <div className="wishlist-page__meta">
                             <p className="wishlist-page__name">{product.name}</p>
                             <p className="wishlist-page__price">
-                              {formatPrice(product.price, product.currency)}
+                              {formatProductPrice(product)}
                             </p>
                           </div>
                         </Link>

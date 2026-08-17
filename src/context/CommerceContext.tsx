@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getProduct } from "@/data/products";
+import { findProduct } from "@/data/findProduct";
 
 export type CartItem = {
   slug: string;
@@ -163,7 +163,7 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
   const cartSubtotal = useMemo(
     () =>
       cart.reduce((sum, item) => {
-        const product = getProduct(item.slug);
+        const product = findProduct(item.slug);
         return sum + (product?.price ?? 0) * item.quantity;
       }, 0),
     [cart]
