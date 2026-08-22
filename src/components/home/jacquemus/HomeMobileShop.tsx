@@ -6,8 +6,6 @@ import { getProduct } from "@/data/products";
 import { pinkHighlightCards, shopHighlightCards } from "@/data/shopHighlightCards";
 import "./HomeMobileShop.css";
 
-const PINK_SUPPORT_TITLES = ["Blush Coordination", "Petal Garden"];
-
 function MobileSectionHeading({
   primary,
   secondary,
@@ -76,7 +74,7 @@ export function HomeMobileShop() {
               href={`/products/${card.slug}`}
               image={card.image}
               alt={product.name}
-              title={card.title}
+              title={product.name}
             />
           );
         })}
@@ -117,7 +115,7 @@ export function HomeMobilePinkShop() {
       )}
 
       <div className="hm-pink__support">
-        {support.map((card, index) => {
+        {support.map((card) => {
           const product = getProduct(card.slug);
           if (!product) return null;
 
@@ -127,7 +125,7 @@ export function HomeMobilePinkShop() {
               href={`/products/${card.slug}`}
               image={card.image}
               alt={product.name}
-              title={PINK_SUPPORT_TITLES[index] ?? card.title}
+              title={product.name}
               size="support"
             />
           );

@@ -10,13 +10,13 @@ export const shopHighlightCards: ShopHighlightCard[] = [
   {
     setId: 10,
     slug: "set-10",
-    title: "Noir V",
-    image: "/assets/images/products/set-10/HSP_3554.jpg",
+    title: "Velvet blooms dress",
+    image: "/assets/images/products/set-10/BHA_5556.jpg",
   },
   {
     setId: 14,
     slug: "set-14",
-    title: "Noir VI",
+    title: "Starlit halter gown",
     image: "/assets/images/products/set-14/HSP_2470.jpg",
   },
   {
@@ -28,7 +28,7 @@ export const shopHighlightCards: ShopHighlightCard[] = [
   {
     setId: 9,
     slug: "set-9",
-    title: "Ivory Eclipse",
+    title: "Ivory eclipse",
     image: "/assets/images/products/set-9/HSP_3218.jpg",
   },
 ];
@@ -38,25 +38,25 @@ export const pinkHighlightCards: ShopHighlightCard[] = [
   {
     setId: 15,
     slug: "set-15",
-    title: "Rose Cascade",
+    title: "Crimson petal serenade",
     image: "/assets/images/products/set-15/HSP_4946.jpg",
   },
   {
     setId: 16,
     slug: "set-16",
-    title: "Blush Coordination",
+    title: "Daughters of spring (pink)",
     image: "/assets/images/products/set-16/HSP_5981.JPG",
   },
   {
     setId: 17,
     slug: "set-17",
-    title: "Petal Garden",
+    title: "Rosalind jacket and blush column jumpsuit",
     image: "/assets/images/products/set-17/HSP_5291.jpg",
   },
   {
     setId: 18,
     slug: "set-18",
-    title: "Rose Mirage",
+    title: "Rosewood heirloom",
     image: "/assets/images/products/set-18/HSP_5080.jpg",
   },
 ];

@@ -1,3 +1,4 @@
+import { getSetDisplayName } from "./products";
 import { getSet, setPhotoPath, setVideoPath, type SetGroup } from "./sets";
 
 export type JacquemusCollectionMedia = {
@@ -16,26 +17,6 @@ export type JacquemusCollection = {
   group: SetGroup;
   setIds: number[];
   media: JacquemusCollectionMedia[];
-};
-
-const EDITORIAL_NAMES: Record<number, string> = {
-  1: "Fardin Elegance",
-  2: "Verdant Whisper Gown",
-  3: "Olive Tiered Zephyr Mini Dress",
-  4: "Conservatory IV",
-  6: "Noir I",
-  7: "Noir II",
-  8: "Eclipse Royale",
-  9: "Ivory Eclipse",
-  10: "Noir V",
-  11: "Solar",
-  12: "Crimson",
-  13: "Ember",
-  14: "Noir VI",
-  15: "Rose Cascade",
-  16: "Blush Coordination",
-  17: "Petal Garden",
-  18: "Rose Mirage",
 };
 
 type RowPhoto = { setId: number; photo: string };
@@ -61,7 +42,7 @@ function buildCollectionRow(
       {
         type: "image" as const,
         src: setPhotoPath(set, photo),
-        alt: EDITORIAL_NAMES[setId] ?? set.slug,
+        alt: getSetDisplayName(setId),
         href: `/products/${set.slug}`,
       },
     ];

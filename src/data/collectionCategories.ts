@@ -1,3 +1,4 @@
+import { getSetDisplayName } from "./products";
 import { getSet, setPhotoPath, type SetGroup } from "./sets";
 
 export type GalleryImage = {
@@ -32,32 +33,11 @@ export type CollectionCategory = {
   galleryImages: GalleryImage[];
 };
 
-const EDITORIAL_NAMES: Record<number, string> = {
-  1: "Fardin Elegance",
-  2: "Verdant Whisper Gown",
-  3: "Olive Tiered Zephyr Mini Dress",
-  4: "Conservatory IV",
-  5: "Blush Mirage",
-  6: "Noir I",
-  7: "Noir II",
-  8: "Eclipse Royale",
-  9: "Ivory Eclipse",
-  10: "Noir V",
-  11: "Solar",
-  12: "Crimson",
-  13: "Ember",
-  14: "Noir VI",
-  15: "Rose Cascade",
-  16: "Blush Coordination",
-  17: "Petal Garden",
-  18: "Rose Mirage",
-};
-
 function photosFromSets(setIds: number[]): GalleryImage[] {
   return setIds.flatMap((setId) => {
     const set = getSet(setId);
     if (!set) return [];
-    const name = EDITORIAL_NAMES[setId] ?? set.slug;
+    const name = getSetDisplayName(setId);
     return set.photos.map((photo) => ({
       src: setPhotoPath(set, photo),
       alt: name,
@@ -153,8 +133,8 @@ export const collectionCategories: CollectionCategory[] = [
   },
   {
     id: "red-yellow-peach",
-    title: "Crimson · Solar · Peach",
-    displayTitle: "Crimson · Solar · Peach",
+    title: "Crimson · Molten muse · Blush mirage",
+    displayTitle: "Crimson · Molten muse · Blush mirage",
     subtitle: "Sets 12, 11 & 5 · Colour Stories",
     heroVideo: "/assets/videos/RedDressSolo.mp4",
     heroPoster: "/assets/images/products/set-12/HSP_5750.jpg",

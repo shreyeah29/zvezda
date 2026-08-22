@@ -7,27 +7,10 @@ export type KineticMood = {
   accent: string;
 };
 
-/** One-line atelier copy keyed by product set id */
-export const kineticTaglines: Record<number, string> = {
-  1: "Silk caught between petals and shadow.",
-  2: "Soft romantic silhouettes with couture detailing.",
-  3: "Tiered volumes in olive light.",
-  4: "Architectural green for a quiet room.",
-  5: "A single gesture in blush and gold.",
-  6: "Black as the deepest form of presence.",
-  7: "Sculptural intent, stripped to essence.",
-  8: "Royal eclipse — structure over spectacle.",
-  9: "Ivory shadowed by night air.",
-  10: "Matte darkness, precise cut.",
-  11: "Sunlight made garment.",
-  12: "Crimson as declaration.",
-  13: "Burnt satin in candlelight.",
-  14: "Noir revisited — denser, quieter.",
-  15: "Romance in full bloom.",
-  16: "Blush coordination for evening.",
-  17: "Petals arranged like a garden hush.",
-  18: "Rose mirage — soft, luminous, fleeting.",
-};
+function firstSentence(text: string) {
+  const match = text.match(/^[^.!?]+[.!?]/);
+  return match?.[0]?.trim() ?? text;
+}
 
 export const kineticMoodByCollection: Record<string, KineticMood> = {
   garden: { glow: "rgba(74, 110, 78, 0.09)", accent: "rgba(74, 110, 78, 0.14)" },
@@ -56,9 +39,7 @@ export function getKineticPieces(): KineticPiece[] {
     const ambient = set ? setAmbientVideoPath(set) : undefined;
     return {
       product,
-      tagline:
-        kineticTaglines[product.setId] ??
-        "Couture silhouette from the Zvezda atelier.",
+      tagline: firstSentence(product.description) || "Couture silhouette from the Zvezda atelier.",
       images,
       // Prefer ambient web encodes for the kinetic background; fall back to master.
       video: ambient ?? product.video,

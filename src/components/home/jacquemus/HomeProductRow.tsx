@@ -2,20 +2,11 @@
 
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { getProduct } from "@/data/products";
+import { formatProductPrice, getProduct } from "@/data/products";
 import { pinkHighlightCards, shopHighlightCards, type ShopHighlightCard } from "@/data/shopHighlightCards";
 import { getSet, setPhotoPath } from "@/data/sets";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import "./HomeProductRow.css";
-
-function formatJacquemusPrice(price: number, currency: string) {
-  const formatted = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    minimumFractionDigits: 0,
-  }).format(price);
-  return `${formatted.replace("$", "").trim()} USD`;
-}
 
 function getProductRowImages(setId: number, primaryImage: string) {
   const set = getSet(setId);
@@ -96,7 +87,7 @@ export function HomeProductRow({
                     onPointerDown={(e) => e.stopPropagation()}
                   >
                     <span className="jm-product-row__price">
-                      {formatJacquemusPrice(product.price, product.currency)}
+                      {formatProductPrice(product)}
                     </span>
                     <WishlistButton slug={product.slug} size="sm" />
                   </div>

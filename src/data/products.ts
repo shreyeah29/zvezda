@@ -8,6 +8,7 @@ import {
   type SetManifest,
   type SetGroup,
 } from "./sets";
+import { getShopProduct } from "./shopCatalog";
 
 export type PriceOption = {
   label: string;
@@ -37,25 +38,29 @@ export type Product = {
   sizeNote?: string;
 };
 
+/** Homepage/collections set IDs mapped to the matching shop catalog piece. */
+const SET_SHOP_SLUG: Record<number, string> = {
+  1: "jardin-elegance-dress",
+  2: "verdant-whisper-gown",
+  3: "olive-tiered-zephyr-mini-dress",
+  5: "blush-mirage",
+  6: "rosa-imperiale",
+  7: "blush-noir-2-piece-set",
+  8: "eclipse-royale",
+  9: "ivory-eclipse",
+  10: "velvet-blooms-dress",
+  11: "molten-muse",
+  13: "the-scarlett-heiress-dress",
+  14: "starlit-halter-gown",
+  15: "crimson-petal-serenade",
+  16: "daughters-of-spring-pink",
+  17: "rosalind-jacket-blush-column-jumpsuit",
+  18: "rosewood-heirloom",
+};
+
 const editorialNames: Record<number, string> = {
-  1: "Fardin Elegance",
-  2: "Verdant Whisper Gown",
-  3: "Olive Tiered Zephyr Mini Dress",
   4: "Conservatory IV",
-  5: "Blush Mirage",
-  6: "Noir I",
-  7: "Noir II",
-  8: "Eclipse Royale",
-  9: "Ivory Eclipse",
-  10: "Noir V",
-  11: "Solar",
   12: "Crimson",
-  13: "Ember",
-  14: "Noir VI",
-  15: "Rose Cascade",
-  16: "Blush Coordination",
-  17: "Petal Garden",
-  18: "Rose Mirage",
 };
 
 const prices: Record<number, number> = {
@@ -109,18 +114,24 @@ function setToProduct(set: SetManifest): Product {
   const group = setGroups[set.group];
   const gallery = setGalleryPhotos(set);
   const detail = gallery[0] ?? setHeroPhoto(set);
+  const shopSlug = SET_SHOP_SLUG[set.id];
+  const shop = shopSlug ? getShopProduct(shopSlug) : undefined;
 
   return {
     slug: set.slug,
     setId: set.id,
-    name: editorialNames[set.id] ?? `Piece ${set.id}`,
+    name: shop?.name ?? editorialNames[set.id] ?? `Piece ${set.id}`,
     collection: set.collection,
     collectionLabel: group.label,
-    price: prices[set.id] ?? 5000,
-    currency: "USD",
-    description: `${group.label} — couture piece from the Zvezda atelier.`,
-    story: stories[set.group],
-    fabric: fabrics[set.group],
+    price: shop?.price ?? prices[set.id] ?? 5000,
+    currency: shop ? "INR" : "USD",
+    priceOnRequest: shop?.priceOnRequest,
+    priceOptions: shop?.priceOptions,
+    sizeOptions: shop?.sizeOptions,
+    sizeNote: shop?.sizeNote,
+    description: shop?.description || `${group.label} — couture piece from the Zvezda atelier.`,
+    story: shop?.story || stories[set.group],
+    fabric: shop?.fabric || fabrics[set.group],
     hero: setHeroPhoto(set),
     detail,
     gallery: gallery.length > 1 ? gallery.slice(1) : gallery,
@@ -137,6 +148,10 @@ export const products: Product[] = sets.map(setToProduct);
 
 export function getProduct(slug: string) {
   return products.find((p) => p.slug === slug);
+}
+
+export function getSetDisplayName(setId: number) {
+  return products.find((p) => p.setId === setId)?.name ?? `Piece ${setId}`;
 }
 
 export function getProductsByCollection(collectionSlug: string) {
