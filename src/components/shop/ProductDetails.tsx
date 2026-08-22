@@ -99,7 +99,7 @@ export function ProductDetails({ product, className = "" }: ProductDetailsProps)
           </motion.div>
 
           <motion.p variants={item} className="text-[10px] text-cream/35">
-            Made to order · 6–8 weeks
+            Made to order · 7–14 days
           </motion.p>
 
           <motion.div variants={item} className="flex gap-3 pt-2">

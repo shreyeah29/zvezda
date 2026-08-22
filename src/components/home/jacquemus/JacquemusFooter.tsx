@@ -13,6 +13,7 @@ const NAV_LINKS = [
 ] as const;
 
 const CARE_LINKS = [
+  { href: "/contact#enquiry", label: "Enquire" },
   { href: "/returns", label: "Returns" },
   { href: "/shipping", label: "Shipping" },
   { href: "/faq", label: "FAQ" },

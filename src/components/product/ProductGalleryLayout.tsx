@@ -223,9 +223,7 @@ export function ProductGalleryLayout({
           </div>
 
           <p className="mt-4 text-[11px] text-black/60">
-            {product.collection === "atelier"
-              ? "Made to order · 3–4 weeks"
-              : "Made to order · 6–8 weeks"}
+            Made to order · 7–14 days · final sale
           </p>
 
           <div className="mt-6 flex flex-col gap-3">
@@ -238,6 +236,12 @@ export function ProductGalleryLayout({
             />
             <Link href="/cart" className="jm-product-gallery__checkout flex-1">
               Checkout
+            </Link>
+            <Link
+              href={`/contact?product=${encodeURIComponent(product.name)}#enquiry`}
+              className="text-center text-[11px] tracking-[0.06em] text-black/70 underline underline-offset-4"
+            >
+              Custom or made-to-measure — enquire
             </Link>
           </div>
           <div className="jm-product-gallery__wishlist-row mt-3 flex items-center justify-center gap-2">

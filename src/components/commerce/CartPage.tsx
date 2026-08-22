@@ -36,7 +36,8 @@ export function CartPage() {
           <header className="cart-page__header">
             <h1 className="cart-page__title">Your Selection</h1>
             <p className="cart-page__subtitle">
-              Review your pieces, adjust sizes and quantities, then proceed to checkout.
+              Review your pieces, then pay securely with Razorpay. Made-to-order garments take
+              7–14 days to produce after payment is confirmed.
             </p>
           </header>
 
@@ -138,15 +139,26 @@ export function CartPage() {
                     )}
                   </motion.p>
                 </div>
-                <motion.button
-                  type="button"
+                <p className="cart-page__note">
+                  Most ZVEZDA pieces are made to order. Once production has started, the order
+                  cannot be cancelled or refunded. Custom or made-to-measure requests can still
+                  be sent as an enquiry.
+                </p>
+                <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 400, damping: 24 }}
-                  className="cart-page__checkout"
                 >
-                  Proceed to Checkout
-                </motion.button>
+                  <Link href="/checkout" className="cart-page__checkout">
+                    Proceed to Checkout
+                  </Link>
+                </motion.div>
+                <Link
+                  href={`/contact?product=${encodeURIComponent(findProduct(cart[0]?.slug)?.name ?? "")}#enquiry`}
+                  className="cart-page__enquire"
+                >
+                  Enquire for a custom piece
+                </Link>
               </motion.div>
             </>
           )}

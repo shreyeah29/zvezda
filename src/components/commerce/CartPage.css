@@ -249,12 +249,25 @@
   color: #0c0a09;
 }
 
+.cart-page__note {
+  margin: 0;
+  width: 100%;
+  max-width: 20rem;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.55);
+}
+
 .cart-page__checkout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   max-width: 20rem;
   padding: 1.125rem 4rem;
   border: none;
   cursor: pointer;
+  text-decoration: none;
   font-family: inherit;
   font-size: 11px;
   font-weight: 400;
@@ -273,4 +286,14 @@
 
 .cart-page__checkout:hover {
   opacity: 0.85;
+}
+
+.cart-page__enquire {
+  width: 100%;
+  max-width: 20rem;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: right;
+  color: rgba(0, 0, 0, 0.55);
 }

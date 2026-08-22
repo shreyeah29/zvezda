@@ -1,60 +1,42 @@
 import { PolicyPageLayout } from "@/components/layout/PolicyPageLayout";
+import { atelierContact } from "@/data/atelier";
 
 export const metadata = {
-  title: "Terms of Service — Zvezda Atelier",
+  title: "Terms & Conditions — Zvezda Atelier",
 };
 
 export default function TermsPage() {
   return (
-    <PolicyPageLayout title="Terms of Service">
+    <PolicyPageLayout title="Terms & Conditions">
       <p>
-        By accessing zvezdaatelier.com and placing an order, you agree to these terms. Please
-        read them carefully before purchasing.
+        By placing an order with ZVEZDA, you agree to the following terms: all product
+        descriptions, pricing, and availability are accurate to the best of our knowledge at
+        the time of listing; ZVEZDA reserves the right to refuse or cancel any order at its
+        discretion (for example, pricing errors, stock issues, or suspected fraud); all
+        designs, photography, and content on this site are the property of ZVEZDA and may not
+        be reproduced without permission; use of this site constitutes acceptance of these
+        terms.
       </p>
 
-      <h2>Orders &amp; acceptance</h2>
+      <h2>How orders are placed</h2>
       <p>
-        All orders are subject to acceptance and availability. We reserve the right to decline
-        an order before production begins. A contract is formed when we send your order
-        confirmation email.
+        In-stock, ready-to-ship pieces will be paid for online at checkout via Razorpay.
+        Made-to-order and custom pieces are placed by enquiry (this website or WhatsApp).
+        ZVEZDA confirms design, measurements, price, and timeline, then collects payment in
+        full or as a deposit before production begins.
       </p>
 
-      <h2>Pricing &amp; payment</h2>
+      <h2>Cancellation</h2>
       <p>
-        Prices are listed in the currency shown at checkout and include applicable taxes where
-        stated. We reserve the right to correct pricing errors. Payment must be received in
-        full before production commences.
-      </p>
-
-      <h2>Made-to-order production</h2>
-      <p>
-        Because pieces are crafted to order, production timelines are estimates, not guarantees.
-        We will notify you of any significant delays. Cancellations after production has begun
-        may not be possible.
-      </p>
-
-      <h2>Intellectual property</h2>
-      <p>
-        All designs, imagery, text, and branding on this site are the property of Zvezda Atelier
-        and may not be reproduced without written permission.
-      </p>
-
-      <h2>Limitation of liability</h2>
-      <p>
-        To the fullest extent permitted by law, Zvezda Atelier is not liable for indirect or
-        consequential damages arising from use of this website or purchase of our products.
-      </p>
-
-      <h2>Governing law</h2>
-      <p>
-        These terms are governed by the laws of India. Disputes shall be subject to the
-        exclusive jurisdiction of courts in India.
+        In-stock orders can be cancelled within 12 hours of placing the order, before
+        dispatch. Made-to-order and custom pieces can be cancelled only before production
+        begins; once production has started, the order is non-cancellable and non-refundable.
       </p>
 
       <h2>Contact</h2>
       <p>
         Questions about these terms:{" "}
-        <a href="mailto:care@zvezdaatelier.com">care@zvezdaatelier.com</a>
+        <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>
       </p>
     </PolicyPageLayout>
   );
