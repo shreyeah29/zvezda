@@ -20,6 +20,7 @@ function ShopExperienceContent() {
   const [sizes, setSizes] = useState<string[]>([]);
   const [availability, setAvailability] = useState<string[]>([]);
   const [sort, setSort] = useState("featured");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const next = shopProducts.filter((product) => {
@@ -70,6 +71,9 @@ function ShopExperienceContent() {
             </header>
 
             <ShopFilters
+              open={filtersOpen}
+              onOpen={() => setFiltersOpen(true)}
+              onClose={() => setFiltersOpen(false)}
               colours={colours}
               types={types}
               prices={prices}
