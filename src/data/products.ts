@@ -52,6 +52,7 @@ const SET_SHOP_SLUG: Record<number, string> = {
   9: "ivory-eclipse",
   10: "velvet-blooms-dress",
   11: "molten-muse",
+  12: "carmine-ascend",
   13: "the-scarlett-heiress-dress",
   14: "starlit-halter-gown",
   15: "crimson-petal-serenade",

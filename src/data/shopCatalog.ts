@@ -17,6 +17,7 @@ type ShopDraft = {
 };
 
 function shopImage(slug: string, filename: string) {
+  if (filename.startsWith("/")) return filename;
   return `/assets/images/shop/${slug}/${filename}`;
 }
 
@@ -319,11 +320,19 @@ const drafts: ShopDraft[] = [
     id: 122,
     slug: "carmine-ascend",
     name: "Carmine ascend",
-    photos: ["IMG_6791.jpg", "IMG_6792.jpg", "IMG_9950.jpg"],
+    photos: [
+      "/assets/images/products/set-12/HSP_5547.jpg",
+      "/assets/images/products/set-12/HSP_5549.jpg",
+      "/assets/images/products/set-12/HSP_5571.jpg",
+      "/assets/images/products/set-12/HSP_5635.jpg",
+      "/assets/images/products/set-12/HSP_5750.jpg",
+    ],
     price: 49000,
     sizeOptions: ["8", "10"],
-    description: "",
+    description:
+      "A sculpted crimson gown cut for presence — open at the back, falling into a generous train that moves like a curtain rising. The silhouette is spare, the colour unapologetic: a couture evening piece designed to hold the room.",
     fabric: "Milano satin",
+    video: "/assets/videos/products/ambient/set-12/RedDressSolo.mp4",
   },
   {
     id: 123,
