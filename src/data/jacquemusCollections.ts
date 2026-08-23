@@ -187,22 +187,31 @@ export const jacquemusCollections: JacquemusCollection[] = [
     detail: "Paris, France",
     group: "black-combo",
     setIds: [7, 10, 14],
-    media: buildCollectionRow(
-      {
-        src: "/assets/videos/film/White&BlackTrio.mp4",
-        poster: setPhotoPath(getSet(7)!, "HSP_2254.jpg"),
-        href: "/products/set-7",
-        alt: "Velvet Blush film",
-      },
-      [
-        photo(7, "HSP_2254.jpg"),
-        photo(14, "HSP_2470.jpg"),
-        photo(10, "BHA_5556.jpg"),
-        photo(14, "BHA_2106.jpg"),
-        photo(7, "HSP_2372.jpg"),
-      ],
-      2,
-    ),
+    media: (() => {
+      const row = buildCollectionRow(
+        {
+          src: "/assets/videos/film/White&BlackTrio.mp4",
+          poster: setPhotoPath(getSet(7)!, "HSP_2254.jpg"),
+          href: "/products/set-7",
+          alt: "Velvet Blush film",
+        },
+        [
+          photo(7, "HSP_2254.jpg"),
+          photo(14, "HSP_2470.jpg"),
+          photo(10, "BHA_5556.jpg"),
+          photo(14, "BHA_2106.jpg"),
+          photo(7, "HSP_2372.jpg"),
+        ],
+        2,
+      );
+      row.splice(1, 0, {
+        type: "image",
+        src: "/assets/images/shop/blush-elan/HSP_1743.jpg",
+        alt: "Blush elan",
+        href: "/products/blush-elan",
+      });
+      return row;
+    })(),
   },
   {
     id: "rose-epoque",

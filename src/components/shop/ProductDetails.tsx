@@ -56,7 +56,7 @@ export function ProductDetails({ product, className = "" }: ProductDetailsProps)
             {product.collectionLabel}
           </motion.p>
 
-          <motion.h2 variants={item} className="font-display text-3xl font-light leading-tight text-cream">
+          <motion.h2 variants={item} className="font-product text-3xl font-light leading-tight tracking-normal text-cream">
             {product.name}
           </motion.h2>
 

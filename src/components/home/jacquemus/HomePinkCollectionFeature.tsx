@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Mp4Sources } from "@/components/media/Mp4Sources";
 import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "./HomeCollectionFeature.css";
 
@@ -25,7 +26,7 @@ export function HomePinkCollectionFeature() {
             disablePictureInPicture
             className="jm-collection-feature__media jm-collection-feature__video"
           >
-            <source src={FEATURE_VIDEO} type="video/mp4" />
+            <Mp4Sources src={FEATURE_VIDEO} />
           </video>
           <span className="jm-feature-play" aria-hidden="true" />
           <span className="jm-feature-mobile-label">Pink Collection</span>

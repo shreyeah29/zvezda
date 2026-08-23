@@ -8,6 +8,7 @@ import { formatProductPrice } from "@/data/products";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
 
+const IMAGE_EASE = [0.16, 1, 0.3, 1] as const;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 type ShopProductCardProps = {
@@ -57,8 +58,8 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
           <div className={`relative overflow-hidden ${compact ? "aspect-[3/4.2]" : "aspect-[3/4]"}`}>
             <motion.div
               className="absolute inset-0"
-              animate={{ scale: hovered ? 1.05 : 1, opacity: hovered && secondary !== product.hero ? 0 : 1 }}
-              transition={{ duration: 0.65, ease: EASE }}
+              animate={{ scale: hovered ? 1.06 : 1, opacity: hovered && secondary !== product.hero ? 0 : 1 }}
+              transition={{ duration: 1.2, ease: IMAGE_EASE }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -71,8 +72,8 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
             {secondary !== product.hero && (
               <motion.div
                 className="absolute inset-0"
-                animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1.03 : 1.06 }}
-                transition={{ duration: 0.65, ease: EASE }}
+                animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1.06 : 1 }}
+                transition={{ duration: 1.2, ease: IMAGE_EASE }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -110,23 +111,11 @@ export function ShopProductCard({ product, index = 0, compact = false }: ShopPro
         tabIndex={0}
         onClick={goToProduct}
         onKeyDown={handleCardKeyDown}
-        className={`cursor-pointer ${compact ? "mt-3.5" : "mt-4"}`}
+        className="shop-product-card__caption"
         aria-label={`View ${product.name}`}
       >
-        <motion.p
-          className="text-[13px] font-normal text-black md:text-[14px]"
-          animate={{ y: hovered ? -2 : 0 }}
-          transition={{ duration: 0.45, ease: EASE }}
-        >
-          {product.name}
-        </motion.p>
-        <p
-          className={`mt-2 text-[11px] text-black/65 md:text-xs ${
-            compact ? "" : ""
-          }`}
-        >
-          {formatProductPrice(product)}
-        </p>
+        <p className="shop-product-card__name">{product.name}</p>
+        <p className="shop-product-card__price">{formatProductPrice(product)}</p>
       </div>
 
       {!compact && (

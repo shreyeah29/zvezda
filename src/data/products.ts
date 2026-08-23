@@ -38,6 +38,8 @@ export type Product = {
   priceOptions?: PriceOption[];
   sizeOptions?: string[];
   sizeNote?: string;
+  colours?: string[];
+  garmentType?: string;
 };
 
 /** Homepage/collections set IDs mapped to the matching shop catalog piece. */
@@ -147,8 +149,7 @@ function setToProduct(set: SetManifest): Product {
     hero: setHeroPhoto(set),
     detail,
     gallery: gallery.length > 1 ? gallery.slice(1) : gallery,
-    // Prefer lightweight web encodes for PDP playback; masters stay on disk for future use.
-    video: setAmbientVideoPath(set) ?? setVideoPath(set),
+    video: setVideoPath(set) ?? setAmbientVideoPath(set),
     videoAlt: set.videoAlt
       ? setAmbientVideoPath(set, set.videoAlt) ?? setVideoPath(set, set.videoAlt)
       : undefined,

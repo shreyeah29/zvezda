@@ -135,7 +135,7 @@ export function CollectionSection({ collection, index }: CollectionSectionProps)
                     }}
                   />
                   <p
-                    className="editorial-spacing absolute bottom-4 left-4 text-[8px] opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
+                    className="font-product absolute bottom-4 left-4 text-[8px] tracking-normal opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2"
                     style={{ color: theme.text }}
                   >
                     {product.name}

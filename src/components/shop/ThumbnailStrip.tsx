@@ -63,7 +63,7 @@ export const ThumbnailStrip = forwardRef<HTMLDivElement, ThumbnailStripProps>(
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <p className="font-display text-[11px] leading-tight md:text-xs">
+                      <p className="font-product text-[11px] leading-tight tracking-normal md:text-xs">
                         {product.name}
                       </p>
                       <p className="shrink-0 text-[10px] md:text-[11px]">

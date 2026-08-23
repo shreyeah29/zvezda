@@ -136,7 +136,7 @@ export function ProductGalleryLayout({
 
         <div className="order-3 lg:sticky lg:top-24 lg:self-start">
           <p className="jm-product-gallery__label">{collectionTitle ?? product.collectionLabel}</p>
-          <h1 className="jm-product-gallery__title mt-3">{product.name}</h1>
+          <h1 className="jm-product-gallery__title font-product mt-3">{product.name}</h1>
           <p className="jm-product-gallery__price mt-4">
             {formatProductPrice(product)}
           </p>

@@ -8,6 +8,8 @@ import { findProduct } from "@/data/findProduct";
 import { getShopRelated, getShopProduct } from "@/data/shopCatalog";
 import { getCollection } from "@/data/collections";
 import { ProductGalleryLayout } from "@/components/product/ProductGalleryLayout";
+import { Mp4Sources } from "@/components/media/Mp4Sources";
+import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "@/components/product/ProductRelated.css";
 
 function RelatedCard({ product }: { product: Product }) {
@@ -25,6 +27,33 @@ function RelatedCard({ product }: { product: Product }) {
 
 function uniqueImages(images: string[]) {
   return [...new Set(images.filter(Boolean))];
+}
+
+function ProductFilm({ src, objectPosition }: { src: string; objectPosition?: string }) {
+  const videoRef = useInlineVideoAutoplay(src);
+
+  return (
+    <section className="hero-screen relative isolate w-full overflow-hidden">
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        controls={false}
+        disablePictureInPicture
+        className="hero-screen__video h-full w-full object-cover"
+        style={{ objectPosition: objectPosition ?? "center" }}
+      >
+        <Mp4Sources src={src} />
+      </video>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/35 to-transparent" />
+      <p className="absolute bottom-10 left-1/2 z-20 -translate-x-1/2 text-[10px] tracking-[0.2em] text-white/85 uppercase">
+        Scroll to explore
+      </p>
+    </section>
+  );
 }
 
 export function ProductClient({ slug }: { slug: string }) {
@@ -48,23 +77,8 @@ export function ProductClient({ slug }: { slug: string }) {
 
   return (
     <main id="main-content" className="min-h-screen bg-[#fafaf9]">
-      {hasVideo && (
-        <section className="hero-screen relative isolate w-full overflow-hidden">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover"
-            style={{ objectPosition: product.videoObjectPosition ?? "center" }}
-          >
-            <source src={product.video} type="video/mp4" />
-          </video>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/35 to-transparent" />
-          <p className="absolute bottom-10 left-1/2 z-20 -translate-x-1/2 text-[10px] tracking-[0.2em] text-white/85 uppercase">
-            Scroll to explore
-          </p>
-        </section>
+      {hasVideo && product.video && (
+        <ProductFilm src={product.video} objectPosition={product.videoObjectPosition} />
       )}
 
       <section className={hasVideo ? "" : "pt-24 md:pt-28"}>

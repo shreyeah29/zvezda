@@ -4,7 +4,7 @@
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Montserrat", system-ui, sans-serif;
   --font-editorial: "Instrument Serif", Georgia, serif;
-  --font-product: "Playfair Display", Georgia, serif;
+  --font-product: "Bodoni Moda", Georgia, serif;
 
   /* Semantic light theme — UI UX Pro Max / Zvezda Atelier */
   --color-ink: #fafaf9;
@@ -200,21 +200,20 @@
     overflow: hidden;
   }
 
-  .hero-screen video {
-    pointer-events: none;
-  }
-
-  .hero-screen video::-webkit-media-controls {
-    display: none !important;
-  }
-
-  .hero-screen video::-webkit-media-controls-start-playback-button {
+  video::-webkit-media-controls,
+  video::-webkit-media-controls-enclosure,
+  video::-webkit-media-controls-start-playback-button,
+  video::-webkit-media-controls-overlay-play-button {
     display: none !important;
     -webkit-appearance: none;
+    opacity: 0 !important;
+    pointer-events: none;
+    width: 0 !important;
+    height: 0 !important;
   }
 
-  .hero-screen video::-webkit-media-controls-overlay-play-button {
-    display: none !important;
+  .hero-screen video {
+    pointer-events: none;
   }
 
   .h-screen {

@@ -2,22 +2,28 @@
 
 import Link from "next/link";
 import { jacquemusCollections } from "@/data/jacquemusCollections";
+import { Mp4Sources } from "@/components/media/Mp4Sources";
+import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "@/components/home/jacquemus/jacquemus-theme.css";
 import "./JacquemusCollectionsPage.css";
 
 function CollectionMedia({ item }: { item: (typeof jacquemusCollections)[0]["media"][0] }) {
+  const videoRef = useInlineVideoAutoplay(item.type === "video" ? item.src : undefined);
   const content =
     item.type === "video" ? (
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
         poster={item.poster}
+        controls={false}
+        disablePictureInPicture
         className="jm-collections__media"
       >
-        <source src={item.src} type="video/mp4" />
+        <Mp4Sources src={item.src} />
       </video>
     ) : (
       // eslint-disable-next-line @next/next/no-img-element
@@ -44,7 +50,6 @@ export function JacquemusCollectionsPage() {
             <header className="jm-collections__info">
               <h2 className="jm-collections__title">&ldquo;{collection.name}&rdquo;</h2>
               <p className="jm-collections__season">{collection.season}</p>
-              <p className="jm-collections__detail">{collection.detail}</p>
             </header>
 
             <div className="jm-collections__track">

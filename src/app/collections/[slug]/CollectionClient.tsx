@@ -83,7 +83,7 @@ export function CollectionClient({ slug }: { slug: string }) {
                           className={`aspect-[3/4] ${i % 2 === 1 ? "lg:order-2" : ""}`}
                         />
                         <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                          <h2 className="font-display text-5xl font-light text-cream group-hover:text-gold">
+                          <h2 className="font-product text-5xl font-light tracking-normal text-cream group-hover:text-gold">
                             {product.name}
                           </h2>
                           <p className="editorial-spacing mt-2 text-[10px] text-muted">{product.collectionLabel}</p>

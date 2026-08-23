@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import type { ScrollerItem, ScrollerVisualState } from "@/components/ImageScroller/types";
+import { playInlineVideo } from "@/hooks/useInlineVideoAutoplay";
 
 type ScrollerImageProps = {
   item: ScrollerItem;
@@ -24,7 +25,7 @@ export function ScrollerImage({ item, visualState, shouldPreload }: ScrollerImag
         video.currentTime = 0;
         wasActiveRef.current = true;
       }
-      void video.play().catch(() => undefined);
+      playInlineVideo(video);
       return;
     }
 
@@ -49,6 +50,9 @@ export function ScrollerImage({ item, visualState, shouldPreload }: ScrollerImag
         muted
         loop
         playsInline
+        autoPlay
+        controls={false}
+        disablePictureInPicture
         preload={shouldPreload ? "auto" : "metadata"}
         className="h-full w-full object-cover"
       />

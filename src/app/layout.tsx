@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Instrument_Serif, Inter, Montserrat, Playfair_Display } from "next/font/google";
+import { Bodoni_Moda, Cormorant_Garamond, Instrument_Serif, Inter, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { CommerceProvider } from "@/context/CommerceContext";
 import { Navigation } from "@/components/layout/Navigation";
+import { VideoAutoplayBoot } from "@/components/media/VideoAutoplayBoot";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -31,10 +32,10 @@ const editorial = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
-const product = Playfair_Display({
+const product = Bodoni_Moda({
   subsets: ["latin"],
   variable: "--font-product",
-  weight: ["600", "700", "800"],
+  weight: ["400", "500"],
 });
 
 const bright = localFont({
@@ -90,6 +91,7 @@ export default function RootLayout({
         <div className="viewport-fixed pointer-events-none -z-50 bg-ink" aria-hidden="true" />
         <CommerceProvider>
           <MotionProvider>
+            <VideoAutoplayBoot />
             <Navigation />
             {children}
           </MotionProvider>

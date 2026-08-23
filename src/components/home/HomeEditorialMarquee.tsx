@@ -3,6 +3,7 @@
 import { gsap } from "gsap";
 import { useEffect, useRef } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "./EditorialMarquee.css";
 
 const MARQUEE_SEGMENTS = [
@@ -28,6 +29,7 @@ function MarqueeRow() {
 
 export function HomeEditorialMarquee() {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useInlineVideoAutoplay("/assets/videos/film/GardenTrio.mp4");
   const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -50,12 +52,15 @@ export function HomeEditorialMarquee() {
   return (
     <section ref={sectionRef} className="editorial-marquee snap-none" aria-label="Editorial marquee">
       <video
+        ref={videoRef}
         className="editorial-marquee__video"
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
+        controls={false}
+        disablePictureInPicture
         aria-hidden="true"
       >
         <source src="/assets/videos/film/GardenTrio.mp4" type="video/mp4" />

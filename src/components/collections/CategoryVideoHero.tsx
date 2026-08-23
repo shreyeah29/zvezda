@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { CollectionCategory } from "@/data/collectionCategories";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
+import { Mp4Sources } from "@/components/media/Mp4Sources";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +17,7 @@ type CategoryVideoHeroProps = {
 
 export function CategoryVideoHero({ category }: CategoryVideoHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useInlineVideoAutoplay(category.heroVideo);
   const reducedMotion = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -55,15 +58,18 @@ export function CategoryVideoHero({ category }: CategoryVideoHeroProps) {
         )}
         {category.heroVideo && (
           <video
+            ref={videoRef}
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             poster={category.heroPoster}
+            controls={false}
+            disablePictureInPicture
             className="absolute inset-0 h-full w-full object-cover"
           >
-            <source src={category.heroVideo} type="video/mp4" />
+            <Mp4Sources src={category.heroVideo} />
           </video>
         )}
         <div

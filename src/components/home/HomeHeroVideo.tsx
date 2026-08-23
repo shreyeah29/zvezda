@@ -1,74 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { videos } from "@/data/brand";
+import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import { useMaxWidth } from "@/hooks/useMaxWidth";
+import { Mp4Sources } from "@/components/media/Mp4Sources";
 import "./HomeHeroVideo.css";
 
 const HERO_POSTER = "/assets/images/products/set-12/HSP_5750.jpg";
 
 export function HomeHeroVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useInlineVideoAutoplay(videos.hero);
   const sectionRef = useRef<HTMLElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const isMobile = useMaxWidth(768);
-  const heroSrc = isMobile ? videos.heroMobile : videos.hero;
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    setIsPlaying(false);
-
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-    video.setAttribute("playsinline", "");
-    video.setAttribute("webkit-playsinline", "");
-    video.setAttribute("x-webkit-airplay", "deny");
-
-    const markPlaying = () => setIsPlaying(true);
-
-    const playVideo = () => {
-      video.muted = true;
-      void video.play().then(markPlaying).catch(() => undefined);
-    };
-
-    playVideo();
-    video.load();
-
-    video.addEventListener("loadedmetadata", playVideo);
-    video.addEventListener("loadeddata", playVideo);
-    video.addEventListener("canplay", playVideo);
-    video.addEventListener("canplaythrough", playVideo);
-    video.addEventListener("playing", markPlaying);
-
-    const onVisibilityChange = () => {
-      if (!document.hidden) playVideo();
-    };
-
-    document.addEventListener("visibilitychange", onVisibilityChange);
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) playVideo();
-      },
-      { threshold: 0.1 },
-    );
-
-    observer.observe(video);
-
-    return () => {
-      video.removeEventListener("loadedmetadata", playVideo);
-      video.removeEventListener("loadeddata", playVideo);
-      video.removeEventListener("canplay", playVideo);
-      video.removeEventListener("canplaythrough", playVideo);
-      video.removeEventListener("playing", markPlaying);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      observer.disconnect();
-    };
-  }, [heroSrc]);
 
   return (
     <section
@@ -83,7 +29,6 @@ export function HomeHeroVideo() {
           aria-hidden="true"
         />
         <video
-          key={heroSrc}
           ref={videoRef}
           autoPlay
           muted
@@ -98,8 +43,9 @@ export function HomeHeroVideo() {
             isMobile ? " hero-screen__video--mobile" : ""
           }`}
           style={{ objectPosition: isMobile ? "center 22%" : "center 28%" }}
+          onPlaying={() => setIsPlaying(true)}
         >
-          <source src={heroSrc} type="video/mp4" />
+          <Mp4Sources src={videos.hero} />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35" />
       </div>

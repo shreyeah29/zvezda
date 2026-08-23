@@ -14,6 +14,8 @@ type ShopDraft = {
   craft?: string[];
   care?: string;
   video?: string;
+  colours?: string[];
+  garmentType?: string;
 };
 
 function shopImage(slug: string, filename: string) {
@@ -47,8 +49,94 @@ function fromDraft(draft: ShopDraft): Product {
     detail,
     gallery: photos.slice(1),
     video: draft.video,
+    colours: draft.colours ?? SHOP_LOOKS[draft.slug]?.colours ?? [],
+    garmentType: draft.garmentType ?? SHOP_LOOKS[draft.slug]?.garmentType,
   };
 }
+
+export const SHOP_COLOURS = [
+  { id: "black", label: "Black", swatch: "#111111" },
+  { id: "red", label: "Red", swatch: "#8b1a2b" },
+  { id: "blush", label: "Blush", swatch: "#d4a088" },
+  { id: "pink", label: "Pink", swatch: "#e8a4b8" },
+  { id: "green", label: "Green", swatch: "#4a5240" },
+  { id: "yellow", label: "Yellow", swatch: "#c9a227" },
+  { id: "orange", label: "Orange", swatch: "#c47a3a" },
+  { id: "ivory", label: "Ivory", swatch: "#f3efe6" },
+  { id: "blue", label: "Blue", swatch: "#6b7c93" },
+  { id: "champagne", label: "Champagne", swatch: "#c4a574" },
+] as const;
+
+export const SHOP_TYPES = [
+  { id: "gown", label: "Gowns" },
+  { id: "dress", label: "Dresses" },
+  { id: "mini", label: "Mini dresses" },
+  { id: "set", label: "Sets" },
+  { id: "jumpsuit", label: "Jumpsuits" },
+] as const;
+
+export const SHOP_PRICE_BANDS = [
+  { id: "under-40", label: "Under ₹40,000" },
+  { id: "40-70", label: "₹40,000 – ₹70,000" },
+  { id: "70-100", label: "₹70,000 – ₹1,00,000" },
+  { id: "over-100", label: "Above ₹1,00,000" },
+] as const;
+
+export const SHOP_SIZES = ["6", "8", "10", "12"] as const;
+
+export const SHOP_AVAILABILITY = [
+  { id: "priced", label: "Priced" },
+  { id: "request", label: "Price on request" },
+] as const;
+
+export const SHOP_SORTS = [
+  { id: "featured", label: "Featured" },
+  { id: "price-asc", label: "Price: low to high" },
+  { id: "price-desc", label: "Price: high to low" },
+  { id: "name", label: "Name A–Z" },
+] as const;
+
+export function matchesShopPriceBand(price: number, priceOnRequest: boolean | undefined, band: string) {
+  if (priceOnRequest) return false;
+  if (band === "under-40") return price < 40000;
+  if (band === "40-70") return price >= 40000 && price < 70000;
+  if (band === "70-100") return price >= 70000 && price < 100000;
+  if (band === "over-100") return price >= 100000;
+  return false;
+}
+
+const SHOP_LOOKS: Record<string, { colours: string[]; garmentType: string }> = {
+  "rosa-imperiale": { colours: ["black", "red"], garmentType: "gown" },
+  "starlit-halter-gown": { colours: ["black"], garmentType: "gown" },
+  "the-scarlett-heiress-dress": { colours: ["orange", "red"], garmentType: "gown" },
+  "blooming-rosalia-3d-gown": { colours: ["red"], garmentType: "gown" },
+  "velvet-blooms-dress": { colours: ["black", "pink"], garmentType: "gown" },
+  "ivory-eclipse": { colours: ["black", "ivory"], garmentType: "gown" },
+  "eclipse-royale": { colours: ["black", "ivory"], garmentType: "gown" },
+  "allure-slit": { colours: ["black"], garmentType: "gown" },
+  "blush-noir-2-piece-set": { colours: ["blush", "black"], garmentType: "set" },
+  "blush-elan": { colours: ["blush", "pink"], garmentType: "gown" },
+  "pearl-tailored-set": { colours: ["ivory"], garmentType: "set" },
+  "jardin-elegance-dress": { colours: ["green"], garmentType: "gown" },
+  "verdant-whisper-gown": { colours: ["green"], garmentType: "gown" },
+  "olive-tiered-zephyr-mini-dress": { colours: ["green"], garmentType: "mini" },
+  "blush-mirage": { colours: ["blush"], garmentType: "gown" },
+  "rosewood-heirloom": { colours: ["pink"], garmentType: "gown" },
+  "crimson-petal-serenade": { colours: ["pink"], garmentType: "gown" },
+  "rosalind-jacket-blush-column-jumpsuit": { colours: ["blush", "pink"], garmentType: "jumpsuit" },
+  "daughters-of-spring-pink": { colours: ["pink"], garmentType: "set" },
+  "daughters-of-spring-green": { colours: ["green"], garmentType: "dress" },
+  "molten-muse": { colours: ["yellow"], garmentType: "dress" },
+  "carmine-ascend": { colours: ["red"], garmentType: "gown" },
+  "green-pearl-dress": { colours: ["green"], garmentType: "gown" },
+  "fire-and-ice": { colours: ["blue", "yellow"], garmentType: "gown" },
+  "petal-dress": { colours: ["pink"], garmentType: "gown" },
+  "denim-dress": { colours: ["blue"], garmentType: "mini" },
+  "butterfly-inspired": { colours: ["blue"], garmentType: "set" },
+  zeenat: { colours: ["champagne"], garmentType: "set" },
+  "set-25": { colours: ["black", "ivory"], garmentType: "dress" },
+  "set-26": { colours: ["black"], garmentType: "gown" },
+};
 
 const drafts: ShopDraft[] = [
   {
@@ -70,7 +158,7 @@ const drafts: ShopDraft[] = [
       "Flowing couture train",
     ],
     fabric: "Italian crape and Dutch satin",
-    video: "/assets/videos/products/ambient/set-6/OrangeSolo2.mp4",
+    video: "/assets/videos/products/set-6/OrangeSolo2.mp4",
   },
   {
     id: 102,
@@ -93,7 +181,7 @@ const drafts: ShopDraft[] = [
     description:
       "Settles into quiet strength in a ruched satin bodice that contours with ease, defined by a softly accentuated waist. The gown unfolds into a voluminous, structured form — holding shape, depth, and a sense of grounded elegance.",
     fabric: "Dutch-satin",
-    video: "/assets/videos/products/ambient/set-13/OrangeSolo1.mp4",
+    video: "/assets/videos/products/set-13/OrangeSolo1.mp4",
   },
   {
     id: 104,
@@ -127,7 +215,7 @@ const drafts: ShopDraft[] = [
     description:
       "Midnight and moonlight in quiet contrast. A sculpted strapless bodice in deep black brings structure and poise, flowing seamlessly into layered white drapes beneath. Soft cascading folds introduce movement and lightness, creating a striking balance between depth and delicacy.",
     fabric: "Italian crape color block",
-    video: "/assets/videos/products/ambient/set-9/White&Black2.mp4",
+    video: "/assets/videos/products/set-9/White&Black2.mp4",
   },
   {
     id: 107,
@@ -139,7 +227,7 @@ const drafts: ShopDraft[] = [
     description:
       "A striking play of midnight and ivory — featuring a sculpted strapless bodice, delicate floral waist embellishments, and a dramatic flowing cape that moves with effortless elegance.",
     fabric: "Italian crape color block",
-    video: "/assets/videos/products/ambient/set-8/White&Black1.mp4",
+    video: "/assets/videos/products/set-8/White&Black1.mp4",
   },
   {
     id: 108,
@@ -200,7 +288,7 @@ const drafts: ShopDraft[] = [
     description:
       "An elegant moss-olive gown designed with a flowing, floor-length fall that moves effortlessly. The bodice is delicately hand-embellished with intricate florals and subtle shimmer, adding texture and quiet opulence. Fine straps and a softly defined waist enhance the form, while the graceful drape of the skirt creates a timeless, ethereal presence — refined, feminine, and luxuriously understated.",
     fabric: "Bemberg silk",
-    video: "/assets/videos/products/ambient/set-1/GardenSolo3.mp4",
+    video: "/assets/videos/products/set-1/GardenSolo3.mp4",
   },
   {
     id: 113,
@@ -212,7 +300,7 @@ const drafts: ShopDraft[] = [
     description:
       "A bloom of blush and intricate florals. Hand-embellished details shimmer across the bodice, flowing into layers of garden-inspired fabric that move with effortless grace.",
     fabric: "Satin and brocade",
-    video: "/assets/videos/products/ambient/set-2/GardenSolo2.mp4",
+    video: "/assets/videos/products/set-2/GardenSolo2.mp4",
   },
   {
     id: 114,
@@ -224,7 +312,7 @@ const drafts: ShopDraft[] = [
     description:
       "An olive satin mini dress designed to captivate, featuring a sculpted bodice that contours the silhouette with effortless elegance. Delicate embellished straps add a touch of refinement, while the voluminous tiered skirt brings playful movement and dramatic flair to this striking silhouette.",
     fabric: "Mikado",
-    video: "/assets/videos/products/ambient/set-3/GardenSolo1.mp4",
+    video: "/assets/videos/products/set-3/GardenSolo1.mp4",
   },
   {
     id: 115,
@@ -236,7 +324,7 @@ const drafts: ShopDraft[] = [
     description:
       "A delicate blush creation featuring a sculpted neckline, a softly contoured bodice, and a subtle crystal accent that defines the waist, flowing into graceful layered movement.",
     fabric: "Satin and shimmer georgette",
-    video: "/assets/videos/products/ambient/set-5/PeachSolo1.mp4",
+    video: "/assets/videos/products/set-5/PeachSolo1.mp4",
   },
   {
     id: 116,
@@ -248,7 +336,7 @@ const drafts: ShopDraft[] = [
     description:
       "A soft blush-pink gown adorned with intricate silver floral embroidery and delicate embellishments. The structured bodice flows into a graceful, feminine silhouette, creating an elegant look inspired by the beauty of a blooming garden.",
     fabric: "Dutch satin",
-    video: "/assets/videos/products/ambient/set-18/PinkSolo2.mp4",
+    video: "/assets/videos/products/set-18/PinkSolo2.mp4",
   },
   {
     id: 117,
@@ -260,7 +348,7 @@ const drafts: ShopDraft[] = [
     description:
       "A lustrous pink satin gown with delicate crystal detailing along the neckline and a beautifully draped asymmetric skirt. The soft ruching and flowing ruffles add movement, creating a look that feels feminine, refined, and effortlessly glamorous.",
     fabric: "Dutch satin",
-    video: "/assets/videos/products/ambient/set-15/PinkSolo1.mp4",
+    video: "/assets/videos/products/set-15/PinkSolo1.mp4",
   },
   {
     id: 118,
@@ -277,7 +365,7 @@ const drafts: ShopDraft[] = [
     description:
       "A soft rose jumpsuit that celebrates ease and elegance in one breath, sculpted to flatter yet designed to move with grace. Paired with a hand-embroidered sequin cape that gleams like scattered starlight, the look transforms simplicity into statement. It's where texture meets tone, and shimmer meets subtlety — a love letter to modern couture in pastel form.",
     fabric: "Suede",
-    video: "/assets/videos/products/ambient/set-17/PinkSOlo3.mp4",
+    video: "/assets/videos/products/set-17/PinkSOlo3.mp4",
   },
   {
     id: 119,
@@ -290,7 +378,7 @@ const drafts: ShopDraft[] = [
     description:
       "Two hues, one fairytale. Blush rose and mint unfolding in delicate floral detailing, each petal resting like a quiet secret on satin. A look that moves with effortless grace, blossoming softly in pastel light.",
     fabric: "Milano satin",
-    video: "/assets/videos/products/ambient/set-16/PinkCoord1.mp4",
+    video: "/assets/videos/products/set-16/PinkCoord1.mp4",
   },
   {
     id: 120,
@@ -314,7 +402,7 @@ const drafts: ShopDraft[] = [
     description:
       "Wrapped in golden satin that flows with ease, the dress moves softly with every step. A halter neckline catching the light just right, inviting you into a moment that feels calm and radiant.",
     fabric: "Milano satin",
-    video: "/assets/videos/products/ambient/set-11/YellowSolo1.mp4",
+    video: "/assets/videos/products/set-11/YellowSolo1.mp4",
   },
   {
     id: 122,
@@ -332,7 +420,7 @@ const drafts: ShopDraft[] = [
     description:
       "A sculpted crimson gown cut for presence — open at the back, falling into a generous train that moves like a curtain rising. The silhouette is spare, the colour unapologetic: a couture evening piece designed to hold the room.",
     fabric: "Milano satin",
-    video: "/assets/videos/products/ambient/set-12/RedDressSolo.mp4",
+    video: "/assets/videos/products/set-12/RedDressSolo.mp4",
   },
   {
     id: 123,
