@@ -37,7 +37,7 @@ export function CartPage() {
             <h1 className="cart-page__title">Your Selection</h1>
             <p className="cart-page__subtitle">
               Review your pieces, then pay securely with Razorpay. Made-to-order garments take
-              7–14 days to produce after payment is confirmed.
+              3–4 weeks to produce after payment is confirmed.
             </p>
           </header>
 

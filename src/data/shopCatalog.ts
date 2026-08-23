@@ -11,6 +11,8 @@ type ShopDraft = {
   sizeNote?: string;
   description: string;
   fabric: string;
+  craft?: string[];
+  care?: string;
   video?: string;
 };
 
@@ -33,11 +35,13 @@ function fromDraft(draft: ShopDraft): Product {
     currency: "INR",
     priceOnRequest: draft.price == null,
     priceOptions: draft.priceOptions,
-    sizeOptions: draft.sizeOptions,
+    sizeOptions: draft.sizeOptions ?? ["6", "8", "10", "12"],
     sizeNote: draft.sizeNote,
     description: draft.description,
     story: draft.description,
     fabric: draft.fabric,
+    craft: draft.craft,
+    care: draft.care ?? "Dry clean only",
     hero,
     detail,
     gallery: photos.slice(1),
@@ -58,8 +62,13 @@ const drafts: ShopDraft[] = [
     ],
     sizeOptions: ["8", "10", "12"],
     description:
-      "A masterpiece of contrast and texture, this black and crimson couture gown features intricate hand sculpted floral appliqués, shoulder sleeves, and a dramatic flowing train. The bold silhouette and rich satin finish create an unforgettable look that embodies romance, artistry, and timeless elegance.",
-    fabric: "Italian crape and dutch satin",
+      "Rosa impériale explores the tension between darkness and romance, featuring a sculpted black silhouette layered with hand-sculpted crimson floral appliqué that creates dimension across the bodice and structured shoulders. Crafted in Italian crape and Dutch satin, the gown is finished with a dramatic flowing train that enhances its elongated silhouette, while the intricate floral detailing brings a soft, sculptural contrast to the otherwise striking form. Each element is thoughtfully constructed and finished at the Zvezda Atelier to create a piece that feels both powerful and distinctly romantic.",
+    craft: [
+      "Hand-sculpted floral appliqué",
+      "Structured shoulder detailing",
+      "Flowing couture train",
+    ],
+    fabric: "Italian crape and Dutch satin",
     video: "/assets/videos/products/ambient/set-6/OrangeSolo2.mp4",
   },
   {
@@ -319,8 +328,8 @@ const drafts: ShopDraft[] = [
   {
     id: 123,
     slug: "green-pearl-dress",
-    name: "Green pearl dress",
-    photos: ["IMG_2132.jpg", "IMG_2133.jpg", "IMG_2134.jpg", "IMG_6804.jpg"],
+    name: "The Peridot dress",
+    photos: ["peridot-atelier.jpg", "IMG_2132.jpg", "IMG_2133.jpg", "IMG_2134.jpg", "IMG_6804.jpg"],
     price: 28000,
     sizeOptions: ["8", "10"],
     description:
@@ -340,7 +349,7 @@ const drafts: ShopDraft[] = [
   {
     id: 125,
     slug: "petal-dress",
-    name: "Petal dress",
+    name: "The Camellia",
     photos: [
       "IMG_6665.jpg",
       "IMG_6666.jpg",
@@ -358,7 +367,7 @@ const drafts: ShopDraft[] = [
   {
     id: 126,
     slug: "denim-dress",
-    name: "Denim dress",
+    name: "Icy Étoile",
     photos: ["IMG_7857.jpg", "IMG_7858.jpg", "IMG_7859.jpg"],
     price: 56999,
     sizeOptions: ["8", "10"],
@@ -369,8 +378,13 @@ const drafts: ShopDraft[] = [
   {
     id: 127,
     slug: "butterfly-inspired",
-    name: "Butterfly inspired",
+    name: "Papillon two-piece set",
     photos: ["IMG_6783.jpg", "IMG_7323.jpg", "IMG_7326.jpg", "IMG_7842.jpg", "IMG_7843.jpg"],
+    price: 89000,
+    priceOptions: [
+      { label: "Corset", amount: 69000 },
+      { label: "Skirt", amount: 20000 },
+    ],
     sizeOptions: ["8", "10", "12"],
     description:
       "A dreamy steel-blue butterfly-inspired gown with intricate silver embroidery, a sculpted corset, and delicate wing-like scalloped detailing. Finished with a flowing skirt for an ethereal, graceful silhouette.",
@@ -379,8 +393,9 @@ const drafts: ShopDraft[] = [
   {
     id: 128,
     slug: "zeenat",
-    name: "Zeenat",
+    name: "The Ophelia set",
     photos: ["IMG_6794.jpg", "IMG_6795.jpg", "IMG_6797.jpg", "IMG_8911.jpg"],
+    price: 72000,
     sizeOptions: ["8", "10", "12"],
     description:
       "Sculpted champagne drapes traced with crystal florals, flowing into a hand-embellished silhouette that glimmers like antique couture. A balance of softness, structure, and quiet opulence — designed to leave an impression without ever asking for attention.",
@@ -389,8 +404,9 @@ const drafts: ShopDraft[] = [
   {
     id: 129,
     slug: "set-25",
-    name: "Set 25",
+    name: "Aria",
     photos: ["IMG_7332.jpg", "IMG_7333.jpg"],
+    price: 71250,
     sizeOptions: ["8", "10", "12"],
     description: "",
     fabric: "",
@@ -398,8 +414,9 @@ const drafts: ShopDraft[] = [
   {
     id: 130,
     slug: "set-26",
-    name: "Set 26",
+    name: "Noir sculpted",
     photos: ["IMG_7329.jpg", "IMG_7330.jpg", "IMG_7331.jpg"],
+    price: 73150,
     sizeOptions: ["8", "10", "12"],
     description: "",
     fabric: "",

@@ -151,7 +151,7 @@ export function CheckoutPage() {
             <h1 className="checkout-page__title">Complete your order</h1>
             <p className="checkout-page__subtitle">
               Pay securely with Razorpay — UPI, cards, netbanking, and wallets. Made-to-order
-              pieces take 7–14 days to produce after payment is confirmed.
+              pieces take 3–4 weeks to produce after payment is confirmed.
             </p>
           </header>
 

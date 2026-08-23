@@ -9,18 +9,15 @@ import type { Product } from "@/data/products";
 import { formatPrice, formatProductPrice } from "@/data/products";
 import "./ProductGalleryLayout.css";
 
-const SIZES = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
+const STANDARD_SIZES = ["6", "8", "10", "12"] as const;
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const COLLECTION_COLORS: Record<string, string[]> = {
-  garden: ["#4a5240", "#6b7560", "#3d4436"],
-  peach: ["#d4a088", "#e8c4b0", "#c48870"],
-  pink: ["#e8a4b8", "#f5c6d4", "#d4849c"],
-  noir: ["#1a1a1a", "#4a4a4a", "#f5f0e8"],
-  yellow: ["#c9a227", "#e8c547", "#a68520"],
-  red: ["#8b1a2b", "#c42d42", "#5c1019"],
-  orange: ["#c47a3a", "#e89a55", "#9a5520"],
-};
+const SIZE_GUIDE = [
+  { size: "6", bust: "32\"", waist: "26\"", hip: "36\"" },
+  { size: "8", bust: "34\"", waist: "28\"", hip: "38\"" },
+  { size: "10", bust: "36\"", waist: "30\"", hip: "40\"" },
+  { size: "12", bust: "38\"", waist: "32\"", hip: "42\"" },
+] as const;
 
 type ProductGalleryLayoutProps = {
   product: Product;
@@ -57,16 +54,20 @@ export function ProductGalleryLayout({
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [selectedSize, setSelectedSize] = useState(
-    product.sizeOptions?.[0] ?? "M",
+    product.sizeOptions?.[0] ?? STANDARD_SIZES[0],
   );
   const [quantity, setQuantity] = useState(1);
   const [descOpen, setDescOpen] = useState(true);
+  const [customOpen, setCustomOpen] = useState(false);
+  const [customColourOpen, setCustomColourOpen] = useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const prevIndex = useRef(0);
 
-  const sizeChoices = product.sizeOptions?.length ? product.sizeOptions : SIZES;
-  const colors = COLLECTION_COLORS[product.collection] ?? ["#c4a574"];
+  const sizeChoices = STANDARD_SIZES;
   const activeImage = images[activeIndex] ?? product.hero;
-  const showColors = Boolean(COLLECTION_COLORS[product.collection]);
+  const enquiryHref = `/contact?product=${encodeURIComponent(product.name)}#enquiry`;
+  const details = product.story || product.description;
+  const care = product.care ?? "Dry clean only";
 
   const selectImage = (index: number) => {
     if (index === activeIndex) return;
@@ -149,31 +150,70 @@ export function ProductGalleryLayout({
             </ul>
           )}
 
-          {showColors && (
-          <div className="mt-8">
-            <p className="jm-product-gallery__label mb-3">Color</p>
-            <div className="flex gap-2">
-              {colors.map((color, i) => (
-                <button
-                  key={color}
-                  type="button"
-                  className="h-7 w-7 rounded-full border border-black/25 transition-transform hover:scale-110"
-                  style={{
-                    backgroundColor: color,
-                    outline: i === 0 ? "2px solid rgba(0,0,0,0.45)" : "none",
-                    outlineOffset: 2,
-                  }}
-                  aria-label={`Color ${i + 1}`}
-                />
-              ))}
+          <dl className="jm-product-gallery__facts mt-8">
+            <div>
+              <dt>Made to order</dt>
+              <dd>Crafted exclusively for you.</dd>
             </div>
+            <div>
+              <dt>Creation time</dt>
+              <dd>3–4 weeks</dd>
+            </div>
+            <div>
+              <dt>Returns</dt>
+              <dd>Final sale</dd>
+            </div>
+          </dl>
+
+          <div className="mt-8">
+            <p className="jm-product-gallery__label mb-3">Select your colour</p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setCustomColourOpen(false)}
+                className={`jm-product-gallery__size ${
+                  !customColourOpen ? "jm-product-gallery__size--active" : ""
+                }`}
+              >
+                Original colour
+              </button>
+              <button
+                type="button"
+                onClick={() => setCustomColourOpen((open) => !open)}
+                className={`jm-product-gallery__size ${
+                  customColourOpen ? "jm-product-gallery__size--active" : ""
+                }`}
+                aria-expanded={customColourOpen}
+              >
+                Custom colour
+              </button>
+            </div>
+            <AnimatePresence initial={false}>
+              {customColourOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: EASE }}
+                  className="overflow-hidden"
+                >
+                  <div className="jm-product-gallery__panel">
+                    <p>Make it yours in a shade of your choice. Enquire with our atelier to explore available colour options for this piece.</p>
+                    <Link href={enquiryHref}>Enquire about colour</Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          )}
 
           <div className="mt-8">
             <div className="mb-3 flex items-center justify-between">
-              <p className="jm-product-gallery__label">Size</p>
-              <button type="button" className="jm-product-gallery__link underline-offset-2 hover:underline">
+              <p className="jm-product-gallery__label">Select your fit</p>
+              <button
+                type="button"
+                onClick={() => setSizeGuideOpen(true)}
+                className="jm-product-gallery__link underline-offset-2 hover:underline"
+              >
                 Size Guide
               </button>
             </div>
@@ -182,21 +222,49 @@ export function ProductGalleryLayout({
                 <button
                   key={size}
                   type="button"
-                  onClick={() => setSelectedSize(size)}
+                  onClick={() => {
+                    setSelectedSize(size);
+                    setCustomOpen(false);
+                  }}
                   className={`jm-product-gallery__size ${
-                    selectedSize === size ? "jm-product-gallery__size--active" : ""
+                    selectedSize === size && !customOpen ? "jm-product-gallery__size--active" : ""
                   }`}
                 >
                   {size}
                 </button>
               ))}
             </div>
-            {product.sizeNote && (
+            {product.sizeNote && !customOpen ? (
               <p className="mt-2 text-[11px] leading-relaxed text-black/55">{product.sizeNote}</p>
-            )}
-            <button type="button" className="jm-product-gallery__outline-btn mt-2 w-full">
-              Custom Size
+            ) : null}
+            <button
+              type="button"
+              onClick={() => setCustomOpen((open) => !open)}
+              className={`jm-product-gallery__outline-btn mt-2 w-full ${
+                customOpen ? "jm-product-gallery__outline-btn--active" : ""
+              }`}
+              aria-expanded={customOpen}
+            >
+              Custom measurements
             </button>
+            <AnimatePresence initial={false}>
+              {customOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: EASE }}
+                  className="overflow-hidden"
+                >
+                  <div className="jm-product-gallery__panel">
+                    <p>Have your piece made specifically for you.</p>
+                    <Link href={enquiryHref} className="jm-product-gallery__checkout">
+                      Continue with custom measurements
+                    </Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="mt-8">
@@ -222,10 +290,6 @@ export function ProductGalleryLayout({
             </div>
           </div>
 
-          <p className="mt-4 text-[11px] text-black/60">
-            Made to order · 7–14 days · final sale
-          </p>
-
           <div className="mt-6 flex flex-col gap-3">
             <AddToCartButton
               slug={product.slug}
@@ -238,10 +302,10 @@ export function ProductGalleryLayout({
               Checkout
             </Link>
             <Link
-              href={`/contact?product=${encodeURIComponent(product.name)}#enquiry`}
+              href={enquiryHref}
               className="text-center text-[11px] tracking-[0.06em] text-black/70 underline underline-offset-4"
             >
-              Custom or made-to-measure — enquire
+              Enquire
             </Link>
           </div>
           <div className="jm-product-gallery__wishlist-row mt-3 flex items-center justify-center gap-2">
@@ -249,14 +313,14 @@ export function ProductGalleryLayout({
             <span className="text-[11px] text-black/70">Add to Wishlist</span>
           </div>
 
-          {product.story || product.fabric ? (
+          {details || product.fabric || product.craft?.length ? (
           <div className="jm-product-gallery__accordion mt-10 pt-6">
             <button
               type="button"
               onClick={() => setDescOpen((o) => !o)}
               className="flex w-full items-center justify-between text-left"
             >
-              <span className="text-[11px] font-medium text-black/75">Product Description</span>
+              <span className="text-[11px] font-medium text-black/75">Product details</span>
               <span className="text-black/55">{descOpen ? "−" : "+"}</span>
             </button>
             <AnimatePresence initial={false}>
@@ -268,12 +332,32 @@ export function ProductGalleryLayout({
                   transition={{ duration: 0.35, ease: EASE }}
                   className="overflow-hidden"
                 >
-                  {product.story ? (
-                    <p className="jm-product-gallery__body mt-4">{product.story}</p>
+                  {details ? (
+                    <div className="mt-4">
+                      <p className="jm-product-gallery__section-label">Description</p>
+                      <p className="jm-product-gallery__body">{details}</p>
+                    </div>
+                  ) : null}
+                  {product.craft && product.craft.length > 0 ? (
+                    <div className="mt-5">
+                      <p className="jm-product-gallery__section-label">Craft</p>
+                      <ul className="jm-product-gallery__list">
+                        {product.craft.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
                   ) : null}
                   {product.fabric ? (
-                    <p className="jm-product-gallery__body mt-4 text-[13px]">{product.fabric}</p>
+                    <div className="mt-5">
+                      <p className="jm-product-gallery__section-label">Fabric</p>
+                      <p className="jm-product-gallery__body">{product.fabric}</p>
+                    </div>
                   ) : null}
+                  <div className="mt-5">
+                    <p className="jm-product-gallery__section-label">Care</p>
+                    <p className="jm-product-gallery__body">{care}</p>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -281,6 +365,53 @@ export function ProductGalleryLayout({
           ) : null}
         </div>
       </div>
+
+      {sizeGuideOpen ? (
+        <div className="jm-size-guide" role="dialog" aria-modal="true" aria-labelledby="size-guide-title">
+          <button
+            type="button"
+            className="jm-size-guide__backdrop"
+            aria-label="Close size guide"
+            onClick={() => setSizeGuideOpen(false)}
+          />
+          <div className="jm-size-guide__sheet">
+            <div className="mb-4 flex items-start justify-between gap-4">
+              <div>
+                <p className="jm-product-gallery__label">Fit</p>
+                <h2 id="size-guide-title" className="jm-product-gallery__title mt-1 text-[1.5rem]">
+                  Size guide
+                </h2>
+              </div>
+              <button type="button" className="jm-product-gallery__link" onClick={() => setSizeGuideOpen(false)}>
+                Close
+              </button>
+            </div>
+            <table className="jm-size-guide__table">
+              <thead>
+                <tr>
+                  <th>Size</th>
+                  <th>Bust</th>
+                  <th>Waist</th>
+                  <th>Hip</th>
+                </tr>
+              </thead>
+              <tbody>
+                {SIZE_GUIDE.map((row) => (
+                  <tr key={row.size}>
+                    <td>{row.size}</td>
+                    <td>{row.bust}</td>
+                    <td>{row.waist}</td>
+                    <td>{row.hip}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="jm-product-gallery__body mt-4 text-[12px]">
+              Standard sizes 6–12. For a made-to-measure fit, choose custom measurements.
+            </p>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

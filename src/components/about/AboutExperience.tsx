@@ -6,7 +6,6 @@ import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import {
   aboutHero,
-  aboutPortraits,
   atelierTimeline,
   craftNote,
   founderStory,
@@ -53,7 +52,11 @@ export function AboutExperience() {
             <h2 id="meaning-title" className="about-display about-display--wide">
               {zvezdaMeaning.title}
             </h2>
-            <p className="about-lead about-lead--center">{zvezdaMeaning.body}</p>
+            <div className="about-prose about-prose--center">
+              {zvezdaMeaning.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+              ))}
+            </div>
           </section>
 
           <section className="about-section about-craft" aria-labelledby="craft-title">
@@ -64,9 +67,11 @@ export function AboutExperience() {
               </h2>
             </div>
             <div className="about-prose">
+              <p className="about-prose__lead">{craftNote.lead}</p>
               {craftNote.paragraphs.map((paragraph) => (
                 <p key={paragraph.slice(0, 48)}>{paragraph}</p>
               ))}
+              <p className="about-prose__closing">{craftNote.closing}</p>
             </div>
           </section>
 
@@ -88,33 +93,8 @@ export function AboutExperience() {
             </ol>
           </section>
 
-          <section className="about-gallery" aria-labelledby="gallery-title">
-            <div className="about-gallery__intro">
-              <p className="about-kicker">The Atelier</p>
-              <h2 id="gallery-title" className="about-display">
-                In pictures
-              </h2>
-            </div>
-            <ul className="about-gallery__grid">
-              {aboutPortraits.map((portrait) => (
-                <li key={portrait.src} className="about-gallery__card">
-                  <figure>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={portrait.src} alt={portrait.alt} />
-                    <figcaption>
-                      <span>{portrait.caption}</span>
-                      <span>{portrait.note}</span>
-                    </figcaption>
-                  </figure>
-                </li>
-              ))}
-            </ul>
-          </section>
-
           <section className="about-close" aria-label="Continue">
-            <p className="about-lead about-lead--center">
-              Every woman deserves to feel like a star.
-            </p>
+            <p className="about-lead about-lead--center">{craftNote.closing}</p>
             <div className="about-close__actions">
               <Link href="/shop" className="about-cta">
                 Shop the collection

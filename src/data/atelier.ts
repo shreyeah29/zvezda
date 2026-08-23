@@ -1,6 +1,6 @@
 export const atelierContact = {
-  careEmail: "care@zvezdaatelier.com",
-  pressEmail: "press@zvezdaatelier.com",
+  careEmail: "atelierzvezda.official@gmail.com",
+  pressEmail: "atelierzvezda.official@gmail.com",
   instagramUrl: "https://www.instagram.com/zvezda_atelier/",
   instagramHandle: "@zvezda_atelier",
   /** International format without +. Empty until a WhatsApp number is provided. */
@@ -28,18 +28,23 @@ export const founderStory = {
 };
 
 export const zvezdaMeaning = {
-  eyebrow: "The Name",
-  title: "What ZVEZDA Means",
-  body: 'ZVEZDA means "star" in Slavic languages. The name captures exactly what every piece is designed to do — make the woman wearing it feel radiant and charming, like a star.',
+  eyebrow: "A Name Inspired by the Stars",
+  title: "ZVEZDA",
+  paragraphs: [
+    'ZVEZDA is the Slavic word for "star". A symbol of grace, quiet confidence, and timeless beauty.',
+    "Our name reflects the essence of every collection: refined silhouettes, exceptional craftsmanship, and pieces designed to illuminate the woman who wears them.",
+  ],
 };
 
 export const craftNote = {
   eyebrow: "Atelier",
-  title: "Crafted with intention",
+  title: "Crafted with Intention",
+  lead: "Luxury begins long before a garment is worn.",
   paragraphs: [
-    "Every ZVEZDA piece is made to order and crafted with intention. From hand-selected fabrics to intricate detailing and finishing, each creation is brought to life by skilled artisans with meticulous care.",
-    "As every piece is individually crafted, subtle variations in colour, texture, embroidery, and finish may occur — making each ZVEZDA creation truly one of a kind.",
+    "Every ZVEZDA piece is thoughtfully designed, meticulously crafted, and finished by skilled artisans who value precision above all else. We believe in creating fewer, better pieces—garments that transcend seasons and become part of a lasting wardrobe.",
+    "From the selection of premium fabrics to the final hand-finished detail, every decision reflects our commitment to excellence.",
   ],
+  closing: "Quiet luxury. Timeless craftsmanship. Uncompromising quality.",
 };
 
 export const atelierTimeline = [
@@ -52,33 +57,6 @@ export const atelierTimeline = [
     year: "2022–Present",
     title: "The atelier",
     body: "ZVEZDA grows from a single dress into a full label and atelier, built on the idea that every woman deserves to feel like a star.",
-  },
-] as const;
-
-export const aboutPortraits = [
-  {
-    src: "/assets/images/home-feature/HSP_6032.jpg",
-    alt: "Editorial still from the ZVEZDA atelier",
-    caption: "The house",
-    note: "Founder portrait of Bindu Reddy to be placed here.",
-  },
-  {
-    src: "/assets/images/products/set-1/HSP_4590.jpg",
-    alt: "Jardin elegance dress — garden green couture gown",
-    caption: "A first silhouette",
-    note: "The original 2022 dress can replace this frame when the archive photograph is ready.",
-  },
-  {
-    src: "/assets/images/home/collection-split/HSP_3336.jpg",
-    alt: "Close study of a ZVEZDA gown",
-    caption: "Atelier & process",
-    note: "Behind-the-scenes making shots belong here.",
-  },
-  {
-    src: "/assets/images/products/set-9/HSP_3218.jpg",
-    alt: "Ivory eclipse — a signature ZVEZDA look",
-    caption: "A signature look",
-    note: "Ivory eclipse, from the debut collection.",
   },
 ] as const;
 

@@ -9,8 +9,9 @@ export default function ReturnsPolicyPage() {
   return (
     <PolicyPageLayout title="Returns & Refunds">
       <p>
-        As most ZVEZDA pieces are made-to-order, all sales are final. We do not accept
-        returns or exchanges due to size, fit, or change of mind.
+        Made-to-order pieces are non-returnable. As most ZVEZDA garments are created
+        specifically for each customer, all sales are final. We do not accept returns or
+        exchanges due to size, fit, or change of mind.
       </p>
 
       <h2>Manufacturing defects</h2>

@@ -149,7 +149,7 @@ export const sets: SetManifest[] = [
     slug: "set-12",
     group: "red",
     collection: "red",
-    photos: ["HSP_5547.jpg", "HSP_5549.jpg", "HSP_5571.jpg", "HSP_5635.jpg", "HSP_5750.jpg"],
+    photos: ["crimson-balcony.jpg", "HSP_5547.jpg", "HSP_5549.jpg", "HSP_5571.jpg", "HSP_5635.jpg", "HSP_5750.jpg"],
     video: "RedDressSolo.mp4",
   },
   {

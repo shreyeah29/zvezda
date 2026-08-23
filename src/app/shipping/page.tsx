@@ -15,14 +15,14 @@ export default function ShippingPolicyPage() {
 
       <h2>Domestic shipping — India</h2>
       <ul>
-        <li>Production time: 7–14 days.</li>
+        <li>Production time: 3–4 weeks.</li>
         <li>Dispatch: orders will be dispatched once the outfit is completed.</li>
         <li>Delivery: approximately 5–7 business days from the date of dispatch.</li>
       </ul>
 
       <h2>International shipping</h2>
       <ul>
-        <li>Production time: 7–14 days.</li>
+        <li>Production time: 3–4 weeks.</li>
         <li>Dispatch: orders will be dispatched once the outfit is completed.</li>
         <li>Delivery: approximately 10–12 business days from the date of dispatch.</li>
       </ul>
@@ -52,7 +52,7 @@ export default function ShippingPolicyPage() {
         <li>Order placed (online checkout or WhatsApp / enquiry confirmed).</li>
         <li>
           In-stock pieces are dispatched within 1–2 business days. Made-to-order pieces take
-          7–14 days to produce after payment is confirmed.
+          3–4 weeks to produce after payment is confirmed.
         </li>
         <li>A shipping confirmation with tracking is sent to the customer.</li>
         <li>

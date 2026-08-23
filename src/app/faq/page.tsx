@@ -16,7 +16,7 @@ export default function FaqPage() {
 
       <h2>How long does production take?</h2>
       <p>
-        Most pieces take 7–14 days to make before shipping. Delivery is then about 5–7
+        Most pieces take 3–4 weeks to make before shipping. Delivery is then about 5–7
         business days domestically, or 10–12 business days internationally. See{" "}
         <a href="/shipping">Shipping</a> for the full breakdown.
       </p>

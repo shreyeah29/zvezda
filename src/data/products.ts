@@ -26,6 +26,8 @@ export type Product = {
   description: string;
   story: string;
   fabric: string;
+  craft?: string[];
+  care?: string;
   hero: string;
   detail: string;
   gallery: string[];
@@ -61,6 +63,10 @@ const SET_SHOP_SLUG: Record<number, string> = {
 const editorialNames: Record<number, string> = {
   4: "Conservatory IV",
   12: "Crimson",
+};
+
+const editorialDescriptions: Record<number, string> = {
+  12: "A sculpted crimson gown cut for presence — open at the back, falling into a generous train that moves like a curtain rising. The silhouette is spare, the colour unapologetic: a couture evening piece designed to hold the room.",
 };
 
 const prices: Record<number, number> = {
@@ -129,9 +135,14 @@ function setToProduct(set: SetManifest): Product {
     priceOptions: shop?.priceOptions,
     sizeOptions: shop?.sizeOptions,
     sizeNote: shop?.sizeNote,
-    description: shop?.description || `${group.label} — couture piece from the Zvezda atelier.`,
+    description:
+      shop?.description ||
+      editorialDescriptions[set.id] ||
+      `${group.label} — couture piece from the Zvezda atelier.`,
     story: shop?.story || stories[set.group],
     fabric: shop?.fabric || fabrics[set.group],
+    craft: shop?.craft,
+    care: shop?.care ?? "Dry clean only",
     hero: setHeroPhoto(set),
     detail,
     gallery: gallery.length > 1 ? gallery.slice(1) : gallery,

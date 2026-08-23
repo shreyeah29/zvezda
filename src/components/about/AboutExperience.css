@@ -50,12 +50,35 @@
   max-width: 38rem;
 }
 
+.about-prose--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.about-prose__lead,
+.about-prose__closing {
+  font-family: var(--font-display), "Cormorant Garamond", Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: #0c0a09;
+}
+
 .about-prose p {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.98rem;
   line-height: 1.75;
   color: rgba(12, 10, 9, 0.68);
+}
+
+.about-prose p.about-prose__lead,
+.about-prose p.about-prose__closing {
+  font-family: var(--font-display), "Cormorant Garamond", Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: #0c0a09;
 }
 
 .about-hero {
