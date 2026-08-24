@@ -1,14 +1,37 @@
-/** Pair the sharp HEVC master with an H.264 fallback for browsers that cannot play HEVC. */
-export function videoSourcePair(src: string) {
-  const isAmbient = src.includes("/videos/products/ambient/");
-  const sharp = isAmbient ? src.replace("/videos/products/ambient/", "/videos/products/") : src;
-  const fallback = isAmbient
-    ? src
-    : src.includes("/videos/products/")
-      ? src.replace("/videos/products/", "/videos/products/ambient/")
-      : src.includes("RedDressSolo")
-        ? "/assets/videos/web/RedDressSolo.mp4"
-        : src;
+/** Pair the sharp HEVC master with a 1080p H.264 fallback for browsers that cannot play HEVC. */
 
-  return { sharp, fallback };
+const PRODUCT_PREFIX = "/assets/videos/products/";
+
+function productRelativePath(src: string): string | null {
+  const markers = [
+    "/assets/videos/products/ambient/",
+    "/assets/videos/products/desktop/",
+    "/assets/videos/products/",
+  ];
+  for (const marker of markers) {
+    const index = src.indexOf(marker);
+    if (index !== -1) {
+      return src.slice(index + marker.length);
+    }
+  }
+  return null;
+}
+
+export function videoSourcePair(src: string) {
+  const rel = productRelativePath(src);
+  if (rel) {
+    return {
+      sharp: `${PRODUCT_PREFIX}${rel}`,
+      fallback: `${PRODUCT_PREFIX}desktop/${rel}`,
+    };
+  }
+
+  if (src.includes("RedDressSolo")) {
+    return {
+      sharp: `${PRODUCT_PREFIX}set-12/RedDressSolo.mp4`,
+      fallback: `${PRODUCT_PREFIX}desktop/set-12/RedDressSolo.mp4`,
+    };
+  }
+
+  return { sharp: src, fallback: src };
 }

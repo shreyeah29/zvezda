@@ -134,12 +134,14 @@ export function ProductGalleryLayout({
           </div>
         </div>
 
-        <div className="order-3 lg:sticky lg:top-24 lg:self-start">
+        <div className="jm-product-gallery__rail order-3 lg:sticky lg:top-24 lg:self-start">
           <p className="jm-product-gallery__label">{collectionTitle ?? product.collectionLabel}</p>
-          <h1 className="jm-product-gallery__title font-product mt-3">{product.name}</h1>
-          <p className="jm-product-gallery__price mt-4">
-            {formatProductPrice(product)}
-          </p>
+          <div className="jm-product-gallery__title-row">
+            <h1 className="jm-product-gallery__title font-product">{product.name}</h1>
+            <p className="jm-product-gallery__price">
+              {formatProductPrice(product)}
+            </p>
+          </div>
           {product.priceOptions && product.priceOptions.length > 1 && (
             <ul className="mt-3 space-y-1">
               {product.priceOptions.map((option) => (
@@ -150,7 +152,7 @@ export function ProductGalleryLayout({
             </ul>
           )}
 
-          <dl className="jm-product-gallery__facts mt-8">
+          <dl className="jm-product-gallery__facts">
             <div>
               <dt>Made to order</dt>
               <dd>Crafted exclusively for you.</dd>
@@ -165,9 +167,9 @@ export function ProductGalleryLayout({
             </div>
           </dl>
 
-          <div className="mt-8">
-            <p className="jm-product-gallery__label mb-3">Select your colour</p>
-            <div className="grid grid-cols-2 gap-2">
+          <div>
+            <p className="jm-product-gallery__section">Select your colour</p>
+            <div className="jm-product-gallery__swatches">
               <button
                 type="button"
                 onClick={() => setCustomColourOpen(false)}
@@ -206,18 +208,18 @@ export function ProductGalleryLayout({
             </AnimatePresence>
           </div>
 
-          <div className="mt-8">
-            <div className="mb-3 flex items-center justify-between">
-              <p className="jm-product-gallery__label">Select your fit</p>
+          <div>
+            <div className="jm-product-gallery__fit-head">
+              <p className="jm-product-gallery__section">Select your fit</p>
               <button
                 type="button"
                 onClick={() => setSizeGuideOpen(true)}
-                className="jm-product-gallery__link underline-offset-2 hover:underline"
+                className="jm-product-gallery__link"
               >
                 Size Guide
               </button>
             </div>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="jm-product-gallery__sizes">
               {sizeChoices.map((size) => (
                 <button
                   key={size}
@@ -240,7 +242,7 @@ export function ProductGalleryLayout({
             <button
               type="button"
               onClick={() => setCustomOpen((open) => !open)}
-              className={`jm-product-gallery__outline-btn mt-2 w-full ${
+              className={`jm-product-gallery__outline-btn ${
                 customOpen ? "jm-product-gallery__outline-btn--active" : ""
               }`}
               aria-expanded={customOpen}
@@ -267,9 +269,8 @@ export function ProductGalleryLayout({
             </AnimatePresence>
           </div>
 
-          <div className="mt-8">
-            <p className="jm-product-gallery__label mb-3">Quantity</p>
-            <div className="jm-product-gallery__qty inline-flex items-center">
+          <div className="jm-product-gallery__buy">
+            <div className="jm-product-gallery__qty">
               <button
                 type="button"
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -278,7 +279,7 @@ export function ProductGalleryLayout({
               >
                 −
               </button>
-              <span className="min-w-[2.5rem] text-center text-[12px] font-medium">{quantity}</span>
+              <span className="jm-product-gallery__qty-value">{quantity}</span>
               <button
                 type="button"
                 onClick={() => setQuantity((q) => q + 1)}
@@ -288,40 +289,36 @@ export function ProductGalleryLayout({
                 +
               </button>
             </div>
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3">
             <AddToCartButton
               slug={product.slug}
               quantity={quantity}
               size={selectedSize}
-              className="flex-1"
+              className="jm-product-gallery__bag"
               label="Add to Bag"
             />
-            <Link href="/cart" className="jm-product-gallery__checkout flex-1">
-              Checkout
-            </Link>
-            <Link
-              href={enquiryHref}
-              className="text-center text-[11px] tracking-[0.06em] text-black/70 underline underline-offset-4"
-            >
+          </div>
+          <Link href="/cart" className="jm-product-gallery__checkout">
+            Checkout
+          </Link>
+          <div className="jm-product-gallery__actions">
+            <Link href={enquiryHref} className="jm-product-gallery__enquire">
               Enquire
             </Link>
-          </div>
-          <div className="jm-product-gallery__wishlist-row mt-3 flex items-center justify-center gap-2">
-            <WishlistButton slug={product.slug} size="sm" />
-            <span className="text-[11px] text-black/70">Add to Wishlist</span>
+            <div className="jm-product-gallery__wishlist">
+              <WishlistButton slug={product.slug} size="sm" />
+              <span>Add to Wishlist</span>
+            </div>
           </div>
 
           {details || product.fabric || product.craft?.length ? (
-          <div className="jm-product-gallery__accordion mt-10 pt-6">
+          <div className="jm-product-gallery__accordion">
             <button
               type="button"
               onClick={() => setDescOpen((o) => !o)}
-              className="flex w-full items-center justify-between text-left"
+              className="jm-product-gallery__accordion-trigger"
             >
-              <span className="text-[11px] font-medium text-black/75">Product details</span>
-              <span className="text-black/55">{descOpen ? "−" : "+"}</span>
+              <span className="jm-product-gallery__accordion-label">Product details</span>
+              <span className="jm-product-gallery__accordion-icon">{descOpen ? "−" : "+"}</span>
             </button>
             <AnimatePresence initial={false}>
               {descOpen && (
@@ -332,14 +329,15 @@ export function ProductGalleryLayout({
                   transition={{ duration: 0.35, ease: EASE }}
                   className="overflow-hidden"
                 >
+                  <div className="jm-product-gallery__accordion-body">
                   {details ? (
-                    <div className="mt-4">
+                    <div>
                       <p className="jm-product-gallery__section-label">Description</p>
                       <p className="jm-product-gallery__body">{details}</p>
                     </div>
                   ) : null}
                   {product.craft && product.craft.length > 0 ? (
-                    <div className="mt-5">
+                    <div>
                       <p className="jm-product-gallery__section-label">Craft</p>
                       <ul className="jm-product-gallery__list">
                         {product.craft.map((item) => (
@@ -349,14 +347,15 @@ export function ProductGalleryLayout({
                     </div>
                   ) : null}
                   {product.fabric ? (
-                    <div className="mt-5">
+                    <div>
                       <p className="jm-product-gallery__section-label">Fabric</p>
                       <p className="jm-product-gallery__body">{product.fabric}</p>
                     </div>
                   ) : null}
-                  <div className="mt-5">
+                  <div>
                     <p className="jm-product-gallery__section-label">Care</p>
                     <p className="jm-product-gallery__body">{care}</p>
+                  </div>
                   </div>
                 </motion.div>
               )}

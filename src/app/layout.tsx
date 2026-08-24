@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Cormorant_Garamond, Instrument_Serif, Inter, Montserrat } from "next/font/google";
+import { Bodoni_Moda, Cormorant_Garamond, Instrument_Serif, Inter, Italiana, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { CommerceProvider } from "@/context/CommerceContext";
@@ -36,6 +36,12 @@ const product = Bodoni_Moda({
   subsets: ["latin"],
   variable: "--font-product",
   weight: ["400", "500"],
+});
+
+const italiana = Italiana({
+  subsets: ["latin"],
+  variable: "--font-section",
+  weight: "400",
 });
 
 const bright = localFont({
@@ -82,7 +88,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${kinetic.variable} ${editorial.variable} ${product.variable} ${bright.variable} ${against.variable} ${tempting.variable} ${modernRomance.variable} h-full`}
+      className={`${display.variable} ${body.variable} ${kinetic.variable} ${editorial.variable} ${product.variable} ${italiana.variable} ${bright.variable} ${against.variable} ${tempting.variable} ${modernRomance.variable} h-full`}
     >
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <a href="#main-content" className="skip-link">

@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { Mp4Sources } from "@/components/media/Mp4Sources";
 import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "./HomeCollectionFeature.css";
 
 const FEATURE_IMAGE = "/assets/images/home/collection-split/HSP_3336.jpg";
-const FEATURE_VIDEO = "/assets/videos/film/White&BlackTrio.mp4";
+const FEATURE_VIDEO = "/assets/videos/products/set-8/White&Black1.mp4";
 
 export function HomeCollectionFeature() {
   const featureVideoRef = useInlineVideoAutoplay();
@@ -33,7 +34,7 @@ export function HomeCollectionFeature() {
             disablePictureInPicture
             className="jm-collection-feature__media jm-collection-feature__video"
           >
-            <source src={FEATURE_VIDEO} type="video/mp4" />
+            <Mp4Sources src={FEATURE_VIDEO} />
           </video>
           <span className="jm-feature-play" aria-hidden="true" />
           <span className="jm-feature-mobile-label">Watch the film</span>
