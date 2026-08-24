@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setVideoPath, getSet, setHeroPhoto } from "@/data/sets";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,12 +14,12 @@ const stillSet = getSet(1)!;
 
 export function HeroScene() {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const stillRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
 
   const heroVideo = setVideoPath(heroSet)!;
   const heroStill = setHeroPhoto(stillSet);
+  const videoRef = useInlineVideoAutoplay(heroVideo);
 
   useEffect(() => {
     const section = sectionRef.current;

@@ -9,7 +9,7 @@ const FEATURE_IMAGE = "/assets/images/home/collection-split/HSP_3336.jpg";
 const FEATURE_VIDEO = "/assets/videos/products/set-8/White&Black1.mp4";
 
 export function HomeCollectionFeature() {
-  const featureVideoRef = useInlineVideoAutoplay();
+  const featureVideoRef = useInlineVideoAutoplay(FEATURE_VIDEO);
 
   return (
     <section className="jm-collection-feature" aria-label="New collection">

@@ -9,7 +9,7 @@ const FEATURE_IMAGE = "/assets/images/home-feature/HSP_6032.jpg";
 const FEATURE_VIDEO = "/assets/videos/products/set-15/PinkSolo1.mp4";
 
 export function HomePinkCollectionFeature() {
-  const featureVideoRef = useInlineVideoAutoplay();
+  const featureVideoRef = useInlineVideoAutoplay(FEATURE_VIDEO);
 
   return (
     <section className="jm-collection-feature jm-collection-feature--pink" aria-label="Pink collection">

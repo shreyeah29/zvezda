@@ -19,6 +19,12 @@
   color: #2e2e2e;
 }
 
+@media (max-width: 768px) {
+  .product-related__heading {
+    white-space: normal;
+  }
+}
+
 .product-related__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

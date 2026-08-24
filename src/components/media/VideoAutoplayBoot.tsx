@@ -11,6 +11,23 @@ export function VideoAutoplayBoot() {
   useEffect(() => {
     playAllVideos();
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) playInlineVideo(entry.target as HTMLVideoElement);
+        });
+      },
+      { threshold: 0.01 },
+    );
+
+    const watch = () => {
+      document.querySelectorAll("video").forEach((video) => observer.observe(video));
+    };
+    watch();
+
+    const mutations = new MutationObserver(watch);
+    mutations.observe(document.body, { childList: true, subtree: true });
+
     const onFirstGesture = () => playAllVideos();
     document.addEventListener("touchstart", onFirstGesture, { once: true, passive: true });
     document.addEventListener("click", onFirstGesture, { once: true, passive: true });
@@ -22,6 +39,8 @@ export function VideoAutoplayBoot() {
     window.addEventListener("pageshow", playAllVideos);
 
     return () => {
+      observer.disconnect();
+      mutations.disconnect();
       document.removeEventListener("touchstart", onFirstGesture);
       document.removeEventListener("click", onFirstGesture);
       document.removeEventListener("visibilitychange", onVisibility);

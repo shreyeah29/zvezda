@@ -269,6 +269,7 @@ export function ProductGalleryLayout({
             </AnimatePresence>
           </div>
 
+          <p className="jm-product-gallery__qty-label">Quantity</p>
           <div className="jm-product-gallery__buy">
             <div className="jm-product-gallery__qty">
               <button

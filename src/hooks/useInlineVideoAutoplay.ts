@@ -3,8 +3,10 @@ import { useEffect, useRef } from "react";
 function prepare(video: HTMLVideoElement) {
   video.muted = true;
   video.defaultMuted = true;
+  video.autoplay = true;
   video.playsInline = true;
   video.setAttribute("muted", "");
+  video.setAttribute("autoplay", "");
   video.setAttribute("playsinline", "");
   video.setAttribute("webkit-playsinline", "");
   video.removeAttribute("controls");
@@ -41,7 +43,7 @@ export function useInlineVideoAutoplay(src?: string) {
       ([entry]) => {
         if (entry?.isIntersecting) playVideo();
       },
-      { threshold: 0.05 },
+      { threshold: 0.01 },
     );
     observer.observe(video);
 
