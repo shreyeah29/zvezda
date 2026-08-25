@@ -21,12 +21,19 @@ const JM_LINKS = [
   { href: "/collections", label: "Collections" },
 ];
 
+const ABOUT_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/collections", label: "Collections" },
+  { href: "/about", label: "About" },
+];
+
 /** Keep header visible only near the very top of the page. */
 const TOP_VISIBLE_PX = 24;
 
 export function Navigation() {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isAbout = pathname === "/about";
   const isProductPage = pathname.startsWith("/products/");
   const hasHeroOverlay = isHome || isProductPage;
   const { cartCount, cartPulse } = useCommerce();
@@ -36,6 +43,7 @@ export function Navigation() {
   const [headerVisible, setHeaderVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartBurst, setCartBurst] = useState(false);
+  const [pageProgress, setPageProgress] = useState(0);
 
   useEffect(() => {
     setDisplayCount(cartCount);
@@ -59,12 +67,17 @@ export function Navigation() {
 
     const updateFromScroll = () => {
       const y = getScrollY();
-      setHeaderVisible(y <= TOP_VISIBLE_PX);
+      setHeaderVisible(isAbout || y <= TOP_VISIBLE_PX);
 
       if (hasHeroOverlay) {
         setHeroOverlayNav(y < window.innerHeight * 0.85);
       } else {
         setHeroOverlayNav(false);
+      }
+
+      if (isAbout) {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        setPageProgress(max > 0 ? Math.min(1, Math.max(0, y / max)) : 0);
       }
     };
 
@@ -99,11 +112,14 @@ export function Navigation() {
       window.removeEventListener("touchmove", updateFromScroll);
       lenisCleanup?.();
     };
-  }, [hasHeroOverlay, pathname]);
+  }, [hasHeroOverlay, isAbout, pathname]);
 
-  const showHeader = headerVisible || cartOpen;
+  const showHeader = isAbout || headerVisible || cartOpen;
   const heroOverlay = hasHeroOverlay && heroOverlayNav;
   const mutedClass = heroOverlay ? "text-white/80 hover:text-white" : "text-black/70 hover:text-black";
+  const centreLinks = isAbout ? ABOUT_LINKS : JM_LINKS;
+  const linkIsActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <>
@@ -111,12 +127,19 @@ export function Navigation() {
       <FlyToWishlistLayer />
       <MiniCart open={cartOpen} onClose={() => setCartOpen(false)} />
 
+      {isAbout ? (
+        <div className="about-nav-progress" aria-hidden="true">
+          <span style={{ transform: `scaleX(${pageProgress})` }} />
+        </div>
+      ) : null}
+
       <header
         className={cn(
           "pointer-events-none fixed top-0 right-0 left-0 z-50 bg-transparent px-4 md:px-6",
           "jm-nav-header",
           showHeader ? "jm-nav-header--visible" : "jm-nav-header--hidden",
           heroOverlay && "jm-nav-header--on-hero",
+          isAbout && "jm-nav-header--about",
         )}
       >
         <div className="pointer-events-auto mx-auto flex w-full max-w-[100%] items-center justify-between py-2.5">
@@ -131,11 +154,15 @@ export function Navigation() {
           </Link>
 
           <nav className="jm-nav__links hidden lg:flex" aria-label="Primary">
-            {JM_LINKS.map((link) => (
+            {centreLinks.map((link) => (
               <Link
                 key={`${link.href}-${link.label}`}
                 href={link.href}
-                className={cn("jm-nav__link jm-nav__shop", mutedClass)}
+                className={cn(
+                  "jm-nav__link jm-nav__shop",
+                  mutedClass,
+                  isAbout && linkIsActive(link.href) && "is-active",
+                )}
               >
                 {link.label}
               </Link>
@@ -198,6 +225,7 @@ export function Navigation() {
               onOpenCart={() => setCartOpen(true)}
               open={menuOpen}
               onOpenChange={setMenuOpen}
+              includeAbout={isAbout}
             />
           </div>
         </div>
@@ -211,11 +239,13 @@ function JacquemusMobileNav({
   onOpenCart,
   open,
   onOpenChange,
+  includeAbout = false,
 }: {
   heroOverlay: boolean;
   onOpenCart: () => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  includeAbout?: boolean;
 }) {
   const [mounted, setMounted] = useState(false);
   const lineClass = heroOverlay ? "bg-white/85" : "bg-black/80";
@@ -255,7 +285,7 @@ function JacquemusMobileNav({
               </div>
               <nav className="jm-mobile-menu__nav" aria-label="Mobile">
                 {[
-                  ...JM_LINKS,
+                  ...(includeAbout ? ABOUT_LINKS : JM_LINKS),
                   { href: "/shop", label: "Shop" },
                   { href: "/wishlist", label: "Wishlist" },
                 ].map((link) => (

@@ -1,112 +1,360 @@
 "use client";
 
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
-import { SessionLoadGate } from "@/components/layout/SessionLoadGate";
-import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
+import { AboutFilm } from "@/components/about/AboutFilm";
+import { useAboutPinProgress } from "@/hooks/useAboutPinProgress";
 import {
-  aboutHero,
+  aboutArchive,
+  aboutMarqueeItems,
+  aboutMedia,
+  atelierContact,
+  atelierCraft,
   atelierTimeline,
-  craftNote,
   founderStory,
-  zvezdaMeaning,
+  zvezdaNameReveal,
 } from "@/data/atelier";
-import "@/components/home/jacquemus/jacquemus-theme.css";
 import "./AboutExperience.css";
 
-export function AboutExperience() {
+const HERO_LINES = ["Feel", "like", "a star"] as const;
+const MARQUEE_LOOP = [...aboutMarqueeItems, ...aboutMarqueeItems];
+
+function MaskLine({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <SessionLoadGate>
-      <SmoothScroll>
-        <main id="main-content" className="about-page jacquemus-home">
-          <section className="about-hero" aria-labelledby="about-hero-title">
-            <div className="about-hero__media">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={aboutHero.image} alt={aboutHero.imageAlt} />
+    <span className={className ? `about-mask ${className}` : "about-mask"}>
+      <span className="about-mask__in">{children}</span>
+    </span>
+  );
+}
+
+export function AboutExperience() {
+  return <AboutScroll />;
+}
+
+function AboutScroll() {
+  const rootRef = useRef<HTMLElement>(null);
+  const heroStickyRef = useRef<HTMLDivElement>(null);
+  const [heroReady, setHeroReady] = useState(false);
+  const [drift, setDrift] = useState({ x: 0, y: 0 });
+
+  useAboutPinProgress(rootRef);
+
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const id = window.setTimeout(() => setHeroReady(true), reduce ? 0 : 80);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    const sticky = heroStickyRef.current;
+    if (!sticky) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    const onMove = (event: PointerEvent) => {
+      const rect = sticky.getBoundingClientRect();
+      const nx = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+      const ny = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+      setDrift({
+        x: Math.max(-1, Math.min(1, nx)) * 16,
+        y: Math.max(-1, Math.min(1, ny)) * 10,
+      });
+    };
+
+    sticky.addEventListener("pointermove", onMove);
+    return () => sticky.removeEventListener("pointermove", onMove);
+  }, []);
+
+  return (
+    <main
+      ref={rootRef}
+      id="main-content"
+      className={heroReady ? "about-page is-ready" : "about-page"}
+    >
+      <section
+        className="about-pin about-hero"
+        data-about-pin
+        aria-labelledby="about-hero-title"
+        style={{ viewTimelineName: "--about-hero" } as CSSProperties}
+      >
+        <div ref={heroStickyRef} className="about-pin__sticky about-hero__sticky">
+          <div className="about-hero__grid">
+            <div className="about-hero__cell about-hero__cell--left">
+              <div
+                className="about-hero__drift about-hero__clip about-hero__clip--left"
+                style={{ transform: `translate3d(${drift.x}px, ${drift.y}px, 0)` }}
+              >
+                <AboutFilm
+                  image={aboutMedia.heroLeft.image}
+                  video={aboutMedia.heroLeft.video}
+                  alt={aboutMedia.heroLeft.alt}
+                />
+              </div>
             </div>
-            <div className="about-hero__copy">
-              <p className="about-kicker">{aboutHero.eyebrow}</p>
+
+            <div className="about-hero__type">
               <h1 id="about-hero-title" className="about-hero__title">
-                {aboutHero.title}
+                {HERO_LINES.map((line) => (
+                  <MaskLine key={line} className="about-hero__line">
+                    {line}
+                  </MaskLine>
+                ))}
               </h1>
+              <span className="about-rule about-rule--hero" aria-hidden="true" />
+              <p className="about-hero__sub">
+                A made-to-order house of quiet luxury.
+              </p>
             </div>
-          </section>
 
-          <section className="about-section about-founder" aria-labelledby="founder-title">
-            <div className="about-founder__intro">
-              <p className="about-kicker">{founderStory.eyebrow}</p>
-              <h2 id="founder-title" className="about-display">
-                {founderStory.name}
-              </h2>
-              <p className="about-lead">{founderStory.intro}</p>
+            <div className="about-hero__cell about-hero__cell--right">
+              <div
+                className="about-hero__drift about-hero__clip about-hero__clip--right"
+                style={{ transform: `translate3d(${-drift.x}px, ${-drift.y}px, 0)` }}
+              >
+                <AboutFilm
+                  image={aboutMedia.heroRight.image}
+                  video={aboutMedia.heroRight.video}
+                  alt={aboutMedia.heroRight.alt}
+                />
+              </div>
             </div>
-            <div className="about-prose">
-              {founderStory.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-              ))}
-            </div>
-          </section>
+          </div>
+        </div>
+      </section>
 
-          <section className="about-meaning" aria-labelledby="meaning-title">
-            <p className="about-kicker">{zvezdaMeaning.eyebrow}</p>
-            <h2 id="meaning-title" className="about-display about-display--wide">
-              {zvezdaMeaning.title}
+      <div className="about-marquee" aria-hidden="true">
+        <div className="about-marquee__track">
+          {MARQUEE_LOOP.map((item, i) => (
+            <span key={`${item}-${i}`} className="about-marquee__item">
+              {item}
+              <span className="about-marquee__star">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <section
+        className="about-pin about-founder"
+        data-about-pin
+        aria-labelledby="founder-title"
+        style={{ viewTimelineName: "--about-founder" } as CSSProperties}
+      >
+        <div className="about-pin__sticky about-founder__sticky">
+          <div className="about-founder__copy">
+            <p className="about-eyebrow">Founder</p>
+            <h2 id="founder-title" className="about-founder__name">
+              <MaskLine>Bindu</MaskLine>
+              <MaskLine>Reddy</MaskLine>
             </h2>
-            <div className="about-prose about-prose--center">
-              {zvezdaMeaning.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-              ))}
+            <p className="about-founder__lead">{founderStory.intro}</p>
+            <span className="about-rule about-rule--founder" aria-hidden="true" />
+          </div>
+          <div className="about-founder__portrait">
+            <div className="about-founder__wipe">
+              <AboutFilm image={aboutMedia.founder.image} alt={aboutMedia.founder.alt} />
             </div>
-          </section>
+          </div>
+        </div>
+      </section>
 
-          <section className="about-section about-craft" aria-labelledby="craft-title">
-            <div>
-              <p className="about-kicker">{craftNote.eyebrow}</p>
-              <h2 id="craft-title" className="about-display">
-                {craftNote.title}
-              </h2>
+      <section
+        className="about-pin about-lens-pin"
+        data-about-pin
+        aria-labelledby="atelier-film-label"
+        style={{ viewTimelineName: "--about-film" } as CSSProperties}
+      >
+        <div className="about-pin__sticky about-lens-pin__sticky">
+          <p id="atelier-film-label" className="about-lens__label">
+            The Atelier Film
+          </p>
+          <div className="about-lens">
+            <div className="about-lens__frame">
+              <div className="about-lens__media">
+                <AboutFilm
+                  image={aboutMedia.atelierFilm.image}
+                  video={aboutMedia.atelierFilm.video}
+                  alt={aboutMedia.atelierFilm.alt}
+                />
+              </div>
             </div>
-            <div className="about-prose">
-              <p className="about-prose__lead">{craftNote.lead}</p>
-              {craftNote.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-              ))}
-              <p className="about-prose__closing">{craftNote.closing}</p>
-            </div>
-          </section>
+          </div>
+          <p className="about-lens__quote">Every piece begins as a conversation.</p>
+        </div>
+      </section>
 
-          <section className="about-timeline" aria-labelledby="timeline-title">
-            <p className="about-kicker">Timeline</p>
-            <h2 id="timeline-title" className="about-display">
-              The house, so far
+      <section
+        className="about-pin about-story"
+        data-about-pin
+        aria-labelledby="story-title"
+        style={{ viewTimelineName: "--about-story" } as CSSProperties}
+      >
+        <div className="about-story__grid">
+          <div className="about-story__aside">
+            <h2 id="story-title" className="about-story__label">
+              The Story
             </h2>
-            <ol className="about-timeline__list">
-              {atelierTimeline.map((entry) => (
-                <li key={entry.year} className="about-timeline__item">
-                  <p className="about-timeline__year">{entry.year}</p>
-                  <div>
-                    <h3 className="about-timeline__title">{entry.title}</h3>
-                    <p className="about-timeline__body">{entry.body}</p>
-                  </div>
+            <span className="about-story__rule" aria-hidden="true" />
+          </div>
+          <div className="about-story__copy">
+            {founderStory.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="about-pin about-kinetic"
+        data-about-pin
+        aria-label="Quiet luxury, effortless femininity"
+        style={{ viewTimelineName: "--about-kinetic" } as CSSProperties}
+      >
+        <div className="about-pin__sticky about-kinetic__sticky">
+          <p className="about-kinetic__line about-kinetic__line--solid">
+            Quiet luxury · Effortless femininity
+          </p>
+          <p className="about-kinetic__line about-kinetic__line--ghost">
+            Timeless silhouettes · Made to order
+          </p>
+        </div>
+      </section>
+
+      <section
+        className="about-pin about-name"
+        data-about-pin
+        aria-labelledby="name-title"
+        style={{ viewTimelineName: "--about-name" } as CSSProperties}
+      >
+        <div className="about-pin__sticky about-name__sticky">
+          <h2 id="name-title" className="about-name__sentence">
+            {zvezdaNameReveal.words.map((word) => (
+              <MaskLine key={word} className="about-name__word">
+                {word}
+              </MaskLine>
+            ))}
+          </h2>
+          <span className="about-rule about-rule--name" aria-hidden="true" />
+          <p className="about-name__caption">{zvezdaNameReveal.caption}</p>
+        </div>
+      </section>
+
+      <section
+        className="about-pin about-archive"
+        data-about-pin
+        aria-labelledby="archive-title"
+        style={{ viewTimelineName: "--about-archive" } as CSSProperties}
+      >
+        <div className="about-pin__sticky about-archive__sticky">
+          <h2 id="archive-title" className="about-archive__heading">
+            The Archive
+          </h2>
+          <div className="about-archive__viewport">
+            <ul className="about-archive__track">
+              {aboutArchive.map((frame) => (
+                <li key={frame.index} className="about-archive__item">
+                  <figure>
+                    <div className="about-archive__frame">
+                      <AboutFilm
+                        image={frame.image}
+                        video={"video" in frame ? frame.video : undefined}
+                        alt={frame.alt}
+                      />
+                    </div>
+                    <figcaption>
+                      <span>{frame.caption}</span>
+                      <span>{frame.index}</span>
+                    </figcaption>
+                  </figure>
                 </li>
               ))}
-            </ol>
-          </section>
+            </ul>
+          </div>
+          <div className="about-archive__progress" aria-hidden="true">
+            <span />
+          </div>
+        </div>
+      </section>
 
-          <section className="about-close" aria-label="Continue">
-            <p className="about-lead about-lead--center">{craftNote.closing}</p>
-            <div className="about-close__actions">
-              <Link href="/shop" className="about-cta">
-                Shop the collection
-              </Link>
-              <Link href="/contact#enquiry" className="about-cta about-cta--ghost">
-                Enquire
-              </Link>
-            </div>
-          </section>
-        </main>
-        <JacquemusFooter />
-      </SmoothScroll>
-    </SessionLoadGate>
+      <section
+        className="about-pin about-atelier"
+        data-about-pin
+        aria-labelledby="atelier-title"
+        style={{ viewTimelineName: "--about-atelier" } as CSSProperties}
+      >
+        <div className="about-atelier__inner">
+          <p className="about-eyebrow">{atelierCraft.eyebrow}</p>
+          <h2 id="atelier-title" className="about-atelier__title">
+            {atelierCraft.titleLines.map((line) => (
+              <MaskLine key={line}>{line}</MaskLine>
+            ))}
+          </h2>
+          <div className="about-atelier__prose">
+            {atelierCraft.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 36)}>{paragraph}</p>
+            ))}
+          </div>
+          <ol className="about-atelier__timeline">
+            {atelierTimeline.map((entry) => (
+              <li key={entry.year}>
+                <p className="about-atelier__year">{entry.year}</p>
+                <h3>{entry.title}</h3>
+                <p>{entry.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section
+        className="about-pin about-close"
+        data-about-pin
+        aria-labelledby="close-title"
+        style={{ viewTimelineName: "--about-close" } as CSSProperties}
+      >
+        <div className="about-pin__sticky about-close__sticky">
+          <div className="about-close__col about-close__col--left">
+            <AboutFilm
+              image={aboutMedia.closeLeft.image}
+              video={aboutMedia.closeLeft.video}
+              alt={aboutMedia.closeLeft.alt}
+            />
+          </div>
+          <div className="about-close__invite">
+            <h2 id="close-title">Begin a piece of your own.</h2>
+            <span className="about-rule about-rule--close" aria-hidden="true" />
+            <Link href="/contact#enquiry" className="about-enquire">
+              Enquire with the atelier
+            </Link>
+          </div>
+          <div className="about-close__col about-close__col--right">
+            <AboutFilm
+              image={aboutMedia.closeRight.image}
+              video={aboutMedia.closeRight.video}
+              alt={aboutMedia.closeRight.alt}
+            />
+          </div>
+        </div>
+      </section>
+
+      <footer className="about-footer">
+        <p>ZVEZDA Atelier — Est. 2022</p>
+        <nav aria-label="About footer">
+          <a
+            href={atelierContact.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Instagram
+          </a>
+          <Link href="/contact">Contact</Link>
+          <Link href="/shipping">Shipping</Link>
+        </nav>
+      </footer>
+    </main>
   );
 }

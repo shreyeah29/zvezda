@@ -47,6 +47,105 @@ export const craftNote = {
   closing: "Quiet luxury. Timeless craftsmanship. Uncompromising quality.",
 };
 
+export const atelierCraft = {
+  eyebrow: "Atelier",
+  titleLines: ["Crafted with", "intention"] as const,
+  paragraphs: [
+    "Every ZVEZDA piece is made to order in a single atelier — cut, sewn, and hand-finished one garment at a time. Nothing is produced until it is spoken for.",
+    "Because each piece is made by hand, slight variation is not a flaw. It is the natural signature of craft — the proof that a person, not a factory, made it.",
+  ],
+};
+
+export const zvezdaNameReveal = {
+  words: ["ZVEZDA", "means", "“star”", "in", "Slavic", "languages."] as const,
+  caption:
+    "make the woman wearing it feel radiant and charming, like a star",
+};
+
+export const aboutMarqueeItems = [
+  "MADE TO ORDER",
+  "ONE PIECE AT A TIME",
+  "HAND FINISHED",
+  "EST. 2022",
+  "QUIET LUXURY",
+  "SINGLE ATELIER",
+] as const;
+
+export const aboutMedia = {
+  heroLeft: {
+    image: "/assets/images/shop/eclipse-royale/HSP_2982.jpg",
+    video: "/assets/videos/products/set-8/White&Black1.mp4",
+    alt: "Ivory and black gown in motion",
+  },
+  heroRight: {
+    image: "/assets/images/shop/carmine-ascend/IMG_6792.jpg",
+    video: "/assets/videos/products/set-12/RedDressSolo.mp4",
+    alt: "Crimson gown, a first silhouette",
+  },
+  founder: {
+    image: "/assets/images/shop/carmine-ascend/IMG_9950.jpg",
+    alt: "A ZVEZDA piece worn with presence",
+  },
+  atelierFilm: {
+    image: "/assets/images/shop/carmine-ascend/IMG_6791.jpg",
+    video: "/assets/videos/products/set-12/RedDressSolo.mp4",
+    alt: "The atelier film",
+  },
+  closeLeft: {
+    image: "/assets/images/products/set-15/HSP_4946.jpg",
+    video: "/assets/videos/products/set-15/PinkSolo1.mp4",
+    alt: "Blush satin in motion",
+  },
+  closeRight: {
+    image: "/assets/images/home-feature/HSP_6032.jpg",
+    video: "/assets/videos/products/set-1/GardenSolo3.mp4",
+    alt: "Garden silk, a quiet evening",
+  },
+} as const;
+
+export const aboutArchive = [
+  {
+    caption: "The house",
+    index: "01",
+    image: "/assets/images/home-feature/HSP_6032.jpg",
+    video: "/assets/videos/products/set-1/GardenSolo3.mp4",
+    alt: "The house — garden silk",
+  },
+  {
+    caption: "A first silhouette",
+    index: "02",
+    image: "/assets/images/shop/carmine-ascend/IMG_6791.jpg",
+    video: "/assets/videos/products/set-12/RedDressSolo.mp4",
+    alt: "A first silhouette in crimson",
+  },
+  {
+    caption: "Atelier & process",
+    index: "03",
+    image: "/assets/images/film-web/HSP_3677.jpg",
+    alt: "Atelier and process",
+  },
+  {
+    caption: "Fabric in motion",
+    index: "04",
+    image: "/assets/images/products/set-15/HSP_4946.jpg",
+    video: "/assets/videos/products/set-15/PinkSolo1.mp4",
+    alt: "Fabric in motion",
+  },
+  {
+    caption: "Hand finishing",
+    index: "05",
+    image: "/assets/images/film-web/HSP_4408.jpg",
+    alt: "Hand finishing",
+  },
+  {
+    caption: "The wearer",
+    index: "06",
+    image: "/assets/images/shop/eclipse-royale/HSP_2982.jpg",
+    video: "/assets/videos/products/set-8/White&Black1.mp4",
+    alt: "The wearer",
+  },
+] as const;
+
 export const atelierTimeline = [
   {
     year: "2022",
@@ -54,7 +153,7 @@ export const atelierTimeline = [
     body: "The first ZVEZDA piece is made for a personal event.",
   },
   {
-    year: "2022–Present",
+    year: "2022—Now",
     title: "The atelier",
     body: "ZVEZDA grows from a single dress into a full label and atelier, built on the idea that every woman deserves to feel like a star.",
   },

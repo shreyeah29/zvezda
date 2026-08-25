@@ -22,6 +22,55 @@
   visibility: visible;
 }
 
+.jm-nav-header--about {
+  background: rgba(253, 252, 251, 0.7) !important;
+  backdrop-filter: blur(18px) saturate(1.15);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+}
+
+.jm-nav-header--about .jm-nav__link {
+  font-family: var(--font-jost), "Jost", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+}
+
+.jm-nav-header--about .jm-nav__link.is-active {
+  position: relative;
+  color: #0c0a09;
+  box-shadow: none;
+}
+
+.jm-nav-header--about .jm-nav__link.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0.1rem;
+  right: 0.1rem;
+  bottom: 0.65rem;
+  height: 1px;
+  background: #8b1a2b;
+}
+
+.about-nav-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: 2px;
+  pointer-events: none;
+  background: transparent;
+}
+
+.about-nav-progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: #8b1a2b;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
 @media (min-width: 769px) {
   .jm-nav-header--hidden {
     transform: translate3d(0, -110%, 0) !important;

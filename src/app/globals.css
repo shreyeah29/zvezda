@@ -33,6 +33,25 @@
     min-height: -webkit-fill-available;
   }
 
+  html.about-page-active,
+  html.about-page-active body {
+    height: auto;
+    min-height: 100%;
+    background: #fdfcfb;
+    color: #0c0a09;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  html.about-page-active .viewport-fixed {
+    background: #fdfcfb;
+  }
+
+  html.about-page-active ::selection {
+    background: #8b1a2b;
+    color: #fdfcfb;
+  }
+
   html.lenis,
   html.lenis body {
     height: auto;
