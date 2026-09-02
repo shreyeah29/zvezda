@@ -136,6 +136,8 @@ const SHOP_LOOKS: Record<string, { colours: string[]; garmentType: string }> = {
   zeenat: { colours: ["champagne"], garmentType: "set" },
   "set-25": { colours: ["black", "ivory"], garmentType: "dress" },
   "set-26": { colours: ["black"], garmentType: "gown" },
+  "pearl-cascade": { colours: ["ivory"], garmentType: "dress" },
+  "wine-velvet": { colours: ["red"], garmentType: "gown" },
 };
 
 const drafts: ShopDraft[] = [
@@ -517,6 +519,26 @@ const drafts: ShopDraft[] = [
     sizeOptions: ["8", "10", "12"],
     description: "",
     fabric: "",
+  },
+  {
+    id: 131,
+    slug: "pearl-cascade",
+    name: "Pearl cascade",
+    photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg", "05.jpg", "06.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "An ivory strapless column, close to the body, finished with a cascade of pearl fringe that moves as she walks. Pearls gather at the neckline and scatter across the bodice — quiet until the light finds them.",
+    fabric: "Crape, hand-embellished pearls",
+  },
+  {
+    id: 132,
+    slug: "wine-velvet",
+    name: "Wine velvet",
+    photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Wine velvet, off the shoulder, with a corseted bodice and a high slit that lets the skirt pool into a train. The fabric holds the light; the line is long, close, and unhurried.",
+    fabric: "Velvet",
   },
 ];
 

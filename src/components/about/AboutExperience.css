@@ -22,8 +22,7 @@
   line-height: 1.9;
   color: var(--about-body);
   text-wrap: pretty;
-  timeline-scope: --about-hero, --about-founder, --about-film, --about-story,
-    --about-kinetic, --about-name, --about-archive, --about-atelier, --about-close;
+  timeline-scope: --about-hero, --about-film, --about-archive, --about-close;
 }
 
 .about-page ::selection {
@@ -270,59 +269,70 @@
 
 /* —— 3. Founder split —— */
 .about-founder {
-  height: 180vh;
-  view-timeline-name: --about-founder;
-}
-
-.about-founder__sticky {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "intro portrait"
+    "prose portrait";
+  background: var(--about-page);
+  min-height: 100vh;
 }
 
-.about-founder__copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 8rem clamp(1.5rem, 5vw, 4.5rem) 4rem;
+.about-founder__intro {
+  grid-area: intro;
+  padding: 7.5rem clamp(1.5rem, 4.5vw, 4.25rem) 0;
 }
 
 .about-founder__name {
-  margin: 1.1rem 0 0;
+  margin: 1.05rem 0 0;
   font-family: var(--about-display);
-  font-size: clamp(3.4rem, 8vw, 7rem);
+  font-size: clamp(3.2rem, 7.4vw, 6.6rem);
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.035em;
   color: var(--about-ink);
 }
 
-.about-founder__lead {
-  margin: 1.5rem 0 0;
-  max-width: 36ch;
-  font-size: 17px;
-  font-weight: 300;
-  line-height: 1.7;
-  color: var(--about-body);
+.about-founder__name span {
+  display: block;
 }
 
-.about-rule--founder {
-  width: 130px;
-  margin-top: 1.75rem;
-  transform: scaleX(0);
+.about-founder__prose {
+  grid-area: prose;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 46ch;
+  padding: 1.75rem clamp(1.5rem, 4.5vw, 4.25rem) 5rem;
+}
+
+.about-founder__prose p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--about-body);
+  text-wrap: pretty;
+}
+
+.about-founder__lead {
+  font-size: 17px;
+  color: var(--about-ink);
 }
 
 .about-founder__portrait {
-  min-width: 0;
+  grid-area: portrait;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow: hidden;
   background: var(--about-placeholder);
 }
 
-.about-founder__wipe {
+.about-founder__portrait .about-film {
   height: 100%;
-  clip-path: inset(100% 0 0 0);
-}
-
-.about-founder__name .about-mask__in {
-  transform: translateY(108%) rotate(2.5deg);
 }
 
 /* —— 4. Atelier film, 3.4 screens —— */
@@ -394,108 +404,15 @@
   opacity: 0;
 }
 
-/* —— 5. The story —— */
-.about-story {
-  min-height: 160vh;
-  view-timeline-name: --about-story;
-  background: var(--about-page);
-  padding: 8vh clamp(1.25rem, 5vw, 5rem) 12vh;
-}
-
-.about-story__grid {
-  display: grid;
-  grid-template-columns: minmax(8rem, 0.32fr) minmax(0, 1fr);
-  gap: clamp(2rem, 6vw, 6rem);
-  max-width: 1080px;
-  margin: 0 auto;
-  align-items: start;
-}
-
-.about-story__aside {
-  position: sticky;
-  top: 28vh;
-}
-
-.about-story__label {
-  margin: 0;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: var(--about-ink);
-}
-
-.about-story__rule {
-  display: block;
-  width: 1px;
-  height: 38vh;
-  margin-top: 1.25rem;
-  background: linear-gradient(var(--about-gold), rgba(161, 98, 7, 0));
-  transform: scaleY(0);
-  transform-origin: top center;
-}
-
-.about-story__copy {
-  max-width: 68ch;
-  display: flex;
-  flex-direction: column;
-  gap: 1.65rem;
-  padding-bottom: 8vh;
-}
-
-.about-story__copy p {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.9;
-  color: var(--about-body);
-  text-wrap: pretty;
-  filter: blur(12px);
-  opacity: 0;
-}
-
-/* —— 6. Kinetic type —— */
-.about-kinetic {
-  height: 160vh;
-  view-timeline-name: --about-kinetic;
-}
-
-.about-kinetic__sticky {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.15em;
-  overflow: hidden;
-}
-
-.about-kinetic__line {
-  margin: 0;
-  font-family: var(--about-display);
-  font-size: clamp(2.4rem, 8.5vw, 148px);
-  font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-  white-space: nowrap;
-  color: var(--about-ink);
-}
-
-.about-kinetic__line--ghost {
-  opacity: 0.16;
-}
-
-/* —— 7. The Name, 2 screens —— */
+/* —— 5. The Name —— */
 .about-name {
-  height: 200vh;
-  view-timeline-name: --about-name;
-}
-
-.about-name__sticky {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 1.25rem;
+  padding: 14vh 1.25rem 16vh;
   text-align: center;
+  background: var(--about-page);
 }
 
 .about-name__sentence {
@@ -515,17 +432,12 @@
 
 .about-name__word {
   display: inline-block;
-  overflow: hidden;
-}
-
-.about-name__word .about-mask__in {
-  transform: translateY(112%);
 }
 
 .about-rule--name {
   width: 120px;
   margin-top: 1.75rem;
-  transform: scaleX(0);
+  transform: none;
 }
 
 .about-name__caption {
@@ -535,9 +447,6 @@
   font-weight: 300;
   line-height: 1.7;
   color: var(--about-body);
-  opacity: 0;
-  filter: blur(10px);
-  transform: translateY(18px);
 }
 
 /* —— 8. The Archive, 4 screens —— */
@@ -633,8 +542,6 @@
 
 /* —— 9. Atelier —— */
 .about-atelier {
-  min-height: 140vh;
-  view-timeline-name: --about-atelier;
   padding: 14vh clamp(1.25rem, 5vw, 5rem) 16vh;
   background: var(--about-page);
 }
@@ -654,8 +561,8 @@
   color: var(--about-ink);
 }
 
-.about-atelier__title .about-mask__in {
-  transform: translateY(108%);
+.about-atelier__title span {
+  display: block;
 }
 
 .about-atelier__prose {
@@ -671,8 +578,6 @@
   font-weight: 300;
   line-height: 1.9;
   color: var(--about-body);
-  filter: blur(12px);
-  opacity: 0;
 }
 
 .about-atelier__timeline {
@@ -699,7 +604,7 @@
   font-family: var(--about-display);
   font-size: clamp(1.8rem, 3.4vw, 2.6rem);
   font-weight: 400;
-  letter-spacing: 0.2em;
+  letter-spacing: 0;
   color: var(--about-gold);
 }
 
@@ -848,36 +753,6 @@
     animation-range: entry 100% exit 0%;
   }
 
-  .about-founder__name .about-mask:nth-child(1) .about-mask__in {
-    animation: about-founder-n1 linear both;
-    animation-timeline: --about-founder;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-founder__name .about-mask:nth-child(2) .about-mask__in {
-    animation: about-founder-n2 linear both;
-    animation-timeline: --about-founder;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-founder__lead {
-    animation: about-founder-lead linear both;
-    animation-timeline: --about-founder;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-rule--founder {
-    animation: about-founder-rule linear both;
-    animation-timeline: --about-founder;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-founder__wipe {
-    animation: about-wipe-up linear both;
-    animation-timeline: --about-founder;
-    animation-range: entry 100% exit 0%;
-  }
-
   .about-lens__frame {
     animation: about-lens-frame linear both;
     animation-timeline: --about-film;
@@ -902,96 +777,6 @@
     animation-range: entry 100% exit 0%;
   }
 
-  .about-story__rule {
-    animation: about-story-rule linear both;
-    animation-timeline: --about-story;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-story__copy p:nth-child(1) {
-    animation: about-blur-a linear both;
-    animation-timeline: --about-story;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-story__copy p:nth-child(2) {
-    animation: about-blur-b linear both;
-    animation-timeline: --about-story;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-story__copy p:nth-child(3) {
-    animation: about-blur-c linear both;
-    animation-timeline: --about-story;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-story__copy p:nth-child(4) {
-    animation: about-blur-d linear both;
-    animation-timeline: --about-story;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-kinetic__line--solid {
-    animation: about-kinetic-a linear both;
-    animation-timeline: --about-kinetic;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-kinetic__line--ghost {
-    animation: about-kinetic-b linear both;
-    animation-timeline: --about-kinetic;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-name__word:nth-child(1) .about-mask__in {
-    animation: about-name-1 linear both;
-    animation-timeline: --about-name;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-name__word:nth-child(2) .about-mask__in {
-    animation: about-name-2 linear both;
-    animation-timeline: --about-name;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-name__word:nth-child(3) .about-mask__in {
-    animation: about-name-3 linear both;
-    animation-timeline: --about-name;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-name__word:nth-child(4) .about-mask__in {
-    animation: about-name-4 linear both;
-    animation-timeline: --about-name;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-name__word:nth-child(5) .about-mask__in {
-    animation: about-name-5 linear both;
-    animation-timeline: --about-name;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-name__word:nth-child(6) .about-mask__in {
-    animation: about-name-6 linear both;
-    animation-timeline: --about-name;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-rule--name {
-    animation: about-name-rule linear both;
-    animation-timeline: --about-name;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-name__caption {
-    animation: about-name-caption linear both;
-    animation-timeline: --about-name;
-    animation-range: entry 100% exit 0%;
-  }
-
   .about-archive__track {
     animation: about-archive-x linear both;
     animation-timeline: --about-archive;
@@ -1001,36 +786,6 @@
   .about-archive__progress > span {
     animation: about-fill linear both;
     animation-timeline: --about-archive;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-atelier__title .about-mask:nth-child(1) .about-mask__in {
-    animation: about-atelier-t1 linear both;
-    animation-timeline: --about-atelier;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-atelier__title .about-mask:nth-child(2) .about-mask__in {
-    animation: about-atelier-t2 linear both;
-    animation-timeline: --about-atelier;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-atelier__prose p:nth-child(1) {
-    animation: about-blur-a linear both;
-    animation-timeline: --about-atelier;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-atelier__prose p:nth-child(2) {
-    animation: about-blur-b linear both;
-    animation-timeline: --about-atelier;
-    animation-range: entry 100% exit 0%;
-  }
-
-  .about-atelier__year {
-    animation: about-tracking linear both;
-    animation-timeline: --about-atelier;
     animation-range: entry 100% exit 0%;
   }
 
@@ -1064,63 +819,6 @@
   100% {
     opacity: 0;
     transform: scale(1.5);
-  }
-}
-
-@keyframes about-founder-n1 {
-  0% {
-    transform: translateY(108%) rotate(2.5deg);
-  }
-  20%,
-  100% {
-    transform: translateY(0) rotate(0);
-  }
-}
-
-@keyframes about-founder-n2 {
-  0%,
-  8% {
-    transform: translateY(108%) rotate(2.5deg);
-  }
-  30%,
-  100% {
-    transform: translateY(0) rotate(0);
-  }
-}
-
-@keyframes about-founder-lead {
-  0%,
-  22% {
-    opacity: 0;
-    filter: blur(10px);
-    transform: translateY(12px);
-  }
-  48%,
-  100% {
-    opacity: 1;
-    filter: blur(0);
-    transform: none;
-  }
-}
-
-@keyframes about-founder-rule {
-  0%,
-  32% {
-    transform: scaleX(0);
-  }
-  55%,
-  100% {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes about-wipe-up {
-  0% {
-    clip-path: inset(100% 0 0 0);
-  }
-  42%,
-  100% {
-    clip-path: inset(0);
   }
 }
 
@@ -1167,175 +865,6 @@
   }
 }
 
-@keyframes about-story-rule {
-  0% {
-    transform: scaleY(0);
-  }
-  100% {
-    transform: scaleY(1);
-  }
-}
-
-@keyframes about-blur-a {
-  0% {
-    opacity: 0;
-    filter: blur(12px);
-  }
-  22%,
-  100% {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes about-blur-b {
-  0%,
-  12% {
-    opacity: 0;
-    filter: blur(12px);
-  }
-  34%,
-  100% {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes about-blur-c {
-  0%,
-  24% {
-    opacity: 0;
-    filter: blur(12px);
-  }
-  46%,
-  100% {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes about-blur-d {
-  0%,
-  36% {
-    opacity: 0;
-    filter: blur(12px);
-  }
-  58%,
-  100% {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes about-kinetic-a {
-  0% {
-    transform: translateX(-12%);
-  }
-  100% {
-    transform: translateX(10%);
-  }
-}
-
-@keyframes about-kinetic-b {
-  0% {
-    transform: translateX(12%);
-  }
-  100% {
-    transform: translateX(-10%);
-  }
-}
-
-@keyframes about-name-1 {
-  0% {
-    transform: translateY(112%);
-  }
-  10%,
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes about-name-2 {
-  0%,
-  10% {
-    transform: translateY(112%);
-  }
-  20%,
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes about-name-3 {
-  0%,
-  20% {
-    transform: translateY(112%);
-  }
-  30%,
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes about-name-4 {
-  0%,
-  30% {
-    transform: translateY(112%);
-  }
-  40%,
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes about-name-5 {
-  0%,
-  40% {
-    transform: translateY(112%);
-  }
-  50%,
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes about-name-6 {
-  0%,
-  50% {
-    transform: translateY(112%);
-  }
-  62%,
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes about-name-rule {
-  0%,
-  66% {
-    transform: scaleX(0);
-  }
-  80%,
-  100% {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes about-name-caption {
-  0%,
-  74% {
-    opacity: 0;
-    filter: blur(10px);
-    transform: translateY(18px);
-  }
-  92%,
-  100% {
-    opacity: 1;
-    filter: blur(0);
-    transform: none;
-  }
-}
-
 @keyframes about-archive-x {
   0% {
     transform: translateX(0);
@@ -1351,38 +880,6 @@
   }
   to {
     transform: scaleX(1);
-  }
-}
-
-@keyframes about-atelier-t1 {
-  0% {
-    transform: translateY(108%);
-  }
-  28%,
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes about-atelier-t2 {
-  0%,
-  10% {
-    transform: translateY(108%);
-  }
-  38%,
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes about-tracking {
-  0%,
-  28% {
-    letter-spacing: 0.2em;
-  }
-  70%,
-  100% {
-    letter-spacing: 0;
   }
 }
 
@@ -1418,26 +915,6 @@
     transform: scale(calc(1 + 0.5 * var(--p, 0)));
   }
 
-  .about-founder__name .about-mask:nth-child(1) .about-mask__in {
-    transform: translateY(calc((1 - min(1, var(--p, 0) / 0.2)) * 108%));
-  }
-
-  .about-founder__name .about-mask:nth-child(2) .about-mask__in {
-    transform: translateY(calc((1 - min(1, max(0, var(--p, 0) - 0.08) / 0.22)) * 108%));
-  }
-
-  .about-founder__lead {
-    opacity: min(1, max(0, (var(--p, 0) - 0.22) / 0.26));
-  }
-
-  .about-rule--founder {
-    transform: scaleX(min(1, max(0, (var(--p, 0) - 0.32) / 0.23)));
-  }
-
-  .about-founder__wipe {
-    clip-path: inset(calc((1 - min(1, var(--p, 0) / 0.42)) * 100%) 0 0 0);
-  }
-
   .about-lens__frame {
     width: calc(32vw + 68vw * var(--p, 0));
     height: calc(44vh + 56vh * var(--p, 0));
@@ -1455,54 +932,12 @@
     opacity: min(1, max(0, (var(--p, 0) - 0.68) / 0.2));
   }
 
-  .about-story__rule {
-    transform: scaleY(var(--p, 0));
-  }
-
-  .about-story__copy p {
-    opacity: 1;
-    filter: none;
-  }
-
-  .about-kinetic__line--solid {
-    transform: translateX(calc(-12% + 22% * var(--p, 0)));
-  }
-
-  .about-kinetic__line--ghost {
-    transform: translateX(calc(12% - 22% * var(--p, 0)));
-  }
-
-  .about-name__word .about-mask__in {
-    transform: none;
-  }
-
-  .about-rule--name {
-    transform: scaleX(min(1, max(0, (var(--p, 0) - 0.66) / 0.14)));
-  }
-
-  .about-name__caption {
-    opacity: min(1, max(0, (var(--p, 0) - 0.74) / 0.18));
-    filter: none;
-    transform: none;
-  }
-
   .about-archive__track {
     transform: translateX(calc((-100% + 100vw) * var(--p, 0)));
   }
 
   .about-archive__progress > span {
     transform: scaleX(var(--p, 0));
-  }
-
-  .about-atelier__title .about-mask__in,
-  .about-atelier__prose p {
-    transform: none;
-    opacity: 1;
-    filter: none;
-  }
-
-  .about-atelier__year {
-    letter-spacing: calc(0.2em * (1 - min(1, max(0, (var(--p, 0) - 0.28) / 0.42))));
   }
 
   .about-close__col--left .about-film {
@@ -1556,82 +991,30 @@
   }
 
   .about-founder {
-    height: auto;
-  }
-
-  .about-founder__sticky {
-    position: relative;
-    height: auto;
-    min-height: 0;
     grid-template-columns: 1fr;
-    overflow: visible;
+    grid-template-areas:
+      "intro"
+      "portrait"
+      "prose";
+    min-height: 0;
   }
 
-  .about-founder__copy {
-    padding: 4.5rem 1.25rem 2.5rem;
+  .about-founder__intro {
+    padding: 4.5rem 1.25rem 1.25rem;
+  }
+
+  .about-founder__prose {
+    max-width: none;
+    padding: 1.5rem 1.25rem 3.5rem;
   }
 
   .about-founder__portrait {
-    height: min(78vh, 640px);
-  }
-
-  .about-founder__wipe {
-    clip-path: none;
-    animation: none;
-  }
-
-  .about-founder__name .about-mask__in,
-  .about-founder__lead,
-  .about-rule--founder {
-    animation: none;
-    transform: none;
-    opacity: 1;
-    filter: none;
+    position: relative;
+    height: min(82vh, 680px);
   }
 
   .about-lens-pin {
     height: 260vh;
-  }
-
-  .about-story {
-    min-height: 0;
-    padding-top: 6vh;
-  }
-
-  .about-story__grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .about-story__aside {
-    position: relative;
-    top: 0;
-  }
-
-  .about-story__rule {
-    height: 1px;
-    width: 72px;
-    background: var(--about-gold);
-    transform: none;
-    animation: none;
-  }
-
-  .about-story__copy p {
-    animation: none;
-    opacity: 1;
-    filter: none;
-  }
-
-  .about-kinetic {
-    height: 120vh;
-  }
-
-  .about-kinetic__line {
-    font-size: clamp(2rem, 11vw, 3.4rem);
-  }
-
-  .about-name {
-    height: 180vh;
   }
 
   .about-archive {
@@ -1643,16 +1026,7 @@
   }
 
   .about-atelier {
-    min-height: 0;
     padding-top: 8vh;
-  }
-
-  .about-atelier__title .about-mask__in,
-  .about-atelier__prose p {
-    animation: none;
-    transform: none;
-    opacity: 1;
-    filter: none;
   }
 
   .about-atelier__timeline {
@@ -1694,10 +1068,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .about-hero,
-  .about-founder,
   .about-lens-pin,
-  .about-kinetic,
-  .about-name,
   .about-archive,
   .about-close {
     height: auto;
@@ -1719,11 +1090,9 @@
   }
 
   .about-hero__clip,
-  .about-founder__wipe,
   .about-hero__line .about-mask__in,
   .about-mask__in,
   .about-hero__sub,
-  .about-story__copy p,
   .about-atelier__prose p,
   .about-name__caption,
   .about-lens__quote,
@@ -1735,14 +1104,9 @@
   }
 
   .about-rule--hero,
-  .about-rule--founder,
   .about-rule--name {
     transform: none;
     width: 72px;
-  }
-
-  .about-rule--founder {
-    width: 130px;
   }
 
   .about-rule--name {

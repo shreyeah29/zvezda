@@ -138,27 +138,26 @@ function AboutScroll() {
         </div>
       </div>
 
-      <section
-        className="about-pin about-founder"
-        data-about-pin
-        aria-labelledby="founder-title"
-        style={{ viewTimelineName: "--about-founder" } as CSSProperties}
-      >
-        <div className="about-pin__sticky about-founder__sticky">
-          <div className="about-founder__copy">
-            <p className="about-eyebrow">Founder</p>
-            <h2 id="founder-title" className="about-founder__name">
-              <MaskLine>Bindu</MaskLine>
-              <MaskLine>Reddy</MaskLine>
-            </h2>
-            <p className="about-founder__lead">{founderStory.intro}</p>
-            <span className="about-rule about-rule--founder" aria-hidden="true" />
-          </div>
-          <div className="about-founder__portrait">
-            <div className="about-founder__wipe">
-              <AboutFilm image={aboutMedia.founder.image} alt={aboutMedia.founder.alt} />
-            </div>
-          </div>
+      <section className="about-founder" aria-labelledby="founder-title">
+        <div className="about-founder__intro">
+          <p className="about-eyebrow">{founderStory.eyebrow}</p>
+          <h2 id="founder-title" className="about-founder__name">
+            Bindu
+            <span>Reddy</span>
+          </h2>
+        </div>
+        <div className="about-founder__portrait">
+          <AboutFilm
+            image={aboutMedia.founder.image}
+            alt={aboutMedia.founder.alt}
+            objectPosition="center 12%"
+          />
+        </div>
+        <div className="about-founder__prose">
+          <p className="about-founder__lead">{founderStory.intro}</p>
+          {founderStory.paragraphs.map((paragraph) => (
+            <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+          ))}
         </div>
       </section>
 
@@ -187,60 +186,16 @@ function AboutScroll() {
         </div>
       </section>
 
-      <section
-        className="about-pin about-story"
-        data-about-pin
-        aria-labelledby="story-title"
-        style={{ viewTimelineName: "--about-story" } as CSSProperties}
-      >
-        <div className="about-story__grid">
-          <div className="about-story__aside">
-            <h2 id="story-title" className="about-story__label">
-              The Story
-            </h2>
-            <span className="about-story__rule" aria-hidden="true" />
-          </div>
-          <div className="about-story__copy">
-            {founderStory.paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        className="about-pin about-kinetic"
-        data-about-pin
-        aria-label="Quiet luxury, effortless femininity"
-        style={{ viewTimelineName: "--about-kinetic" } as CSSProperties}
-      >
-        <div className="about-pin__sticky about-kinetic__sticky">
-          <p className="about-kinetic__line about-kinetic__line--solid">
-            Quiet luxury · Effortless femininity
-          </p>
-          <p className="about-kinetic__line about-kinetic__line--ghost">
-            Timeless silhouettes · Made to order
-          </p>
-        </div>
-      </section>
-
-      <section
-        className="about-pin about-name"
-        data-about-pin
-        aria-labelledby="name-title"
-        style={{ viewTimelineName: "--about-name" } as CSSProperties}
-      >
-        <div className="about-pin__sticky about-name__sticky">
-          <h2 id="name-title" className="about-name__sentence">
-            {zvezdaNameReveal.words.map((word) => (
-              <MaskLine key={word} className="about-name__word">
-                {word}
-              </MaskLine>
-            ))}
-          </h2>
-          <span className="about-rule about-rule--name" aria-hidden="true" />
-          <p className="about-name__caption">{zvezdaNameReveal.caption}</p>
-        </div>
+      <section className="about-name" aria-labelledby="name-title">
+        <h2 id="name-title" className="about-name__sentence">
+          {zvezdaNameReveal.words.map((word) => (
+            <span key={word} className="about-name__word">
+              {word}
+            </span>
+          ))}
+        </h2>
+        <span className="about-rule about-rule--name" aria-hidden="true" />
+        <p className="about-name__caption">{zvezdaNameReveal.caption}</p>
       </section>
 
       <section
@@ -280,17 +235,12 @@ function AboutScroll() {
         </div>
       </section>
 
-      <section
-        className="about-pin about-atelier"
-        data-about-pin
-        aria-labelledby="atelier-title"
-        style={{ viewTimelineName: "--about-atelier" } as CSSProperties}
-      >
+      <section className="about-atelier" aria-labelledby="atelier-title">
         <div className="about-atelier__inner">
           <p className="about-eyebrow">{atelierCraft.eyebrow}</p>
           <h2 id="atelier-title" className="about-atelier__title">
             {atelierCraft.titleLines.map((line) => (
-              <MaskLine key={line}>{line}</MaskLine>
+              <span key={line}>{line}</span>
             ))}
           </h2>
           <div className="about-atelier__prose">

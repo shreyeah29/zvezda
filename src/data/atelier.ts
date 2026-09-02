@@ -15,15 +15,16 @@ export const aboutHero = {
 };
 
 export const founderStory = {
-  eyebrow: "Founder Story",
+  eyebrow: "Founder",
   name: "Bindu Reddy",
   intro:
     "Zvezda Atelier is a refined expression of luxury, where understated glamour meets timeless craftsmanship.",
   paragraphs: [
     "Founded by Bindu Reddy, a stylist turned designer, the brand is built on a foundation of expertise, intuition, and artistry. Having studied styling at the Australian Style Institute, Sydney, Bindu honed her skills in understanding silhouettes, fabric interplay, and the nuances of personal style.",
-    "With a career spanning both luxury and retail fashion, her deep-rooted knowledge of fashion retail and high-end styling informs her approach to design, ensuring that each Zvezda Atelier piece is not just an outfit, but an experience.",
-    "The debut collection embodies her signature aesthetic — quiet luxury, effortless femininity, and timeless silhouettes. Every garment is meticulously crafted with an intuitive understanding of fit, movement, and refinement, designed for women who appreciate elegance without excess.",
-    "With a commitment to quality, exclusivity, and craftsmanship, Zvezda Atelier is not just about dressing a woman — it's about elevating her presence.",
+    "With a career spanning both luxury and retail fashion. Her deep-rooted knowledge of fashion retail and high-end styling informs her approach to design, ensuring that each Zvezda Atelier piece is not just an outfit, but an experience.",
+    "The debut collection embodies her signature aesthetic, quiet luxury, effortless femininity, and timeless silhouettes.",
+    "Every garment is meticulously crafted with an intuitive understanding of fit, movement, and refinement, designed for women who appreciate elegance without excess.",
+    "With a commitment to quality, exclusivity, and craftsmanship, Zvezda Atelier is not just about dressing a woman, it's about elevating her presence.",
   ],
 };
 
@@ -83,8 +84,8 @@ export const aboutMedia = {
     alt: "Crimson gown, a first silhouette",
   },
   founder: {
-    image: "/assets/images/shop/carmine-ascend/IMG_9950.jpg",
-    alt: "A ZVEZDA piece worn with presence",
+    image: "/assets/images/about/bindu-reddy.jpg",
+    alt: "Bindu Reddy, founder of ZVEZDA Atelier",
   },
   atelierFilm: {
     image: "/assets/images/shop/carmine-ascend/IMG_6791.jpg",
