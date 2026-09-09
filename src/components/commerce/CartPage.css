@@ -288,6 +288,37 @@
   opacity: 0.85;
 }
 
+.cart-page__store {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 20rem;
+  padding: 1.05rem 4rem;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0c0a09;
+  background: transparent;
+  border: 1px solid #0c0a09;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .cart-page__store {
+    width: auto;
+  }
+}
+
+.cart-page__store:hover {
+  opacity: 0.78;
+  background: rgba(12, 10, 9, 0.04);
+}
+
 .cart-page__enquire {
   width: 100%;
   max-width: 20rem;

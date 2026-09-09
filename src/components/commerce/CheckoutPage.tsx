@@ -255,9 +255,14 @@ export function CheckoutPage() {
                 <button type="submit" className="checkout-page__pay" disabled={!payable || busy}>
                   {busy ? "Opening Razorpay…" : `Pay ${formatPrice(cartSubtotal, currency)}`}
                 </button>
+                <Link href="/checkout/store" className="checkout-page__store">
+                  Pay at store instead
+                </Link>
                 <p className="checkout-page__fine">
                   In-stock orders can be cancelled within 12 hours, before dispatch. Once
                   production has started, made-to-order pieces cannot be cancelled or refunded.
+                  Pay at store lets you try the piece in person — the atelier will be notified
+                  that you are coming.
                 </p>
                 <Link
                   href={`/contact?product=${encodeURIComponent(lines[0]?.product.name ?? "")}#enquiry`}

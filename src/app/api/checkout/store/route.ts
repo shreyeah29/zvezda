@@ -1,0 +1,50 @@
+import { NextResponse } from "next/server";
+import {
+  createStoreReservationId,
+  formatStoreReservationMessage,
+  quoteStoreCart,
+  validateStoreCustomer,
+  type CheckoutCartItem,
+} from "@/lib/checkout";
+import { notifyAtelier } from "@/lib/notifyAtelier";
+
+export async function POST(request: Request) {
+  try {
+    const body = (await request.json()) as {
+      items?: CheckoutCartItem[];
+      customer?: Parameters<typeof validateStoreCustomer>[0];
+    };
+
+    const customer = validateStoreCustomer(body.customer ?? {});
+    const quote = quoteStoreCart(body.items ?? []);
+    const reservationId = createStoreReservationId();
+    const message = formatStoreReservationMessage({ reservationId, customer, quote });
+    let notified = true;
+
+    try {
+      await notifyAtelier({
+        subject: `Pay at store — ${reservationId}`,
+        name: customer.fullName,
+        email: customer.email,
+        phone: customer.phone,
+        message,
+      });
+    } catch (error) {
+      notified = false;
+      console.error("Pay-at-store notification failed", reservationId, error);
+    }
+
+    console.info("Pay-at-store reservation", reservationId, customer.email, quote.lines);
+
+    return NextResponse.json({
+      ok: true,
+      notified,
+      reservationId,
+      customer,
+      quote,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unable to reserve this visit.";
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
+}
