@@ -207,10 +207,10 @@ function Showcase({
               </>
             )}
             <Link
-              href={piece.href ?? `/products/${piece.product.slug}`}
+              href={`/products/${piece.product.slug}`}
               className={`kw__cta${compact ? " kw__cta--button" : ""}`}
             >
-              View Collection
+              View Product
               {!compact && (
                 <span className="kw__cta-arrow" aria-hidden="true">
                   →
@@ -376,7 +376,7 @@ export function KineticWheel() {
       goToIndex(index);
       return;
     }
-    router.push(piece.href ?? `/collections/${piece.product.slug}`);
+    router.push(`/products/${piece.product.slug}`);
   };
 
   const virtualCenter = position / itemSpacing;

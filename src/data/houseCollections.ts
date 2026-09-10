@@ -8,8 +8,8 @@ export const HOUSE_COLLECTION_SLUGS = [
 export type HouseCollectionSlug = (typeof HOUSE_COLLECTION_SLUGS)[number];
 
 export const HOUSE_COLLECTION_LABELS: Record<HouseCollectionSlug, string> = {
-  statement: "Statement",
-  occasion: "Occasion",
+  statement: "The Statement",
+  occasion: "The Occasion",
   romance: "Romance",
   bespoke: "Bespoke",
 };
@@ -29,7 +29,7 @@ export type HouseCollection = {
 export const houseCollections: HouseCollection[] = [
   {
     slug: "statement",
-    title: "Statement",
+    title: "The Statement",
     season: "Atelier",
     description:
       "Pieces made to hold the room — sculptural, uncompromising, and built for presence.",
@@ -39,29 +39,14 @@ export const houseCollections: HouseCollection[] = [
     photos: [
       "/assets/images/shop/eclipse-royale/HSP_2982.jpg",
       "/assets/images/shop/ivory-eclipse/HSP_3218.jpg",
-      "/assets/images/shop/crystal-peplum/01.jpg",
-      "/assets/images/shop/azure-peplum/01.jpg",
-      "/assets/images/shop/terracotta-opera/01.jpg",
+      "/assets/images/shop/petal-dress/IMG_6665.jpg",
+      "/assets/images/shop/set-26/IMG_7329.jpg",
     ],
-    productSlugs: [
-      "eclipse-royale",
-      "ivory-eclipse",
-      "petal-dress",
-      "terracotta-opera",
-      "crystal-peplum",
-      "ivory-noir-set",
-      "azure-peplum",
-      "rose-noir-flora",
-      "crystal-fringe-halter",
-      "ruffle-noir",
-      "aqua-cascade",
-      "garden-brocade",
-      "champagne-capelet",
-    ],
+    productSlugs: ["eclipse-royale", "ivory-eclipse", "petal-dress", "set-26"],
   },
   {
     slug: "occasion",
-    title: "Occasion",
+    title: "The Occasion",
     season: "Atelier",
     description: "Evening silhouettes for dinners, galas, and nights that ask for a little more.",
     accent: "#8b1a2b",
@@ -80,11 +65,6 @@ export const houseCollections: HouseCollection[] = [
       "obsidian-drape",
       "terra-bloom",
       "ivory-satin",
-      "lime-solstice",
-      "crystal-cutout",
-      "blush-drape-gown",
-      "crimson-horizon",
-      "ivory-taupe-suit",
     ],
   },
   {
@@ -108,9 +88,6 @@ export const houseCollections: HouseCollection[] = [
       "rosalind-jacket-blush-column-jumpsuit",
       "denim-dress",
       "blush-mirage",
-      "mint-petals",
-      "blush-crop-column",
-      "icy-tea",
     ],
   },
   {
@@ -124,15 +101,8 @@ export const houseCollections: HouseCollection[] = [
     photos: [
       "/assets/images/shop/pearl-cascade/01.jpg",
       "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4839.jpg",
-      "/assets/images/shop/coral-rose/01.jpg",
-      "/assets/images/shop/rust-ruffle-noir/01.jpg",
     ],
-    productSlugs: [
-      "pearl-cascade",
-      "blooming-rosalia-3d-gown",
-      "coral-rose",
-      "rust-ruffle-noir",
-    ],
+    productSlugs: ["pearl-cascade", "blooming-rosalia-3d-gown"],
   },
 ];
 

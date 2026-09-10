@@ -1,13 +1,19 @@
-import { houseCollections } from "./houseCollections";
-
 export type HomeCollectionPanel = {
   label: string;
   image: string;
   href: string;
 };
 
-export const homeCollectionPanels: HomeCollectionPanel[] = houseCollections.map((collection) => ({
-  label: `${collection.title} Collection`,
-  image: collection.cover,
-  href: `/collections/${collection.slug}`,
-}));
+/** Desktop home split — original Party / Garden pictures, new names only */
+export const homeCollectionPanels: HomeCollectionPanel[] = [
+  {
+    label: "The Occasion",
+    image: "/assets/images/products/set-11/HSP_5916.jpg",
+    href: "/collections/occasion",
+  },
+  {
+    label: "The Statement",
+    image: "/assets/images/products/set-1/HSP_4590.jpg",
+    href: "/collections/statement",
+  },
+];

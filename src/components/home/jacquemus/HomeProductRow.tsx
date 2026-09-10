@@ -107,7 +107,7 @@ export function HomePinkProductRow() {
   return (
     <HomeProductRow
       cards={pinkHighlightCards}
-      ariaLabel="Romance collection products"
+      ariaLabel="Pink collection products"
     />
   );
 }

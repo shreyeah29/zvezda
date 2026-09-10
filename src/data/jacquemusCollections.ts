@@ -1,4 +1,5 @@
 import { houseCollections } from "./houseCollections";
+import { getShopProduct } from "./shopCatalog";
 
 export type JacquemusCollectionMedia = {
   type: "image" | "video";
@@ -19,10 +20,16 @@ export const jacquemusCollections: JacquemusCollection[] = houseCollections.map(
   id: collection.slug,
   name: collection.title,
   season: collection.season,
-  media: collection.photos.map((src) => ({
-    type: "image" as const,
-    src,
-    alt: collection.title,
-    href: `/collections/${collection.slug}`,
-  })),
+  media: collection.productSlugs.flatMap((slug) => {
+    const product = getShopProduct(slug);
+    if (!product) return [];
+    return [
+      {
+        type: "image" as const,
+        src: product.hero,
+        alt: product.name,
+        href: `/products/${product.slug}`,
+      },
+    ];
+  }),
 }));
