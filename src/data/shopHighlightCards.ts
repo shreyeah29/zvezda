@@ -94,7 +94,7 @@ export const occasionHighlightCards: ShopHighlightCard[] = [
   {
     setId: 132,
     slug: "wine-velvet",
-    title: "Wine velvet",
+    title: "Royal Damson",
     image: "/assets/images/shop/wine-velvet/02.jpg",
   },
   {
@@ -106,7 +106,7 @@ export const occasionHighlightCards: ShopHighlightCard[] = [
   {
     setId: 144,
     slug: "terra-bloom",
-    title: "Terra bloom",
+    title: "Terracotta Bloom",
     image: "/assets/images/shop/terra-bloom/04.jpg",
   },
   {

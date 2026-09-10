@@ -542,22 +542,37 @@ const drafts: ShopDraft[] = [
   {
     id: 131,
     slug: "pearl-cascade",
-    name: "Pearl cascade",
+    name: "The Pearl Fall",
     photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg", "05.jpg", "06.jpg"],
+    price: 109000,
     sizeOptions: ["6", "8", "10", "12"],
     description:
-      "An ivory strapless column, close to the body, finished with a cascade of pearl fringe that moves as she walks. Pearls gather at the neckline and scatter across the bodice — quiet until the light finds them.",
-    fabric: "Crape, hand-embellished pearls",
+      "The Pearl Muse Dress captures the quiet opulence of modern romance through a sculpted, feminine silhouette adorned with delicate pearl and crystal detailing. Designed with a structured corset bodice and softly curved neckline, the dress gently contours the figure before falling into a clean, fitted skirt. Scattered hand-placed embellishments add subtle points of light across the silhouette, while cascading strands of pearls and crystals fall from the hem, creating movement and an almost ethereal finish. Thoughtfully constructed and finished at the Zvezda Atelier, The Pearl Muse balances refined structure with fluid ornamentation, creating a piece that feels both timeless and distinctly couture.",
+    craft: [
+      "Hand-embellished pearl and crystal neckline",
+      "Scattered hand-placed crystal detailing",
+      "Cascading pearl and crystal fringe hem",
+      "Structured corset silhouette",
+    ],
+    fabric: "Crepe, hand-embellished pearls and crystals",
+    care: "Dry clean only",
   },
   {
     id: 132,
     slug: "wine-velvet",
-    name: "Wine velvet",
+    name: "Royal Damson",
     photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg"],
+    price: 51280,
     sizeOptions: ["6", "8", "10", "12"],
     description:
-      "Wine velvet, off the shoulder, with a corseted bodice and a high slit that lets the skirt pool into a train. The fabric holds the light; the line is long, close, and unhurried.",
-    fabric: "Velvet",
+      "Royal Damson explores the intersection of classic grandeur and allure, built on a dramatic, waist-cinching off-the-shoulder line that frames a deep sweetheart bust. Tailored in luxurious Italian velvet to a fitted mermaid silhouette, the gown is finished with a high slit and a long floor-length train. Each detail is constructed and finished at the Zvezda Atelier to create a commanding, powerfully cinematic presence.",
+    craft: [
+      "Internal corset boning",
+      "Off-the-shoulder sweetheart neckline",
+      "High slit with floor-length train",
+    ],
+    fabric: "Italian velvet",
+    care: "Dry clean only",
   },
   {
     id: 143,
@@ -579,22 +594,36 @@ const drafts: ShopDraft[] = [
   {
     id: 144,
     slug: "terra-bloom",
-    name: "Terra bloom",
+    name: "Terracotta Bloom",
     photos: ["01.jpg", "02.jpg", "03.jpg"],
+    price: 28000,
     sizeOptions: ["6", "8", "10", "12"],
     description:
-      "A black spaghetti-strap column, one terracotta flower at the hip, a high slit in the skirt.",
-    fabric: "Crape",
+      "Terracotta Bloom is a study of refined minimalism: a pitch-black column interrupted by a single terracotta floral motif. Cut in Japanese crepe, the smooth surface gives the sculptural appliqué dimension and contrast. Spaghetti straps and a high side slit keep the line graphic. Thoughtfully finished at the Zvezda Atelier.",
+    craft: [
+      "Spaghetti-strap column silhouette",
+      "Sculptural terracotta floral appliqué",
+      "High side slit",
+    ],
+    fabric: "Japanese crepe",
+    care: "Dry clean only",
   },
   {
     id: 145,
     slug: "ivory-satin",
-    name: "The white muse",
+    name: "The White Muse Dress",
     photos: ["01.jpg", "02.jpg", "03.jpg"],
+    price: 35000,
     sizeOptions: ["6", "8", "10", "12"],
     description:
-      "Ivory sandwash satin, a crystal strap, a soft cowl at the back. Fluid, elongated, unadorned except where it matters.",
+      "The White Muse embodies quiet romance through a fluid, elongated silhouette crafted in lustrous sandwash satin. A delicate cowl neckline falls effortlessly across the bodice, while slender straps are finished with intricate crystal embellishment, adding a subtle touch of brilliance to the otherwise understated form. The gown skims the body before falling into a soft, flowing hem, creating an effortless movement that feels both sensual and refined. Thoughtfully finished at the Zvezda Atelier, The White Muse captures a sense of timeless femininity through simplicity, fluidity, and delicate detailing.",
+    craft: [
+      "Hand-embellished crystal shoulder detailing",
+      "Soft cowl neckline",
+      "Fluid, elongated silhouette",
+    ],
     fabric: "Sandwash satin",
+    care: "Dry clean only",
   },
 ];
 
