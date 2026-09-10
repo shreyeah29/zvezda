@@ -554,7 +554,7 @@ const drafts: ShopDraft[] = [
       "Cascading pearl and crystal fringe hem",
       "Structured corset silhouette",
     ],
-    fabric: "Crepe, hand-embellished pearls and crystals",
+    fabric: "Sequin georgette",
     care: "Dry clean only",
   },
   {
