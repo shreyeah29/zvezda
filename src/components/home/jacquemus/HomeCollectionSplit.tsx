@@ -11,7 +11,7 @@ export function HomeCollectionSplit() {
         {homeCollectionPanels.map((panel) => (
           <Link
             key={panel.label}
-            href={`/products/${panel.productSlug}`}
+            href={panel.href}
             className="jm-collection-split__panel"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

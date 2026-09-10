@@ -38,8 +38,8 @@ export function HomeCollectionFeature() {
           </video>
           <span className="jm-feature-play" aria-hidden="true" />
           <span className="jm-feature-mobile-label">Watch the film</span>
-          <Link href="/collections/garden" className="jm-caption">
-            New Collection
+          <Link href="/collections/statement" className="jm-caption">
+            Statement Collection
           </Link>
         </div>
       </div>

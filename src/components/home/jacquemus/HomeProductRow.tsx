@@ -2,7 +2,8 @@
 
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { formatProductPrice, getProduct } from "@/data/products";
+import { formatProductPrice } from "@/data/products";
+import { findProduct } from "@/data/findProduct";
 import { pinkHighlightCards, shopHighlightCards, type ShopHighlightCard } from "@/data/shopHighlightCards";
 import { getSet, setPhotoPath } from "@/data/sets";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
@@ -44,7 +45,7 @@ export function HomeProductRow({
     <section className="jm-product-row" aria-label={ariaLabel}>
       <div className="jm-product-row__grid">
         {cards.map((card) => {
-          const product = getProduct(card.slug);
+          const product = findProduct(card.slug);
           if (!product) return null;
 
           const images = cardImages.find((entry) => entry.slug === card.slug);
@@ -106,7 +107,7 @@ export function HomePinkProductRow() {
   return (
     <HomeProductRow
       cards={pinkHighlightCards}
-      ariaLabel="Pink collection products"
+      ariaLabel="Romance collection products"
     />
   );
 }

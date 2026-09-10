@@ -1,4 +1,8 @@
 import type { Product } from "./products";
+import {
+  HOUSE_COLLECTION_LABELS,
+  type HouseCollectionSlug,
+} from "./houseCollections";
 
 type ShopDraft = {
   id: number;
@@ -16,6 +20,7 @@ type ShopDraft = {
   video?: string;
   colours?: string[];
   garmentType?: string;
+  houseCollection?: HouseCollectionSlug;
 };
 
 function shopImage(slug: string, filename: string) {
@@ -32,8 +37,11 @@ function fromDraft(draft: ShopDraft): Product {
     slug: draft.slug,
     setId: draft.id,
     name: draft.name,
-    collection: "atelier",
-    collectionLabel: "Zvezda Atelier",
+    collection: (draft.houseCollection ?? SHOP_LOOKS[draft.slug]?.houseCollection) || "atelier",
+    collectionLabel: (() => {
+      const house = draft.houseCollection ?? SHOP_LOOKS[draft.slug]?.houseCollection;
+      return house ? HOUSE_COLLECTION_LABELS[house] : "Zvezda Atelier";
+    })(),
     price: draft.price ?? 0,
     currency: "INR",
     priceOnRequest: draft.price == null,
@@ -105,39 +113,69 @@ export function matchesShopPriceBand(price: number, priceOnRequest: boolean | un
   return false;
 }
 
-const SHOP_LOOKS: Record<string, { colours: string[]; garmentType: string }> = {
-  "rosa-imperiale": { colours: ["black", "red"], garmentType: "gown" },
-  "starlit-halter-gown": { colours: ["black"], garmentType: "gown" },
-  "the-scarlett-heiress-dress": { colours: ["orange", "red"], garmentType: "gown" },
-  "blooming-rosalia-3d-gown": { colours: ["red"], garmentType: "gown" },
-  "velvet-blooms-dress": { colours: ["black", "pink"], garmentType: "gown" },
-  "ivory-eclipse": { colours: ["black", "ivory"], garmentType: "gown" },
-  "eclipse-royale": { colours: ["black", "ivory"], garmentType: "gown" },
-  "allure-slit": { colours: ["black"], garmentType: "gown" },
-  "blush-noir-2-piece-set": { colours: ["blush", "black"], garmentType: "set" },
-  "blush-elan": { colours: ["blush", "pink"], garmentType: "gown" },
-  "pearl-tailored-set": { colours: ["ivory"], garmentType: "set" },
-  "jardin-elegance-dress": { colours: ["green"], garmentType: "gown" },
-  "verdant-whisper-gown": { colours: ["green"], garmentType: "gown" },
-  "olive-tiered-zephyr-mini-dress": { colours: ["green"], garmentType: "mini" },
-  "blush-mirage": { colours: ["blush"], garmentType: "gown" },
-  "rosewood-heirloom": { colours: ["pink"], garmentType: "gown" },
-  "crimson-petal-serenade": { colours: ["pink"], garmentType: "gown" },
-  "rosalind-jacket-blush-column-jumpsuit": { colours: ["blush", "pink"], garmentType: "jumpsuit" },
-  "daughters-of-spring-pink": { colours: ["pink"], garmentType: "set" },
-  "daughters-of-spring-green": { colours: ["green"], garmentType: "dress" },
-  "molten-muse": { colours: ["yellow"], garmentType: "dress" },
-  "carmine-ascend": { colours: ["red"], garmentType: "gown" },
-  "green-pearl-dress": { colours: ["green"], garmentType: "gown" },
-  "fire-and-ice": { colours: ["blue", "yellow"], garmentType: "gown" },
-  "petal-dress": { colours: ["pink"], garmentType: "gown" },
-  "denim-dress": { colours: ["blue"], garmentType: "mini" },
-  "butterfly-inspired": { colours: ["blue"], garmentType: "set" },
-  zeenat: { colours: ["champagne"], garmentType: "set" },
-  "set-25": { colours: ["black", "ivory"], garmentType: "dress" },
-  "set-26": { colours: ["black"], garmentType: "gown" },
-  "pearl-cascade": { colours: ["ivory"], garmentType: "dress" },
-  "wine-velvet": { colours: ["red"], garmentType: "gown" },
+const SHOP_LOOKS: Record<
+  string,
+  { colours: string[]; garmentType: string; houseCollection?: HouseCollectionSlug }
+> = {
+  "rosa-imperiale": { colours: ["black", "red"], garmentType: "gown", houseCollection: "bespoke" },
+  "starlit-halter-gown": { colours: ["black"], garmentType: "gown", houseCollection: "statement" },
+  "the-scarlett-heiress-dress": { colours: ["orange", "red"], garmentType: "gown", houseCollection: "occasion" },
+  "blooming-rosalia-3d-gown": { colours: ["red"], garmentType: "gown", houseCollection: "bespoke" },
+  "velvet-blooms-dress": { colours: ["black", "pink"], garmentType: "gown", houseCollection: "statement" },
+  "ivory-eclipse": { colours: ["black", "ivory"], garmentType: "gown", houseCollection: "statement" },
+  "eclipse-royale": { colours: ["black", "ivory"], garmentType: "gown", houseCollection: "statement" },
+  "allure-slit": { colours: ["black"], garmentType: "gown", houseCollection: "occasion" },
+  "blush-noir-2-piece-set": { colours: ["blush", "black"], garmentType: "set", houseCollection: "statement" },
+  "blush-elan": { colours: ["blush", "pink"], garmentType: "gown", houseCollection: "romance" },
+  "pearl-tailored-set": { colours: ["ivory"], garmentType: "set", houseCollection: "bespoke" },
+  "jardin-elegance-dress": { colours: ["green"], garmentType: "gown", houseCollection: "romance" },
+  "verdant-whisper-gown": { colours: ["green"], garmentType: "gown", houseCollection: "romance" },
+  "olive-tiered-zephyr-mini-dress": { colours: ["green"], garmentType: "mini", houseCollection: "romance" },
+  "blush-mirage": { colours: ["blush"], garmentType: "gown", houseCollection: "romance" },
+  "rosewood-heirloom": { colours: ["pink"], garmentType: "gown", houseCollection: "romance" },
+  "crimson-petal-serenade": { colours: ["pink"], garmentType: "gown", houseCollection: "romance" },
+  "rosalind-jacket-blush-column-jumpsuit": {
+    colours: ["blush", "pink"],
+    garmentType: "jumpsuit",
+    houseCollection: "romance",
+  },
+  "daughters-of-spring-pink": { colours: ["pink"], garmentType: "set", houseCollection: "romance" },
+  "daughters-of-spring-green": { colours: ["green"], garmentType: "dress", houseCollection: "romance" },
+  "molten-muse": { colours: ["yellow"], garmentType: "dress", houseCollection: "occasion" },
+  "carmine-ascend": { colours: ["red"], garmentType: "gown", houseCollection: "occasion" },
+  "green-pearl-dress": { colours: ["green"], garmentType: "gown", houseCollection: "romance" },
+  "fire-and-ice": { colours: ["blue", "yellow"], garmentType: "gown", houseCollection: "statement" },
+  "petal-dress": { colours: ["pink"], garmentType: "gown", houseCollection: "statement" },
+  "denim-dress": { colours: ["blue"], garmentType: "mini", houseCollection: "romance" },
+  "butterfly-inspired": { colours: ["blue"], garmentType: "set", houseCollection: "occasion" },
+  zeenat: { colours: ["champagne"], garmentType: "set", houseCollection: "bespoke" },
+  "set-25": { colours: ["black", "ivory"], garmentType: "dress", houseCollection: "statement" },
+  "set-26": { colours: ["black"], garmentType: "gown", houseCollection: "statement" },
+  "pearl-cascade": { colours: ["ivory"], garmentType: "dress", houseCollection: "bespoke" },
+  "wine-velvet": { colours: ["red"], garmentType: "gown", houseCollection: "occasion" },
+  "terracotta-opera": { colours: ["orange"], garmentType: "gown", houseCollection: "statement" },
+  "crystal-peplum": { colours: ["black"], garmentType: "gown", houseCollection: "statement" },
+  "ivory-noir-set": { colours: ["black", "ivory"], garmentType: "set", houseCollection: "statement" },
+  "azure-peplum": { colours: ["blue"], garmentType: "gown", houseCollection: "statement" },
+  "rose-noir-flora": { colours: ["pink", "black"], garmentType: "gown", houseCollection: "statement" },
+  "crystal-fringe-halter": { colours: ["black"], garmentType: "gown", houseCollection: "statement" },
+  "ruffle-noir": { colours: ["black", "pink"], garmentType: "dress", houseCollection: "statement" },
+  "aqua-cascade": { colours: ["ivory", "blue"], garmentType: "gown", houseCollection: "statement" },
+  "garden-brocade": { colours: ["green", "blush"], garmentType: "gown", houseCollection: "statement" },
+  "champagne-capelet": { colours: ["champagne", "ivory"], garmentType: "gown", houseCollection: "statement" },
+  "obsidian-drape": { colours: ["black"], garmentType: "mini", houseCollection: "occasion" },
+  "terra-bloom": { colours: ["black", "orange"], garmentType: "gown", houseCollection: "occasion" },
+  "ivory-satin": { colours: ["ivory"], garmentType: "gown", houseCollection: "occasion" },
+  "lime-solstice": { colours: ["green"], garmentType: "dress", houseCollection: "occasion" },
+  "crystal-cutout": { colours: ["black"], garmentType: "gown", houseCollection: "occasion" },
+  "blush-drape-gown": { colours: ["pink", "black"], garmentType: "gown", houseCollection: "occasion" },
+  "crimson-horizon": { colours: ["red"], garmentType: "gown", houseCollection: "occasion" },
+  "ivory-taupe-suit": { colours: ["ivory"], garmentType: "set", houseCollection: "occasion" },
+  "mint-petals": { colours: ["green"], garmentType: "dress", houseCollection: "romance" },
+  "blush-crop-column": { colours: ["blush"], garmentType: "set", houseCollection: "romance" },
+  "icy-tea": { colours: ["blue"], garmentType: "dress", houseCollection: "romance" },
+  "coral-rose": { colours: ["orange"], garmentType: "gown", houseCollection: "bespoke" },
+  "rust-ruffle-noir": { colours: ["black", "orange"], garmentType: "gown", houseCollection: "bespoke" },
 };
 
 const drafts: ShopDraft[] = [
@@ -540,6 +578,236 @@ const drafts: ShopDraft[] = [
       "Wine velvet, off the shoulder, with a corseted bodice and a high slit that lets the skirt pool into a train. The fabric holds the light; the line is long, close, and unhurried.",
     fabric: "Velvet",
   },
+  {
+    id: 133,
+    slug: "terracotta-opera",
+    name: "Terracotta opera",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A terracotta strapless gown, structured at the bodice, worn with black opera gloves. Quiet until the light finds the satin.",
+    fabric: "Satin",
+  },
+  {
+    id: 134,
+    slug: "crystal-peplum",
+    name: "Crystal peplum",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Black off the shoulder, a crystal-scattered peplum over a close mermaid skirt. The line is long and exact.",
+    fabric: "Crape, hand-embellished crystals",
+  },
+  {
+    id: 135,
+    slug: "ivory-noir-set",
+    name: "Ivory noir set",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A black crystal peplum over an ivory pleated midi. Two pieces, one silhouette — contrast held in the waist.",
+    fabric: "Velvet and chiffon",
+  },
+  {
+    id: 136,
+    slug: "azure-peplum",
+    name: "Azure peplum",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Dusty blue, strapless, with gold embroidery over a sculpted peplum. Made for dusk on a balcony.",
+    fabric: "Silk organza, hand embroidery",
+  },
+  {
+    id: 137,
+    slug: "rose-noir-flora",
+    name: "Rose noir flora",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Dusty rose satin, one shoulder, with black floral appliqué and opera gloves. Soft colour, a dark edge.",
+    fabric: "Satin and velvet appliqué",
+  },
+  {
+    id: 138,
+    slug: "crystal-fringe-halter",
+    name: "Crystal fringe halter",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A black halter column, keyhole at the chest, finished with a crystal fringe necklace that moves as she turns.",
+    fabric: "Crape, crystal embroidery",
+  },
+  {
+    id: 139,
+    slug: "ruffle-noir",
+    name: "Ruffle noir",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Black, close to the body, with pink ruffle straps and a slit. A small interruption of colour.",
+    fabric: "Crape",
+  },
+  {
+    id: 140,
+    slug: "aqua-cascade",
+    name: "Aqua cascade",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "An ivory mermaid slip, the bodice falling in turquoise beadwork like water over stone.",
+    fabric: "Chiffon, hand-beaded",
+  },
+  {
+    id: 141,
+    slug: "garden-brocade",
+    name: "Garden brocade",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A blush embroidered bodice opening into a moss and pink brocade overskirt. Garden, made architectural.",
+    fabric: "Brocade and embroidered tulle",
+  },
+  {
+    id: 142,
+    slug: "champagne-capelet",
+    name: "Champagne capelet",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A champagne capelet, crystal at the waist, over an ivory lace mermaid train.",
+    fabric: "Satin and sequin lace",
+  },
+  {
+    id: 143,
+    slug: "obsidian-drape",
+    name: "Obsidian drape",
+    photos: ["01.jpg", "02.jpg", "03.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A black strapless mini, crystal at the neckline, with a long drape falling from the hip to the floor.",
+    fabric: "Crape",
+  },
+  {
+    id: 144,
+    slug: "terra-bloom",
+    name: "Terra bloom",
+    photos: ["01.jpg", "02.jpg", "03.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A black spaghetti-strap column, one terracotta flower at the hip, a high slit in the skirt.",
+    fabric: "Crape",
+  },
+  {
+    id: 145,
+    slug: "ivory-satin",
+    name: "The white muse",
+    photos: ["01.jpg", "02.jpg", "03.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Ivory sandwash satin, a crystal strap, a soft cowl at the back. Fluid, elongated, unadorned except where it matters.",
+    fabric: "Sandwash satin",
+  },
+  {
+    id: 146,
+    slug: "lime-solstice",
+    name: "Lime solstice",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Lime satin, one shoulder, crystal at the strap, a full skirt that moves when she turns.",
+    fabric: "Satin",
+  },
+  {
+    id: 147,
+    slug: "crystal-cutout",
+    name: "Crystal cutout",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A black column with crystal-trimmed cutouts at the waist and a slit that follows the line down.",
+    fabric: "Crape, crystal trim",
+  },
+  {
+    id: 148,
+    slug: "blush-drape-gown",
+    name: "Blush drape gown",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A ruched blush strapless bodice over a black skirt, the drape caught in the hand.",
+    fabric: "Chiffon and crape",
+  },
+  {
+    id: 149,
+    slug: "crimson-horizon",
+    name: "Crimson horizon",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A crimson open-back gown, the train pooling at the balcony, the ocean behind her.",
+    fabric: "Satin",
+  },
+  {
+    id: 150,
+    slug: "ivory-taupe-suit",
+    name: "Ivory taupe suit",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "An embroidered jacket, a crop, wide trousers — ivory or taupe. Tailoring with a quiet gleam.",
+    fabric: "Wool crape, hand embroidery",
+  },
+  {
+    id: 151,
+    slug: "mint-petals",
+    name: "Mint petals",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Mint strapless midi, floral embroidery at the bodice and hem, a slit at the walk.",
+    fabric: "Organza and satin",
+  },
+  {
+    id: 152,
+    slug: "blush-crop-column",
+    name: "Blush crop column",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A blush beaded crop over a satin column. Two pieces, close at the waist.",
+    fabric: "Satin, hand-beaded",
+  },
+  {
+    id: 153,
+    slug: "icy-tea",
+    name: "Icy tea",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Ice-blue strapless tea length, a full skirt, a quiet shine. Cocktail, not ceremony.",
+    fabric: "Satin",
+  },
+  {
+    id: 154,
+    slug: "coral-rose",
+    name: "Coral rose",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Coral strapless couture, a beaded rose at the waist, a slit through scalloped layers.",
+    fabric: "Hand-beaded tulle and satin",
+  },
+  {
+    id: 155,
+    slug: "rust-ruffle-noir",
+    name: "Rust ruffle noir",
+    photos: ["01.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A black mermaid, crystal at the neckline, rust ruffles at the sleeves falling into a train.",
+    fabric: "Crape and satin",
+  },
 ];
 
 export const shopProducts: Product[] = drafts.map(fromDraft);
@@ -548,6 +816,18 @@ export function getShopProduct(slug: string) {
   return shopProducts.find((product) => product.slug === slug);
 }
 
+export function getHouseCollectionProducts(slug: string) {
+  const house = slug;
+  return shopProducts.filter((product) => product.collection === house);
+}
+
 export function getShopRelated(slug: string, limit = 4) {
-  return shopProducts.filter((product) => product.slug !== slug).slice(0, limit);
+  const current = getShopProduct(slug);
+  const sameHouse = shopProducts.filter(
+    (product) => product.slug !== slug && product.collection === current?.collection,
+  );
+  const rest = shopProducts.filter(
+    (product) => product.slug !== slug && product.collection !== current?.collection,
+  );
+  return [...sameHouse, ...rest].slice(0, limit);
 }

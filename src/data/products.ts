@@ -8,7 +8,7 @@ import {
   type SetManifest,
   type SetGroup,
 } from "./sets";
-import { getShopProduct } from "./shopCatalog";
+import { getShopProduct, shopProducts } from "./shopCatalog";
 
 export type PriceOption = {
   label: string;
@@ -130,8 +130,8 @@ function setToProduct(set: SetManifest): Product {
     slug: set.slug,
     setId: set.id,
     name: shop?.name ?? editorialNames[set.id] ?? `Piece ${set.id}`,
-    collection: set.collection,
-    collectionLabel: group.label,
+    collection: shop?.collection ?? set.collection,
+    collectionLabel: shop?.collectionLabel ?? group.label,
     price: shop?.price ?? prices[set.id] ?? 5000,
     currency: shop ? "INR" : "USD",
     priceOnRequest: shop?.priceOnRequest,
@@ -168,6 +168,8 @@ export function getSetDisplayName(setId: number) {
 }
 
 export function getProductsByCollection(collectionSlug: string) {
+  const fromShop = shopProducts.filter((product) => product.collection === collectionSlug);
+  if (fromShop.length > 0) return fromShop;
   return products.filter((p) => p.collection === collectionSlug);
 }
 

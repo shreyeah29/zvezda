@@ -143,7 +143,7 @@ function strokeWidthForWidth(width: number) {
 }
 
 export function CircularGallery() {
-  const items = arcCarouselCollections.slice(0, 7);
+  const items = arcCarouselCollections;
   const isMobile = useMaxWidth(768);
   const router = useRouter();
   const heroRef = useRef<HTMLElement>(null);
@@ -331,12 +331,12 @@ export function CircularGallery() {
                       const dx = event.clientX - start.x;
                       const dy = event.clientY - start.y;
                       if (dx * dx + dy * dy > 100) return;
-                      router.push(`/products/${item.productSlug}`);
+                      router.push(item.href ?? `/products/${item.productSlug}`);
                     }}
                     onKeyDown={(event) => {
                       if (event.key === "Enter" || event.key === " ") {
                         event.preventDefault();
-                        router.push(`/products/${item.productSlug}`);
+                        router.push(item.href ?? `/products/${item.productSlug}`);
                       }
                     }}
                   />

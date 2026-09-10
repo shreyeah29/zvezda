@@ -1,6 +1,5 @@
 import type { Collection } from "@/data/collections";
-import { getProduct } from "@/data/products";
-import { sets } from "@/data/sets";
+import { getHouseCollectionProducts } from "@/data/shopCatalog";
 
 export type CollectionTheme = {
   bg: string;
@@ -14,6 +13,42 @@ export type CollectionTheme = {
 };
 
 export const collectionThemes: Record<string, CollectionTheme> = {
+  statement: {
+    bg: "#030303",
+    text: "#f5f0e8",
+    muted: "rgba(245,240,232,0.55)",
+    accent: "#c4a574",
+    overlay:
+      "radial-gradient(ellipse 55% 45% at 50% 35%, rgba(255,255,255,0.07) 0%, transparent 65%)",
+    spotlight: true,
+  },
+  occasion: {
+    bg: "#0f0608",
+    text: "#f5ecee",
+    muted: "rgba(245,236,238,0.55)",
+    accent: "#8b1a2b",
+    overlay:
+      "radial-gradient(ellipse 50% 40% at 40% 60%, rgba(139,26,43,0.22) 0%, transparent 70%)",
+    spotlight: true,
+  },
+  romance: {
+    bg: "#1a0f12",
+    text: "#fce8ee",
+    muted: "rgba(252,232,238,0.58)",
+    accent: "#e8a4b8",
+    overlay:
+      "radial-gradient(ellipse 55% 45% at 50% 40%, rgba(232,164,184,0.2) 0%, transparent 70%)",
+    movingLight: true,
+  },
+  bespoke: {
+    bg: "#120c08",
+    text: "#f5ece4",
+    muted: "rgba(245,236,228,0.55)",
+    accent: "#c4a574",
+    overlay:
+      "radial-gradient(circle at 80% 20%, rgba(196,165,116,0.15) 0%, transparent 55%)",
+    movingLight: true,
+  },
   noir: {
     bg: "#030303",
     text: "#f5f0e8",
@@ -79,11 +114,7 @@ export const collectionThemes: Record<string, CollectionTheme> = {
 };
 
 export function getCollectionProducts(collection: Collection) {
-  return collection.setIds
-    .map((id) => sets.find((s) => s.id === id))
-    .filter(Boolean)
-    .map((set) => getProduct(set!.slug))
-    .filter(Boolean);
+  return getHouseCollectionProducts(collection.slug);
 }
 
 /** Scattered masonry positions — responsive via CSS grid spans */

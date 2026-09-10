@@ -1,3 +1,5 @@
+import { houseCollections } from "./houseCollections";
+
 export type Collection = {
   slug: string;
   title: string;
@@ -10,93 +12,18 @@ export type Collection = {
   setIds: number[];
 };
 
-export const collections: Collection[] = [
-  {
-    slug: "garden",
-    title: "Garden Green",
-    subtitle: "Sets 1–4",
-    description:
-      "Silk caught between petals and shadow. Olive, moss, and conservatory light — four distinct silhouettes born in overgrown glasshouses.",
-    cover: "/assets/images/products/set-1/HSP_4327.jpg",
-    hero: "/assets/images/products/set-3/HSP_3971.jpg",
-    accent: "#4a5240",
-    season: "Spring / Summer 2026",
-    setIds: [1, 2, 3, 4],
-  },
-  {
-    slug: "peach",
-    title: "Peach",
-    subtitle: "Set 5",
-    description:
-      "Soft warmth against pale stone. A single gesture in blush and gold — intimate, luminous, impossibly tender.",
-    cover: "/assets/images/products/set-5/HSP_4393.jpg",
-    hero: "/assets/images/products/set-5/VAM_6670.jpg",
-    accent: "#d4a088",
-    season: "Resort 2026",
-    setIds: [5],
-  },
-  {
-    slug: "noir",
-    title: "Black Combo",
-    subtitle: "Sets 6–10, 14",
-    description:
-      "Monochrome as emotion. Sculptural pieces in black and white — stripped to essence, presence in shadow.",
-    cover: "/assets/images/products/set-8/HSP_2981.jpg",
-    hero: "/assets/images/products/set-14/HSP_2470.jpg",
-    accent: "#1a1a1a",
-    season: "Permanent Collection",
-    setIds: [6, 7, 8, 9, 10, 14],
-  },
-  {
-    slug: "yellow",
-    title: "Yellow",
-    subtitle: "Set 11",
-    description:
-      "Sunlight made garment. Bold, architectural, unapologetically bright — the moment the room holds its breath.",
-    cover: "/assets/images/products/set-11/HSP_5848.jpg",
-    hero: "/assets/images/products/set-11/HSP_5916.jpg",
-    accent: "#c9a227",
-    season: "Spring 2026",
-    setIds: [11],
-  },
-  {
-    slug: "red",
-    title: "Red",
-    subtitle: "Set 12",
-    description:
-      "Crimson as declaration. Deep, saturated, cinematic — the colour of the curtain rising.",
-    cover: "/assets/images/products/set-12/HSP_5547.jpg",
-    hero: "/assets/images/products/set-12/HSP_5750.jpg",
-    accent: "#8b1a2b",
-    season: "Autumn / Winter 2026",
-    setIds: [12],
-  },
-  {
-    slug: "orange",
-    title: "Orange",
-    subtitle: "Set 13",
-    description:
-      "Burnt orange satin in candlelight. Warmth, movement, and the dying embers of afternoon.",
-    cover: "/assets/images/products/set-13/BHA_2011.jpg",
-    hero: "/assets/images/products/set-13/HSP_2932.jpg",
-    accent: "#c47a3a",
-    season: "Resort 2026",
-    setIds: [13],
-  },
-  {
-    slug: "pink",
-    title: "Pink",
-    subtitle: "Sets 15–18",
-    description:
-      "Romance in full bloom. Blush satin, hand-placed florals, and the soft hush of a garden at golden hour.",
-    cover: "/assets/images/products/set-15/HSP_4946.jpg",
-    hero: "/assets/images/products/set-16/HSP_5981.JPG",
-    accent: "#e8a4b8",
-    season: "Spring-Summer 2026",
-    setIds: [15, 16, 17, 18],
-  },
-];
+export const collections: Collection[] = houseCollections.map((collection) => ({
+  slug: collection.slug,
+  title: collection.title,
+  subtitle: collection.title,
+  description: collection.description,
+  cover: collection.cover,
+  hero: collection.hero,
+  accent: collection.accent,
+  season: collection.season,
+  setIds: [],
+}));
 
 export function getCollection(slug: string) {
-  return collections.find((c) => c.slug === slug);
+  return collections.find((collection) => collection.slug === slug);
 }

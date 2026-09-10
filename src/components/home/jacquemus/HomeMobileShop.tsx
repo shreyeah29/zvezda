@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMaxWidth } from "@/hooks/useMaxWidth";
-import { getProduct } from "@/data/products";
+import { findProduct } from "@/data/findProduct";
 import { pinkHighlightCards, shopHighlightCards } from "@/data/shopHighlightCards";
 import "./HomeMobileShop.css";
 
@@ -61,17 +61,17 @@ export function HomeMobileShop() {
   const [a, b, c, d] = shopHighlightCards;
 
   return (
-    <section className="hm-shop hm-shop--noir" aria-label="Noir collection">
-      <MobileSectionHeading primary="Noir" secondary="Collection" />
+    <section className="hm-shop hm-shop--noir" aria-label="Statement collection">
+      <MobileSectionHeading primary="Statement" secondary="Collection" />
       <div className="hm-bento">
         {[a, b, c, d].map((card) => {
-          const product = getProduct(card.slug);
+          const product = findProduct(card.slug);
           if (!product) return null;
 
           return (
             <MobileShopCard
               key={card.slug}
-              href={`/products/${card.slug}`}
+              href="/collections/statement"
               image={card.image}
               alt={product.name}
               title={product.name}
@@ -90,14 +90,14 @@ export function HomeMobilePinkShop() {
 
   const hero = pinkHighlightCards[0];
   const support = pinkHighlightCards.slice(1, 3);
-  const heroProduct = hero ? getProduct(hero.slug) : null;
+  const heroProduct = hero ? findProduct(hero.slug) : null;
 
   return (
-    <section className="hm-shop hm-shop--pink" aria-label="Pink collection">
-      <MobileSectionHeading primary="Pink" secondary="Collection" />
+    <section className="hm-shop hm-shop--pink" aria-label="Romance collection">
+      <MobileSectionHeading primary="Romance" secondary="Collection" />
 
       {hero && heroProduct && (
-        <Link href={`/products/${hero.slug}`} className="hm-pink__hero">
+        <Link href="/collections/romance" className="hm-pink__hero">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={hero.image}
@@ -107,7 +107,7 @@ export function HomeMobilePinkShop() {
           />
           <div className="hm-pink__hero-scrim" aria-hidden="true" />
           <div className="hm-pink__hero-copy">
-            <span className="hm-pink__hero-line">Pink</span>
+            <span className="hm-pink__hero-line">Romance</span>
             <span className="hm-pink__hero-line">Collection</span>
             <span className="hm-pink__hero-cta">Shop now</span>
           </div>
@@ -116,13 +116,13 @@ export function HomeMobilePinkShop() {
 
       <div className="hm-pink__support">
         {support.map((card) => {
-          const product = getProduct(card.slug);
+          const product = findProduct(card.slug);
           if (!product) return null;
 
           return (
             <MobileShopCard
               key={card.slug}
-              href={`/products/${card.slug}`}
+              href="/collections/romance"
               image={card.image}
               alt={product.name}
               title={product.name}

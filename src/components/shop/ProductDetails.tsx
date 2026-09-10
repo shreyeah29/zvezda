@@ -6,6 +6,10 @@ import { formatPrice, type Product } from "@/data/products";
 const SIZES = ["XS", "S", "M", "L", "XL"];
 
 const COLLECTION_COLORS: Record<string, string[]> = {
+  statement: ["#1a1a1a", "#4a4a4a", "#f5f0e8"],
+  occasion: ["#8b1a2b", "#c42d42", "#5c1019"],
+  romance: ["#e8a4b8", "#f5c6d4", "#d4849c"],
+  bespoke: ["#c4a574", "#e8c4b0", "#c48870"],
   garden: ["#4a5240", "#6b7560", "#3d4436"],
   peach: ["#d4a088", "#e8c4b0", "#c48870"],
   pink: ["#e8a4b8", "#f5c6d4", "#d4849c"],
