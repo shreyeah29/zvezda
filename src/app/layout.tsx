@@ -90,6 +90,14 @@ export default function RootLayout({
       lang="en"
       className={`${display.variable} ${body.variable} ${kinetic.variable} ${editorial.variable} ${product.variable} ${italiana.variable} ${bright.variable} ${against.variable} ${tempting.variable} ${modernRomance.variable} h-full`}
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <a href="#main-content" className="skip-link">
           Skip to content

@@ -15,6 +15,8 @@
   .hm-bespoke {
     display: block;
     padding: 1.75rem 0;
+    --font-display: "Bodoni Moda", Didot, "Times New Roman", serif;
+    --font-ui: "Jost", "Helvetica Neue", Arial, sans-serif;
   }
 
   .hm-bespoke {
@@ -66,10 +68,11 @@
   }
 
   .hm-bespoke__title {
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-family: var(--font-display);
     font-size: clamp(0.72rem, 3.2vw, 0.82rem);
     font-weight: 400;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.3em;
+    padding-left: 0.3em;
     text-transform: uppercase;
     color: #ffffff;
     text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45);
@@ -77,10 +80,10 @@
 
   .hm-bespoke__cta {
     display: inline-block;
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
-    font-size: 9px;
-    font-weight: 400;
-    letter-spacing: 0.18em;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: #ffffff;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
@@ -125,20 +128,22 @@
   }
 
   .hm-section-heading__primary {
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-family: var(--font-display);
     font-size: clamp(1.35rem, 6.5vw, 1.75rem);
     font-weight: 400;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.3em;
+    padding-left: 0.3em;
     line-height: 1;
     text-transform: uppercase;
     color: var(--hm-gold);
   }
 
   .hm-section-heading__secondary {
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
-    font-size: clamp(0.72rem, 3.2vw, 0.88rem);
-    font-weight: 400;
-    letter-spacing: 0.42em;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    padding-left: 0.4em;
     line-height: 1;
     text-transform: uppercase;
     color: #0c0a09;
@@ -206,7 +211,7 @@
   }
 
   .hm-pink__hero-line {
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
+    font-family: var(--font-display);
     font-weight: 400;
     text-transform: uppercase;
     color: #ffffff;
@@ -215,20 +220,25 @@
 
   .hm-pink__hero-line:first-child {
     font-size: clamp(1.5rem, 7vw, 2rem);
-    letter-spacing: 0.26em;
+    letter-spacing: 0.3em;
+    padding-left: 0.3em;
     color: var(--hm-gold);
   }
 
   .hm-pink__hero-line:nth-child(2) {
-    font-size: clamp(0.78rem, 3.4vw, 0.92rem);
-    letter-spacing: 0.38em;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    padding-left: 0.4em;
   }
 
   .hm-pink__hero-cta {
     margin-top: 0.35rem;
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
-    font-size: 9px;
-    letter-spacing: 0.18em;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: #ffffff;
     text-decoration: underline;
@@ -310,30 +320,30 @@
 }
 
 .hm-shop__cat-card--small .hm-shop__cat-title {
-  font-size: clamp(0.62rem, 2.6vw, 0.72rem);
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  letter-spacing: 0.08em;
 }
 
 .hm-shop__cat-card--small .hm-shop__cat-cta {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .hm-shop__cat-title {
   margin: 0;
-  font-family: var(--font-display, Georgia, "Times New Roman", serif);
+  font-family: var(--font-display);
   font-size: clamp(0.78rem, 3.2vw, 0.92rem);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   line-height: 1.25;
   text-transform: uppercase;
   color: #ffffff;
 }
 
 .hm-shop__cat-cta {
-  font-family: var(--font-display, Georgia, "Times New Roman", serif);
+  font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.18em;
+  font-weight: 300;
+  letter-spacing: 0.24em;
   line-height: 1;
   text-transform: uppercase;
   color: #ffffff;

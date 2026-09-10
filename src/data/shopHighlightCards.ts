@@ -39,13 +39,13 @@ export const romanceHighlightCards: ShopHighlightCard[] = [
     setId: 5,
     slug: "blush-mirage",
     title: "Blush mirage",
-    image: "/assets/images/shop/blush-mirage/HSP_4492.jpg",
+    image: "/assets/images/shop/blush-mirage/HSP_4495.jpg",
   },
   {
     setId: 3,
     slug: "daughters-of-spring-green",
     title: "Daughters of spring (green)",
-    image: "/assets/images/shop/daughters-of-spring-green/HSP_5940.jpg",
+    image: "/assets/images/shop/daughters-of-spring-green/HSP_5954.jpg",
   },
   {
     setId: 17,
