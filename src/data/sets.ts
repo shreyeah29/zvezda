@@ -225,6 +225,13 @@ export function setVideoPath(set: SetManifest, filename?: string) {
   return `/assets/videos/products/${set.slug}/${file}`;
 }
 
+/** 1080p H.264 loops for instant autoplay on phone and desktop. */
+export function setDesktopVideoPath(set: SetManifest, filename?: string) {
+  const file = filename ?? set.video;
+  if (!file) return undefined;
+  return `/assets/videos/products/desktop/${set.slug}/${file}`;
+}
+
 /** Lightweight H.264 loops for ambient kinetic backgrounds (web-optimized). */
 export function setAmbientVideoPath(set: SetManifest, filename?: string) {
   const file = filename ?? set.video;

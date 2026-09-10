@@ -21,16 +21,12 @@ export function ScrollerImage({ item, visualState, shouldPreload }: ScrollerImag
     if (!video) return;
 
     if (visualState.isActive && visualState.opacity > 0.55) {
-      if (!wasActiveRef.current) {
-        video.currentTime = 0;
-        wasActiveRef.current = true;
-      }
+      wasActiveRef.current = true;
       playInlineVideo(video);
       return;
     }
 
     wasActiveRef.current = false;
-    video.pause();
   }, [visualState.isActive, visualState.opacity]);
 
   return (
@@ -53,7 +49,7 @@ export function ScrollerImage({ item, visualState, shouldPreload }: ScrollerImag
         autoPlay
         controls={false}
         disablePictureInPicture
-        preload={shouldPreload ? "auto" : "metadata"}
+        preload="auto"
         className="h-full w-full object-cover"
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/20 via-transparent to-ink/30" />

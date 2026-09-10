@@ -377,7 +377,10 @@ export function AsymmetricGrid({
                       <video
                         src={item.resolvedUrl}
                         muted
+                        autoPlay
+                        loop
                         playsInline
+                        preload="auto"
                         className="ag-img"
                       />
                     )}
@@ -422,8 +425,11 @@ export function AsymmetricGrid({
               <video
                 key={filteredItems[lightbox].resolvedUrl}
                 src={filteredItems[lightbox].resolvedUrl}
-                controls
                 autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
                 className="ag-lb-media"
               />
             ) : (

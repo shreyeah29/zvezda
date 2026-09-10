@@ -115,7 +115,7 @@ export function DesignerStory() {
 export function FilmTeaser() {
   return (
     <section className="relative min-h-[80vh] overflow-hidden">
-      <video autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover opacity-50">
+      <video autoPlay muted loop playsInline preload="auto" className="absolute inset-0 h-full w-full object-cover opacity-50">
         <source src="/assets/videos/film/GardenTrio.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-ink/50" />

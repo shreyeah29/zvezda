@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setVideoPath, getSet, setHeroPhoto } from "@/data/sets";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
+import { Mp4Sources } from "@/components/media/Mp4Sources";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,9 +61,10 @@ export function HeroScene() {
           muted
           loop
           playsInline
+          preload="auto"
           className="h-full w-full object-cover"
         >
-          <source src={heroVideo} type="video/mp4" />
+          <Mp4Sources src={heroVideo} />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-transparent to-ink/60" />
       </div>

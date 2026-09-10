@@ -97,6 +97,12 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
+        <link
+          rel="preload"
+          as="video"
+          href="/assets/videos/products/desktop/set-12/RedDressSolo.mp4"
+          type="video/mp4"
+        />
       </head>
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <a href="#main-content" className="skip-link">

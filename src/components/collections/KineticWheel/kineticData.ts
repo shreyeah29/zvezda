@@ -1,6 +1,6 @@
 import type { Product } from "@/data/products";
 import { products } from "@/data/products";
-import { getSet, setAmbientVideoPath } from "@/data/sets";
+import { getSet, setDesktopVideoPath } from "@/data/sets";
 
 export type KineticMood = {
   glow: string;
@@ -36,13 +36,12 @@ export function getKineticPieces(): KineticPiece[] {
       new Set([product.hero, product.detail, ...product.gallery].filter(Boolean)),
     );
     const set = getSet(product.setId);
-    const ambient = set ? setAmbientVideoPath(set) : undefined;
+    const film = set ? setDesktopVideoPath(set) : undefined;
     return {
       product,
       tagline: firstSentence(product.description) || "Couture silhouette from the Zvezda atelier.",
       images,
-      // Prefer ambient web encodes for the kinetic background; fall back to master.
-      video: ambient ?? product.video,
+      video: film ?? product.video,
       mood: kineticMoodByCollection[set?.collection ?? product.collection] ?? kineticMoodByCollection.noir,
     };
   });

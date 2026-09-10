@@ -99,7 +99,6 @@ export function AmbientVideoLayer({
         const el = front === "a" ? aRef.current : bRef.current;
         if (!el) return;
         if (visibleRef.current) tryPlay(el);
-        else el.pause();
       },
       { threshold: [0, 0.01, 0.2, 0.5] },
     );

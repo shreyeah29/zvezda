@@ -40,7 +40,7 @@ export function AboutFilm({
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           poster={image}
           controls={false}
           disablePictureInPicture
