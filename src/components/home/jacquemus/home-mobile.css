@@ -7,16 +7,18 @@
     background: #ffffff;
   }
 
-  .jacquemus-home .home-section--mobile-bw-shop,
-  .jacquemus-home .home-section--mobile-pink-shop,
-  .jacquemus-home .home-section--mobile-pink-video,
+  .jacquemus-home .home-section--mobile-bespoke,
+  .jacquemus-home .home-section--mobile-romance,
+  .jacquemus-home .home-section--mobile-statement,
+  .jacquemus-home .home-section--mobile-occasion,
   .jacquemus-home .home-section--instagram {
     margin-top: 0;
     margin-bottom: 0;
   }
 
-  .jacquemus-home .home-section--mobile-pink-shop,
-  .jacquemus-home .home-section--mobile-pink-video {
+  .jacquemus-home .home-section--mobile-romance,
+  .jacquemus-home .home-section--mobile-statement,
+  .jacquemus-home .home-section--mobile-occasion {
     padding-top: 0;
     padding-bottom: 0;
   }
@@ -29,19 +31,19 @@
     order: 1;
   }
 
-  .jacquemus-home .home-section--split {
+  .jacquemus-home .home-section--mobile-bespoke {
     order: 2;
   }
 
-  .jacquemus-home .home-section--mobile-bw-shop {
+  .jacquemus-home .home-section--mobile-romance {
     order: 3;
   }
 
-  .jacquemus-home .home-section--mobile-pink-shop {
+  .jacquemus-home .home-section--mobile-statement {
     order: 4;
   }
 
-  .jacquemus-home .home-section--mobile-pink-video {
+  .jacquemus-home .home-section--mobile-occasion {
     order: 5;
   }
 
@@ -53,97 +55,12 @@
     order: 7;
   }
 
+  .jacquemus-home .home-section--split,
   .jacquemus-home .home-section--showcase,
   .jacquemus-home .home-section--pink-row,
   .jacquemus-home .home-section--bw-row,
   .jacquemus-home .home-section--bw-feature,
   .jacquemus-home .home-section--pink-feature {
     display: none !important;
-  }
-
-  /* Collection split — stacked banners, faces centered */
-  .jacquemus-home .jm-collection-split {
-    margin: 0;
-    padding: 0;
-    background: #ffffff;
-  }
-
-  .jacquemus-home .jm-collection-split__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    height: auto;
-    min-height: 0;
-    gap: 0;
-  }
-
-  .jacquemus-home .jm-collection-split__panel {
-    position: relative;
-    aspect-ratio: 16 / 11;
-    min-height: 0;
-    border-bottom: none;
-  }
-
-  .jacquemus-home .jm-collection-split__panel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.42) 0%,
-      rgba(0, 0, 0, 0.18) 42%,
-      rgba(0, 0, 0, 0.02) 72%
-    );
-    pointer-events: none;
-  }
-
-  .jacquemus-home .jm-collection-split__image {
-    object-position: center 28%;
-  }
-
-  .jacquemus-home .jm-collection-split__panel:first-child .jm-collection-split__image {
-    object-position: center 22%;
-  }
-
-  .jacquemus-home .jm-collection-split__panel:last-child .jm-collection-split__image {
-    object-position: center 30%;
-  }
-
-  .jacquemus-home .jm-split-panel__copy {
-    top: 50%;
-    bottom: auto;
-    left: 1rem;
-    z-index: 2;
-    transform: translateY(-50%);
-    gap: 0.5rem;
-  }
-
-  .jacquemus-home .jm-split-panel__title {
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
-    font-size: clamp(0.72rem, 3.2vw, 0.82rem);
-    font-weight: 400;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45);
-  }
-
-  .jacquemus-home .jm-split-panel__cta {
-    display: inline-block;
-    font-family: var(--font-display, Georgia, "Times New Roman", serif);
-    font-size: 9px;
-    font-weight: 400;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
-    text-decoration: underline;
-    text-decoration-color: #c4a574;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-  }
-
-  .jacquemus-home .jm-section-rule {
-    display: none;
   }
 }

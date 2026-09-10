@@ -2,9 +2,18 @@
 
 import Link from "next/link";
 import { useMaxWidth } from "@/hooks/useMaxWidth";
-import { getProduct } from "@/data/products";
-import { pinkHighlightCards, shopHighlightCards } from "@/data/shopHighlightCards";
+import { findProduct } from "@/data/findProduct";
+import {
+  occasionHighlightCards,
+  pinkHighlightCards,
+  romanceHighlightCards,
+  shopHighlightCards,
+  statementHighlightCards,
+  type ShopHighlightCard,
+} from "@/data/shopHighlightCards";
 import "./HomeMobileShop.css";
+
+const BESPOKE_IMAGE = "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4523.jpg";
 
 function MobileSectionHeading({
   primary,
@@ -65,7 +74,7 @@ export function HomeMobileShop() {
       <MobileSectionHeading primary="Noir" secondary="Collection" />
       <div className="hm-bento">
         {[a, b, c, d].map((card) => {
-          const product = getProduct(card.slug);
+          const product = findProduct(card.slug);
           if (!product) return null;
 
           return (
@@ -84,30 +93,48 @@ export function HomeMobileShop() {
 }
 
 export function HomeMobilePinkShop() {
+  return (
+    <HomeMobileCollectionShop
+      name="Pink"
+      href="/collections/romance"
+      cards={pinkHighlightCards}
+    />
+  );
+}
+
+function HomeMobileCollectionShop({
+  name,
+  href,
+  cards,
+}: {
+  name: string;
+  href: string;
+  cards: ShopHighlightCard[];
+}) {
   const isMobile = useMaxWidth(768);
 
   if (!isMobile) return null;
 
-  const hero = pinkHighlightCards[0];
-  const support = pinkHighlightCards.slice(1, 3);
-  const heroProduct = hero ? getProduct(hero.slug) : null;
+  const hero = cards[0];
+  const support = cards.slice(1, 3);
+  const heroProduct = hero ? findProduct(hero.slug) : null;
 
   return (
-    <section className="hm-shop hm-shop--pink" aria-label="Pink collection">
-      <MobileSectionHeading primary="Pink" secondary="Collection" />
+    <section className="hm-shop hm-shop--pink" aria-label={`${name} collection`}>
+      <MobileSectionHeading primary={name} secondary="Collection" />
 
-      {hero && heroProduct && (
-        <Link href={`/products/${hero.slug}`} className="hm-pink__hero">
+      {hero && (
+        <Link href={href} className="hm-pink__hero">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={hero.image}
-            alt={heroProduct.name}
+            alt={heroProduct?.name ?? `${name} collection`}
             className="hm-pink__hero-image"
             loading="lazy"
           />
           <div className="hm-pink__hero-scrim" aria-hidden="true" />
           <div className="hm-pink__hero-copy">
-            <span className="hm-pink__hero-line">Pink</span>
+            <span className="hm-pink__hero-line">{name}</span>
             <span className="hm-pink__hero-line">Collection</span>
             <span className="hm-pink__hero-cta">Shop now</span>
           </div>
@@ -116,7 +143,7 @@ export function HomeMobilePinkShop() {
 
       <div className="hm-pink__support">
         {support.map((card) => {
-          const product = getProduct(card.slug);
+          const product = findProduct(card.slug);
           if (!product) return null;
 
           return (
@@ -132,5 +159,58 @@ export function HomeMobilePinkShop() {
         })}
       </div>
     </section>
+  );
+}
+
+export function HomeMobileBespoke() {
+  const isMobile = useMaxWidth(768);
+
+  if (!isMobile) return null;
+
+  return (
+    <section className="hm-bespoke" aria-label="Bespoke">
+      <Link href="/collections/bespoke" className="hm-bespoke__banner">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={BESPOKE_IMAGE}
+          alt="Bespoke"
+          className="hm-bespoke__image"
+        />
+        <div className="hm-bespoke__copy">
+          <span className="hm-bespoke__title">Bespoke</span>
+          <span className="hm-bespoke__cta">Explore now</span>
+        </div>
+      </Link>
+    </section>
+  );
+}
+
+export function HomeMobileRomanceShop() {
+  return (
+    <HomeMobileCollectionShop
+      name="Romance"
+      href="/collections/romance"
+      cards={romanceHighlightCards}
+    />
+  );
+}
+
+export function HomeMobileStatementShop() {
+  return (
+    <HomeMobileCollectionShop
+      name="Statement"
+      href="/collections/statement"
+      cards={statementHighlightCards}
+    />
+  );
+}
+
+export function HomeMobileOccasionShop() {
+  return (
+    <HomeMobileCollectionShop
+      name="Occasion"
+      href="/collections/occasion"
+      cards={occasionHighlightCards}
+    />
   );
 }

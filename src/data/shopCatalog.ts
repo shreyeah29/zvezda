@@ -562,12 +562,19 @@ const drafts: ShopDraft[] = [
   {
     id: 143,
     slug: "obsidian-drape",
-    name: "Obsidian drape",
-    photos: ["01.jpg", "02.jpg", "03.jpg"],
+    name: "Starlight Drop",
+    photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg", "05.jpg"],
+    price: 32000,
     sizeOptions: ["6", "8", "10", "12"],
     description:
-      "A black strapless mini, crystal at the neckline, with a long drape falling from the hip to the floor.",
-    fabric: "Crape",
+      "Starlight Drop merges playful cocktail lengths with dramatic couture elements, featuring a fitted black mini silhouette anchored by a delicately embellished strapless neckline. Tailored in structured Japanese crepe, the dress is sculpted around the body before releasing into a sweeping, tiered ruffle drape that cascades asymmetrically from the waist to the floor. The subtle crystal rim along the bust offers a quiet touch of light, while the dramatic side train adds fluid motion to a sharp, modern cut. Each detail is thoughtfully constructed and finished at the Zvezda Atelier to create a statement piece that feels both youthful and undeniably sophisticated.",
+    craft: [
+      "Delicate crystal-embellished strapless neckline",
+      "Floor-length cascading side ruffle train",
+      "Structured mini sheath silhouette",
+    ],
+    fabric: "Japanese crepe",
+    care: "Dry clean only",
   },
   {
     id: 144,
@@ -603,6 +610,28 @@ export function getHouseCollectionProducts(slug: string) {
   return house.productSlugs
     .map((productSlug) => getShopProduct(productSlug))
     .filter((product): product is Product => Boolean(product));
+}
+
+const COLLECTION_FILM_SLUG: Record<string, string> = {
+  statement: "eclipse-royale",
+  occasion: "molten-muse",
+  romance: "jardin-elegance-dress",
+  bespoke: "rosa-imperiale",
+};
+
+export function getCollectionFilm(slug: string) {
+  const products = getHouseCollectionProducts(slug);
+  const preferred = COLLECTION_FILM_SLUG[slug];
+  const filmed =
+    products.find((product) => product.slug === preferred && product.video) ??
+    products.find((product) => product.video);
+  if (!filmed?.video) return null;
+  return {
+    src: filmed.video,
+    poster: filmed.hero,
+    href: `/products/${filmed.slug}`,
+    name: filmed.name,
+  };
 }
 
 export function getShopRelated(slug: string, limit = 4) {

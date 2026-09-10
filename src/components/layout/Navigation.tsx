@@ -35,7 +35,8 @@ export function Navigation() {
   const isHome = pathname === "/";
   const isAbout = pathname === "/about";
   const isProductPage = pathname.startsWith("/products/");
-  const hasHeroOverlay = isHome || isProductPage;
+  const isCollectionDetail = pathname.startsWith("/collections/") && pathname !== "/collections";
+  const hasHeroOverlay = isHome || isProductPage || isCollectionDetail;
   const { cartCount, cartPulse } = useCommerce();
   const [cartOpen, setCartOpen] = useState(false);
   const [displayCount, setDisplayCount] = useState(cartCount);

@@ -15,26 +15,34 @@ const SmoothScroll = dynamic(
   { ssr: false },
 );
 
-const HomeMobileShop = dynamic(
+const HomeMobileBespoke = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeMobileShop").then((mod) => ({
-      default: mod.HomeMobileShop,
+      default: mod.HomeMobileBespoke,
     })),
   { ssr: false },
 );
 
-const HomeMobilePinkShop = dynamic(
+const HomeMobileRomanceShop = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeMobileShop").then((mod) => ({
-      default: mod.HomeMobilePinkShop,
+      default: mod.HomeMobileRomanceShop,
     })),
   { ssr: false },
 );
 
-const HomeMobilePinkVideo = dynamic(
+const HomeMobileStatementShop = dynamic(
   () =>
-    import("@/components/home/jacquemus/HomeMobilePinkVideo").then((mod) => ({
-      default: mod.HomeMobilePinkVideo,
+    import("@/components/home/jacquemus/HomeMobileShop").then((mod) => ({
+      default: mod.HomeMobileStatementShop,
+    })),
+  { ssr: false },
+);
+
+const HomeMobileOccasionShop = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomeMobileShop").then((mod) => ({
+      default: mod.HomeMobileOccasionShop,
     })),
   { ssr: false },
 );
@@ -113,8 +121,8 @@ export default function HomePage() {
           <div className="home-section home-section--split">
             <HomeCollectionSplit />
           </div>
-          <div className="home-section home-section--mobile-bw-shop">
-            <HomeMobileShop />
+          <div className="home-section home-section--mobile-bespoke">
+            <HomeMobileBespoke />
           </div>
           <div className="home-section home-section--pink-row">
             <HomePinkProductRow />
@@ -128,11 +136,14 @@ export default function HomePage() {
           <div className="home-section home-section--bw-feature">
             <HomeCollectionFeature />
           </div>
-          <div className="home-section home-section--mobile-pink-shop">
-            <HomeMobilePinkShop />
+          <div className="home-section home-section--mobile-romance">
+            <HomeMobileRomanceShop />
           </div>
-          <div className="home-section home-section--mobile-pink-video">
-            <HomeMobilePinkVideo />
+          <div className="home-section home-section--mobile-statement">
+            <HomeMobileStatementShop />
+          </div>
+          <div className="home-section home-section--mobile-occasion">
+            <HomeMobileOccasionShop />
           </div>
           <div className="home-section home-section--instagram">
             <HomeMobileInstagram />

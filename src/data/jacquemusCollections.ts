@@ -1,5 +1,5 @@
 import { houseCollections } from "./houseCollections";
-import { getShopProduct } from "./shopCatalog";
+import { getCollectionFilm, getShopProduct } from "./shopCatalog";
 
 export type JacquemusCollectionMedia = {
   type: "image" | "video";
@@ -16,11 +16,8 @@ export type JacquemusCollection = {
   media: JacquemusCollectionMedia[];
 };
 
-export const jacquemusCollections: JacquemusCollection[] = houseCollections.map((collection) => ({
-  id: collection.slug,
-  name: collection.title,
-  season: collection.season,
-  media: collection.productSlugs.flatMap((slug) => {
+export const jacquemusCollections: JacquemusCollection[] = houseCollections.map((collection) => {
+  const images = collection.productSlugs.flatMap((slug) => {
     const product = getShopProduct(slug);
     if (!product) return [];
     return [
@@ -31,5 +28,24 @@ export const jacquemusCollections: JacquemusCollection[] = houseCollections.map(
         href: `/products/${product.slug}`,
       },
     ];
-  }),
-}));
+  });
+
+  const film = getCollectionFilm(collection.slug);
+  if (!film) return { id: collection.slug, name: collection.title, season: collection.season, media: images };
+
+  return {
+    id: collection.slug,
+    name: collection.title,
+    season: collection.season,
+    media: [
+      {
+        type: "video" as const,
+        src: film.src,
+        poster: film.poster,
+        alt: `${collection.title} film`,
+        href: film.href,
+      },
+      ...images,
+    ],
+  };
+});
