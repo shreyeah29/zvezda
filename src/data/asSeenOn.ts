@@ -10,9 +10,9 @@ export type AsSeenOnLook = {
 export const asSeenOnHero: AsSeenOnLook = {
   id: "zeenat-aman",
   name: "Zeenat Aman",
-  piece: "In the golden kaftan",
+  piece: "The Ophelia set",
   src: "/images/press/zeenat-hero.jpg",
-  alt: "Zeenat Aman in the golden kaftan",
+  alt: "Zeenat Aman in The Ophelia set",
   position: "center 22%",
 };
 
