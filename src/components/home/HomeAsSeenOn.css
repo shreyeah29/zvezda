@@ -1,210 +1,337 @@
-.as-seen-on {
-  --font-display: "Bodoni Moda", Didot, "Times New Roman", serif;
-  --font-ui: "Jost", "Helvetica Neue", Arial, sans-serif;
-  --gold: #c9a063;
-  --ink: #1a1a1a;
-  --muted: #6e6961;
-  --meta: #8f8b85;
-  background: #fff;
-  padding: 40px 0 36px;
+.as-seen {
+  --as-bg: #ffffff;
+  --as-ink: #1a1a1a;
+  --as-muted: rgba(26, 26, 26, 0.55);
+  --as-gold: #c9a063;
+  --as-line: rgba(26, 26, 26, 0.12);
+  --as-photo: #ece8e1;
+  background: var(--as-bg);
+  color: var(--as-ink);
+  overflow: hidden;
 }
 
-.as-seen-on header {
-  padding: 0 20px;
+.as-seen__intro {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 9px;
-  text-align: center;
+  gap: 1.1rem;
+  padding: 3.25rem 1.25rem 1.5rem;
 }
 
-.as-seen-on .eyebrow {
-  font-family: var(--font-ui);
-  font-weight: 300;
+.as-seen__label {
+  margin: 0;
+  font-family: "Jost", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 10px;
-  letter-spacing: 0.4em;
-  padding-left: 0.4em;
-  color: var(--meta);
-  margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.42em;
   text-transform: uppercase;
+  color: var(--as-gold);
 }
 
-.as-seen-on h2 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 30px;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
-  color: var(--ink);
+.as-seen__heading {
   margin: 0;
+  font-family: "Bodoni Moda", var(--font-display), "Times New Roman", serif;
+  font-size: clamp(2.4rem, 8vw, 4.6rem);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  color: var(--as-ink);
 }
 
-.as-seen-on h2 em {
+.as-seen__heading em {
   font-style: italic;
 }
 
-.as-seen-on .rule {
-  width: 46px;
-  height: 1px;
-  background: var(--gold);
-  margin-top: 4px;
+.as-seen__stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 0 1.25rem;
 }
 
-.as-seen-on .hero {
+.as-seen__feature {
   position: relative;
-  margin: 28px 20px 0;
-}
-
-.as-seen-on .hero img {
   display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: center 12%;
+  margin: 0 1.25rem;
+  overflow: hidden;
+  text-decoration: none;
+  color: #f6f1e8;
+  background: var(--as-photo);
 }
 
-.as-seen-on .hero::after {
+.as-seen__feature-media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+
+.as-seen__feature-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.as-seen__feature-media::after {
   content: "";
   position: absolute;
-  inset: auto 0 0 0;
-  height: 46%;
-  background: linear-gradient(to top, rgba(12, 12, 13, 0.86), rgba(12, 12, 13, 0));
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 11, 10, 0.02) 38%,
+    rgba(12, 11, 10, 0.48) 78%,
+    rgba(12, 11, 10, 0.82) 100%
+  );
   pointer-events: none;
 }
 
-.as-seen-on .hero figcaption {
+.as-seen__feature-copy {
   position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 16px;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 1.15rem;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: flex-start;
+  gap: 0.28rem;
 }
 
-.as-seen-on .hero .name {
-  font-family: var(--font-display);
-  font-size: 24px;
-  letter-spacing: 0.1em;
-  color: #fff;
+.as-seen__name {
+  margin: 0;
+  font-family: "Bodoni Moda", var(--font-display), "Times New Roman", serif;
+  font-size: clamp(1.85rem, 7vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
-.as-seen-on .hero .piece {
-  font-family: var(--font-ui);
-  font-weight: 300;
+.as-seen__piece {
+  margin: 0;
+  font-family: "Jost", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 11px;
-  letter-spacing: 0.2em;
-  color: #e8dfce;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(246, 241, 232, 0.78);
 }
 
-.as-seen-on .pair {
-  margin-top: 14px;
-  padding: 0 20px;
+.as-seen__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+  font-family: "Jost", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--as-gold);
+}
+
+.as-seen__cta span {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.as-seen__feature:hover .as-seen__cta span {
+  transform: translateX(5px);
+}
+
+.as-seen__rail {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 0.45rem;
+  padding: 0 1.25rem;
 }
 
-.as-seen-on .pair figure {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
+.as-seen__thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid transparent;
+  background: var(--as-photo);
+  cursor: pointer;
+  overflow: hidden;
+  text-align: left;
+  color: #f6f1e8;
 }
 
-.as-seen-on .pair img {
+.as-seen__thumb-image {
   display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: center 17%;
+  filter: grayscale(0.2) brightness(0.92);
+  transition: filter 0.45s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.as-seen-on .pair figcaption {
+.as-seen__thumb:hover .as-seen__thumb-image {
+  filter: grayscale(0) brightness(1);
+  transform: scale(1.04);
+}
+
+.as-seen__thumb-meta {
+  position: absolute;
+  left: 0.45rem;
+  right: 0.45rem;
+  bottom: 0.45rem;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.1rem;
 }
 
-.as-seen-on .pair .name {
-  font-family: var(--font-display);
-  font-size: 15px;
-  letter-spacing: 0.08em;
-  color: var(--ink);
+.as-seen__thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, transparent 42%, rgba(12, 11, 10, 0.78) 100%);
+  pointer-events: none;
 }
 
-.as-seen-on .pair .meta {
-  font-family: var(--font-ui);
-  font-weight: 300;
-  font-size: 11px;
-  letter-spacing: 0.02em;
-  color: var(--muted);
+.as-seen__thumb-name {
+  font-family: "Bodoni Moda", var(--font-display), "Times New Roman", serif;
+  font-size: 0.95rem;
+  line-height: 1.05;
 }
 
-.as-seen-on .cta {
-  display: block;
-  width: max-content;
-  margin: 26px auto 0;
-  font-family: var(--font-ui);
-  font-weight: 300;
+.as-seen__thumb-piece {
+  font-family: "Jost", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 10px;
-  letter-spacing: 0.26em;
-  color: var(--ink);
-  border: 1px solid rgba(26, 26, 26, 0.35);
-  padding: 13px 26px;
-  text-decoration: none;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246, 241, 232, 0.72);
 }
 
-.as-seen-on .cta:hover {
-  background: var(--ink);
-  color: #fff;
-  border-color: var(--ink);
+.as-seen__ticker {
+  margin: 1.5rem 0 0;
+  padding: 0.95rem 0 1.15rem;
+  border-top: 1px solid var(--as-line);
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: "Bodoni Moda", var(--font-display), "Times New Roman", serif;
+  font-size: clamp(1.15rem, 4.2vw, 1.7rem);
+  font-style: italic;
+  letter-spacing: 0.08em;
+  color: rgba(26, 26, 26, 0.28);
 }
 
-@media (min-width: 900px) {
-  .as-seen-on header h2 {
-    font-size: 46px;
+.as-seen__ticker span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: as-seen-ticker 36s linear infinite;
+}
+
+@keyframes as-seen-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (min-width: 769px) {
+  .as-seen__intro {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3rem;
+    padding: 5.5rem 3.5rem 2.25rem;
   }
 
-  .as-seen-on .eyebrow {
-    font-size: 11px;
+  .as-seen__intro-copy {
+    max-width: 34rem;
+    text-align: right;
   }
 
-  .as-seen-on .hero,
-  .as-seen-on .pair {
-    max-width: 980px;
-    margin-inline: auto;
+  .as-seen__heading {
+    font-size: clamp(3.4rem, 5.4vw, 5.4rem);
   }
 
-  .as-seen-on .hero img {
-    aspect-ratio: 16 / 9;
-    object-position: center 20%;
+  .as-seen__stage {
+    display: grid;
+    grid-template-columns: 1.35fr 0.9fr;
+    gap: 0.75rem;
+    align-items: stretch;
+    padding: 0 3.5rem 2.5rem;
   }
 
-  .as-seen-on .hero .name {
-    font-size: 38px;
+  .as-seen__feature {
+    margin: 0;
+    height: 100%;
+    min-height: 72vh;
   }
 
-  .as-seen-on .hero .piece {
-    font-size: 13px;
+  .as-seen__feature-media {
+    height: 100%;
+    aspect-ratio: auto;
   }
 
-  .as-seen-on .pair {
+  .as-seen__feature-copy {
+    left: 2rem;
+    right: 2rem;
+    bottom: 2rem;
+  }
+
+  .as-seen__name {
+    font-size: clamp(2.8rem, 4vw, 4.4rem);
+  }
+
+  .as-seen__rail {
+    display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.75rem;
+    padding: 0;
+    height: 100%;
+    min-height: 72vh;
   }
 
-  .as-seen-on .pair .name {
-    font-size: 19px;
+  .as-seen__thumb {
+    height: 100%;
   }
 
-  .as-seen-on .pair .meta {
-    font-size: 12.5px;
+  .as-seen__thumb-image {
+    height: 100%;
+    aspect-ratio: auto;
   }
 
-  .as-seen-on .cta {
-    font-size: 11px;
-    padding: 15px 32px;
+  .as-seen__thumb-meta {
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    gap: 0.15rem;
+  }
+
+  .as-seen__thumb::after {
+    background: linear-gradient(180deg, transparent 48%, rgba(12, 11, 10, 0.72) 100%);
+  }
+
+  .as-seen__thumb-name {
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+
+  .as-seen__thumb-piece {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+  }
+
+  .as-seen__ticker {
+    padding: 1.15rem 0 1.4rem;
+    font-size: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .as-seen__ticker span {
+    animation: none;
+    padding-left: 1.25rem;
+  }
+
+  .as-seen__thumb-image {
+    transition: none;
   }
 }
