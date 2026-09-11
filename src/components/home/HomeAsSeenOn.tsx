@@ -27,7 +27,7 @@ export function HomeAsSeenOn() {
     if (reduced || photos.length < 2) return;
     const id = window.setInterval(() => {
       setFrame((current) => (current + 1) % photos.length);
-    }, 4200);
+    }, 2200);
     return () => window.clearInterval(id);
   }, [photos.length, reduced, look.id]);
 
@@ -58,7 +58,7 @@ export function HomeAsSeenOn() {
                 initial={{ opacity: 0, scale: reduced ? 1 : 1.03 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: reduced ? 0.2 : 0.7, ease: EASE }}
+                transition={{ duration: reduced ? 0.2 : 0.4, ease: EASE }}
               />
             </AnimatePresence>
           </div>

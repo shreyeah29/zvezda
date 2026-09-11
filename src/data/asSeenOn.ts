@@ -24,6 +24,11 @@ export const asSeenOnLooks: AsSeenOnLook[] = [
         alt: "Zeenat Aman in The Ophelia set",
         position: "center 22%",
       },
+      {
+        src: "/images/press/zeenat-alt.jpg",
+        alt: "Zeenat Aman in The Ophelia set, looking to camera",
+        position: "center 20%",
+      },
     ],
   },
   {
