@@ -48,6 +48,7 @@ export async function POST(request: Request) {
           quantity: line.quantity,
         })),
         amount: quote.subtotal > 0 ? formatPrice(quote.subtotal, "INR") : undefined,
+        visitWhen: customer.notes,
       });
     } catch (error) {
       console.error("Visit reservation email failed", reservationId, error);

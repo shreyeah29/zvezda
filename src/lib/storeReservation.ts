@@ -6,6 +6,8 @@ export type StoredStoreReservation = {
     fullName: string;
     email: string;
     phone: string;
+    visitDate?: string;
+    visitTime?: string;
     notes: string;
   };
   quote?: {

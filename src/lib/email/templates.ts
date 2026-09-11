@@ -146,7 +146,9 @@ function copyFor(payload: OrderEmailPayload): { eyebrow: string; heading: string
         subject: `We are expecting you at the studio — ${id}`,
         paragraphs: [
           `Dear ${name},`,
-          `Your pay-at-store visit ${id} is reserved. Come to the studio, try the piece, and pay in person. No payment has been taken online.`,
+          payload.visitWhen
+            ? `Your pay-at-store visit ${id} is reserved for ${payload.visitWhen}. Come to the studio, try the piece, and pay in person. No payment has been taken online.`
+            : `Your pay-at-store visit ${id} is reserved. Come to the studio, try the piece, and pay in person. No payment has been taken online.`,
           `${studioHoursText()}. Please arrive within these hours so we can receive you properly.`,
           "If your timing changes, reply to this letter and we will hold the piece accordingly.",
         ],

@@ -10,7 +10,7 @@ import { studioHoursText } from "@/data/atelier";
 import { StudioVisit } from "@/components/atelier/StudioVisit";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import type { StoreCustomer } from "@/lib/checkout";
+import { STORE_VISIT_SLOTS, istTodayIso, type StoreCustomer } from "@/lib/checkout";
 import { STORE_RESERVATION_KEY } from "@/lib/storeReservation";
 import "./CheckoutPage.css";
 
@@ -18,6 +18,8 @@ const INITIAL: StoreCustomer = {
   fullName: "",
   email: "",
   phone: "",
+  visitDate: "",
+  visitTime: "",
   notes: "",
 };
 
@@ -27,6 +29,7 @@ export function StorePayPage() {
   const [customer, setCustomer] = useState(INITIAL);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const minVisitDate = istTodayIso();
 
   const lines = useMemo(
     () =>
@@ -161,14 +164,34 @@ export function StorePayPage() {
                     />
                   </label>
                 </div>
-                <label>
-                  When would you like to visit? (optional)
-                  <input
-                    value={customer.notes}
-                    onChange={(event) => update("notes", event.target.value)}
-                    placeholder="e.g. Saturday afternoon, or this weekend"
-                  />
-                </label>
+                <div className="checkout-form__row">
+                  <label>
+                    Visit date
+                    <input
+                      required
+                      type="date"
+                      min={minVisitDate}
+                      value={customer.visitDate}
+                      onChange={(event) => update("visitDate", event.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Visit time
+                    <select
+                      required
+                      value={customer.visitTime}
+                      onChange={(event) => update("visitTime", event.target.value)}
+                    >
+                      <option value="">Select a time</option>
+                      {STORE_VISIT_SLOTS.map((slot) => (
+                        <option key={slot.value} value={slot.value}>
+                          {slot.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+                <p className="checkout-form__hint">Open 11:00 am – 7:00 pm IST.</p>
 
                 {error && (
                   <p className="checkout-page__error" role="alert">

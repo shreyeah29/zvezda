@@ -25,4 +25,5 @@ export type OrderEmailPayload = {
   trackingCourier?: string;
   trackingUrl?: string;
   fulfilment?: "pickup" | "ship";
+  visitWhen?: string;
 };

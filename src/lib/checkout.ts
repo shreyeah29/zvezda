@@ -31,8 +31,48 @@ export type StoreCustomer = {
   fullName: string;
   email: string;
   phone: string;
+  visitDate: string;
+  visitTime: string;
   notes: string;
 };
+
+export const STORE_VISIT_SLOTS = [
+  { value: "11:00", label: "11:00 am" },
+  { value: "11:30", label: "11:30 am" },
+  { value: "12:00", label: "12:00 pm" },
+  { value: "12:30", label: "12:30 pm" },
+  { value: "13:00", label: "1:00 pm" },
+  { value: "13:30", label: "1:30 pm" },
+  { value: "14:00", label: "2:00 pm" },
+  { value: "14:30", label: "2:30 pm" },
+  { value: "15:00", label: "3:00 pm" },
+  { value: "15:30", label: "3:30 pm" },
+  { value: "16:00", label: "4:00 pm" },
+  { value: "16:30", label: "4:30 pm" },
+  { value: "17:00", label: "5:00 pm" },
+  { value: "17:30", label: "5:30 pm" },
+  { value: "18:00", label: "6:00 pm" },
+  { value: "18:30", label: "6:30 pm" },
+] as const;
+
+export function istTodayIso() {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
+}
+
+export function formatStoreVisitWindow(visitDate: string, visitTime: string) {
+  const slot = STORE_VISIT_SLOTS.find((item) => item.value === visitTime);
+  const date = new Date(`${visitDate}T12:00:00+05:30`);
+  const day = Number.isNaN(date.getTime())
+    ? visitDate
+    : new Intl.DateTimeFormat("en-IN", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "Asia/Kolkata",
+      }).format(date);
+  return `${day} · ${slot?.label ?? visitTime} IST`;
+}
 
 export type CartQuote = {
   lines: QuotedLine[];
@@ -148,7 +188,8 @@ export function validateStoreCustomer(input: Partial<StoreCustomer>): StoreCusto
   const fullName = String(input.fullName ?? "").trim();
   const email = String(input.email ?? "").trim();
   const phone = String(input.phone ?? "").trim();
-  const notes = String(input.notes ?? "").trim().slice(0, 500);
+  const visitDate = String(input.visitDate ?? "").trim();
+  const visitTime = String(input.visitTime ?? "").trim();
 
   if (!fullName || !email || !phone) {
     throw new Error("Please share your name, email, and phone so the atelier can expect you.");
@@ -159,8 +200,21 @@ export function validateStoreCustomer(input: Partial<StoreCustomer>): StoreCusto
   if (phone.replace(/\D/g, "").length < 10) {
     throw new Error("Please enter a valid phone number.");
   }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(visitDate) || visitDate < istTodayIso()) {
+    throw new Error("Please choose a visit date from today onward.");
+  }
+  if (!STORE_VISIT_SLOTS.some((slot) => slot.value === visitTime)) {
+    throw new Error("Please choose a visit time during studio hours.");
+  }
 
-  return { fullName, email, phone, notes };
+  return {
+    fullName,
+    email,
+    phone,
+    visitDate,
+    visitTime,
+    notes: formatStoreVisitWindow(visitDate, visitTime),
+  };
 }
 
 export function createStoreReservationId() {
@@ -190,7 +244,7 @@ export function formatStoreReservationMessage(input: {
     `Name: ${input.customer.fullName}`,
     `Email: ${input.customer.email}`,
     `Phone: ${input.customer.phone}`,
-    `Visit notes: ${input.customer.notes || "—"}`,
+    `Visit: ${input.customer.notes || "—"}`,
     "",
     "Pieces:",
     ...lines,

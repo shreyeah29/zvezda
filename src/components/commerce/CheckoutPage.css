@@ -92,17 +92,30 @@
   letter-spacing: 0.04em;
 }
 
-.checkout-form input {
+.checkout-form input,
+.checkout-form select {
   padding: 0.85rem 0.9rem;
   border: 1px solid rgba(12, 10, 9, 0.18);
   font-family: inherit;
   font-size: 0.92rem;
   letter-spacing: 0;
+  background: #ffffff;
+  color: inherit;
+  border-radius: 0;
+  appearance: auto;
 }
 
-.checkout-form input:focus {
+.checkout-form input:focus,
+.checkout-form select:focus {
   outline: 1px solid #0c0a09;
   outline-offset: 2px;
+}
+
+.checkout-form__hint {
+  margin: -0.25rem 0 0;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: rgba(12, 10, 9, 0.5);
 }
 
 .checkout-form__row {
