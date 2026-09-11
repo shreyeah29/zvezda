@@ -12,15 +12,40 @@ import { Mp4Sources } from "@/components/media/Mp4Sources";
 import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "@/components/product/ProductRelated.css";
 
+function relatedCaptionName(name: string) {
+  const primary = name.split(/\s+[—–]\s+/)[0]?.trim() ?? name;
+  const stripped = primary
+    .replace(
+      /\s+(?:two[-\s]?piece\s+set|2\s*piece\s+set|co-?ord(?:\s+set)?|draped\s+gown|train\s+gown|set)$/i,
+      "",
+    )
+    .trim();
+
+  return stripped.replace(/\S+/g, (word, offset: number) => {
+    if (/^(IV|III|II)$/i.test(word)) return word.toUpperCase();
+    if (/^3D$/i.test(word)) return "3D";
+    if (offset > 0 && /^(and|of|the|et)$/i.test(word)) return word.toLowerCase();
+    return word.charAt(0).toLocaleUpperCase("en-US") + word.slice(1);
+  });
+}
+
 function RelatedCard({ product }: { product: Product }) {
   return (
     <Link href={`/products/${product.slug}`} className="product-related__card group">
       <div className="product-related__media">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={product.hero} alt={product.name} className="product-related__image" />
+        <img
+          src={product.hero}
+          alt={product.name}
+          className="product-related__image"
+          loading="lazy"
+        />
       </div>
       <p className="product-related__label">{product.collectionLabel}</p>
-      <p className="product-related__name">{product.name}</p>
+      <p className="product-related__name">
+        <span className="product-related__name-full">{product.name}</span>
+        <span className="product-related__name-short">{relatedCaptionName(product.name)}</span>
+      </p>
     </Link>
   );
 }
