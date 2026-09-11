@@ -158,6 +158,7 @@ const SHOP_LOOKS: Record<
   "obsidian-drape": { colours: ["black"], garmentType: "mini", houseCollection: "occasion" },
   "terra-bloom": { colours: ["black", "orange"], garmentType: "gown", houseCollection: "occasion" },
   "ivory-satin": { colours: ["ivory"], garmentType: "gown", houseCollection: "occasion" },
+  "seraphina-dress": { colours: ["blue"], garmentType: "dress", houseCollection: "romance" },
 };
 
 const drafts: ShopDraft[] = [
@@ -644,6 +645,33 @@ const drafts: ShopDraft[] = [
     description:
       "A lime-green gown with a plunging embroidered bodice and a fluid skirt that moves like garden light — quiet, botanical, and made for evenings that feel like dusk in a conservatory.",
     fabric: "Silk satin",
+  },
+  {
+    id: 147,
+    slug: "seraphina-dress",
+    name: "Seraphina",
+    photos: [
+      "IMG_8298.jpg",
+      "IMG_8307.jpg",
+      "IMG_8303.jpg",
+      "IMG_8319.jpg",
+      "IMG_8301.jpg",
+      "IMG_8305.jpg",
+      "IMG_8297.jpg",
+    ],
+    price: 43950,
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Seraphina captures the romance of a summer reverie through a softly sculpted silhouette in luminous brocade satin. A structured strapless bodice is delicately shaped to contour the figure, with intricate floral embroidery sweeping across the waist to create a subtle, sculptural definition. The gathered skirt falls into a graceful midi length, creating soft volume and effortless movement, while delicate floral motifs scattered across the fabric add depth and texture. Finished with a refined, feminine silhouette, Seraphina balances the richness of brocade with the fluid sheen of satin, creating a piece that feels timeless, graceful, and distinctly romantic.",
+    craft: [
+      "Hand-embroidered floral detailing",
+      "Structured strapless bodice",
+      "Sculpted waist detailing",
+      "Gathered full midi skirt",
+      "Scattered floral motifs",
+    ],
+    fabric: "Brocade satin",
+    care: "Dry clean only",
   },
 ];
 
