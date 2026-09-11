@@ -48,13 +48,13 @@
     order: 5;
   }
 
-  .jacquemus-home .home-section--instagram {
+  .jacquemus-home .home-section--as-seen {
     order: 6;
+    padding-top: 0;
   }
 
-  .jacquemus-home .home-section--as-seen {
+  .jacquemus-home .home-section--instagram {
     order: 7;
-    padding-top: 0;
   }
 
   .jacquemus-home .home-section--footer {

@@ -23,6 +23,14 @@
   .product-related__heading {
     white-space: normal;
   }
+
+  .product-related__label {
+    display: none;
+  }
+
+  .product-related__name {
+    margin-top: 0.9rem;
+  }
 }
 
 .product-related__grid {
