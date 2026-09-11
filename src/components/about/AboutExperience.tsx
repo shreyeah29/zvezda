@@ -292,7 +292,11 @@ function AboutScroll() {
       </section>
 
       <footer className="about-footer">
-        <p>ZVEZDA Atelier — Est. 2022</p>
+        <p>
+          ZVEZDA Atelier — Jubilee Hills, Hyderabad
+          <br />
+          Open 11:00 am – 7:00 pm IST
+        </p>
         <nav aria-label="About footer">
           <a
             href={atelierContact.instagramUrl}

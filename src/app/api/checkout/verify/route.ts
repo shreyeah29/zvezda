@@ -1,6 +1,8 @@
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { getRazorpayKeys } from "@/lib/razorpay";
+import { sendOrderEmail } from "@/lib/email/mailer";
+import { formatPrice } from "@/data/products";
 
 export async function POST(request: Request) {
   try {
@@ -8,6 +10,9 @@ export async function POST(request: Request) {
       razorpay_order_id?: string;
       razorpay_payment_id?: string;
       razorpay_signature?: string;
+      customer?: { fullName?: string; email?: string };
+      pieces?: Array<{ name?: string; size?: string; quantity?: number }>;
+      amount?: number;
     };
 
     const orderId = String(body.razorpay_order_id ?? "");
@@ -26,6 +31,27 @@ export async function POST(request: Request) {
 
     if (expected !== signature) {
       return NextResponse.json({ error: "Payment could not be verified." }, { status: 400 });
+    }
+
+    const email = String(body.customer?.email ?? "").trim();
+    const name = String(body.customer?.fullName ?? "").trim();
+    if (email) {
+      try {
+        await sendOrderEmail({
+          kind: "order-placed",
+          to: email,
+          name: name || "there",
+          orderId,
+          pieces: (body.pieces ?? []).map((piece) => ({
+            name: String(piece.name ?? "Piece"),
+            size: piece.size ? String(piece.size) : undefined,
+            quantity: Number(piece.quantity) || 1,
+          })),
+          amount: typeof body.amount === "number" && body.amount > 0 ? formatPrice(body.amount, "INR") : undefined,
+        });
+      } catch (error) {
+        console.error("Order confirmation email failed", orderId, error);
+      }
     }
 
     return NextResponse.json({

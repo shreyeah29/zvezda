@@ -51,7 +51,8 @@ export default function ReturnsPolicyPage() {
       <h2>How to reach us</h2>
       <p>
         Email <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>{" "}
-        with your order details, unboxing video, and photographs of any defect.
+        with your order details, unboxing video, and photographs of any defect. The studio is
+        open 11:00 am – 7:00 pm IST at Jubilee Hills Road No. 56, Hyderabad.
       </p>
     </PolicyPageLayout>
   );

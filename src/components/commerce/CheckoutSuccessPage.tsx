@@ -17,10 +17,10 @@ function SuccessBody() {
         <p className="checkout-page__eyebrow">Order confirmed</p>
         <h1 className="checkout-page__title">Thank you for choosing ZVEZDA</h1>
         <p className="checkout-success__message">
-          Your order [{orderId}] has been confirmed. If it is a made-to-order piece, our team
-          will reach out within 24 hours to confirm measurements and timeline. You&apos;ll
-          receive a shipping notification once your piece is on its way. Feel like a star —
-          we can&apos;t wait for you to wear this.
+          Your order [{orderId}] is confirmed and payment has been received. A letter is on its
+          way to you. If this is a made-to-order piece, the atelier will write again when
+          cutting begins. Most pieces take 3–4 weeks. You may also collect from the Jubilee
+          Hills studio, open 11:00 am – 7:00 pm IST.
         </p>
         <div className="checkout-success__actions">
           <Link href="/shop" className="checkout-page__pay">

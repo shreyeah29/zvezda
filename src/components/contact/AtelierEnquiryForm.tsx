@@ -316,7 +316,8 @@ export function AtelierEnquiryForm() {
       {sent ? (
         <p className="enquiry-form__confirm" role="status">
           Thank you for choosing ZVEZDA. Send the email that just opened and our team will
-          reach out within 24 hours to confirm measurements and timeline.
+          reach out during studio hours, 11:00 am – 7:00 pm IST, to confirm measurements and
+          timeline.
         </p>
       ) : null}
     </form>

@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { useCommerce } from "@/context/CommerceContext";
 import { findProduct } from "@/data/findProduct";
 import { formatPrice, formatProductPrice } from "@/data/products";
-import { atelierContact } from "@/data/atelier";
+import { studioHoursText } from "@/data/atelier";
+import { StudioVisit } from "@/components/atelier/StudioVisit";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import type { StoreCustomer } from "@/lib/checkout";
@@ -110,7 +111,7 @@ export function StorePayPage() {
             <h1 className="checkout-page__title">Reserve your visit</h1>
             <p className="checkout-page__subtitle">
               Share your details and we will tell the atelier you are coming. Try the piece in
-              person, then pay at the store. We respond Monday–Friday, 10:00–18:00 IST.
+              person, then pay at the store. {studioHoursText()}.
             </p>
           </header>
 
@@ -179,9 +180,10 @@ export function StorePayPage() {
                   {busy ? "Reserving…" : "Reserve visit"}
                 </button>
                 <p className="checkout-page__fine">
-                  No payment is taken now. The atelier will be notified at{" "}
-                  {atelierContact.careEmail} and will expect you with this selection.
+                  No payment is taken now. Come to the studio during open hours — we will expect
+                  you with this selection.
                 </p>
+                <StudioVisit className="checkout-page__studio" />
                 <Link href="/checkout" className="checkout-page__enquire">
                   Prefer to pay online instead?
                 </Link>

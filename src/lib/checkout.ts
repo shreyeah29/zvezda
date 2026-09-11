@@ -1,4 +1,5 @@
 import { findProduct } from "@/data/findProduct";
+import { studioAddressText, studioHoursText } from "@/data/atelier";
 
 export type CheckoutCartItem = {
   slug: string;
@@ -195,6 +196,10 @@ export function formatStoreReservationMessage(input: {
     ...lines,
     "",
     `Amount due in store: ${total}`,
+    "",
+    "Studio:",
+    studioAddressText(),
+    studioHoursText(),
     "",
     "The guest will visit the atelier to try the piece and pay in person.",
   ].join("\n");

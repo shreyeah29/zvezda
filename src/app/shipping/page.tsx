@@ -47,6 +47,13 @@ export default function ShippingPolicyPage() {
         <li>Once an order has been dispatched, tracking details will be shared with the customer.</li>
       </ul>
 
+      <h2>Collect from the studio</h2>
+      <p>
+        Hyderabad clients may collect from Zvezda Atelier at 8-2-293/82/A/1177, Jubilee Hills
+        Road No. 56, Jubilee Hills, Hyderabad 500033. The studio is open 11:00 am – 7:00 pm IST.
+        Choose pay at store at checkout, or ask us to hold a finished piece for collection.
+      </p>
+
       <h2>How fulfilment works</h2>
       <ul>
         <li>Order placed (online checkout or WhatsApp / enquiry confirmed).</li>
@@ -54,7 +61,7 @@ export default function ShippingPolicyPage() {
           In-stock pieces are dispatched within 1–2 business days. Made-to-order pieces take
           3–4 weeks to produce after payment is confirmed.
         </li>
-        <li>A shipping confirmation with tracking is sent to the customer.</li>
+        <li>A shipping confirmation with tracking is sent to the customer — or a collection note if you are coming to the studio.</li>
         <li>
           Domestic delivery in 5–7 business days from dispatch; international in 10–12
           business days from dispatch.

@@ -212,6 +212,19 @@
   color: rgba(0, 0, 0, 0.5);
 }
 
+.checkout-page__studio {
+  display: block;
+  margin: 1rem 0 0;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 1.65;
+  color: rgba(12, 10, 9, 0.72);
+}
+
+.checkout-page__studio a {
+  color: #0c0a09;
+}
+
 .checkout-page__enquire {
   color: #0c0a09;
 }

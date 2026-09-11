@@ -36,9 +36,9 @@ export function CartPage() {
           <header className="cart-page__header">
             <h1 className="cart-page__title">Your Selection</h1>
             <p className="cart-page__subtitle">
-              Review your pieces, then pay securely with Razorpay or reserve a visit to pay at
-              the store. Made-to-order garments take 3–4 weeks to produce after payment is
-              confirmed.
+              Review your pieces, then pay securely with Razorpay or reserve a visit to the
+              Jubilee Hills studio (11:00 am – 7:00 pm IST). Made-to-order garments take 3–4
+              weeks to produce after payment is confirmed.
             </p>
           </header>
 

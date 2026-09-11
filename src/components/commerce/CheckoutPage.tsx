@@ -117,7 +117,22 @@ export function CheckoutPage() {
           const verify = await fetch("/api/checkout/verify", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(result),
+            body: JSON.stringify({
+              ...result,
+              customer: {
+                fullName: customer.fullName,
+                email: customer.email,
+              },
+              pieces: cart.map((item) => {
+                const product = findProduct(item.slug);
+                return {
+                  name: product?.name ?? item.slug,
+                  size: item.size,
+                  quantity: item.quantity,
+                };
+              }),
+              amount: cartSubtotal,
+            }),
           });
           const verified = (await verify.json()) as { error?: string; orderId?: string };
 
@@ -261,8 +276,8 @@ export function CheckoutPage() {
                 <p className="checkout-page__fine">
                   In-stock orders can be cancelled within 12 hours, before dispatch. Once
                   production has started, made-to-order pieces cannot be cancelled or refunded.
-                  Pay at store lets you try the piece in person — the atelier will be notified
-                  that you are coming.
+                  Pay at store lets you try the piece at the Jubilee Hills studio, open 11:00 am
+                  – 7:00 pm IST.
                 </p>
                 <Link
                   href={`/contact?product=${encodeURIComponent(lines[0]?.product.name ?? "")}#enquiry`}

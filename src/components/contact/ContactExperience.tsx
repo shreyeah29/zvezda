@@ -4,21 +4,26 @@ import { Suspense } from "react";
 import { PolicyPageLayout } from "@/components/layout/PolicyPageLayout";
 import { AtelierEnquiryForm } from "@/components/contact/AtelierEnquiryForm";
 import { atelierContact } from "@/data/atelier";
+import { StudioVisit } from "@/components/atelier/StudioVisit";
 
 export function ContactExperience() {
   return (
     <PolicyPageLayout title="Contact" eyebrow="Atelier">
       <p>
-        For order enquiries, bespoke commissions, press requests, or private appointments —
-        our team is here to assist.
+        For order enquiries, bespoke commissions, press requests, private appointments, or a
+        visit to the studio — our team is here.
       </p>
+
+      <h2>The studio</h2>
+      <StudioVisit />
+      <p>Fittings and pay-at-store visits are received during these hours. Writing ahead is welcome.</p>
 
       <h2>Customer care</h2>
       <p>
         Email:{" "}
         <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>
         <br />
-        We respond Monday–Friday, 10:00–18:00 IST.
+        We respond during studio hours, 11:00 am – 7:00 pm IST.
       </p>
 
       <h2>Press &amp; collaborations</h2>

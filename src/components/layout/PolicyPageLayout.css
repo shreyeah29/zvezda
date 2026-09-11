@@ -63,6 +63,16 @@
   text-underline-offset: 3px;
 }
 
+.policy-page__body address {
+  margin: 0;
+  font-style: normal;
+  line-height: 1.7;
+}
+
+.policy-page__body address a {
+  color: #0a0a0a;
+}
+
 .policy-page__body ul {
   margin: 0;
   padding-left: 1.25rem;

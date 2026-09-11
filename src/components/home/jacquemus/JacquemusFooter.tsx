@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { brand } from "@/data/brand";
+import { atelierStudio, studioAddressLines, studioHoursText, studioMapsUrl } from "@/data/atelier";
 import "./JacquemusFooter.css";
 
 const NAV_LINKS = [
@@ -33,6 +34,17 @@ export function JacquemusFooter() {
         <div className="jm-footer__col jm-footer__col--brand">
           <p className="jm-footer__heading">The House</p>
           <p className="jm-footer__statement">{brand.philosophy}</p>
+          <p className="jm-footer__studio">
+            <strong>{atelierStudio.name}</strong>
+            <br />
+            {studioAddressLines().join(" · ")}
+            <br />
+            {studioHoursText()}
+            {" · "}
+            <a href={studioMapsUrl()} target="_blank" rel="noopener noreferrer">
+              Directions
+            </a>
+          </p>
           <div className="jm-footer__social">
             <a
               href={INSTAGRAM_URL}

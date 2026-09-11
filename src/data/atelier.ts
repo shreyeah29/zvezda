@@ -7,6 +7,32 @@ export const atelierContact = {
   whatsapp: "",
 } as const;
 
+export const atelierStudio = {
+  name: "Zvezda Atelier",
+  line1: "8-2-293/82/A/1177",
+  line2: "Jubilee Hills Road No. 56",
+  line3: "Jubilee Hills, Hyderabad 500033",
+  hours: "11:00 am – 7:00 pm",
+  hoursShort: "11 am – 7 pm",
+  city: "Hyderabad",
+} as const;
+
+export function studioAddressLines() {
+  return [atelierStudio.line1, atelierStudio.line2, atelierStudio.line3];
+}
+
+export function studioAddressText() {
+  return studioAddressLines().join(", ");
+}
+
+export function studioHoursText() {
+  return `Open ${atelierStudio.hours} IST`;
+}
+
+export function studioMapsUrl() {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(studioAddressText())}`;
+}
+
 export const aboutHero = {
   eyebrow: "The House",
   title: "Feel like a star.",

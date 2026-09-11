@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { atelierContact } from "@/data/atelier";
+import { StudioVisit } from "@/components/atelier/StudioVisit";
 import { formatPrice } from "@/data/products";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
@@ -42,9 +43,9 @@ function ThankYouBody() {
         <h1 className="checkout-page__title">We will expect you at the atelier</h1>
         <p className="checkout-success__message">
           Thank you. Your pay-at-store reservation [{id}] has been sent to the atelier. Come in
-          to try the piece, then pay in person. Our team is available Monday–Friday,
-          10:00–18:00 IST, and will reach out if they need to confirm a time.
+          to try the piece, then pay in person. The studio is open 11:00 am – 7:00 pm IST.
         </p>
+        <StudioVisit className="checkout-page__studio" />
 
         {stored && (
           <div className="store-thanks__details">

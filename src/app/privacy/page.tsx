@@ -12,7 +12,8 @@ export default function PrivacyPolicyPage() {
         ZVEZDA collects only the information necessary to process your order and communicate
         with you — name, contact number, email, and shipping address. We do not sell or share
         your personal data with third parties except payment processors and shipping partners
-        required to fulfil your order. Payment details are handled securely by our payment
+        required to fulfil your order. We send order letters (confirmation, production,
+        shipping) to the email you give us. Payment details are handled securely by our payment
         gateway and are never stored by ZVEZDA directly.
       </p>
 
