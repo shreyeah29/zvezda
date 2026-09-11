@@ -146,7 +146,8 @@ const SHOP_LOOKS: Record<
   "carmine-ascend": { colours: ["red"], garmentType: "gown", houseCollection: "occasion" },
   "green-pearl-dress": { colours: ["green"], garmentType: "gown", houseCollection: "romance" },
   "fire-and-ice": { colours: ["blue", "yellow"], garmentType: "gown", houseCollection: "statement" },
-  "petal-dress": { colours: ["pink"], garmentType: "gown", houseCollection: "statement" },
+  "petal-dress": { colours: ["pink"], garmentType: "gown", houseCollection: "bespoke" },
+  "conservatory-iv": { colours: ["green"], garmentType: "gown", houseCollection: "romance" },
   "denim-dress": { colours: ["blue"], garmentType: "mini", houseCollection: "romance" },
   "butterfly-inspired": { colours: ["blue"], garmentType: "set", houseCollection: "statement" },
   zeenat: { colours: ["champagne"], garmentType: "set", houseCollection: "statement" },
@@ -208,8 +209,7 @@ const drafts: ShopDraft[] = [
     id: 104,
     slug: "blooming-rosalia-3d-gown",
     name: "Blooming Rosalia 3D gown",
-    photos: ["BHA_4523.jpg", "BHA_4531.jpg", "BHA_4839.jpg", "BHA_4851.jpg"],
-    price: 290000,
+    photos: ["BHA_4851.jpg", "BHA_4523.jpg", "BHA_4531.jpg", "BHA_4839.jpg"],
     sizeOptions: ["8", "10"],
     description:
       "A garden in crimson motion. Hand-sculpted florals bloom across layers of passion, held together by delicate structure and sparkle. A dress that feels alive — bold, romantic, unforgettable.",
@@ -266,7 +266,11 @@ const drafts: ShopDraft[] = [
     slug: "blush-noir-2-piece-set",
     name: "Blush noir — 2 piece set",
     photos: ["HSP_2254.jpg", "HSP_2294.jpg", "HSP_2390.jpg"],
-    price: 28850,
+    price: 50950,
+    priceOptions: [
+      { label: "Top", amount: 32950 },
+      { label: "Skirt", amount: 18000 },
+    ],
     sizeOptions: ["8"],
     description:
       "Off-shoulder midnight blush, wrapped in time, a touch of dusk, a hint of rhyme. Not just a dress, but a feeling worn. Like twilight paused before the dawn.",
@@ -315,7 +319,7 @@ const drafts: ShopDraft[] = [
     id: 113,
     slug: "verdant-whisper-gown",
     name: "Verdant whisper gown",
-    photos: ["HSP_4810.jpg", "HSP_4819.jpg", "HSP_4828.jpg"],
+    photos: ["HSP_4828.jpg", "HSP_4810.jpg", "HSP_4819.jpg"],
     price: 98500,
     sizeOptions: ["8", "10"],
     description:
@@ -391,7 +395,7 @@ const drafts: ShopDraft[] = [
   {
     id: 119,
     slug: "daughters-of-spring-pink",
-    name: "Daughters of spring (pink)",
+    name: "Daughters of spring — Blush",
     photos: ["HSP_5988.jpg", "HSP_6019.jpg"],
     price: 67999,
     sizeOptions: ["8"],
@@ -404,7 +408,7 @@ const drafts: ShopDraft[] = [
   {
     id: 120,
     slug: "daughters-of-spring-green",
-    name: "Daughters of spring (green)",
+    name: "Daughters of spring — Sage",
     photos: ["HSP_5940.jpg", "HSP_5954.jpg"],
     price: 67999,
     sizeOptions: ["6", "8", "10"],
@@ -459,6 +463,7 @@ const drafts: ShopDraft[] = [
     slug: "fire-and-ice",
     name: "Fire and ice",
     photos: ["IMG_7658.jpg", "IMG_7659.jpg", "IMG_7660.jpg", "IMG_7661.jpg"],
+    price: 78950,
     sizeOptions: ["6", "8", "10", "12"],
     description:
       "A little frost, a little flame. The ice blue that symbolises calm, clarity, elegance and quiet strength and the golden fire of passion, ambition and intensity on a neutral beige palette.",
@@ -469,8 +474,8 @@ const drafts: ShopDraft[] = [
     slug: "petal-dress",
     name: "The Camellia",
     photos: [
-      "IMG_6665.jpg",
       "IMG_6666.jpg",
+      "IMG_6665.jpg",
       "IMG_6785.jpg",
       "IMG_7844.jpg",
       "IMG_7845.jpg",
@@ -544,7 +549,6 @@ const drafts: ShopDraft[] = [
     slug: "pearl-cascade",
     name: "The Pearl Fall",
     photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg", "05.jpg", "06.jpg"],
-    price: 109000,
     sizeOptions: ["6", "8", "10", "12"],
     description:
       "The Pearl Muse Dress captures the quiet opulence of modern romance through a sculpted, feminine silhouette adorned with delicate pearl and crystal detailing. Designed with a structured corset bodice and softly curved neckline, the dress gently contours the figure before falling into a clean, fitted skirt. Scattered hand-placed embellishments add subtle points of light across the silhouette, while cascading strands of pearls and crystals fall from the hem, creating movement and an almost ethereal finish. Thoughtfully constructed and finished at the Zvezda Atelier, The Pearl Muse balances refined structure with fluid ornamentation, creating a piece that feels both timeless and distinctly couture.",
@@ -624,6 +628,22 @@ const drafts: ShopDraft[] = [
     ],
     fabric: "Sandwash satin",
     care: "Dry clean only",
+  },
+  {
+    id: 146,
+    slug: "conservatory-iv",
+    name: "Conservatory IV",
+    photos: [
+      "/assets/images/products/set-4/HSP_4843.jpg",
+      "/assets/images/products/set-4/HSP_4864.jpg",
+      "/assets/images/products/set-4/HSP_4903.jpg",
+      "/assets/images/products/set-4/HSP_4908.jpg",
+    ],
+    price: 39000,
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A lime-green gown with a plunging embroidered bodice and a fluid skirt that moves like garden light — quiet, botanical, and made for evenings that feel like dusk in a conservatory.",
+    fabric: "Silk satin",
   },
 ];
 

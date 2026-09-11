@@ -87,6 +87,14 @@ const HomePinkCollectionFeature = dynamic(
   { ssr: false },
 );
 
+const HomeAsSeenOn = dynamic(
+  () =>
+    import("@/components/home/HomeAsSeenOn").then((mod) => ({
+      default: mod.HomeAsSeenOn,
+    })),
+  { ssr: false },
+);
+
 const HomeMobileInstagram = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeMobileInstagram").then((mod) => ({
@@ -144,6 +152,9 @@ export default function HomePage() {
           </div>
           <div className="home-section home-section--mobile-occasion">
             <HomeMobileOccasionShop />
+          </div>
+          <div className="home-section home-section--as-seen">
+            <HomeAsSeenOn />
           </div>
           <div className="home-section home-section--instagram">
             <HomeMobileInstagram />

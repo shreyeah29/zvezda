@@ -50,7 +50,6 @@ export const houseCollections: HouseCollection[] = [
       "ivory-eclipse",
       "butterfly-inspired",
       "blush-elan",
-      "petal-dress",
       "starlit-halter-gown",
       "eclipse-royale",
       "velvet-blooms-dress",
@@ -109,6 +108,7 @@ export const houseCollections: HouseCollection[] = [
       "daughters-of-spring-green",
       "daughters-of-spring-pink",
       "blush-mirage",
+      "conservatory-iv",
     ],
   },
   {
@@ -124,7 +124,7 @@ export const houseCollections: HouseCollection[] = [
       "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4839.jpg",
       "/assets/images/shop/rosa-imperiale/HSP_2850.jpg",
     ],
-    productSlugs: ["pearl-cascade", "blooming-rosalia-3d-gown", "rosa-imperiale"],
+    productSlugs: ["pearl-cascade", "blooming-rosalia-3d-gown", "rosa-imperiale", "petal-dress"],
   },
 ];
 

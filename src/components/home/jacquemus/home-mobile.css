@@ -11,6 +11,7 @@
   .jacquemus-home .home-section--mobile-romance,
   .jacquemus-home .home-section--mobile-statement,
   .jacquemus-home .home-section--mobile-occasion,
+  .jacquemus-home .home-section--as-seen,
   .jacquemus-home .home-section--instagram {
     margin-top: 0;
     margin-bottom: 0;
@@ -47,12 +48,17 @@
     order: 5;
   }
 
-  .jacquemus-home .home-section--instagram {
+  .jacquemus-home .home-section--as-seen {
     order: 6;
+    padding-top: 0;
+  }
+
+  .jacquemus-home .home-section--instagram {
+    order: 7;
   }
 
   .jacquemus-home .home-section--footer {
-    order: 7;
+    order: 8;
   }
 
   .jacquemus-home .home-section--split,

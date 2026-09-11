@@ -44,7 +44,7 @@ export const romanceHighlightCards: ShopHighlightCard[] = [
   {
     setId: 3,
     slug: "daughters-of-spring-green",
-    title: "Daughters of spring (green)",
+    title: "Daughters of spring — Sage",
     image: "/assets/images/shop/daughters-of-spring-green/HSP_5954.jpg",
   },
   {
@@ -56,7 +56,7 @@ export const romanceHighlightCards: ShopHighlightCard[] = [
   {
     setId: 16,
     slug: "daughters-of-spring-pink",
-    title: "Daughters of spring (pink)",
+    title: "Daughters of spring — Blush",
     image: "/assets/images/shop/daughters-of-spring-pink/HSP_5988.jpg",
   },
 ];
@@ -127,7 +127,7 @@ export const pinkHighlightCards: ShopHighlightCard[] = [
   {
     setId: 16,
     slug: "set-16",
-    title: "Daughters of spring (pink)",
+    title: "Daughters of spring — Blush",
     image: "/assets/images/products/set-16/HSP_5981.JPG",
   },
   {

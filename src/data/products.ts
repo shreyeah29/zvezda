@@ -47,6 +47,7 @@ const SET_SHOP_SLUG: Record<number, string> = {
   1: "jardin-elegance-dress",
   2: "verdant-whisper-gown",
   3: "olive-tiered-zephyr-mini-dress",
+  4: "conservatory-iv",
   5: "blush-mirage",
   6: "rosa-imperiale",
   7: "blush-noir-2-piece-set",
