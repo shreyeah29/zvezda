@@ -2,85 +2,51 @@ export type AsSeenOnLook = {
   id: string;
   name: string;
   piece: string;
-  href: string;
-  images: {
-    src: string;
-    alt: string;
-    position?: string;
-  }[];
+  src: string;
+  alt: string;
+  position?: string;
+};
+
+export const asSeenOnHero: AsSeenOnLook = {
+  id: "zeenat-aman",
+  name: "Zeenat Aman",
+  piece: "In the golden kaftan",
+  src: "/images/press/zeenat-hero.jpg",
+  alt: "Zeenat Aman in the golden kaftan",
+  position: "center 22%",
 };
 
 export const asSeenOnLooks: AsSeenOnLook[] = [
   {
-    id: "zeenat-aman",
-    name: "Zeenat Aman",
-    piece: "The Ophelia set",
-    href: "/products/zeenat",
-    images: [
-      {
-        src: "/assets/images/as-seen-on/zeenat-aman.jpg",
-        alt: "Zeenat Aman wearing The Ophelia set",
-        position: "center 18%",
-      },
-      {
-        src: "/assets/images/as-seen-on/zeenat-aman-alt.jpg",
-        alt: "Zeenat Aman in The Ophelia set, champagne drapes",
-        position: "center 22%",
-      },
-    ],
+    id: "nikita-dutta",
+    name: "Nikita Dutta",
+    piece: "Allure suit",
+    src: "/images/press/nikita-dutta.jpg",
+    alt: "Nikita Dutta in the Allure suit",
+    position: "center 12%",
   },
   {
-    id: "disha-patani",
-    name: "Disha Patani",
-    piece: "Allure slit",
-    href: "/products/allure-slit",
-    images: [
-      {
-        src: "/assets/images/as-seen-on/allure-full.jpg",
-        alt: "Disha Patani wearing the Allure slit gown",
-        position: "center 12%",
-      },
-      {
-        src: "/assets/images/as-seen-on/allure-portrait.jpg",
-        alt: "Disha Patani in the Allure slit gown, portrait",
-        position: "center 18%",
-      },
-    ],
+    id: "manushi-chhillar",
+    name: "Manushi Chhillar",
+    piece: "Starlit halter gown",
+    src: "/images/press/manushi-chhillar.jpg",
+    alt: "Manushi Chhillar in the Starlit halter gown",
+    position: "center 12%",
   },
   {
-    id: "hina-khan",
-    name: "Hina Khan",
-    piece: "Rosalind",
-    href: "/products/rosalind-jacket-blush-column-jumpsuit",
-    images: [
-      {
-        src: "/assets/images/as-seen-on/rosalind-bloom.jpg",
-        alt: "Hina Khan wearing the Rosalind jacket and blush column jumpsuit",
-        position: "center 22%",
-      },
-    ],
+    id: "neha-sharma",
+    name: "Neha Sharma",
+    piece: "Rosalind jacket and blush column jumpsuit",
+    src: "/images/press/neha-sharma.jpg",
+    alt: "Neha Sharma in the Rosalind jacket and blush column jumpsuit",
+    position: "center 42%",
   },
   {
-    id: "rosa-imperiale",
-    name: "Rosa impériale",
-    piece: "Screenwriters Sangha",
-    href: "/products/rosa-imperiale",
-    images: [
-      {
-        src: "/assets/images/as-seen-on/rosa-profile.jpg",
-        alt: "Rosa impériale worn to the Screenwriters Sangha awards",
-        position: "center 16%",
-      },
-      {
-        src: "/assets/images/as-seen-on/rosa-front.jpg",
-        alt: "Rosa impériale, front with sculptural florals and train",
-        position: "center 18%",
-      },
-      {
-        src: "/assets/images/as-seen-on/rosa-award.jpg",
-        alt: "Rosa impériale at the Outstanding Screenplay awards",
-        position: "center 20%",
-      },
-    ],
+    id: "sakshi-sindwani",
+    name: "Sakshi Sindwani",
+    piece: "Rosa impériale",
+    src: "/images/press/sakshi-sindwani.jpg",
+    alt: "Sakshi Sindwani in Rosa impériale",
+    position: "center 18%",
   },
 ];

@@ -153,11 +153,11 @@ export default function HomePage() {
           <div className="home-section home-section--mobile-occasion">
             <HomeMobileOccasionShop />
           </div>
-          <div className="home-section home-section--as-seen">
-            <HomeAsSeenOn />
-          </div>
           <div className="home-section home-section--instagram">
             <HomeMobileInstagram />
+          </div>
+          <div className="home-section home-section--as-seen">
+            <HomeAsSeenOn />
           </div>
           <div className="home-section home-section--footer">
             <JacquemusFooter />
