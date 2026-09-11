@@ -17,7 +17,7 @@ export type JacquemusCollection = {
 };
 
 export const jacquemusCollections: JacquemusCollection[] = houseCollections.map((collection, index) => {
-  const images = collection.productSlugs.flatMap((slug) => {
+  const images: JacquemusCollectionMedia[] = collection.productSlugs.flatMap((slug) => {
     const product = getShopProduct(slug);
     if (!product) return [];
     return [
@@ -33,7 +33,7 @@ export const jacquemusCollections: JacquemusCollection[] = houseCollections.map(
   const film = getCollectionFilm(collection.slug);
   if (!film) return { id: collection.slug, name: collection.title, season: collection.season, media: images };
 
-  const media = [...images];
+  const media: JacquemusCollectionMedia[] = [...images];
   media.splice(Math.min(index % 3, media.length), 0, {
     type: "video" as const,
     src: film.src,
