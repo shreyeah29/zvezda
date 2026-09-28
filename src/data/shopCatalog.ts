@@ -357,7 +357,7 @@ const drafts: ShopDraft[] = [
     slug: "rosewood-heirloom",
     name: "Rosewood heirloom",
     photos: ["HSP_5080.jpg", "HSP_5151.jpg", "HSP_5165.jpg", "HSP_5186.jpg"],
-    price: 119000,
+    price: 96000,
     sizeOptions: ["8"],
     description:
       "A soft blush-pink gown adorned with intricate silver floral embroidery and delicate embellishments. The structured bodice flows into a graceful, feminine silhouette, creating an elegant look inspired by the beauty of a blooming garden.",

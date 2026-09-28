@@ -1,5 +1,5 @@
 import { PolicyPageLayout } from "@/components/layout/PolicyPageLayout";
-import { atelierContact } from "@/data/atelier";
+import { atelierContact, studioAddressText, studioPhoneHref } from "@/data/atelier";
 
 export const metadata = {
   title: "Terms & Conditions — Zvezda Atelier",
@@ -35,9 +35,11 @@ export default function TermsPage() {
 
       <h2>Contact</h2>
       <p>
-        The studio is at 8-2-293/82/A/1177, Jubilee Hills Road No. 56, Jubilee Hills,
-        Hyderabad 500033, open 11:00 am – 7:00 pm IST. Questions about these terms:{" "}
+        The studio is at {studioAddressText()}, open 11:00 am – 7:00 pm IST. Questions about
+        these terms:{" "}
         <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>
+        {" "}or{" "}
+        <a href={studioPhoneHref()}>{atelierContact.phoneDisplay}</a>
       </p>
     </PolicyPageLayout>
   );

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useCommerce } from "@/context/CommerceContext";
-import { formatPrice, formatProductPrice } from "@/data/products";
+import { formatPrice, cartLineName, cartLineUnitPrice } from "@/data/products";
 import { findProduct } from "@/data/findProduct";
 import { getLenisInstance } from "@/lib/lenisInstance";
 import "./MiniCart.css";
@@ -99,7 +99,8 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
                   {cart.map((item) => {
                     const product = findProduct(item.slug);
                     if (!product) return null;
-                    const key = `${item.slug}-${item.size}`;
+                    const key = `${item.slug}-${item.size}-${item.option ?? "set"}`;
+                    const unit = cartLineUnitPrice(product, item.option);
                     return (
                       <motion.li
                         key={key}
@@ -114,14 +115,14 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
                           <img src={product.hero} alt={product.name} />
                         </div>
                         <div className="mini-cart__details">
-                          <p className="mini-cart__name">{product.name}</p>
+                          <p className="mini-cart__name">{cartLineName(product, item.option)}</p>
                           <p className="mini-cart__size">Size {item.size}</p>
                           <div className="mini-cart__row">
                             <div className="mini-cart__qty">
                               <button
                                 type="button"
                                 onClick={() =>
-                                  updateCartQuantity(item.slug, item.quantity - 1, item.size)
+                                  updateCartQuantity(item.slug, item.quantity - 1, item.size, item.option)
                                 }
                                 aria-label="Decrease quantity"
                               >
@@ -131,7 +132,7 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
                               <button
                                 type="button"
                                 onClick={() =>
-                                  updateCartQuantity(item.slug, item.quantity + 1, item.size)
+                                  updateCartQuantity(item.slug, item.quantity + 1, item.size, item.option)
                                 }
                                 aria-label="Increase quantity"
                               >
@@ -139,12 +140,12 @@ export function MiniCart({ open, onClose }: MiniCartProps) {
                               </button>
                             </div>
                             <p className="mini-cart__price">
-                              {formatPrice(product.price * item.quantity, product.currency)}
+                              {formatPrice(unit * item.quantity, product.currency)}
                             </p>
                           </div>
                           <button
                             type="button"
-                            onClick={() => removeFromCart(item.slug, item.size)}
+                            onClick={() => removeFromCart(item.slug, item.size, item.option)}
                             className="mini-cart__remove"
                           >
                             Remove

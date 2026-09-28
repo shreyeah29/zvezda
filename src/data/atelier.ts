@@ -3,14 +3,16 @@ export const atelierContact = {
   pressEmail: "atelierzvezda.official@gmail.com",
   instagramUrl: "https://www.instagram.com/zvezda_atelier/",
   instagramHandle: "@zvezda_atelier",
-  /** International format without +. Empty until a WhatsApp number is provided. */
-  whatsapp: "",
+  phone: "7386014553",
+  phoneDisplay: "+91 73860 14553",
+  /** International format without +. */
+  whatsapp: "917386014553",
 } as const;
 
 export const atelierStudio = {
   name: "Zvezda Atelier",
-  line1: "8-2-293/82/A/1177",
-  line2: "Jubilee Hills Road No. 56",
+  line1: "Plot 8-2-293/82/A/771/A&B",
+  line2: "Road Number 44, CBI Colony",
   line3: "Jubilee Hills, Hyderabad 500033",
   hours: "11:00 am – 7:00 pm",
   hoursShort: "11 am – 7 pm",
@@ -29,8 +31,19 @@ export function studioHoursText() {
   return `Open ${atelierStudio.hours} IST`;
 }
 
+export function studioPhoneHref() {
+  return `tel:+91${atelierContact.phone}`;
+}
+
+export function studioWhatsappUrl(text?: string) {
+  const base = `https://wa.me/${atelierContact.whatsapp}`;
+  return text ? `${base}?text=${encodeURIComponent(text)}` : base;
+}
+
 export function studioMapsUrl() {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(studioAddressText())}`;
+  const query =
+    "Zvezda Atelier, Plot 8-2-293/82/A/771/A&B, Road Number 44, CBI Colony, Jubilee Hills, Hyderabad, Telangana 500033";
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
 export const aboutHero = {

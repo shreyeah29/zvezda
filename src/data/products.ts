@@ -155,6 +155,7 @@ function setToProduct(set: SetManifest): Product {
       ? setAmbientVideoPath(set, set.videoAlt) ?? setVideoPath(set, set.videoAlt)
       : undefined,
     videoObjectPosition: set.videoObjectPosition,
+    garmentType: shop?.garmentType,
   };
 }
 
@@ -187,4 +188,22 @@ export function formatPrice(price: number, currency = "USD") {
 export function formatProductPrice(product: Pick<Product, "price" | "currency" | "priceOnRequest">) {
   if (product.priceOnRequest) return "Price on request";
   return formatPrice(product.price, product.currency);
+}
+
+export function canBuySeparately(
+  product: Pick<Product, "garmentType" | "priceOptions">,
+) {
+  return product.garmentType === "set" && (product.priceOptions?.length ?? 0) > 1;
+}
+
+export function cartLineUnitPrice(product: Product, option?: string) {
+  if (option) {
+    const match = product.priceOptions?.find((item) => item.label === option);
+    if (match) return match.amount;
+  }
+  return product.price;
+}
+
+export function cartLineName(product: Pick<Product, "name">, option?: string) {
+  return option ? `${product.name} · ${option}` : product.name;
 }

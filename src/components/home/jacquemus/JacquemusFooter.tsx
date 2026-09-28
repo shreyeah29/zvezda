@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { brand } from "@/data/brand";
-import { atelierStudio, studioAddressLines, studioHoursText, studioMapsUrl } from "@/data/atelier";
+import {
+  atelierContact,
+  atelierStudio,
+  studioAddressLines,
+  studioHoursText,
+  studioMapsUrl,
+  studioPhoneHref,
+  studioWhatsappUrl,
+} from "@/data/atelier";
 import "./JacquemusFooter.css";
 
 const NAV_LINKS = [
@@ -40,6 +48,12 @@ export function JacquemusFooter() {
             {studioAddressLines().join(" · ")}
             <br />
             {studioHoursText()}
+            <br />
+            <a href={studioPhoneHref()}>{atelierContact.phoneDisplay}</a>
+            {" · "}
+            <a href={studioWhatsappUrl()} target="_blank" rel="noopener noreferrer">
+              WhatsApp
+            </a>
             {" · "}
             <a href={studioMapsUrl()} target="_blank" rel="noopener noreferrer">
               Directions

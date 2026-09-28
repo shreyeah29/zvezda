@@ -10,23 +10,27 @@ type AddToCartButtonProps = {
   slug: string;
   quantity?: number;
   size?: string;
+  option?: string;
   className?: string;
   label?: string;
+  disabled?: boolean;
 };
 
 export function AddToCartButton({
   slug,
   quantity = 1,
   size = "M",
+  option,
   className = "",
   label = "Add to Bag",
+  disabled = false,
 }: AddToCartButtonProps) {
   const { addToCart, triggerFlyToCart } = useCommerce();
   const [state, setState] = useState<"idle" | "loading" | "success">("idle");
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleClick = async () => {
-    if (state !== "idle") return;
+    if (state !== "idle" || disabled) return;
     const product = findProduct(slug);
     if (!product || !buttonRef.current) return;
 
@@ -35,7 +39,7 @@ export function AddToCartButton({
 
     const rect = buttonRef.current.getBoundingClientRect();
     triggerFlyToCart({ slug, image: product.hero, from: rect });
-    addToCart(slug, quantity, size);
+    addToCart(slug, quantity, size, option);
 
     setState("success");
     await new Promise((r) => setTimeout(r, 520));
@@ -47,9 +51,9 @@ export function AddToCartButton({
       ref={buttonRef}
       type="button"
       onClick={handleClick}
-      disabled={state !== "idle"}
-      whileHover={state === "idle" ? { scale: 1.01 } : undefined}
-      whileTap={state === "idle" ? { scale: 0.96 } : undefined}
+      disabled={state !== "idle" || disabled}
+      whileHover={state === "idle" && !disabled ? { scale: 1.01 } : undefined}
+      whileTap={state === "idle" && !disabled ? { scale: 0.96 } : undefined}
       animate={
         state === "loading"
           ? { scale: 0.97 }

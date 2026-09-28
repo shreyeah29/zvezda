@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { PolicyPageLayout } from "@/components/layout/PolicyPageLayout";
 import { AtelierEnquiryForm } from "@/components/contact/AtelierEnquiryForm";
-import { atelierContact } from "@/data/atelier";
+import { atelierContact, studioPhoneHref, studioWhatsappUrl } from "@/data/atelier";
 import { StudioVisit } from "@/components/atelier/StudioVisit";
 
 export function ContactExperience() {
@@ -22,6 +22,14 @@ export function ContactExperience() {
       <p>
         Email:{" "}
         <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>
+        <br />
+        Phone:{" "}
+        <a href={studioPhoneHref()}>{atelierContact.phoneDisplay}</a>
+        <br />
+        WhatsApp:{" "}
+        <a href={studioWhatsappUrl()} target="_blank" rel="noopener noreferrer">
+          {atelierContact.phoneDisplay}
+        </a>
         <br />
         We respond during studio hours, 11:00 am – 7:00 pm IST.
       </p>

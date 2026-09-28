@@ -1,4 +1,4 @@
-import { atelierContact, atelierStudio, studioAddressText, studioHoursText, studioMapsUrl } from "@/data/atelier";
+import { atelierContact, atelierStudio, studioAddressText, studioHoursText, studioMapsUrl, studioPhoneHref } from "@/data/atelier";
 import type { OrderEmailKind, OrderEmailPayload, OrderEmailPiece } from "./types";
 
 export type RenderedEmail = {
@@ -105,6 +105,8 @@ function wrapEmail(input: { eyebrow: string; heading: string; bodyHtml: string; 
               <p style="margin:0 0 10px;font-family:Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:0.08em;color:${MUTED};">${escapeHtml(hours)}</p>
               <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:12px;">
                 <a href="${escapeHtml(maps)}" style="color:${INK};">Directions</a>
+                &nbsp;·&nbsp;
+                <a href="${studioPhoneHref()}" style="color:${INK};">${atelierContact.phoneDisplay}</a>
                 &nbsp;·&nbsp;
                 <a href="mailto:${atelierContact.careEmail}" style="color:${INK};">${atelierContact.careEmail}</a>
                 &nbsp;·&nbsp;
@@ -238,6 +240,7 @@ export function renderOrderEmail(payload: OrderEmailPayload): RenderedEmail {
     atelierStudio.name,
     studioAddressText(),
     studioHoursText(),
+    atelierContact.phoneDisplay,
     atelierContact.careEmail,
     payload.trackingUrl ? `Tracking: ${payload.trackingUrl}` : "",
   ]

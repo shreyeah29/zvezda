@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCommerce } from "@/context/CommerceContext";
 import { findProduct } from "@/data/findProduct";
-import { formatPrice } from "@/data/products";
+import { formatPrice, cartLineName, cartLineUnitPrice } from "@/data/products";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import type { CheckoutCustomer } from "@/lib/checkout";
@@ -82,6 +82,7 @@ export function CheckoutPage() {
             slug: item.slug,
             size: item.size,
             quantity: item.quantity,
+            option: item.option,
           })),
         }),
       });
@@ -126,7 +127,7 @@ export function CheckoutPage() {
               pieces: cart.map((item) => {
                 const product = findProduct(item.slug);
                 return {
-                  name: product?.name ?? item.slug,
+                  name: product ? cartLineName(product, item.option) : item.slug,
                   size: item.size,
                   quantity: item.quantity,
                 };
@@ -291,16 +292,16 @@ export function CheckoutPage() {
                 <h2>Your selection</h2>
                 <ul>
                   {lines.map(({ item, product }) => (
-                    <li key={`${item.slug}-${item.size}`}>
+                    <li key={`${item.slug}-${item.size}-${item.option ?? "set"}`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={product.hero} alt="" />
                       <div>
-                        <p>{product.name}</p>
+                        <p>{cartLineName(product, item.option)}</p>
                         <p>
                           Size {item.size} · Qty {item.quantity}
                         </p>
                       </div>
-                      <span>{formatPrice(product.price * item.quantity, product.currency)}</span>
+                      <span>{formatPrice(cartLineUnitPrice(product, item.option) * item.quantity, product.currency)}</span>
                     </li>
                   ))}
                 </ul>

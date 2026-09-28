@@ -1,8 +1,10 @@
 import {
+  atelierContact,
   atelierStudio,
   studioAddressLines,
   studioHoursText,
   studioMapsUrl,
+  studioPhoneHref,
 } from "@/data/atelier";
 
 type StudioVisitProps = {
@@ -21,6 +23,8 @@ export function StudioVisit({ className }: StudioVisitProps) {
         </span>
       ))}
       {studioHoursText()}
+      <br />
+      <a href={studioPhoneHref()}>{atelierContact.phoneDisplay}</a>
       <br />
       <a href={studioMapsUrl()} target="_blank" rel="noopener noreferrer">
         Open in Maps

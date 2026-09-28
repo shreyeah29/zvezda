@@ -1,5 +1,5 @@
 import { PolicyPageLayout } from "@/components/layout/PolicyPageLayout";
-import { atelierContact } from "@/data/atelier";
+import { atelierContact, studioAddressText, studioPhoneHref } from "@/data/atelier";
 
 export const metadata = {
   title: "FAQ — Zvezda Atelier",
@@ -40,14 +40,17 @@ export default function FaqPage() {
 
       <h2>Can I collect from the studio?</h2>
       <p>
-        Yes. The atelier is at 8-2-293/82/A/1177, Jubilee Hills Road No. 56, Jubilee Hills,
-        Hyderabad 500033. Studio hours are 11:00 am – 7:00 pm IST. Choose pay at store at
-        checkout, or tell us you would like to collect when your piece is ready.
+        Yes. The atelier is at {studioAddressText()}. Studio hours are 11:00 am – 7:00 pm IST.
+        Choose pay at store at checkout, or tell us you would like to collect when your piece
+        is ready.
       </p>
 
       <h2>Still have a question?</h2>
       <p>
         Email <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>{" "}
+        or call{" "}
+        <a href={studioPhoneHref()}>{atelierContact.phoneDisplay}</a>
+        {" "}
         and we will respond during studio hours, 11:00 am – 7:00 pm IST.
       </p>
     </PolicyPageLayout>

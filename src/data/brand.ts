@@ -3,7 +3,7 @@ export const brand = {
   tagline: "Where light becomes garment",
   philosophy:
     "Born from the belief that clothing should feel like a memory — fleeting, luminous, and impossibly intimate. Each piece is sculpted by hand, worn like a second skin.",
-  statement: "Fall in love before you see the price.",
+  statement: "Timeless by design.",
   logo: {
     champagne: "/assets/brand/zvezda-logo-champagne.png",
     white: "/assets/brand/zvezda-logo-white.png",

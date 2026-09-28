@@ -1,10 +1,12 @@
 import { findProduct } from "@/data/findProduct";
-import { studioAddressText, studioHoursText } from "@/data/atelier";
+import { cartLineName, cartLineUnitPrice } from "@/data/products";
+import { atelierContact, studioAddressText, studioHoursText } from "@/data/atelier";
 
 export type CheckoutCartItem = {
   slug: string;
   size: string;
   quantity: number;
+  option?: string;
 };
 
 export type CheckoutCustomer = {
@@ -24,6 +26,7 @@ export type QuotedLine = {
   quantity: number;
   unitPrice: number;
   lineTotal: number;
+  option?: string;
   priceOnRequest?: boolean;
 };
 
@@ -103,15 +106,21 @@ export function quoteCheckoutCart(items: CheckoutCartItem[]): CartQuote {
 
     const quantity = Math.max(1, Math.min(10, Math.floor(Number(item.quantity) || 1)));
     const size = String(item.size || "M").slice(0, 12);
-    const lineTotal = product.price * quantity;
+    const option = item.option ? String(item.option).slice(0, 48) : undefined;
+    if (option && !product.priceOptions?.some((entry) => entry.label === option)) {
+      throw new Error(`${product.name} cannot be bought as ${option}.`);
+    }
+    const unitPrice = cartLineUnitPrice(product, option);
+    const lineTotal = unitPrice * quantity;
     subtotal += lineTotal;
     lines.push({
       slug: product.slug,
-      name: product.name,
+      name: cartLineName(product, option),
       size,
       quantity,
-      unitPrice: product.price,
+      unitPrice,
       lineTotal,
+      option,
     });
   }
 
@@ -161,17 +170,19 @@ export function quoteStoreCart(items: CheckoutCartItem[]): CartQuote {
 
     const quantity = Math.max(1, Math.min(10, Math.floor(Number(item.quantity) || 1)));
     const size = String(item.size || "M").slice(0, 12);
+    const option = item.option ? String(item.option).slice(0, 48) : undefined;
     const onRequest = Boolean(product.priceOnRequest || !product.price);
-    const unitPrice = onRequest ? 0 : product.price;
+    const unitPrice = onRequest ? 0 : cartLineUnitPrice(product, option);
     const lineTotal = unitPrice * quantity;
     subtotal += lineTotal;
     lines.push({
       slug: product.slug,
-      name: product.name,
+      name: cartLineName(product, option),
       size,
       quantity,
       unitPrice,
       lineTotal,
+      option,
       priceOnRequest: onRequest,
     });
   }
@@ -254,6 +265,7 @@ export function formatStoreReservationMessage(input: {
     "Studio:",
     studioAddressText(),
     studioHoursText(),
+    atelierContact.phoneDisplay,
     "",
     "The guest will visit the atelier to try the piece and pay in person.",
   ].join("\n");

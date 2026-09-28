@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { atelierContact } from "@/data/atelier";
+import { atelierContact, studioPhoneHref } from "@/data/atelier";
 import { StudioVisit } from "@/components/atelier/StudioVisit";
 import { formatPrice } from "@/data/products";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
@@ -86,7 +86,9 @@ function ThankYouBody() {
 
         <p className="checkout-success__message">
           Questions before you visit? Write to{" "}
-          <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>.
+          <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>
+          {" "}or call{" "}
+          <a href={studioPhoneHref()}>{atelierContact.phoneDisplay}</a>.
         </p>
 
         <div className="checkout-success__actions">

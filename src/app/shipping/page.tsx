@@ -1,5 +1,5 @@
 import { PolicyPageLayout } from "@/components/layout/PolicyPageLayout";
-import { atelierContact } from "@/data/atelier";
+import { atelierContact, studioAddressText, studioPhoneHref } from "@/data/atelier";
 
 export const metadata = {
   title: "Shipping Policy — Zvezda Atelier",
@@ -49,9 +49,9 @@ export default function ShippingPolicyPage() {
 
       <h2>Collect from the studio</h2>
       <p>
-        Hyderabad clients may collect from Zvezda Atelier at 8-2-293/82/A/1177, Jubilee Hills
-        Road No. 56, Jubilee Hills, Hyderabad 500033. The studio is open 11:00 am – 7:00 pm IST.
-        Choose pay at store at checkout, or ask us to hold a finished piece for collection.
+        Hyderabad clients may collect from Zvezda Atelier at {studioAddressText()}. The studio
+        is open 11:00 am – 7:00 pm IST. Choose pay at store at checkout, or ask us to hold a
+        finished piece for collection.
       </p>
 
       <h2>How fulfilment works</h2>
@@ -70,7 +70,8 @@ export default function ShippingPolicyPage() {
 
       <h2>Questions</h2>
       <p>
-        For shipping enquiries, please visit our <a href="/contact">Contact</a> page or email{" "}
+        For shipping enquiries, please visit our <a href="/contact">Contact</a> page, call{" "}
+        <a href={studioPhoneHref()}>{atelierContact.phoneDisplay}</a>, or email{" "}
         <a href={`mailto:${atelierContact.careEmail}`}>{atelierContact.careEmail}</a>.
       </p>
     </PolicyPageLayout>

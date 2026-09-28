@@ -296,6 +296,8 @@ function AboutScroll() {
           ZVEZDA Atelier — Jubilee Hills, Hyderabad
           <br />
           Open 11:00 am – 7:00 pm IST
+          <br />
+          <a href={`tel:+91${atelierContact.phone}`}>{atelierContact.phoneDisplay}</a>
         </p>
         <nav aria-label="About footer">
           <a

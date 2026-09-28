@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { useCommerce } from "@/context/CommerceContext";
-import { formatPrice, formatProductPrice } from "@/data/products";
+import { formatPrice, cartLineName, cartLineUnitPrice } from "@/data/products";
 import { findProduct } from "@/data/findProduct";
 import { JacquemusFooter } from "@/components/home/jacquemus/JacquemusFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
@@ -57,7 +57,8 @@ export function CartPage() {
                     {cart.map((item) => {
                       const product = findProduct(item.slug);
                       if (!product) return null;
-                      const key = `${item.slug}-${item.size}`;
+                      const key = `${item.slug}-${item.size}-${item.option ?? "set"}`;
+                      const unit = cartLineUnitPrice(product, item.option);
                       return (
                         <motion.li
                           key={key}
@@ -74,11 +75,11 @@ export function CartPage() {
                           </Link>
                           <div className="cart-page__details">
                             <Link href={`/products/${product.slug}`} className="cart-page__name">
-                              {product.name}
+                              {cartLineName(product, item.option)}
                             </Link>
                             <p className="cart-page__size">Size {item.size}</p>
                             <p className="cart-page__unit-price">
-                              {formatProductPrice(product)} each
+                              {formatPrice(unit, product.currency)} each
                             </p>
                           </div>
                           <div className="cart-page__controls">
@@ -87,7 +88,7 @@ export function CartPage() {
                                 type="button"
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() =>
-                                  updateCartQuantity(item.slug, item.quantity - 1, item.size)
+                                  updateCartQuantity(item.slug, item.quantity - 1, item.size, item.option)
                                 }
                                 aria-label="Decrease"
                               >
@@ -100,7 +101,7 @@ export function CartPage() {
                                 type="button"
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() =>
-                                  updateCartQuantity(item.slug, item.quantity + 1, item.size)
+                                  updateCartQuantity(item.slug, item.quantity + 1, item.size, item.option)
                                 }
                                 aria-label="Increase"
                               >
@@ -108,11 +109,11 @@ export function CartPage() {
                               </motion.button>
                             </div>
                             <p className="cart-page__line-total">
-                              {formatPrice(product.price * item.quantity, product.currency)}
+                              {formatPrice(unit * item.quantity, product.currency)}
                             </p>
                             <button
                               type="button"
-                              onClick={() => removeFromCart(item.slug, item.size)}
+                              onClick={() => removeFromCart(item.slug, item.size, item.option)}
                               className="cart-page__remove"
                             >
                               Remove

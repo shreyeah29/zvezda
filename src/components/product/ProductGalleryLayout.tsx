@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import type { Product } from "@/data/products";
-import { formatPrice, formatProductPrice } from "@/data/products";
+import { formatPrice, formatProductPrice, canBuySeparately } from "@/data/products";
 import "./ProductGalleryLayout.css";
 
 const STANDARD_SIZES = ["6", "8", "10", "12"] as const;
@@ -59,6 +59,8 @@ export function ProductGalleryLayout({
   const [quantity, setQuantity] = useState(1);
   const [descOpen, setDescOpen] = useState(true);
   const [customOpen, setCustomOpen] = useState(false);
+  const [buySeparatelyOpen, setBuySeparatelyOpen] = useState(false);
+  const [selectedPart, setSelectedPart] = useState<string | null>(null);
   const [customColourOpen, setCustomColourOpen] = useState(false);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const prevIndex = useRef(0);
@@ -68,6 +70,7 @@ export function ProductGalleryLayout({
   const enquiryHref = `/contact?product=${encodeURIComponent(product.name)}#enquiry`;
   const details = product.story || product.description;
   const care = product.care ?? "Dry clean only";
+  const separateParts = canBuySeparately(product) ? product.priceOptions ?? [] : [];
 
   const selectImage = (index: number) => {
     if (index === activeIndex) return;
@@ -269,6 +272,56 @@ export function ProductGalleryLayout({
             </AnimatePresence>
           </div>
 
+          {separateParts.length > 0 ? (
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setBuySeparatelyOpen((open) => {
+                    const next = !open;
+                    if (!next) setSelectedPart(null);
+                    return next;
+                  });
+                }}
+                className={`jm-product-gallery__outline-btn ${
+                  buySeparatelyOpen ? "jm-product-gallery__outline-btn--active" : ""
+                }`}
+                aria-expanded={buySeparatelyOpen}
+              >
+                Buy separately
+              </button>
+              <AnimatePresence initial={false}>
+                {buySeparatelyOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                    className="overflow-hidden"
+                  >
+                    <div className="jm-product-gallery__panel">
+                      <p>Add only one piece of the set — top or bottom.</p>
+                      <div className="jm-product-gallery__sizes">
+                        {separateParts.map((part) => (
+                          <button
+                            key={part.label}
+                            type="button"
+                            onClick={() => setSelectedPart(part.label)}
+                            className={`jm-product-gallery__size ${
+                              selectedPart === part.label ? "jm-product-gallery__size--active" : ""
+                            }`}
+                          >
+                            {part.label} — {formatPrice(part.amount, product.currency)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : null}
+
           <p className="jm-product-gallery__qty-label">Quantity</p>
           <div className="jm-product-gallery__buy">
             <div className="jm-product-gallery__qty">
@@ -294,8 +347,16 @@ export function ProductGalleryLayout({
               slug={product.slug}
               quantity={quantity}
               size={selectedSize}
+              option={buySeparatelyOpen ? selectedPart ?? undefined : undefined}
+              disabled={buySeparatelyOpen && !selectedPart}
               className="jm-product-gallery__bag"
-              label="Add to Bag"
+              label={
+                buySeparatelyOpen
+                  ? selectedPart
+                    ? `Add ${selectedPart}`
+                    : "Choose a piece"
+                  : "Add to Bag"
+              }
             />
           </div>
           <Link href="/cart" className="jm-product-gallery__checkout">

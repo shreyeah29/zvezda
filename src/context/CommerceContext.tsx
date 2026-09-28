@@ -10,11 +10,13 @@ import {
   type ReactNode,
 } from "react";
 import { findProduct } from "@/data/findProduct";
+import { cartLineUnitPrice } from "@/data/products";
 
 export type CartItem = {
   slug: string;
   quantity: number;
   size: string;
+  option?: string;
 };
 
 type FlyPayload = {
@@ -32,9 +34,9 @@ type CommerceContextValue = {
   wishlist: string[];
   cartCount: number;
   cartSubtotal: number;
-  addToCart: (slug: string, quantity?: number, size?: string) => void;
-  removeFromCart: (slug: string, size?: string) => void;
-  updateCartQuantity: (slug: string, quantity: number, size?: string) => void;
+  addToCart: (slug: string, quantity?: number, size?: string, option?: string) => void;
+  removeFromCart: (slug: string, size?: string, option?: string) => void;
+  updateCartQuantity: (slug: string, quantity: number, size?: string, option?: string) => void;
   clearCart: () => void;
   toggleWishlist: (slug: string) => boolean;
   isInWishlist: (slug: string) => boolean;
@@ -65,8 +67,8 @@ function readStorage<T>(key: string, fallback: T): T {
   }
 }
 
-function cartKey(item: Pick<CartItem, "slug" | "size">) {
-  return `${item.slug}::${item.size}`;
+function cartKey(item: Pick<CartItem, "slug" | "size" | "option">) {
+  return `${item.slug}::${item.size}::${item.option ?? ""}`;
 }
 
 export function CommerceProvider({ children }: { children: ReactNode }) {
@@ -94,27 +96,27 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
   }, [wishlist, hydrated]);
 
-  const addToCart = useCallback((slug: string, quantity = 1, size = "M") => {
+  const addToCart = useCallback((slug: string, quantity = 1, size = "M", option?: string) => {
     setCart((prev) => {
-      const key = cartKey({ slug, size });
+      const key = cartKey({ slug, size, option });
       const existing = prev.find((item) => cartKey(item) === key);
       if (existing) {
         return prev.map((item) =>
           cartKey(item) === key ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-      return [...prev, { slug, quantity, size }];
+      return [...prev, { slug, quantity, size, option }];
     });
     setCartPulse(true);
   }, []);
 
-  const removeFromCart = useCallback((slug: string, size = "M") => {
-    const key = cartKey({ slug, size });
+  const removeFromCart = useCallback((slug: string, size = "M", option?: string) => {
+    const key = cartKey({ slug, size, option });
     setCart((prev) => prev.filter((item) => cartKey(item) !== key));
   }, []);
 
-  const updateCartQuantity = useCallback((slug: string, quantity: number, size = "M") => {
-    const key = cartKey({ slug, size });
+  const updateCartQuantity = useCallback((slug: string, quantity: number, size = "M", option?: string) => {
+    const key = cartKey({ slug, size, option });
     if (quantity <= 0) {
       setCart((prev) => prev.filter((item) => cartKey(item) !== key));
       return;
@@ -164,7 +166,8 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
     () =>
       cart.reduce((sum, item) => {
         const product = findProduct(item.slug);
-        return sum + (product?.price ?? 0) * item.quantity;
+        if (!product) return sum;
+        return sum + cartLineUnitPrice(product, item.option) * item.quantity;
       }, 0),
     [cart]
   );
