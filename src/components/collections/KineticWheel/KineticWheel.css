@@ -415,7 +415,7 @@
     grid-template-rows: 1fr;
     align-items: stretch;
     gap: 0.65rem;
-    padding: 5.7rem 0.75rem 1.85rem;
+    padding: 4.5rem 0.75rem 1.85rem;
     width: 100%;
     height: 100%;
   }
@@ -567,56 +567,133 @@
   }
 }
 
-.kw__houses {
+.kw__pick {
   position: absolute;
   top: 3.45rem;
-  left: 0;
-  right: 0;
-  z-index: 8;
-  display: flex;
-  justify-content: center;
-  gap: 0.15rem;
-  padding: 0 0.75rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.kw__houses::-webkit-scrollbar {
-  display: none;
-}
-
-.kw__house {
-  flex: 0 0 auto;
-  border: none;
-  background: none;
-  padding: 0.5rem 0.55rem;
-  min-height: 2.5rem;
+  right: 0.75rem;
+  z-index: 9;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: min(52vw, 11.5rem);
+  padding: 0.42rem 0.7rem;
+  min-height: 2.35rem;
+  border: 1px solid rgba(250, 250, 249, 0.42);
+  background: rgba(12, 10, 9, 0.32);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fafaf9;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 9px;
   font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(12, 10, 9, 0.4);
   cursor: pointer;
 }
 
-.kw__house.is-active {
+.kw__pick span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kw__pick svg {
+  flex-shrink: 0;
+  transition: transform 0.28s ease;
+}
+
+.kw__pick[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.kw:not(.kw--has-video):not(.kw--has-still) .kw__pick {
+  border-color: rgba(12, 10, 9, 0.16);
+  background: rgba(255, 255, 255, 0.78);
   color: #0c0a09;
 }
 
-.kw--has-video .kw__house,
-.kw--has-still .kw__house {
-  color: rgba(250, 250, 249, 0.52);
+.kw--intro .kw__wheel,
+.kw--intro .kw__copy,
+.kw--intro .kw__hint {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.kw--has-video .kw__house.is-active,
-.kw--has-still .kw__house.is-active {
+.kw__intro {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 1.5rem;
+  border: 0;
+  background: rgba(8, 8, 8, 0.46);
+  cursor: pointer;
+}
+
+.kw__intro-name {
+  font-family: "Bodoni Moda", Didot, "Times New Roman", serif;
+  font-size: clamp(1.55rem, 7.2vw, 2.15rem);
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  padding-left: 0.28em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #c4a574;
+  text-align: center;
+}
+
+.kw__intro-sub {
+  font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  padding-left: 0.4em;
+  text-transform: uppercase;
   color: #fafaf9;
 }
 
-@media (max-width: 768px) {
-  .kw--mobile .kw__houses {
-    justify-content: flex-start;
-  }
+.kw__sheet-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 13;
+  border: 0;
+  background: rgba(8, 8, 8, 0.38);
+  cursor: pointer;
+}
+
+.kw__sheet {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 2.35rem;
+  z-index: 14;
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem 0.25rem;
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(12, 10, 9, 0.18);
+}
+
+.kw__sheet-item {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 0;
+  background: none;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: left;
+  color: #0c0a09;
+  cursor: pointer;
+}
+
+.kw__sheet-item.is-active {
+  color: #c4a574;
 }

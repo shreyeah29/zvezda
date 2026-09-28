@@ -56,7 +56,7 @@ export function ShopFilters({
     prices.length +
     sizes.length +
     availability.length +
-    (sort !== "featured" ? 1 : 0);
+    (sort !== "price-desc" ? 1 : 0);
 
   useEffect(() => {
     if (!open) return;

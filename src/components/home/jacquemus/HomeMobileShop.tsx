@@ -169,7 +169,6 @@ export function HomeMobileBespoke() {
 
   return (
     <section className="hm-shop hm-shop--bespoke" aria-label="Bespoke collection">
-      <MobileSectionHeading primary="Bespoke" secondary="Collection" />
       <Link href="/collections/bespoke" className="hm-pink__hero">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

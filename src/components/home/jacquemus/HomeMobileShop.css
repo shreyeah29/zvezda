@@ -22,7 +22,11 @@
     padding-bottom: 0.75rem;
   }
 
-  .hm-shop--bespoke,
+  .hm-shop--bespoke {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .hm-shop--pink {
     padding-top: 2rem;
     padding-bottom: 0;

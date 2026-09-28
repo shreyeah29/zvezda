@@ -19,7 +19,7 @@ function ShopExperienceContent() {
   const [prices, setPrices] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
   const [availability, setAvailability] = useState<string[]>([]);
-  const [sort, setSort] = useState("featured");
+  const [sort, setSort] = useState("price-desc");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const filtered = useMemo(() => {
@@ -93,7 +93,7 @@ function ShopExperienceContent() {
                 setPrices([]);
                 setSizes([]);
                 setAvailability([]);
-                setSort("featured");
+                setSort("price-desc");
               }}
             />
 

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { formatProductPrice } from "@/data/products";
 import { searchProducts } from "@/data/searchProducts";
 import { getLenisInstance } from "@/lib/lenisInstance";
@@ -16,6 +16,7 @@ type SearchOverlayProps = {
 
 export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const previousPathname = useRef(pathname);
   const [query, setQuery] = useState("");
@@ -77,6 +78,12 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
 
   const trimmed = query.trim();
 
+  const submitSearch = () => {
+    if (!trimmed) return;
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    onClose();
+  };
+
   return (
     <AnimatePresence>
       {open ? (
@@ -92,7 +99,13 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
           transition={{ duration: 0.22, ease: "easeOut" }}
           data-lenis-prevent
         >
-          <div className="jm-search__bar">
+          <form
+            className="jm-search__bar"
+            onSubmit={(event) => {
+              event.preventDefault();
+              submitSearch();
+            }}
+          >
             <label className="jm-search__field">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <circle cx="11" cy="11" r="6.25" fill="none" stroke="currentColor" strokeWidth="1.4" />
@@ -109,8 +122,8 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search pieces, pearls, pants…"
-                aria-label="Search pieces"
+                placeholder="Search"
+                aria-label="Search"
                 autoComplete="off"
                 autoCorrect="off"
                 spellCheck={false}
@@ -119,14 +132,12 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             <button type="button" className="jm-search__close" onClick={onClose}>
               Close
             </button>
-          </div>
+          </form>
 
           <div className="jm-search__body">
-            {!trimmed ? (
-              <p className="jm-search__hint">Type a name, colour, or garment — pearl, pants, gown.</p>
-            ) : results.length === 0 ? (
+            {trimmed && results.length === 0 ? (
               <p className="jm-search__hint">No pieces match “{trimmed}”.</p>
-            ) : (
+            ) : results.length > 0 ? (
               <ul className="jm-search__results">
                 {results.map((product) => (
                   <li key={product.slug}>
@@ -145,7 +156,7 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                   </li>
                 ))}
               </ul>
-            )}
+            ) : null}
           </div>
         </motion.div>
       ) : null}

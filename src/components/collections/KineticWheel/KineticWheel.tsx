@@ -256,8 +256,11 @@ export function KineticWheel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [parallaxY, setParallaxY] = useState(0);
   const [zoom, setZoom] = useState(1);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [introOpen, setIntroOpen] = useState(true);
 
   const activePiece = pieces[activeIndex] ?? pieces[0];
+  const selectedLabel = houses.find((house) => house.slug === selectedHouse)?.label ?? "Collection";
 
   useEffect(() => {
     positionRef.current = 0;
@@ -266,6 +269,9 @@ export function KineticWheel() {
     setActiveIndex(0);
     setParallaxY(0);
     setZoom(1);
+    setIntroOpen(true);
+    const id = window.setTimeout(() => setIntroOpen(false), 1700);
+    return () => window.clearTimeout(id);
   }, [selectedHouse]);
 
   const syncActive = useCallback(
@@ -431,7 +437,7 @@ export function KineticWheel() {
     <section
       className={`kw${isMobile ? " kw--mobile" : ""}${hasVideo ? " kw--has-video" : ""}${
         stillSrc && isMobile ? " kw--has-still" : ""
-      }`}
+      }${introOpen ? " kw--intro" : ""}`}
       aria-label="Kinetic product wheel"
       data-lenis-prevent
     >
@@ -472,21 +478,101 @@ export function KineticWheel() {
         }
       />
 
-      <div className="kw__houses" role="tablist" aria-label="Collections">
-        {houses.map((house) => (
-          <button
-            key={house.slug}
+      <button
+        type="button"
+        className="kw__pick"
+        aria-haspopup="listbox"
+        aria-expanded={pickerOpen}
+        aria-label="Choose a collection"
+        onPointerDown={(event) => event.stopPropagation()}
+        onClick={() => {
+          setIntroOpen(false);
+          setPickerOpen((open) => !open);
+        }}
+      >
+        <span>{selectedLabel}</span>
+        <svg viewBox="0 0 12 8" width="9" height="6" aria-hidden="true">
+          <path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        </svg>
+      </button>
+
+      <AnimatePresence>
+        {introOpen ? (
+          <motion.button
+            key={`intro-${selectedHouse}`}
             type="button"
-            role="tab"
-            aria-selected={house.slug === selectedHouse}
-            className={`kw__house${house.slug === selectedHouse ? " is-active" : ""}`}
-            onPointerDown={(event) => event.stopPropagation()}
-            onClick={() => setSelectedHouse(house.slug)}
+            className="kw__intro"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            onClick={() => setIntroOpen(false)}
+            aria-label={`${selectedLabel} collection`}
           >
-            {house.label}
-          </button>
-        ))}
-      </div>
+            <motion.span
+              className="kw__intro-name"
+              initial={{ y: 18, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -12, opacity: 0 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {selectedLabel}
+            </motion.span>
+            <motion.span
+              className="kw__intro-sub"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Collection
+            </motion.span>
+          </motion.button>
+        ) : null}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {pickerOpen ? (
+          <>
+            <motion.button
+              key="kw-sheet-scrim"
+              type="button"
+              className="kw__sheet-scrim"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              aria-label="Close collections"
+              onClick={() => setPickerOpen(false)}
+            />
+            <motion.div
+              key="kw-sheet"
+              className="kw__sheet"
+              role="listbox"
+              aria-label="Collections"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {houses.map((house) => (
+                <button
+                  key={house.slug}
+                  type="button"
+                  role="option"
+                  aria-selected={house.slug === selectedHouse}
+                  className={`kw__sheet-item${house.slug === selectedHouse ? " is-active" : ""}`}
+                  onClick={() => {
+                    setPickerOpen(false);
+                    setSelectedHouse(house.slug);
+                  }}
+                >
+                  {house.label}
+                </button>
+              ))}
+            </motion.div>
+          </>
+        ) : null}
+      </AnimatePresence>
 
       <div className="kw__shell">
         <div
