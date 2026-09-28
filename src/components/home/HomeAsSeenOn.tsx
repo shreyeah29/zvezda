@@ -99,14 +99,6 @@ export function HomeAsSeenOn() {
           })}
         </div>
       </div>
-
-      <p className="as-seen__ticker" aria-hidden="true">
-        <span>
-          {asSeenOnLooks.map((item) => item.piece).join("  ·  ")}
-          {"  ·  "}
-          {asSeenOnLooks.map((item) => item.piece).join("  ·  ")}
-        </span>
-      </p>
     </section>
   );
 }
