@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MiniCart } from "@/components/commerce/MiniCart";
+import { SearchOverlay } from "@/components/layout/SearchOverlay";
 import { FlyToCartLayer, FlyToWishlistLayer } from "@/components/commerce/CommerceAnimations";
 import { useCommerce } from "@/context/CommerceContext";
 import { getLenisInstance } from "@/lib/lenisInstance";
@@ -43,6 +44,7 @@ export function Navigation() {
   const [heroOverlayNav, setHeroOverlayNav] = useState(hasHeroOverlay);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [cartBurst, setCartBurst] = useState(false);
   const [pageProgress, setPageProgress] = useState(0);
 
@@ -57,6 +59,7 @@ export function Navigation() {
   useEffect(() => {
     setHeaderVisible(true);
     setMenuOpen(false);
+    setSearchOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -115,7 +118,7 @@ export function Navigation() {
     };
   }, [hasHeroOverlay, isAbout, pathname]);
 
-  const showHeader = isAbout || headerVisible || cartOpen;
+  const showHeader = isAbout || headerVisible || cartOpen || searchOpen;
   const heroOverlay = hasHeroOverlay && heroOverlayNav;
   const mutedClass = heroOverlay ? "text-white/80 hover:text-white" : "text-black/70 hover:text-black";
   const centreLinks = isAbout ? ABOUT_LINKS : JM_LINKS;
@@ -127,6 +130,7 @@ export function Navigation() {
       <FlyToCartLayer />
       <FlyToWishlistLayer />
       <MiniCart open={cartOpen} onClose={() => setCartOpen(false)} />
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {isAbout ? (
         <div className="about-nav-progress" aria-hidden="true">
@@ -174,6 +178,26 @@ export function Navigation() {
             <Link href="/shop" className={cn("jm-nav__link jm-nav__shop", mutedClass)}>
               Shop
             </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                setSearchOpen(true);
+              }}
+              className={cn("jm-nav__icon", mutedClass)}
+              aria-label="Search"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.25" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path
+                  d="M16.2 16.2 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
             <Link
               href="/wishlist"
               data-wishlist-target
@@ -224,6 +248,7 @@ export function Navigation() {
             <JacquemusMobileNav
               heroOverlay={heroOverlay}
               onOpenCart={() => setCartOpen(true)}
+              onOpenSearch={() => setSearchOpen(true)}
               open={menuOpen}
               onOpenChange={setMenuOpen}
               includeAbout={isAbout}
@@ -238,12 +263,14 @@ export function Navigation() {
 function JacquemusMobileNav({
   heroOverlay,
   onOpenCart,
+  onOpenSearch,
   open,
   onOpenChange,
   includeAbout = false,
 }: {
   heroOverlay: boolean;
   onOpenCart: () => void;
+  onOpenSearch: () => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   includeAbout?: boolean;
@@ -285,6 +312,16 @@ function JacquemusMobileNav({
                 </button>
               </div>
               <nav className="jm-mobile-menu__nav" aria-label="Mobile">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onOpenChange(false);
+                    onOpenSearch();
+                  }}
+                  className="jm-mobile-menu__link jm-mobile-menu__link--button"
+                >
+                  Search
+                </button>
                 {[
                   ...(includeAbout ? ABOUT_LINKS : JM_LINKS),
                   { href: "/shop", label: "Shop" },

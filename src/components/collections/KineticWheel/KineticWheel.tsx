@@ -11,7 +11,12 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { getKineticPieces, type KineticPiece } from "./kineticData";
+import {
+  getKineticHouses,
+  getKineticPieces,
+  type KineticPiece,
+} from "./kineticData";
+import type { HouseCollectionSlug } from "@/data/houseCollections";
 import { AmbientVideoLayer } from "./AmbientVideoLayer";
 import { useMaxWidth } from "@/hooks/useMaxWidth";
 import "./KineticWheel.css";
@@ -39,6 +44,7 @@ function ZvezdaStar({ className }: { className?: string }) {
 }
 
 function wrapIndex(index: number, length: number) {
+  if (length <= 0) return 0;
   return ((index % length) + length) % length;
 }
 
@@ -225,7 +231,11 @@ function Showcase({
 }
 
 export function KineticWheel() {
-  const pieces = useMemo(() => getKineticPieces(), []);
+  const houses = useMemo(() => getKineticHouses(), []);
+  const [selectedHouse, setSelectedHouse] = useState<HouseCollectionSlug>(
+    houses[0]?.slug ?? "occasion",
+  );
+  const pieces = useMemo(() => getKineticPieces(selectedHouse), [selectedHouse]);
   const count = pieces.length;
   const router = useRouter();
   const isMobile = useMaxWidth(768);
@@ -248,6 +258,15 @@ export function KineticWheel() {
   const [zoom, setZoom] = useState(1);
 
   const activePiece = pieces[activeIndex] ?? pieces[0];
+
+  useEffect(() => {
+    positionRef.current = 0;
+    velocityRef.current = 0;
+    setPosition(0);
+    setActiveIndex(0);
+    setParallaxY(0);
+    setZoom(1);
+  }, [selectedHouse]);
 
   const syncActive = useCallback(
     (pos: number) => {
@@ -453,6 +472,22 @@ export function KineticWheel() {
         }
       />
 
+      <div className="kw__houses" role="tablist" aria-label="Collections">
+        {houses.map((house) => (
+          <button
+            key={house.slug}
+            type="button"
+            role="tab"
+            aria-selected={house.slug === selectedHouse}
+            className={`kw__house${house.slug === selectedHouse ? " is-active" : ""}`}
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={() => setSelectedHouse(house.slug)}
+          >
+            {house.label}
+          </button>
+        ))}
+      </div>
+
       <div className="kw__shell">
         <div
           ref={wheelColRef}
@@ -481,10 +516,13 @@ export function KineticWheel() {
           }}
         >
           <div className="kw__wheel">
-            {visibleItems.map(({ key, index, distance }) => (
+            {visibleItems.map(({ key, index, distance }) => {
+              const piece = pieces[index];
+              if (!piece) return null;
+              return (
               <WheelItem
                 key={key}
-                piece={pieces[index]}
+                piece={piece}
                 distance={distance}
                 spacing={itemSpacing}
                 curveStrength={curveStrength}
@@ -492,7 +530,8 @@ export function KineticWheel() {
                 lightLabels={hasFullBleedMedia && isMobile}
                 onSelect={() => openProduct(index)}
               />
-            ))}
+              );
+            })}
           </div>
         </div>
 

@@ -1,0 +1,37 @@
+.jm-home-film {
+  background: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.jm-home-film__hit {
+  position: relative;
+  display: block;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #111111;
+  text-decoration: none;
+}
+
+.jm-home-film__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  pointer-events: none;
+}
+
+.jm-home-film__video::-webkit-media-controls,
+.jm-home-film__video::-webkit-media-controls-start-playback-button,
+.jm-home-film__video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+@media (max-width: 768px) {
+  .jm-home-film {
+    display: none !important;
+  }
+}

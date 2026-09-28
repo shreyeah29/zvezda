@@ -1,6 +1,10 @@
 import type { Product } from "@/data/products";
-import { products } from "@/data/products";
-import { getSet, setDesktopVideoPath } from "@/data/sets";
+import {
+  HOUSE_COLLECTION_LABELS,
+  HOUSE_COLLECTION_SLUGS,
+  type HouseCollectionSlug,
+} from "@/data/houseCollections";
+import { getHouseCollectionProducts } from "@/data/shopCatalog";
 
 export type KineticMood = {
   glow: string;
@@ -12,15 +16,19 @@ function firstSentence(text: string) {
   return match?.[0]?.trim() ?? text;
 }
 
-export const kineticMoodByCollection: Record<string, KineticMood> = {
-  garden: { glow: "rgba(74, 110, 78, 0.09)", accent: "rgba(74, 110, 78, 0.14)" },
-  peach: { glow: "rgba(196, 150, 120, 0.1)", accent: "rgba(180, 120, 90, 0.12)" },
-  pink: { glow: "rgba(232, 180, 190, 0.12)", accent: "rgba(200, 140, 155, 0.14)" },
-  noir: { glow: "rgba(40, 38, 36, 0.1)", accent: "rgba(20, 18, 16, 0.12)" },
-  yellow: { glow: "rgba(200, 170, 90, 0.1)", accent: "rgba(180, 150, 70, 0.12)" },
-  red: { glow: "rgba(140, 40, 50, 0.09)", accent: "rgba(120, 30, 40, 0.11)" },
-  orange: { glow: "rgba(180, 110, 60, 0.1)", accent: "rgba(160, 90, 45, 0.12)" },
+export const kineticMoodByHouse: Record<HouseCollectionSlug, KineticMood> = {
+  occasion: { glow: "rgba(140, 40, 50, 0.12)", accent: "rgba(120, 30, 40, 0.14)" },
+  statement: { glow: "rgba(40, 38, 36, 0.12)", accent: "rgba(20, 18, 16, 0.14)" },
+  romance: { glow: "rgba(232, 180, 190, 0.14)", accent: "rgba(200, 140, 155, 0.16)" },
+  bespoke: { glow: "rgba(196, 165, 116, 0.14)", accent: "rgba(180, 150, 90, 0.16)" },
 };
+
+export const KINETIC_HOUSE_ORDER: HouseCollectionSlug[] = [
+  "occasion",
+  "statement",
+  "romance",
+  "bespoke",
+];
 
 export type KineticPiece = {
   product: Product;
@@ -28,21 +36,32 @@ export type KineticPiece = {
   images: string[];
   video?: string;
   mood: KineticMood;
+  house: HouseCollectionSlug;
 };
 
-export function getKineticPieces(): KineticPiece[] {
-  return products.map((product) => {
+export function getKineticHouses() {
+  return KINETIC_HOUSE_ORDER.map((slug) => ({
+    slug,
+    label: HOUSE_COLLECTION_LABELS[slug],
+    count: getHouseCollectionProducts(slug).length,
+  })).filter((house) => house.count > 0);
+}
+
+export function getKineticPieces(house: HouseCollectionSlug = "occasion"): KineticPiece[] {
+  const mood = kineticMoodByHouse[house];
+  return getHouseCollectionProducts(house).map((product) => {
     const images = Array.from(
       new Set([product.hero, product.detail, ...product.gallery].filter(Boolean)),
     );
-    const set = getSet(product.setId);
-    const film = set ? setDesktopVideoPath(set) : undefined;
     return {
       product,
       tagline: firstSentence(product.description) || "Couture silhouette from the Zvezda atelier.",
       images,
-      video: film ?? product.video,
-      mood: kineticMoodByCollection[set?.collection ?? product.collection] ?? kineticMoodByCollection.noir,
+      video: product.video,
+      mood,
+      house,
     };
   });
 }
+
+export { HOUSE_COLLECTION_SLUGS };

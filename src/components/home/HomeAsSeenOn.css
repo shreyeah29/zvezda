@@ -19,9 +19,9 @@
 .as-seen__label {
   margin: 0;
   font-family: "Jost", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 0.42em;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--as-gold);
 }
@@ -29,10 +29,10 @@
 .as-seen__heading {
   margin: 0;
   font-family: "Bodoni Moda", var(--font-display), "Times New Roman", serif;
-  font-size: clamp(2.4rem, 8vw, 4.6rem);
+  font-size: clamp(1.45rem, 5.4vw, 2.05rem);
   font-weight: 400;
   font-style: normal;
-  line-height: 0.96;
+  line-height: 1.05;
   letter-spacing: -0.02em;
   color: var(--as-ink);
 }
@@ -215,7 +215,10 @@
 
   .as-seen__label {
     align-self: end;
-    padding-bottom: 0.35rem;
+    padding-bottom: 0.2rem;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
   }
 
   .as-seen__intro-copy {
@@ -224,7 +227,7 @@
   }
 
   .as-seen__heading {
-    font-size: clamp(3.4rem, 5.4vw, 5.4rem);
+    font-size: clamp(1.7rem, 2.6vw, 2.35rem);
   }
 
   .as-seen__stage {

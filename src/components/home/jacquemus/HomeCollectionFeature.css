@@ -50,12 +50,25 @@
   transition: opacity 0.3s ease;
 }
 
-.jm-collection-feature__panel--video .jm-caption:hover {
+.jm-collection-feature__panel--video .jm-caption:hover,
+a.jm-collection-feature__panel:hover .jm-caption {
   opacity: 0.75;
+}
+
+a.jm-collection-feature__panel {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .jm-feature-mobile-label,
 .jm-feature-play,
 .hm-section-heading--feature {
   display: none;
+}
+
+@media (max-width: 768px) {
+  .jm-collection-feature {
+    display: none !important;
+  }
 }

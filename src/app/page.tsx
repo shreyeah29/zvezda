@@ -55,34 +55,34 @@ const HomeCollectionSplit = dynamic(
   { ssr: false },
 );
 
-const HomeProductRow = dynamic(
+const HomeEveningProductRow = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeProductRow").then((mod) => ({
-      default: mod.HomeProductRow,
+      default: mod.HomeEveningProductRow,
     })),
   { ssr: false },
 );
 
-const HomeCollectionFeature = dynamic(
+const HomeRomanceBespokeSplit = dynamic(
   () =>
-    import("@/components/home/jacquemus/HomeCollectionFeature").then((mod) => ({
-      default: mod.HomeCollectionFeature,
+    import("@/components/home/jacquemus/HomeRomanceBespokeSplit").then((mod) => ({
+      default: mod.HomeRomanceBespokeSplit,
     })),
   { ssr: false },
 );
 
-const HomePinkProductRow = dynamic(
+const HomeBloomProductRow = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeProductRow").then((mod) => ({
-      default: mod.HomePinkProductRow,
+      default: mod.HomeBloomProductRow,
     })),
   { ssr: false },
 );
 
-const HomePinkCollectionFeature = dynamic(
+const HomeRomanceFilm = dynamic(
   () =>
-    import("@/components/home/jacquemus/HomePinkCollectionFeature").then((mod) => ({
-      default: mod.HomePinkCollectionFeature,
+    import("@/components/home/jacquemus/HomeRomanceFilm").then((mod) => ({
+      default: mod.HomeRomanceFilm,
     })),
   { ssr: false },
 );
@@ -132,17 +132,17 @@ export default function HomePage() {
           <div className="home-section home-section--mobile-bespoke">
             <HomeMobileBespoke />
           </div>
-          <div className="home-section home-section--pink-row">
-            <HomePinkProductRow />
+          <div className="home-section home-section--evening-row">
+            <HomeEveningProductRow />
           </div>
-          <div className="home-section home-section--pink-feature">
-            <HomePinkCollectionFeature />
+          <div className="home-section home-section--romance-bespoke">
+            <HomeRomanceBespokeSplit />
           </div>
-          <div className="home-section home-section--bw-row">
-            <HomeProductRow />
+          <div className="home-section home-section--bloom-row">
+            <HomeBloomProductRow />
           </div>
-          <div className="home-section home-section--bw-feature">
-            <HomeCollectionFeature />
+          <div className="home-section home-section--romance-film">
+            <HomeRomanceFilm />
           </div>
           <div className="home-section home-section--mobile-romance">
             <HomeMobileRomanceShop />

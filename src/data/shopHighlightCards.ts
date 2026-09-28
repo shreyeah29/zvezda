@@ -117,6 +117,42 @@ export const occasionHighlightCards: ShopHighlightCard[] = [
   },
 ];
 
+/** Desktop home — Occasion + Statement strip */
+export const eveningHighlightCards: ShopHighlightCard[] = [
+  occasionHighlightCards[0],
+  occasionHighlightCards[1],
+  statementHighlightCards[2],
+  statementHighlightCards[3],
+];
+
+/** Desktop home — Romance + Bespoke strip */
+export const bloomHighlightCards: ShopHighlightCard[] = [
+  {
+    setId: 5,
+    slug: "blush-mirage",
+    title: "Blush mirage",
+    image: "/assets/images/shop/blush-mirage/HSP_4495.jpg",
+  },
+  {
+    setId: 17,
+    slug: "rosalind-jacket-blush-column-jumpsuit",
+    title: "Rosalind jacket and blush column jumpsuit",
+    image: "/assets/images/shop/rosalind-jacket-blush-column-jumpsuit/HSP_5292.jpg",
+  },
+  {
+    setId: 104,
+    slug: "blooming-rosalia-3d-gown",
+    title: "Blooming Rosalia",
+    image: "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4523.jpg",
+  },
+  {
+    setId: 101,
+    slug: "rosa-imperiale",
+    title: "Rosa impériale",
+    image: "/assets/images/shop/rosa-imperiale/HSP_2850.jpg",
+  },
+];
+
 export const pinkHighlightCards: ShopHighlightCard[] = [
   {
     setId: 15,

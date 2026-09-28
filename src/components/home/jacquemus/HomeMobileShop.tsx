@@ -168,17 +168,20 @@ export function HomeMobileBespoke() {
   if (!isMobile) return null;
 
   return (
-    <section className="hm-bespoke" aria-label="Bespoke">
-      <Link href="/collections/bespoke" className="hm-bespoke__banner">
+    <section className="hm-shop hm-shop--bespoke" aria-label="Bespoke collection">
+      <MobileSectionHeading primary="Bespoke" secondary="Collection" />
+      <Link href="/collections/bespoke" className="hm-pink__hero">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={BESPOKE_IMAGE}
-          alt="Bespoke"
-          className="hm-bespoke__image"
+          alt="Bespoke collection"
+          className="hm-pink__hero-image"
         />
-        <div className="hm-bespoke__copy">
-          <span className="hm-bespoke__title">Bespoke</span>
-          <span className="hm-bespoke__cta">Explore now</span>
+        <div className="hm-pink__hero-scrim" aria-hidden="true" />
+        <div className="hm-pink__hero-copy">
+          <span className="hm-pink__hero-line">Bespoke</span>
+          <span className="hm-pink__hero-line">Collection</span>
+          <span className="hm-pink__hero-cta">Shop now</span>
         </div>
       </Link>
     </section>

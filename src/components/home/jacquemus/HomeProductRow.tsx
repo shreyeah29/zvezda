@@ -4,18 +4,29 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { formatProductPrice } from "@/data/products";
 import { findProduct } from "@/data/findProduct";
-import { pinkHighlightCards, shopHighlightCards, type ShopHighlightCard } from "@/data/shopHighlightCards";
+import {
+  eveningHighlightCards,
+  bloomHighlightCards,
+  pinkHighlightCards,
+  shopHighlightCards,
+  type ShopHighlightCard,
+} from "@/data/shopHighlightCards";
 import { getSet, setPhotoPath } from "@/data/sets";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import "./HomeProductRow.css";
 
-function getProductRowImages(setId: number, primaryImage: string) {
+function getProductRowImages(slug: string, setId: number, primaryImage: string) {
   const set = getSet(setId);
-  if (!set) return { primary: primaryImage, hover: primaryImage };
+  if (set) {
+    const photos = set.photos.map((photo) => setPhotoPath(set, photo));
+    const hover = photos.find((src) => src !== primaryImage) ?? photos[1] ?? primaryImage;
+    return { primary: primaryImage, hover };
+  }
 
-  const photos = set.photos.map((photo) => setPhotoPath(set, photo));
-  const hover = photos.find((src) => src !== primaryImage) ?? photos[1] ?? primaryImage;
-
+  const product = findProduct(slug);
+  const hover =
+    [product?.detail, ...(product?.gallery ?? [])].find((src) => src && src !== primaryImage) ??
+    primaryImage;
   return { primary: primaryImage, hover };
 }
 
@@ -23,12 +34,14 @@ type HomeProductRowProps = {
   cards?: ShopHighlightCard[];
   ariaLabel?: string;
   showSectionRule?: boolean;
+  showPrice?: boolean;
 };
 
 export function HomeProductRow({
   cards = shopHighlightCards,
   ariaLabel = "Featured products",
   showSectionRule = true,
+  showPrice = true,
 }: HomeProductRowProps) {
   const router = useRouter();
 
@@ -36,7 +49,7 @@ export function HomeProductRow({
     () =>
       cards.map((card) => ({
         slug: card.slug,
-        ...getProductRowImages(card.setId, card.image),
+        ...getProductRowImages(card.slug, card.setId, card.image),
       })),
     [cards],
   );
@@ -53,10 +66,17 @@ export function HomeProductRow({
 
           return (
             <article key={card.slug} className="jm-product-row__cell">
-              <button
-                type="button"
+              <div
+                role="link"
+                tabIndex={0}
                 className="jm-product-row__hit"
                 onClick={() => router.push(`/products/${card.slug}`)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    router.push(`/products/${card.slug}`);
+                  }
+                }}
                 aria-label={`View ${product.name}`}
               >
                 <div className="jm-product-row__media">
@@ -87,19 +107,41 @@ export function HomeProductRow({
                     onClick={(e) => e.stopPropagation()}
                     onPointerDown={(e) => e.stopPropagation()}
                   >
-                    <span className="jm-product-row__price">
-                      {formatProductPrice(product)}
-                    </span>
+                    {showPrice ? (
+                      <span className="jm-product-row__price">
+                        {formatProductPrice(product)}
+                      </span>
+                    ) : null}
                     <WishlistButton slug={product.slug} size="sm" />
                   </div>
                 </div>
-              </button>
+              </div>
             </article>
           );
         })}
       </div>
       {showSectionRule && <hr className="jm-section-rule" aria-hidden="true" />}
     </section>
+  );
+}
+
+export function HomeEveningProductRow() {
+  return (
+    <HomeProductRow
+      cards={eveningHighlightCards}
+      ariaLabel="The Occasion and The Statement"
+      showPrice={false}
+    />
+  );
+}
+
+export function HomeBloomProductRow() {
+  return (
+    <HomeProductRow
+      cards={bloomHighlightCards}
+      ariaLabel="Romance and Bespoke"
+      showPrice={false}
+    />
   );
 }
 
