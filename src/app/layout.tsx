@@ -5,6 +5,8 @@ import { MotionProvider } from "@/components/motion/MotionProvider";
 import { CommerceProvider } from "@/context/CommerceContext";
 import { Navigation } from "@/components/layout/Navigation";
 import { VideoAutoplayBoot } from "@/components/media/VideoAutoplayBoot";
+import { atelierContact, atelierStudio } from "@/data/atelier";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_OG_IMAGE, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -69,9 +71,96 @@ const modernRomance = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Zvezda — Where light becomes garment",
-  description:
-    "An immersive luxury fashion house. Editorial collections, couture craftsmanship, cinematic storytelling.",
+  metadataBase: new URL(SITE_URL),
+  title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    "Zvezda",
+    "Zvezda Atelier",
+    "Zvezda Hyderabad",
+    "luxury fashion Hyderabad",
+    "couture Hyderabad",
+    "Bindu Reddy",
+  ],
+  authors: [{ name: "Bindu Reddy" }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+    images: [{ url: SITE_OG_IMAGE, alt: "Zvezda Atelier" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+    images: [SITE_OG_IMAGE],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      alternateName: ["Zvezda", "ZVEZDA"],
+      url: SITE_URL,
+      email: atelierContact.careEmail,
+      telephone: `+91${atelierContact.phone}`,
+      sameAs: [atelierContact.instagramUrl],
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: `${atelierStudio.line1}, ${atelierStudio.line2}`,
+        addressLocality: atelierStudio.city,
+        addressRegion: "Telangana",
+        postalCode: "500033",
+        addressCountry: "IN",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: SITE_NAME,
+      alternateName: "Zvezda",
+      url: SITE_URL,
+      description: SITE_DESCRIPTION,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE_URL}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "ClothingStore",
+      "@id": `${SITE_URL}/#store`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      image: `${SITE_URL}${SITE_OG_IMAGE}`,
+      telephone: `+91${atelierContact.phone}`,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: `${atelierStudio.line1}, ${atelierStudio.line2}`,
+        addressLocality: atelierStudio.city,
+        addressRegion: "Telangana",
+        postalCode: "500033",
+        addressCountry: "IN",
+      },
+    },
+  ],
 };
 
 export const viewport: Viewport = {
@@ -105,6 +194,10 @@ export default function RootLayout({
         />
       </head>
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
