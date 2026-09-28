@@ -21,12 +21,12 @@ export const asSeenOnLooks: AsSeenOnLook[] = [
     images: [
       {
         src: "/images/press/zeenat-hero.jpg",
-        alt: "Zeenat Aman in The Ophelia set",
+        alt: "The Ophelia set",
         position: "center 22%",
       },
       {
         src: "/images/press/zeenat-alt.jpg",
-        alt: "Zeenat Aman in The Ophelia set, looking to camera",
+        alt: "The Ophelia set, looking to camera",
         position: "center 20%",
       },
     ],
@@ -39,12 +39,12 @@ export const asSeenOnLooks: AsSeenOnLook[] = [
     images: [
       {
         src: "/images/press/nikita-dutta.jpg",
-        alt: "Nikita Dutta in the Allure suit",
+        alt: "The Allure suit",
         position: "center 12%",
       },
       {
         src: "/images/press/nikita-dutta-alt.jpg",
-        alt: "Nikita Dutta in the Allure suit, portrait",
+        alt: "The Allure suit, portrait",
         position: "center 18%",
       },
     ],
@@ -57,12 +57,12 @@ export const asSeenOnLooks: AsSeenOnLook[] = [
     images: [
       {
         src: "/images/press/manushi-chhillar.jpg",
-        alt: "Manushi Chhillar in the Starlit halter gown",
+        alt: "The Starlit halter gown",
         position: "center 12%",
       },
       {
         src: "/images/press/manushi-chhillar-alt.jpg",
-        alt: "Manushi Chhillar in the Starlit halter gown, at the table",
+        alt: "The Starlit halter gown, at the table",
         position: "center 20%",
       },
     ],
@@ -75,7 +75,7 @@ export const asSeenOnLooks: AsSeenOnLook[] = [
     images: [
       {
         src: "/images/press/neha-sharma.jpg",
-        alt: "Neha Sharma in the Rosalind jacket and blush column jumpsuit",
+        alt: "The Rosalind jacket and blush column jumpsuit",
         position: "center 42%",
       },
     ],
@@ -88,17 +88,17 @@ export const asSeenOnLooks: AsSeenOnLook[] = [
     images: [
       {
         src: "/images/press/sakshi-sindwani.jpg",
-        alt: "Sakshi Sindwani in Rosa impériale",
+        alt: "Rosa impériale",
         position: "center 18%",
       },
       {
         src: "/images/press/sakshi-sindwani-front.jpg",
-        alt: "Sakshi Sindwani in Rosa impériale, full gown",
+        alt: "Rosa impériale, full gown",
         position: "center 18%",
       },
       {
         src: "/images/press/sakshi-sindwani-train.jpg",
-        alt: "Sakshi Sindwani in Rosa impériale, train",
+        alt: "Rosa impériale, train",
         position: "center 22%",
       },
     ],

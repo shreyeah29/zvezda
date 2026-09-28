@@ -45,7 +45,7 @@ export function HomeAsSeenOn() {
       </div>
 
       <div className="as-seen__stage">
-        <Link href={look.href} className="as-seen__feature" aria-label={`Shop ${look.piece} as worn by ${look.name}`}>
+        <Link href={look.href} className="as-seen__feature" aria-label={`Shop ${look.piece}`}>
           <div className="as-seen__feature-media">
             <AnimatePresence mode="wait" initial={false}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -63,8 +63,7 @@ export function HomeAsSeenOn() {
             </AnimatePresence>
           </div>
           <div className="as-seen__feature-copy">
-            <p className="as-seen__name">{look.name}</p>
-            <p className="as-seen__piece">{look.piece}</p>
+            <p className="as-seen__name">{look.piece}</p>
             <span className="as-seen__cta">
               Shop the look
               <span aria-hidden="true">→</span>
@@ -83,7 +82,7 @@ export function HomeAsSeenOn() {
                 role="listitem"
                 className="as-seen__thumb"
                 onClick={() => setActive(index)}
-                aria-label={`${item.name}, ${item.piece}`}
+                aria-label={item.piece}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -93,8 +92,7 @@ export function HomeAsSeenOn() {
                   style={{ objectPosition: thumb.position ?? "center 18%" }}
                 />
                 <span className="as-seen__thumb-meta">
-                  <span className="as-seen__thumb-name">{item.name}</span>
-                  <span className="as-seen__thumb-piece">{item.piece}</span>
+                  <span className="as-seen__thumb-name">{item.piece}</span>
                 </span>
               </button>
             );
@@ -104,9 +102,9 @@ export function HomeAsSeenOn() {
 
       <p className="as-seen__ticker" aria-hidden="true">
         <span>
-          {asSeenOnLooks.map((item) => item.name).join("  ·  ")}
+          {asSeenOnLooks.map((item) => item.piece).join("  ·  ")}
           {"  ·  "}
-          {asSeenOnLooks.map((item) => item.name).join("  ·  ")}
+          {asSeenOnLooks.map((item) => item.piece).join("  ·  ")}
         </span>
       </p>
     </section>
