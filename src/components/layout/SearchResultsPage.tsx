@@ -19,9 +19,8 @@ function SearchResultsContent() {
       <main id="main-content" className="shop-experience">
         <section className="shop-experience__catalog section-padding relative" aria-label="Search results">
           <div className="relative z-10 mx-auto max-w-[1320px]">
-            <header>
-              <p className="shop-experience__eyebrow">Search</p>
-              <h1 className="shop-experience__title">{query || "Search"}</h1>
+            <header className="mb-10">
+              <h1 className="shop-experience__eyebrow">Search</h1>
             </header>
 
             {!query ? null : results.length === 0 ? (
