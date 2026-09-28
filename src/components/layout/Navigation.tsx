@@ -309,6 +309,13 @@ function JacquemusMobileNav({
                 >
                   Cart
                 </button>
+                <Link
+                  href="/custom-order"
+                  onClick={() => onOpenChange(false)}
+                  className="jm-mobile-menu__link"
+                >
+                  Custom Order
+                </Link>
               </nav>
             </div>
           </motion.div>
