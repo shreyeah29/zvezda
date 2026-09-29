@@ -67,13 +67,15 @@ export const houseCollections: HouseCollection[] = [
     cover: "/assets/images/shop/wine-velvet/01.jpg",
     hero: "/assets/images/shop/molten-muse/HSP_5916.jpg",
     photos: [
+      "/assets/images/shop/silken-grace/01.jpg",
+      "/assets/images/shop/opaline-bloom/01.jpg",
       "/assets/images/shop/molten-muse/HSP_5916.jpg",
       "/assets/images/shop/wine-velvet/01.jpg",
       "/assets/images/shop/obsidian-drape/01.jpg",
-      "/assets/images/shop/terra-bloom/01.jpg",
-      "/assets/images/shop/ivory-satin/01.jpg",
     ],
     productSlugs: [
+      "silken-grace",
+      "opaline-bloom",
       "obsidian-drape",
       "terra-bloom",
       "wine-velvet",

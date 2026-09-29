@@ -82,6 +82,7 @@ export const SHOP_TYPES = [
   { id: "mini", label: "Mini dresses" },
   { id: "set", label: "Sets" },
   { id: "jumpsuit", label: "Jumpsuits" },
+  { id: "jacket", label: "Jackets" },
 ] as const;
 
 export const SHOP_PRICE_BANDS = [
@@ -159,6 +160,8 @@ const SHOP_LOOKS: Record<
   "terra-bloom": { colours: ["black", "orange"], garmentType: "gown", houseCollection: "occasion" },
   "ivory-satin": { colours: ["ivory"], garmentType: "gown", houseCollection: "occasion" },
   "seraphina-dress": { colours: ["blue"], garmentType: "dress", houseCollection: "romance" },
+  "silken-grace": { colours: ["ivory"], garmentType: "gown", houseCollection: "occasion" },
+  "opaline-bloom": { colours: ["green", "ivory"], garmentType: "jacket", houseCollection: "occasion" },
 };
 
 const drafts: ShopDraft[] = [
@@ -671,6 +674,42 @@ const drafts: ShopDraft[] = [
       "Scattered floral motifs",
     ],
     fabric: "Brocade satin",
+    care: "Dry clean only",
+  },
+  {
+    id: 148,
+    slug: "silken-grace",
+    name: "Silken Grace",
+    photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg"],
+    price: 62000,
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Crafted in lustrous ivory poly silk, Silken Grace embodies understated elegance through a sculpted strapless bodice delicately adorned with hand-embellished pearl detailing along the neckline. The fitted waist opens into a voluminous, fluid skirt defined by cascading asymmetric layers, creating soft movement and sculptural dimension. Its sweeping high-low silhouette reveals the legs before flowing into a graceful trailing finish at the back. The subtle sheen of the fabric enhances every curve and fold, making Silken Grace a refined statement for evening occasions.",
+    craft: [
+      "Hand-embellished pearl neckline",
+      "Sculpted strapless bodice",
+      "Cascading asymmetric layers",
+      "High-low silhouette with trailing back",
+    ],
+    fabric: "Ivory poly silk",
+    care: "Dry clean only",
+  },
+  {
+    id: 149,
+    slug: "opaline-bloom",
+    name: "Opaline Bloom",
+    photos: ["01.jpg", "02.jpg", "03.jpg"],
+    price: 38000,
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Crafted in luxurious pastel mint tweed, Opaline Bloom embodies timeless sophistication through its impeccably tailored silhouette and exquisite floral craftsmanship. A graceful square neckline frames the structured design, while intricate hand-embellished floral appliqués, delicate bead embroidery, and shimmering sequins bloom across the bodice with understated brilliance. Sculpted to flatter the waist, the jacket is finished with full-length sleeves and a refined, structured fit that balances classic elegance with contemporary femininity. Rich in texture and artisanal detail, Opaline Bloom is a statement piece designed to bring effortless refinement to celebrations, soirées, and elevated daytime dressing.",
+    craft: [
+      "Square neckline",
+      "Hand-embellished floral appliqués",
+      "Bead embroidery and sequins",
+      "Full-length sleeves, structured fit",
+    ],
+    fabric: "Pastel mint tweed",
     care: "Dry clean only",
   },
 ];

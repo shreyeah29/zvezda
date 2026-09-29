@@ -20,6 +20,9 @@ const SYNONYMS: Record<string, string[]> = {
   pearls: ["pearl", "pearls"],
   jacket: ["jacket", "jackets", "cape"],
   jackets: ["jacket", "jackets"],
+  tweed: ["tweed"],
+  silk: ["silk", "silken"],
+  silken: ["silk", "silken"],
 };
 
 function normalize(value: string) {
