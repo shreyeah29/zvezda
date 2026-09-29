@@ -100,6 +100,9 @@ export function AtelierEnquiryForm() {
   }, [presetProduct]);
   const [values, setValues] = useState<FormState>(INITIAL);
   const [sent, setSent] = useState(false);
+  const [enquiryId, setEnquiryId] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!resolvedProduct) return;
@@ -118,12 +121,27 @@ export function AtelierEnquiryForm() {
     setValues((current) => ({ ...current, [key]: value }));
   }
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const body = encodeURIComponent(buildMessage(values));
-    const subject = encodeURIComponent(`ZVEZDA enquiry — ${values.product || values.fullName}`);
-    window.location.href = `mailto:${atelierContact.careEmail}?subject=${subject}&body=${body}`;
-    setSent(true);
+    setError("");
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const payload = (await response.json()) as { error?: string; enquiryId?: string };
+      if (!response.ok) {
+        throw new Error(payload.error || "Unable to place this custom order.");
+      }
+      setEnquiryId(payload.enquiryId ?? "");
+      setSent(true);
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Unable to place this custom order.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   const whatsappHref = atelierContact.whatsapp
@@ -298,26 +316,28 @@ export function AtelierEnquiryForm() {
       </Field>
 
       <div className="enquiry-form__actions">
-        <button type="submit" className="enquiry-form__submit">
-          Send enquiry
+        <button type="submit" className="enquiry-form__submit" disabled={submitting || sent}>
+          {submitting ? "Sending…" : sent ? "Order sent" : "Send enquiry"}
         </button>
         {whatsappHref ? (
           <a className="enquiry-form__whatsapp" href={whatsappHref} target="_blank" rel="noopener noreferrer">
             Continue on WhatsApp
           </a>
-        ) : (
-          <p className="enquiry-form__hint">
-            Your enquiry opens an email to {atelierContact.careEmail}. Add a WhatsApp number
-            when you have one and this form will offer a WhatsApp send as well.
-          </p>
-        )}
+        ) : null}
       </div>
+
+      {error ? (
+        <p className="enquiry-form__error" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       {sent ? (
         <p className="enquiry-form__confirm" role="status">
-          Thank you for choosing ZVEZDA. Send the email that just opened and our team will
-          reach out during studio hours, 11:00 am – 7:00 pm IST, to confirm measurements and
-          timeline.
+          Thank you for choosing ZVEZDA
+          {enquiryId ? ` — your order number is ${enquiryId}` : ""}. A letter is on its way to{" "}
+          {values.email}. Our team will reach out during studio hours, 11:00 am – 7:00 pm IST, to
+          confirm design, price, and timeline before anything is cut.
         </p>
       ) : null}
     </form>

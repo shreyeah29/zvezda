@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/site";
 import { atelierContact, atelierStudio, studioAddressText, studioHoursText, studioMapsUrl, studioPhoneHref } from "@/data/atelier";
 import type { OrderEmailKind, OrderEmailPayload, OrderEmailPiece } from "./types";
 
@@ -7,7 +8,7 @@ export type RenderedEmail = {
   text: string;
 };
 
-const SITE = "https://www.atelierzvezda.in";
+const SITE = SITE_URL;
 const INK = "#0c0b0a";
 const CREAM = "#f6f1e8";
 const GOLD = "#c4a574";
@@ -141,6 +142,18 @@ function copyFor(payload: OrderEmailPayload): { eyebrow: string; heading: string
           "Questions before then are welcome — reply to this letter, or visit the studio during open hours.",
         ],
       };
+    case "custom-order":
+      return {
+        eyebrow: "Custom order",
+        heading: "We have your request.",
+        subject: `Your Zvezda custom order — ${id}`,
+        paragraphs: [
+          `Dear ${name},`,
+          `Thank you. Your custom order ${id} has been received by the atelier. This is your order number — please keep this letter.`,
+          "No payment has been taken yet. We will write or call during studio hours to confirm design, price, and timeline before anything is cut. Most made-to-order pieces take 3–4 weeks once we begin.",
+          "If anything in the details below needs a change, reply to this letter.",
+        ],
+      };
     case "visit-reserved":
       return {
         eyebrow: "Visit reserved",
@@ -220,10 +233,13 @@ function copyFor(payload: OrderEmailPayload): { eyebrow: string; heading: string
 export function renderOrderEmail(payload: OrderEmailPayload): RenderedEmail {
   const copy = copyFor(payload);
   const pieceBlock = piecesHtml(payload.pieces);
+  const notesBlock = payload.notes
+    ? `<pre style="margin:8px 0 22px;padding:16px 0;border-top:1px solid rgba(12,11,10,0.08);border-bottom:1px solid rgba(12,11,10,0.08);font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:1.65;white-space:pre-wrap;color:${INK};">${escapeHtml(payload.notes)}</pre>`
+    : "";
   const bodyHtml = copy.paragraphs
     .map((paragraph, index) => `<p style="margin:${index === 0 ? "0 0 16px" : "0 0 16px"};">${escapeHtml(paragraph)}</p>`)
     .join("");
-  const extra = `${pieceBlock}${copy.extraHtml ?? ""}${buttonHtml(SITE, "Visit the house")}`;
+  const extra = `${pieceBlock}${notesBlock}${copy.extraHtml ?? ""}${buttonHtml(SITE, "Visit the house")}`;
   const html = wrapEmail({
     eyebrow: copy.eyebrow,
     heading: copy.heading,
@@ -236,6 +252,7 @@ export function renderOrderEmail(payload: OrderEmailPayload): RenderedEmail {
     ...copy.paragraphs,
     "",
     formatPieces(payload.pieces),
+    payload.notes ?? "",
     "",
     atelierStudio.name,
     studioAddressText(),
@@ -253,6 +270,7 @@ export function renderOrderEmail(payload: OrderEmailPayload): RenderedEmail {
 export function orderEmailLabel(kind: OrderEmailKind) {
   const labels: Record<OrderEmailKind, string> = {
     "order-placed": "Order placed — online payment received",
+    "custom-order": "Custom order — enquiry received",
     "visit-reserved": "Visit reserved — pay at store",
     "in-production": "In production — cutting has started",
     ready: "Ready — pickup or about to ship",

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AtelierDoor } from "@/components/layout/AtelierDoor";
 import { brand } from "@/data/brand";
 import {
   atelierContact,
@@ -132,9 +133,7 @@ export function JacquemusFooter() {
         </Link>
       </div>
 
-      <p className="jm-footer__copy">
-        © {new Date().getFullYear()} ZVEZDA Atelier · {brand.statement}
-      </p>
+      <AtelierDoor />
     </footer>
   );
 }

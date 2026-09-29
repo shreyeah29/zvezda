@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getRazorpayKeys } from "@/lib/razorpay";
 import { sendOrderEmail } from "@/lib/email/mailer";
 import { formatPrice } from "@/data/products";
+import { recordAtelierOrder } from "@/lib/orders/store";
 
 export async function POST(request: Request) {
   try {
@@ -10,7 +11,15 @@ export async function POST(request: Request) {
       razorpay_order_id?: string;
       razorpay_payment_id?: string;
       razorpay_signature?: string;
-      customer?: { fullName?: string; email?: string };
+      customer?: {
+        fullName?: string;
+        email?: string;
+        phone?: string;
+        address?: string;
+        city?: string;
+        pincode?: string;
+        country?: string;
+      };
       pieces?: Array<{ name?: string; size?: string; quantity?: number }>;
       amount?: number;
     };
@@ -35,6 +44,20 @@ export async function POST(request: Request) {
 
     const email = String(body.customer?.email ?? "").trim();
     const name = String(body.customer?.fullName ?? "").trim();
+    const pieces = (body.pieces ?? []).map((piece) => ({
+      name: String(piece.name ?? "Piece"),
+      size: piece.size ? String(piece.size) : undefined,
+      quantity: Number(piece.quantity) || 1,
+    }));
+    const amount =
+      typeof body.amount === "number" && body.amount > 0 ? formatPrice(body.amount, "INR") : undefined;
+    const addressParts = [
+      String(body.customer?.address ?? "").trim(),
+      String(body.customer?.city ?? "").trim(),
+      String(body.customer?.pincode ?? "").trim(),
+      String(body.customer?.country ?? "").trim(),
+    ].filter(Boolean);
+
     if (email) {
       try {
         await sendOrderEmail({
@@ -42,17 +65,31 @@ export async function POST(request: Request) {
           to: email,
           name: name || "there",
           orderId,
-          pieces: (body.pieces ?? []).map((piece) => ({
-            name: String(piece.name ?? "Piece"),
-            size: piece.size ? String(piece.size) : undefined,
-            quantity: Number(piece.quantity) || 1,
-          })),
-          amount: typeof body.amount === "number" && body.amount > 0 ? formatPrice(body.amount, "INR") : undefined,
+          pieces,
+          amount,
         });
       } catch (error) {
         console.error("Order confirmation email failed", orderId, error);
       }
     }
+
+    const now = new Date().toISOString();
+    await recordAtelierOrder({
+      id: orderId,
+      type: "paid",
+      status: "confirmed",
+      createdAt: now,
+      customer: {
+        fullName: name || "Guest",
+        email,
+        phone: String(body.customer?.phone ?? "").trim() || undefined,
+        city: String(body.customer?.city ?? "").trim() || undefined,
+        address: addressParts.join(", ") || undefined,
+      },
+      pieces,
+      amount,
+      paymentId,
+    });
 
     return NextResponse.json({
       ok: true,

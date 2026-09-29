@@ -36,6 +36,9 @@ yarn-error.log*
 # env files
 .env*.local
 
+# local atelier order book (production uses Upstash / Vercel KV)
+/data/atelier-orders.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

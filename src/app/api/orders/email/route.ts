@@ -41,6 +41,7 @@ export async function POST(request: Request) {
       trackingCourier: body.trackingCourier,
       trackingUrl: body.trackingUrl,
       fulfilment: body.fulfilment,
+      notes: body.notes,
     });
 
     return NextResponse.json({ ok: true, ...result });

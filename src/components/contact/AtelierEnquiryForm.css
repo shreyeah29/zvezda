@@ -135,16 +135,26 @@
   cursor: pointer;
 }
 
+.enquiry-form__submit:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
 .enquiry-form__whatsapp {
   background: transparent;
   color: #0c0a09;
 }
 
 .enquiry-form__hint,
-.enquiry-form__confirm {
+.enquiry-form__confirm,
+.enquiry-form__error {
   margin: 0;
   max-width: 36rem;
   font-size: 0.88rem;
   line-height: 1.65;
   color: rgba(12, 10, 9, 0.55);
+}
+
+.enquiry-form__error {
+  color: #8b1a2b;
 }

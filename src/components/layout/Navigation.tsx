@@ -118,6 +118,8 @@ export function Navigation() {
     };
   }, [hasHeroOverlay, isAbout, pathname]);
 
+  if (pathname.startsWith("/atelier")) return null;
+
   const showHeader = isAbout || headerVisible || cartOpen || searchOpen;
   const heroOverlay = hasHeroOverlay && heroOverlayNav;
   const mutedClass = heroOverlay ? "text-white/80 hover:text-white" : "text-black/70 hover:text-black";

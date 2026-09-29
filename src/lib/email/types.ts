@@ -1,5 +1,6 @@
 export const ORDER_EMAIL_KINDS = [
   "order-placed",
+  "custom-order",
   "visit-reserved",
   "in-production",
   "ready",
@@ -26,4 +27,5 @@ export type OrderEmailPayload = {
   trackingUrl?: string;
   fulfilment?: "pickup" | "ship";
   visitWhen?: string;
+  notes?: string;
 };

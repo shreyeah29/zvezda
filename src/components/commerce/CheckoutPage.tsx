@@ -123,6 +123,11 @@ export function CheckoutPage() {
               customer: {
                 fullName: customer.fullName,
                 email: customer.email,
+                phone: customer.phone,
+                address: customer.address,
+                city: customer.city,
+                pincode: customer.pincode,
+                country: customer.country,
               },
               pieces: cart.map((item) => {
                 const product = findProduct(item.slug);
