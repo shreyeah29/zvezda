@@ -11,12 +11,14 @@ export const atelierContact = {
 
 export const atelierStudio = {
   name: "Zvezda Atelier",
-  line1: "Plot 8-2-293/82/A/771/A&B",
-  line2: "Road Number 44, CBI Colony",
-  line3: "Jubilee Hills, Hyderabad 500033",
+  line1: "Plot No. 1177 A",
+  line2: "Road No. 56, Jubilee Hills",
+  line3: "Hyderabad, Telangana 500033",
   hours: "11:00 am – 7:00 pm",
   hoursShort: "11 am – 7 pm",
   city: "Hyderabad",
+  region: "Telangana",
+  postalCode: "500033",
 } as const;
 
 export function studioAddressLines() {
@@ -42,7 +44,7 @@ export function studioWhatsappUrl(text?: string) {
 
 export function studioMapsUrl() {
   const query =
-    "Zvezda Atelier, Plot 8-2-293/82/A/771/A&B, Road Number 44, CBI Colony, Jubilee Hills, Hyderabad, Telangana 500033";
+    "Zvezda Atelier, Plot No. 1177 A, Road No. 56, Jubilee Hills, Hyderabad, Telangana 500033";
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 

@@ -13,7 +13,7 @@ import {
 } from "@/data/shopHighlightCards";
 import "./HomeMobileShop.css";
 
-const BESPOKE_IMAGE = "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4523.jpg";
+const BESPOKE_IMAGE = "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4851.jpg";
 
 function MobileSectionHeading({
   primary,
@@ -173,7 +173,7 @@ export function HomeMobileBespoke() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={BESPOKE_IMAGE}
-          alt="Bespoke collection"
+          alt="Blooming Rosalia — Bespoke collection"
           className="hm-pink__hero-image"
         />
         <div className="hm-pink__hero-scrim" aria-hidden="true" />

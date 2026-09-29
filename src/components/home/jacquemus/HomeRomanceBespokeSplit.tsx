@@ -6,7 +6,7 @@ import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "./HomeCollectionFeature.css";
 
 const ROMANCE_VIDEO = "/assets/videos/products/set-15/PinkSolo1.mp4";
-const BESPOKE_IMAGE = "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4523.jpg";
+const BESPOKE_IMAGE = "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4851.jpg";
 
 export function HomeRomanceBespokeSplit() {
   const romanceVideoRef = useInlineVideoAutoplay(ROMANCE_VIDEO);
@@ -40,7 +40,7 @@ export function HomeRomanceBespokeSplit() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={BESPOKE_IMAGE}
-            alt="Bespoke collection"
+            alt="Blooming Rosalia — Bespoke collection"
             className="jm-collection-feature__media jm-collection-feature__media--pink-editorial"
           />
           <span className="jm-caption">Bespoke</span>

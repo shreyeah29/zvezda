@@ -23,7 +23,14 @@ const SYNONYMS: Record<string, string[]> = {
   tweed: ["tweed"],
   silk: ["silk", "silken"],
   silken: ["silk", "silken"],
+  red: ["red", "crimson", "scarlet", "scarlett", "carmine"],
+  crimson: ["red", "crimson", "scarlet", "scarlett", "carmine"],
+  scarlet: ["red", "crimson", "scarlet", "scarlett", "carmine"],
+  scarlett: ["red", "crimson", "scarlet", "scarlett", "carmine"],
+  carmine: ["red", "crimson", "scarlet", "scarlett", "carmine"],
 };
+
+const PREFIX_MIN = 4;
 
 function normalize(value: string) {
   return value
@@ -34,22 +41,38 @@ function normalize(value: string) {
     .trim();
 }
 
+function words(value: string) {
+  return normalize(value).split(/\s+/).filter(Boolean);
+}
+
+function wordMatchesTerm(word: string, term: string) {
+  if (word === term || word === `${term}s`) return true;
+  if (term.length >= PREFIX_MIN && word.startsWith(term)) return true;
+  return false;
+}
+
+function textMatchesTerm(text: string, term: string) {
+  return words(text).some((word) => wordMatchesTerm(word, term));
+}
+
+function aliasesFor(token: string) {
+  return SYNONYMS[token] ?? [token];
+}
+
 function productText(product: Product) {
-  return normalize(
-    [
-      product.name,
-      product.slug.replace(/-/g, " "),
-      product.collection,
-      product.collectionLabel,
-      product.garmentType ?? "",
-      ...(product.colours ?? []),
-      ...(product.priceOptions?.map((option) => option.label) ?? []),
-      product.sizeNote ?? "",
-      product.description,
-      product.fabric,
-      ...(product.craft ?? []),
-    ].join(" "),
-  );
+  return [
+    product.name,
+    product.slug.replace(/-/g, " "),
+    product.collection,
+    product.collectionLabel,
+    product.garmentType ?? "",
+    ...(product.colours ?? []),
+    ...(product.priceOptions?.map((option) => option.label) ?? []),
+    product.sizeNote ?? "",
+    product.description,
+    product.fabric,
+    ...(product.craft ?? []),
+  ].join(" ");
 }
 
 export function searchProducts(query: string, limit = 24): Product[] {
@@ -60,32 +83,37 @@ export function searchProducts(query: string, limit = 24): Product[] {
 
   const scored = shopProducts.map((product) => {
     const text = productText(product);
-    const name = normalize(product.name);
-    const slug = normalize(product.slug.replace(/-/g, " "));
-    const type = normalize(product.garmentType ?? "");
+    const name = product.name;
+    const slug = product.slug.replace(/-/g, " ");
+    const type = product.garmentType ?? "";
+    const colours = product.colours ?? [];
     let score = 0;
 
-    const allTokensHit = tokens.every((token) => {
-      const aliases = SYNONYMS[token] ?? [token];
-      return aliases.some((alias) => text.includes(alias));
-    });
+    const allTokensHit = tokens.every((token) =>
+      aliasesFor(token).some((alias) => textMatchesTerm(text, alias)),
+    );
 
     if (!allTokensHit) return { product, score: 0 };
 
     for (const token of tokens) {
-      const aliases = SYNONYMS[token] ?? [token];
+      const aliases = aliasesFor(token);
       for (const term of aliases) {
-        const weight = term === token ? 1 : 0.4;
-        if (name === term) score += 120 * weight;
-        else if (name.startsWith(term) || name.includes(` ${term}`)) score += 90 * weight;
-        else if (name.includes(term)) score += 70 * weight;
-        if (slug.includes(term)) score += 50 * weight;
-        if (type === term) score += 55 * weight;
-        if (normalize(product.collectionLabel).includes(term)) score += 35 * weight;
-        if (product.priceOptions?.some((option) => normalize(option.label).includes(term))) {
+        const weight = term === token ? 1 : 0.45;
+        if (textMatchesTerm(name, term) && words(name).length === 1 && words(name)[0] === term) {
+          score += 120 * weight;
+        } else if (textMatchesTerm(name, term)) {
+          score += 90 * weight;
+        }
+        if (textMatchesTerm(slug, term)) score += 50 * weight;
+        if (textMatchesTerm(type, term)) score += 55 * weight;
+        if (colours.some((colour) => colour === term || wordMatchesTerm(colour, term))) {
+          score += 110 * weight;
+        }
+        if (textMatchesTerm(product.collectionLabel, term)) score += 20 * weight;
+        if (product.priceOptions?.some((option) => textMatchesTerm(option.label, term))) {
           score += 80 * weight;
         }
-        if (text.includes(term)) score += 10 * weight;
+        if (textMatchesTerm(text, term)) score += 8 * weight;
       }
     }
 
