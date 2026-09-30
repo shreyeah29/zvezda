@@ -1,0 +1,143 @@
+import { atelierContact } from "@/data/atelier";
+import type { AtelierOrder } from "./types";
+
+const MAIL = atelierContact.careEmail;
+const NOTE =
+  "Sample row for the house book. Try changing the status to In production, Ready, Shipped, or Delivered — the client letter will arrive in the atelier mailbox.";
+
+export const DEMO_ORDER_IDS = [
+  "ZV-DEMO-CUSTOM",
+  "ZV-DEMO-PAID",
+  "ZV-DEMO-VISIT",
+  "ZV-DEMO-CUTTING",
+  "ZV-DEMO-READY",
+  "ZV-DEMO-SHIPPED",
+] as const;
+
+export const DEMO_ORDERS: AtelierOrder[] = [
+  {
+    id: "ZV-DEMO-CUSTOM",
+    type: "custom",
+    status: "new",
+    createdAt: "2026-09-28T08:10:00.000Z",
+    updatedAt: "2026-09-28T08:10:00.000Z",
+    customer: {
+      fullName: "Aanya Mehra (sample)",
+      email: MAIL,
+      phone: "9876543210",
+      city: "Hyderabad",
+    },
+    pieces: [{ name: "Rosewood heirloom", size: "M" }],
+    amount: "₹80,000 – ₹1,20,000",
+    measurements: {
+      bust: "34",
+      waist: "26",
+      hip: "36",
+      shoulder: "14.5",
+      length: "58",
+    },
+    notes: `${NOTE}\n\nOccasion: Wedding\nBust 34 · Waist 26 · Hip 36 · Shoulder 14.5 · Length 58\nWould like the hem a touch longer, and ivory lining.`,
+  },
+  {
+    id: "ZV-DEMO-PAID",
+    type: "paid",
+    status: "confirmed",
+    createdAt: "2026-09-27T12:40:00.000Z",
+    updatedAt: "2026-09-27T12:40:00.000Z",
+    customer: {
+      fullName: "Diya Kapoor (sample)",
+      email: MAIL,
+      phone: "9123456789",
+      city: "Bengaluru",
+      address: "12 Lavelle Road, Bengaluru, 560001, India",
+    },
+    pieces: [
+      { name: "Silken Grace", size: "S", quantity: 1 },
+      { name: "Opaline Bloom", size: "S", quantity: 1 },
+    ],
+    amount: "₹1,00,000",
+    paymentId: "pay_sample_diya",
+    fulfilment: "ship",
+    notes: NOTE,
+  },
+  {
+    id: "ZV-DEMO-VISIT",
+    type: "store",
+    status: "visit",
+    createdAt: "2026-09-26T05:20:00.000Z",
+    updatedAt: "2026-09-26T05:20:00.000Z",
+    customer: {
+      fullName: "Meher Rao (sample)",
+      email: MAIL,
+      phone: "9988776655",
+      city: "Hyderabad",
+    },
+    pieces: [{ name: "Verdant whisper gown", size: "M", quantity: 1 }],
+    amount: "₹62,000",
+    visitWhen: "Thursday, 2 October 2026 · 4:00 pm IST",
+    notes: `${NOTE}\n\nWould like to try the gown and discuss a sleeve.`,
+  },
+  {
+    id: "ZV-DEMO-CUTTING",
+    type: "paid",
+    status: "in-production",
+    createdAt: "2026-09-20T09:00:00.000Z",
+    updatedAt: "2026-09-22T11:15:00.000Z",
+    customer: {
+      fullName: "Sara Nair (sample)",
+      email: MAIL,
+      phone: "9000011122",
+      city: "Chennai",
+      address: "8 Boat Club Road, Chennai, 600028, India",
+    },
+    pieces: [{ name: "Ivory eclipse", size: "XS", quantity: 1 }],
+    amount: "₹48,000",
+    paymentId: "pay_sample_sara",
+    fulfilment: "ship",
+    notes: NOTE,
+  },
+  {
+    id: "ZV-DEMO-READY",
+    type: "custom",
+    status: "ready",
+    createdAt: "2026-09-12T10:00:00.000Z",
+    updatedAt: "2026-09-25T14:00:00.000Z",
+    customer: {
+      fullName: "Leela Iyer (sample)",
+      email: MAIL,
+      phone: "9811122233",
+      city: "Hyderabad",
+    },
+    pieces: [{ name: "Bespoke column, wine velvet" }],
+    measurements: {
+      bust: "36",
+      waist: "28",
+      hip: "38",
+      shoulder: "15",
+      length: "56",
+    },
+    fulfilment: "pickup",
+    notes: `${NOTE}\n\nReady for studio pickup. Fitting done 25 September.`,
+  },
+  {
+    id: "ZV-DEMO-SHIPPED",
+    type: "paid",
+    status: "shipped",
+    createdAt: "2026-09-08T07:30:00.000Z",
+    updatedAt: "2026-09-24T16:45:00.000Z",
+    customer: {
+      fullName: "Noor Sheikh (sample)",
+      email: MAIL,
+      phone: "9765432100",
+      city: "Mumbai",
+      address: "21 Pedder Road, Mumbai, 400026, India",
+    },
+    pieces: [{ name: "The Camellia", size: "M", quantity: 1 }],
+    amount: "₹54,000",
+    paymentId: "pay_sample_noor",
+    fulfilment: "ship",
+    trackingCourier: "Bluedart",
+    trackingUrl: "https://www.bluedart.com/",
+    notes: NOTE,
+  },
+];

@@ -231,7 +231,8 @@ export function AtelierBook() {
           <h1>Order book</h1>
           <p className="atelier-book__lede">
             Paid, studio visits, and custom work. Changing production, ready, shipped, or delivered
-            sends the client letter.
+            sends the client letter. Sample rows are marked so you can try a status without a real
+            client.
             {!remote ? " This machine is keeping a local file — add Upstash Redis on Vercel so live orders stay." : null}
           </p>
         </div>
@@ -279,6 +280,7 @@ export function AtelierBook() {
                   <span className="atelier-book__list-id">{order.id}</span>
                   <span className="atelier-book__list-name">{order.customer.fullName}</span>
                   <span className="atelier-book__list-meta">
+                    {order.id.startsWith("ZV-DEMO-") ? "Sample · " : ""}
                     {TYPE_LABELS[order.type]} · {STATUS_LABELS[order.status]}
                   </span>
                 </button>

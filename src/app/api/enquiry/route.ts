@@ -8,6 +8,7 @@ import {
 import { notifyAtelier } from "@/lib/notifyAtelier";
 import { sendOrderEmail } from "@/lib/email/mailer";
 import { recordAtelierOrder } from "@/lib/orders/store";
+import { atelierContact } from "@/data/atelier";
 
 export async function POST(request: Request) {
   try {
@@ -21,8 +22,8 @@ export async function POST(request: Request) {
     try {
       await notifyAtelier({
         subject: `Custom order — ${enquiryId}`,
-        name: enquiry.fullName,
-        email: enquiry.email,
+        name: enquiry.fullName || "Guest",
+        email: enquiry.email || atelierContact.careEmail,
         phone: enquiry.phone,
         message,
       });
@@ -32,42 +33,39 @@ export async function POST(request: Request) {
     }
 
     try {
-      const result = await sendOrderEmail({
-        kind: "custom-order",
-        to: enquiry.email,
-        name: enquiry.fullName,
-        orderId: enquiryId,
-        pieces: [{ name: enquiry.product, size: enquiry.size || undefined }],
-        notes: message,
-      });
-      emailed = result.sent;
+      if (enquiry.email) {
+        const result = await sendOrderEmail({
+          kind: "custom-order",
+          to: enquiry.email,
+          name: enquiry.fullName || "there",
+          orderId: enquiryId,
+          pieces: [{ name: enquiry.product || "Custom piece", size: enquiry.size || undefined }],
+          notes: message,
+        });
+        emailed = result.sent;
+      } else {
+        emailed = false;
+      }
     } catch (error) {
       emailed = false;
       console.error("Custom order customer email failed", enquiryId, error);
     }
 
-    if (!notified && !emailed) {
-      return NextResponse.json(
-        { error: "The atelier could not receive this order. Please try WhatsApp, or write to us directly." },
-        { status: 502 },
-      );
-    }
-
     console.info("Custom order received", enquiryId, enquiry.email, enquiry.product);
 
     const now = new Date().toISOString();
-    await recordAtelierOrder({
+    const recorded = await recordAtelierOrder({
       id: enquiryId,
       type: "custom",
       status: "new",
       createdAt: now,
       customer: {
-        fullName: enquiry.fullName,
+        fullName: enquiry.fullName || "Guest",
         email: enquiry.email,
-        phone: enquiry.phone,
-        city: enquiry.city,
+        phone: enquiry.phone || undefined,
+        city: enquiry.city || undefined,
       },
-      pieces: [{ name: enquiry.product, size: enquiry.size || undefined }],
+      pieces: [{ name: enquiry.product || "Custom piece", size: enquiry.size || undefined }],
       amount: enquiry.budget || undefined,
       measurements: {
         bust: enquiry.bust,
@@ -78,6 +76,13 @@ export async function POST(request: Request) {
       },
       notes: message,
     });
+
+    if (!recorded && !notified && !emailed) {
+      return NextResponse.json(
+        { error: "The atelier could not receive this order. Please try WhatsApp, or write to us directly." },
+        { status: 502 },
+      );
+    }
 
     return NextResponse.json({
       ok: true,

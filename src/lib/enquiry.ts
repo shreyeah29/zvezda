@@ -41,17 +41,11 @@ export function validateCustomEnquiry(input: Partial<CustomEnquiry>): CustomEnqu
     source: text(input.source, 40),
   };
 
-  if (!enquiry.fullName || !enquiry.email || !enquiry.phone || !enquiry.city || !enquiry.product) {
-    throw new Error("Please share your name, email, phone, city, and the piece you have in mind.");
+  if (enquiry.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(enquiry.email)) {
+    throw new Error("Please enter a valid email address, or leave it blank.");
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(enquiry.email)) {
-    throw new Error("Please enter a valid email address.");
-  }
-  if (enquiry.phone.replace(/\D/g, "").length < 10) {
-    throw new Error("Please enter a valid phone number.");
-  }
-  if (!enquiry.bust || !enquiry.waist || !enquiry.hip || !enquiry.shoulder || !enquiry.length) {
-    throw new Error("Please share bust, waist, hip, shoulder, and length for made-to-measure.");
+  if (enquiry.phone && enquiry.phone.replace(/\D/g, "").length < 10) {
+    throw new Error("Please enter a valid phone number, or leave it blank.");
   }
 
   return enquiry;
@@ -66,13 +60,13 @@ export function formatCustomOrderMessage(enquiryId: string, enquiry: CustomEnqui
     "ZVEZDA custom order",
     "",
     `Order: ${enquiryId}`,
-    `Name: ${enquiry.fullName}`,
-    `WhatsApp: ${enquiry.phone}`,
-    `Email: ${enquiry.email}`,
-    `City: ${enquiry.city}`,
-    `Product: ${enquiry.product}`,
+    `Name: ${enquiry.fullName || "—"}`,
+    `WhatsApp: ${enquiry.phone || "—"}`,
+    `Email: ${enquiry.email || "—"}`,
+    `City: ${enquiry.city || "—"}`,
+    `Product: ${enquiry.product || "—"}`,
     `Occasion: ${enquiry.occasion || "—"}`,
-    `Measurements — Bust: ${enquiry.bust} · Waist: ${enquiry.waist} · Hip: ${enquiry.hip} · Shoulder: ${enquiry.shoulder} · Length: ${enquiry.length}`,
+    `Measurements — Bust: ${enquiry.bust || "—"} · Waist: ${enquiry.waist || "—"} · Hip: ${enquiry.hip || "—"} · Shoulder: ${enquiry.shoulder || "—"} · Length: ${enquiry.length || "—"}`,
     `Preferred size: ${enquiry.size || "—"}`,
     `Budget: ${enquiry.budget || "—"}`,
     `Preferred delivery: ${enquiry.deliveryDate || "—"}`,

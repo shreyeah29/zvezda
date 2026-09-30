@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
+import { DEMO_ORDERS } from "./demo";
 import type { AtelierOrder } from "./types";
 
 const KEY = "zvezda:orders";
@@ -95,4 +96,14 @@ export async function recordAtelierOrder(order: Omit<AtelierOrder, "updatedAt"> 
     console.error("Could not record atelier order", order.id, error);
     return null;
   }
+}
+
+export async function ensureDemoOrders() {
+  const existing = await listAtelierOrders();
+  const have = new Set(existing.map((order) => order.id));
+  const missing = DEMO_ORDERS.filter((order) => !have.has(order.id));
+  if (missing.length === 0) return existing;
+  const next = [...existing, ...missing];
+  await writeAtelierOrders(next);
+  return listAtelierOrders();
 }

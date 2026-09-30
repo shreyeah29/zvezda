@@ -71,18 +71,16 @@ function buildMessage(values: FormState) {
 
 function Field({
   label,
-  required,
   children,
 }: {
   label: string;
-  required?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <label className="enquiry-field">
       <span>
         {label}
-        {required ? <em>Required</em> : <em>Optional</em>}
+        <em>Optional</em>
       </span>
       {children}
     </label>
@@ -160,18 +158,16 @@ export function AtelierEnquiryForm() {
       </div>
 
       <div className="enquiry-form__grid">
-        <Field label="Full name" required>
+        <Field label="Full name">
           <input
-            required
             name="fullName"
             autoComplete="name"
             value={values.fullName}
             onChange={(event) => update("fullName", event.target.value)}
           />
         </Field>
-        <Field label="Phone number (WhatsApp)" required>
+        <Field label="Phone number (WhatsApp)">
           <input
-            required
             name="phone"
             type="tel"
             autoComplete="tel"
@@ -179,9 +175,8 @@ export function AtelierEnquiryForm() {
             onChange={(event) => update("phone", event.target.value)}
           />
         </Field>
-        <Field label="Email address" required>
+        <Field label="Email address">
           <input
-            required
             name="email"
             type="email"
             autoComplete="email"
@@ -189,18 +184,16 @@ export function AtelierEnquiryForm() {
             onChange={(event) => update("email", event.target.value)}
           />
         </Field>
-        <Field label="City / location" required>
+        <Field label="City / location">
           <input
-            required
             name="city"
             autoComplete="address-level2"
             value={values.city}
             onChange={(event) => update("city", event.target.value)}
           />
         </Field>
-        <Field label="Product of interest" required>
+        <Field label="Product of interest">
           <select
-            required
             name="product"
             value={values.product}
             onChange={(event) => update("product", event.target.value)}
@@ -231,7 +224,7 @@ export function AtelierEnquiryForm() {
 
       <fieldset className="enquiry-form__measures">
         <legend>
-          Measurements <em>Required for made-to-measure</em>
+          Measurements <em>Optional</em>
         </legend>
         <div className="enquiry-form__grid enquiry-form__grid--five">
           {(
@@ -243,9 +236,8 @@ export function AtelierEnquiryForm() {
               ["length", "Length"],
             ] as const
           ).map(([key, label]) => (
-            <Field key={key} label={label} required>
+            <Field key={key} label={label}>
               <input
-                required
                 name={key}
                 inputMode="decimal"
                 value={values[key]}
@@ -335,9 +327,10 @@ export function AtelierEnquiryForm() {
       {sent ? (
         <p className="enquiry-form__confirm" role="status">
           Thank you for choosing ZVEZDA
-          {enquiryId ? ` — your order number is ${enquiryId}` : ""}. A letter is on its way to{" "}
-          {values.email}. Our team will reach out during studio hours, 11:00 am – 7:00 pm IST, to
-          confirm design, price, and timeline before anything is cut.
+          {enquiryId ? ` — your order number is ${enquiryId}` : ""}.
+          {values.email ? ` A letter is on its way to ${values.email}.` : ""} Our team will
+          reach out during studio hours, 11:00 am – 7:00 pm IST, to confirm design, price, and
+          timeline before anything is cut.
         </p>
       ) : null}
     </form>
