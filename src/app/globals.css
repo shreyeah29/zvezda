@@ -6,6 +6,8 @@
   --font-editorial: "Instrument Serif", Georgia, serif;
   --font-product: "Bodoni Moda", Georgia, serif;
   --font-section: "Italiana", Georgia, serif;
+  --font-kinetic: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-jost: Jost, "Helvetica Neue", sans-serif;
 
   /* Semantic light theme — UI UX Pro Max / Zvezda Atelier */
   --color-ink: #fafaf9;

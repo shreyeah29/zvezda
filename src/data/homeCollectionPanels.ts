@@ -13,8 +13,8 @@ export const homeCollectionPanels: HomeCollectionPanel[] = [
   },
   {
     label: "Romance",
-    image: "/assets/images/products/set-1/HSP_4590.jpg",
-    href: "/products/daughters-of-spring-green",
+    image: "/assets/images/shop/jardin-elegance-dress/HSP_4590.jpg",
+    href: "/products/jardin-elegance-dress",
   },
 ];
 

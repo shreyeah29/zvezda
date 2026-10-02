@@ -2,15 +2,15 @@
 
 import { useEffect } from "react";
 
-/** Puts Jost and the About page class on <html> so the fixed nav can use them. */
-export function AboutChrome({ fontVariable }: { fontVariable: string }) {
+/** Marks <html> so the fixed nav can use About-page styles. */
+export function AboutChrome() {
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.add("about-page-active", fontVariable);
+    root.classList.add("about-page-active");
     return () => {
-      root.classList.remove("about-page-active", fontVariable);
+      root.classList.remove("about-page-active");
     };
-  }, [fontVariable]);
+  }, []);
 
   return null;
 }

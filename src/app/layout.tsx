@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Cormorant_Garamond, Instrument_Serif, Inter, Italiana, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { CommerceProvider } from "@/context/CommerceContext";
@@ -8,43 +7,6 @@ import { VideoAutoplayBoot } from "@/components/media/VideoAutoplayBoot";
 import { atelierContact, atelierStudio } from "@/data/atelier";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_OG_IMAGE, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
-
-const display = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["300", "400", "500"],
-});
-
-const body = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["300", "400", "500", "600"],
-});
-
-const kinetic = Inter({
-  subsets: ["latin"],
-  variable: "--font-kinetic",
-  weight: ["400", "500", "600"],
-});
-
-const editorial = Instrument_Serif({
-  subsets: ["latin"],
-  variable: "--font-editorial",
-  weight: "400",
-  style: ["normal", "italic"],
-});
-
-const product = Bodoni_Moda({
-  subsets: ["latin"],
-  variable: "--font-product",
-  weight: ["400", "500"],
-});
-
-const italiana = Italiana({
-  subsets: ["latin"],
-  variable: "--font-section",
-  weight: "400",
-});
 
 const bright = localFont({
   src: "../../public/fonts/Bright.otf",
@@ -177,13 +139,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${kinetic.variable} ${editorial.variable} ${product.variable} ${italiana.variable} ${bright.variable} ${against.variable} ${tempting.variable} ${modernRomance.variable} h-full`}
+      className={`${bright.variable} ${against.variable} ${tempting.variable} ${modernRomance.variable} h-full`}
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* App Router root layout — next/font/google crashes Vercel builds when a file URL has no extension. */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Cormorant+Garamond:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Italiana&family=Jost:wght@200;300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap"
           rel="stylesheet"
         />
         <link
