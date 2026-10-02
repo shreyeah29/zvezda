@@ -67,7 +67,7 @@ export const statementHighlightCards: ShopHighlightCard[] = [
     setId: 26,
     slug: "set-26",
     title: "Noir sculpted",
-    image: "/assets/images/shop/set-26/IMG_7329.jpg",
+    image: "/assets/images/shop/set-26/statement-grid.png",
   },
   {
     setId: 110,
@@ -151,7 +151,7 @@ export const bloomHighlightCards: ShopHighlightCard[] = [
     setId: 26,
     slug: "set-26",
     title: "Noir sculpted",
-    image: "/assets/images/shop/set-26/IMG_7329.jpg",
+    image: "/assets/images/shop/set-26/statement-grid.png",
   },
   {
     setId: 9,

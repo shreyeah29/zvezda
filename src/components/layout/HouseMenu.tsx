@@ -288,7 +288,7 @@ export function HouseMenu({
         )}
 
         <div className="zvezda-menu__tools">
-          {isMobile ? <div className="zvezda-menu__utils">{utilityLinks}</div> : utilityLinks}
+          <div className="zvezda-menu__utils">{utilityLinks}</div>
           {isMobile ? (
             <p className="zvezda-menu__caption">
               {phoneActive != null ? MENU_ITEMS[phoneActive].caption : "\u00a0"}
