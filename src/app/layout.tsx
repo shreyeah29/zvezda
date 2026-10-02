@@ -189,7 +189,7 @@ export default function RootLayout({
         <link
           rel="preload"
           as="video"
-          href="/assets/videos/products/desktop/set-12/RedDressSolo.mp4"
+          href="/assets/videos/products/desktop/set-3/GardenSolo1.mp4"
           type="video/mp4"
         />
       </head>

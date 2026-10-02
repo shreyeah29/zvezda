@@ -8,13 +8,16 @@ import { useMaxWidth } from "@/hooks/useMaxWidth";
 import { Mp4Sources } from "@/components/media/Mp4Sources";
 import "./HomeHeroVideo.css";
 
-const HERO_POSTER = "/assets/images/products/set-12/HSP_5750.jpg";
+const HERO_POSTER_DESKTOP = "/assets/images/shop/olive-tiered-zephyr-mini-dress/HSP_3876.jpg";
+const HERO_POSTER_MOBILE = "/assets/images/products/set-12/HSP_5750.jpg";
 
 export function HomeHeroVideo() {
-  const videoRef = useInlineVideoAutoplay(videos.hero);
+  const isMobile = useMaxWidth(768);
+  const heroSrc = isMobile ? videos.heroMobile : videos.hero;
+  const heroPoster = isMobile ? HERO_POSTER_MOBILE : HERO_POSTER_DESKTOP;
+  const videoRef = useInlineVideoAutoplay(heroSrc);
   const sectionRef = useRef<HTMLElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const isMobile = useMaxWidth(768);
 
   return (
     <section
@@ -25,7 +28,7 @@ export function HomeHeroVideo() {
       <div className="absolute inset-0 h-full w-full">
         <div
           className={`hero-screen__poster absolute inset-0 bg-cover bg-center${isPlaying ? " hero-screen__poster--hidden" : ""}`}
-          style={{ backgroundImage: `url(${HERO_POSTER})` }}
+          style={{ backgroundImage: `url(${heroPoster})` }}
           aria-hidden="true"
         />
         <video
@@ -35,17 +38,17 @@ export function HomeHeroVideo() {
           loop
           playsInline
           preload="auto"
-          poster={HERO_POSTER}
+          poster={heroPoster}
           controls={false}
           disablePictureInPicture
           controlsList="nodownload nofullscreen noremoteplayback"
           className={`hero-screen__video absolute inset-0 h-full w-full object-cover${
             isMobile ? " hero-screen__video--mobile" : ""
           }`}
-          style={{ objectPosition: isMobile ? "center 22%" : "center 28%" }}
+          style={{ objectPosition: isMobile ? "center 22%" : "center 40%" }}
           onPlaying={() => setIsPlaying(true)}
         >
-          <Mp4Sources src={videos.hero} />
+          <Mp4Sources src={heroSrc} />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35" />
       </div>

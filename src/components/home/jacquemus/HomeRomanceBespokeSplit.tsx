@@ -5,21 +5,21 @@ import { Mp4Sources } from "@/components/media/Mp4Sources";
 import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "./HomeCollectionFeature.css";
 
-const ROMANCE_VIDEO = "/assets/videos/products/set-15/PinkSolo1.mp4";
-const BESPOKE_IMAGE = "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4851.jpg";
+const STATEMENT_VIDEO = "/assets/videos/products/set-13/OrangeSolo1.mp4";
+const STATEMENT_IMAGE = "/assets/images/shop/blush-elan/HSP_1743.jpg";
 
 export function HomeRomanceBespokeSplit() {
-  const romanceVideoRef = useInlineVideoAutoplay(ROMANCE_VIDEO);
+  const statementVideoRef = useInlineVideoAutoplay(STATEMENT_VIDEO);
 
   return (
-    <section className="jm-collection-feature" aria-label="Romance and Bespoke">
+    <section className="jm-collection-feature" aria-label="The Statement">
       <div className="jm-collection-feature__grid">
         <Link
-          href="/collections/romance"
+          href="/products/the-scarlett-heiress-dress"
           className="jm-collection-feature__panel jm-collection-feature__panel--video"
         >
           <video
-            ref={romanceVideoRef}
+            ref={statementVideoRef}
             autoPlay
             muted
             loop
@@ -29,21 +29,21 @@ export function HomeRomanceBespokeSplit() {
             disablePictureInPicture
             className="jm-collection-feature__media jm-collection-feature__video"
           >
-            <Mp4Sources src={ROMANCE_VIDEO} />
+            <Mp4Sources src={STATEMENT_VIDEO} />
           </video>
-          <span className="jm-caption">Romance</span>
+          <span className="jm-caption">The Statement</span>
         </Link>
         <Link
-          href="/collections/bespoke"
+          href="/products/blush-elan"
           className="jm-collection-feature__panel jm-collection-feature__panel--image"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={BESPOKE_IMAGE}
-            alt="Blooming Rosalia — Bespoke collection"
-            className="jm-collection-feature__media jm-collection-feature__media--pink-editorial"
+            src={STATEMENT_IMAGE}
+            alt="Blush elan — The Statement"
+            className="jm-collection-feature__media"
           />
-          <span className="jm-caption">Bespoke</span>
+          <span className="jm-caption">The Statement</span>
         </Link>
       </div>
       <hr className="jm-section-rule" aria-hidden="true" />

@@ -117,22 +117,8 @@ export const occasionHighlightCards: ShopHighlightCard[] = [
   },
 ];
 
-/** Desktop home — Occasion + Statement strip */
+/** Desktop home — Romance pink strip */
 export const eveningHighlightCards: ShopHighlightCard[] = [
-  occasionHighlightCards[0],
-  occasionHighlightCards[1],
-  statementHighlightCards[2],
-  statementHighlightCards[3],
-];
-
-/** Desktop home — Romance + Bespoke strip */
-export const bloomHighlightCards: ShopHighlightCard[] = [
-  {
-    setId: 5,
-    slug: "blush-mirage",
-    title: "Blush mirage",
-    image: "/assets/images/shop/blush-mirage/HSP_4495.jpg",
-  },
   {
     setId: 17,
     slug: "rosalind-jacket-blush-column-jumpsuit",
@@ -140,16 +126,50 @@ export const bloomHighlightCards: ShopHighlightCard[] = [
     image: "/assets/images/shop/rosalind-jacket-blush-column-jumpsuit/HSP_5292.jpg",
   },
   {
-    setId: 104,
-    slug: "blooming-rosalia-3d-gown",
-    title: "Blooming Rosalia",
-    image: "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4523.jpg",
+    setId: 16,
+    slug: "daughters-of-spring-pink",
+    title: "Daughters of spring — Blush",
+    image: "/assets/images/shop/daughters-of-spring-pink/HSP_5988.jpg",
   },
   {
-    setId: 101,
-    slug: "rosa-imperiale",
-    title: "Rosa impériale",
-    image: "/assets/images/shop/rosa-imperiale/HSP_2850.jpg",
+    setId: 5,
+    slug: "blush-mirage",
+    title: "Blush mirage",
+    image: "/assets/images/shop/blush-mirage/HSP_4495.jpg",
+  },
+  {
+    setId: 15,
+    slug: "crimson-petal-serenade",
+    title: "Crimson petal serenade",
+    image: "/assets/images/shop/crimson-petal-serenade/HSP_5015.jpg",
+  },
+];
+
+/** Desktop home — Statement black strip */
+export const bloomHighlightCards: ShopHighlightCard[] = [
+  {
+    setId: 26,
+    slug: "set-26",
+    title: "Noir sculpted",
+    image: "/assets/images/shop/set-26/IMG_7329.jpg",
+  },
+  {
+    setId: 9,
+    slug: "ivory-eclipse",
+    title: "Ivory eclipse",
+    image: "/assets/images/shop/ivory-eclipse/HSP_3158.jpg",
+  },
+  {
+    setId: 8,
+    slug: "eclipse-royale",
+    title: "Eclipse Royale",
+    image: "/assets/images/shop/eclipse-royale/HSP_2982.jpg",
+  },
+  {
+    setId: 14,
+    slug: "starlit-halter-gown",
+    title: "Starlit halter gown",
+    image: "/assets/images/shop/starlit-halter-gown/HSP_2470.jpg",
   },
 ];
 

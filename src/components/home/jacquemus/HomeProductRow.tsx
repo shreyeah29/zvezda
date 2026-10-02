@@ -129,7 +129,7 @@ export function HomeEveningProductRow() {
   return (
     <HomeProductRow
       cards={eveningHighlightCards}
-      ariaLabel="The Occasion and The Statement"
+      ariaLabel="Romance collection products"
       showPrice={false}
     />
   );
@@ -139,7 +139,7 @@ export function HomeBloomProductRow() {
   return (
     <HomeProductRow
       cards={bloomHighlightCards}
-      ariaLabel="Romance and Bespoke"
+      ariaLabel="The Statement collection products"
       showPrice={false}
     />
   );

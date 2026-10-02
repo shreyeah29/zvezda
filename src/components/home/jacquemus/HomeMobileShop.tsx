@@ -15,23 +15,6 @@ import "./HomeMobileShop.css";
 
 const BESPOKE_IMAGE = "/assets/images/shop/blooming-rosalia-3d-gown/BHA_4851.jpg";
 
-function MobileSectionHeading({
-  primary,
-  secondary,
-}: {
-  primary: string;
-  secondary: string;
-}) {
-  return (
-    <div className="hm-section-heading">
-      <div className="hm-section-heading__lines" aria-hidden="true">
-        <span className="hm-section-heading__primary">{primary}</span>
-        <span className="hm-section-heading__secondary">{secondary}</span>
-      </div>
-    </div>
-  );
-}
-
 function MobileShopCard({
   href,
   image,
@@ -71,7 +54,6 @@ export function HomeMobileShop() {
 
   return (
     <section className="hm-shop hm-shop--noir" aria-label="Noir collection">
-      <MobileSectionHeading primary="Noir" secondary="Collection" />
       <div className="hm-bento">
         {[a, b, c, d].map((card) => {
           const product = findProduct(card.slug);
@@ -121,8 +103,6 @@ function HomeMobileCollectionShop({
 
   return (
     <section className="hm-shop hm-shop--pink" aria-label={`${name} collection`}>
-      <MobileSectionHeading primary={name} secondary="Collection" />
-
       {hero && (
         <Link href={href} className="hm-pink__hero">
           {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -5,15 +5,15 @@ import { Mp4Sources } from "@/components/media/Mp4Sources";
 import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import "./HomeRomanceFilm.css";
 
-const ROMANCE_FILM = "/assets/videos/products/set-1/GardenSolo3.mp4";
-const ROMANCE_POSTER = "/assets/images/shop/jardin-elegance-dress/HSP_4309.jpg";
+const BESPOKE_FILM = "/assets/videos/products/set-6/OrangeSolo2.mp4";
+const BESPOKE_POSTER = "/assets/images/shop/rosa-imperiale/HSP_2850.jpg";
 
 export function HomeRomanceFilm() {
-  const filmRef = useInlineVideoAutoplay(ROMANCE_FILM);
+  const filmRef = useInlineVideoAutoplay(BESPOKE_FILM);
 
   return (
-    <section className="jm-home-film" aria-label="Romance collection film">
-      <Link href="/collections/romance" className="jm-home-film__hit">
+    <section className="jm-home-film" aria-label="Bespoke collection film">
+      <Link href="/products/rosa-imperiale" className="jm-home-film__hit">
         <video
           ref={filmRef}
           autoPlay
@@ -21,14 +21,14 @@ export function HomeRomanceFilm() {
           loop
           playsInline
           preload="auto"
-          poster={ROMANCE_POSTER}
+          poster={BESPOKE_POSTER}
           controls={false}
           disablePictureInPicture
           className="jm-home-film__video"
         >
-          <Mp4Sources src={ROMANCE_FILM} />
+          <Mp4Sources src={BESPOKE_FILM} />
         </video>
-        <span className="jm-caption">Romance</span>
+        <span className="jm-caption">Bespoke</span>
       </Link>
       <hr className="jm-section-rule" aria-hidden="true" />
     </section>

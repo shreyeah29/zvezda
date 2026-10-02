@@ -55,6 +55,14 @@ const HomeCollectionSplit = dynamic(
   { ssr: false },
 );
 
+const HomeOccasionSplit = dynamic(
+  () =>
+    import("@/components/home/jacquemus/HomeCollectionSplit").then((mod) => ({
+      default: mod.HomeOccasionSplit,
+    })),
+  { ssr: false },
+);
+
 const HomeEveningProductRow = dynamic(
   () =>
     import("@/components/home/jacquemus/HomeProductRow").then((mod) => ({
@@ -143,6 +151,9 @@ export default function HomePage() {
           </div>
           <div className="home-section home-section--romance-film">
             <HomeRomanceFilm />
+          </div>
+          <div className="home-section home-section--occasion-split">
+            <HomeOccasionSplit />
           </div>
           <div className="home-section home-section--mobile-romance">
             <HomeMobileRomanceShop />

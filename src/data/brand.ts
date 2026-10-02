@@ -20,7 +20,7 @@ export const brand = {
 
 export const videos = {
   /** Homepage hero — 1080p master; H.264 fallback is chosen in the player */
-  hero: "/assets/videos/products/set-12/RedDressSolo.mp4",
+  hero: "/assets/videos/products/set-3/GardenSolo1.mp4",
   heroMobile: "/assets/videos/products/set-12/RedDressSolo.mp4",
   garden: "/assets/videos/GardenSolo3.mp4",
 } as const;

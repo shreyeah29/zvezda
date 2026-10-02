@@ -70,7 +70,8 @@
   .jacquemus-home .home-section--evening-row,
   .jacquemus-home .home-section--romance-bespoke,
   .jacquemus-home .home-section--bloom-row,
-  .jacquemus-home .home-section--romance-film {
+  .jacquemus-home .home-section--romance-film,
+  .jacquemus-home .home-section--occasion-split {
     display: none !important;
   }
 }

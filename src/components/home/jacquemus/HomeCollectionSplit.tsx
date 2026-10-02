@@ -1,16 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { homeCollectionPanels } from "@/data/homeCollectionPanels";
+import {
+  homeCollectionPanels,
+  homeOccasionPanels,
+  type HomeCollectionPanel,
+} from "@/data/homeCollectionPanels";
 import "./HomeCollectionSplit.css";
 
-export function HomeCollectionSplit() {
+function CollectionSplit({
+  panels,
+  ariaLabel,
+}: {
+  panels: HomeCollectionPanel[];
+  ariaLabel: string;
+}) {
   return (
-    <section className="jm-collection-split" aria-label="Featured collections">
+    <section className="jm-collection-split" aria-label={ariaLabel}>
       <div className="jm-collection-split__grid">
-        {homeCollectionPanels.map((panel) => (
+        {panels.map((panel) => (
           <Link
-            key={panel.label}
+            key={panel.href}
             href={panel.href}
             className="jm-collection-split__panel"
           >
@@ -26,4 +36,12 @@ export function HomeCollectionSplit() {
       <hr className="jm-section-rule" aria-hidden="true" />
     </section>
   );
+}
+
+export function HomeCollectionSplit() {
+  return <CollectionSplit panels={homeCollectionPanels} ariaLabel="Romance" />;
+}
+
+export function HomeOccasionSplit() {
+  return <CollectionSplit panels={homeOccasionPanels} ariaLabel="The Occasion" />;
 }
