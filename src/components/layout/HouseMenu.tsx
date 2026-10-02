@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,6 +33,32 @@ function routeIndex(pathname: string) {
   return index >= 0 ? index : 0;
 }
 
+function RollingWord({ text, rowIndex }: { text: string; rowIndex: number }) {
+  return (
+    <span className="zvezda-roll__word" aria-hidden="true">
+      {Array.from(text).map((char, letterIndex) => {
+        const glyph = char === " " ? "\u00a0" : char;
+        return (
+          <span className="zvezda-roll__mask" key={`${glyph}-${letterIndex}`}>
+            <span
+              className="zvezda-roll"
+              style={
+                {
+                  "--i": letterIndex,
+                  "--row": rowIndex,
+                } as CSSProperties
+              }
+            >
+              <span>{glyph}</span>
+              <span className="zvezda-roll__dup">{glyph}</span>
+            </span>
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
 export function HouseMenu({
   open,
   onOpenChange,
@@ -51,6 +77,8 @@ export function HouseMenu({
   const [entered, setEntered] = useState(false);
   const [closing, setClosing] = useState(false);
   const [active, setActive] = useState(0);
+  const [phoneActive, setPhoneActive] = useState<number | null>(null);
+  const phoneArmedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -58,7 +86,9 @@ export function HouseMenu({
 
   useEffect(() => {
     if (!open) return;
-    setActive(routeIndex(pathname));
+    const next = routeIndex(pathname);
+    setActive(next);
+    setPhoneActive(next);
     setClosing(false);
     setEntered(false);
     setVisible(true);
@@ -71,14 +101,14 @@ export function HouseMenu({
   useEffect(() => {
     if (open || !visible) return;
     setClosing(true);
-    const wait = reduced ? 200 : 600;
+    const wait = reduced ? 200 : isMobile ? 500 : 600;
     const id = window.setTimeout(() => {
       setVisible(false);
       setClosing(false);
       triggerRef.current?.focus();
     }, wait);
     return () => window.clearTimeout(id);
-  }, [open, reduced, visible]);
+  }, [isMobile, open, reduced, visible]);
 
   useEffect(() => {
     if (!visible || closing) return;
@@ -94,6 +124,32 @@ export function HouseMenu({
     };
   }, [visible, closing, onOpenChange]);
 
+  const utilityLinks = (
+    <>
+      <button
+        type="button"
+        onClick={() => {
+          onOpenChange(false);
+          onOpenSearch();
+        }}
+      >
+        Search
+      </button>
+      <Link href="/wishlist" onClick={() => onOpenChange(false)}>
+        Wishlist
+      </Link>
+      <button
+        type="button"
+        onClick={() => {
+          onOpenChange(false);
+          onOpenCart();
+        }}
+      >
+        Cart
+      </button>
+    </>
+  );
+
   const overlay =
     mounted &&
     visible &&
@@ -105,23 +161,52 @@ export function HouseMenu({
           entered && !closing && "zvezda-menu--open",
           closing && "zvezda-menu--closing",
           reduced && "zvezda-menu--reduced",
+          isMobile && phoneActive != null && "zvezda-menu--lit",
         )}
         role="dialog"
         aria-modal="true"
         aria-label="House menu"
       >
         {isMobile ? (
-          <div className="zvezda-menu__still" aria-hidden="true">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={MENU_ITEMS[0].image} alt="" />
-            <span className="zvezda-menu__still-veil" />
+          <div
+            className={cn("zvezda-menu__backdrop", phoneActive != null && "is-on")}
+            aria-hidden="true"
+          >
+            {MENU_ITEMS.map((item, index) => (
+              <div
+                key={item.href}
+                className={cn("zvezda-menu__backdrop-frame", phoneActive === index && "is-active")}
+              >
+                <Image
+                  src={item.image}
+                  alt=""
+                  fill
+                  sizes="100vw"
+                  className="zvezda-menu__backdrop-img"
+                />
+              </div>
+            ))}
+            <span className="zvezda-menu__backdrop-veil" />
           </div>
         ) : null}
 
         <div className="zvezda-menu__top">
-          <Link href="/" className="zvezda-menu__logo" onClick={() => onOpenChange(false)}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={isMobile ? brand.logo.white : brand.logo.dark} alt="ZVEZDA Atelier" />
+          <Link
+            href="/"
+            className={cn("zvezda-menu__logo", isMobile && "zvezda-menu__logo--stack")}
+            onClick={() => onOpenChange(false)}
+          >
+            {isMobile ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="zvezda-menu__logo-ink" src={brand.logo.dark} alt="ZVEZDA Atelier" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="zvezda-menu__logo-paper" src={brand.logo.white} alt="" />
+              </>
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={brand.logo.dark} alt="ZVEZDA Atelier" />
+            )}
           </Link>
           <button
             ref={closeRef}
@@ -134,19 +219,42 @@ export function HouseMenu({
         </div>
 
         {isMobile ? (
-          <nav className="zvezda-menu__list" aria-label="Primary">
-            {MENU_ITEMS.map((item, index) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="zvezda-menu__list-link"
-                style={{ transitionDelay: closing || reduced ? "0s" : `${0.08 + index * 0.05}s` }}
-                onClick={() => onOpenChange(false)}
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                {item.label}
-              </Link>
-            ))}
+          <nav className="zvezda-menu__letters" aria-label="Primary">
+            {MENU_ITEMS.map((item, index) => {
+              const isActive = phoneActive === index;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-label={item.label}
+                  className={cn("zvezda-menu__letter-link", isActive && "is-active")}
+                  onMouseEnter={() => setPhoneActive(index)}
+                  onFocus={(event) => {
+                    if (event.currentTarget.matches(":focus-visible")) setPhoneActive(index);
+                  }}
+                  onPointerDown={() => {
+                    phoneArmedRef.current = phoneActive === index;
+                  }}
+                  onClick={(event) => {
+                    const fromKeyboard = event.detail === 0;
+                    if (!fromKeyboard && !phoneArmedRef.current) {
+                      event.preventDefault();
+                      setPhoneActive(index);
+                      return;
+                    }
+                    onOpenChange(false);
+                  }}
+                >
+                  <span className="zvezda-menu__letter-num" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <RollingWord text={item.label} rowIndex={index} />
+                  <span className="zvezda-menu__letter-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </Link>
+              );
+            })}
           </nav>
         ) : (
           <nav className="zvezda-menu__row" aria-label="Primary">
@@ -180,27 +288,12 @@ export function HouseMenu({
         )}
 
         <div className="zvezda-menu__tools">
-          <button
-            type="button"
-            onClick={() => {
-              onOpenChange(false);
-              onOpenSearch();
-            }}
-          >
-            Search
-          </button>
-          <Link href="/wishlist" onClick={() => onOpenChange(false)}>
-            Wishlist
-          </Link>
-          <button
-            type="button"
-            onClick={() => {
-              onOpenChange(false);
-              onOpenCart();
-            }}
-          >
-            Cart
-          </button>
+          {isMobile ? <div className="zvezda-menu__utils">{utilityLinks}</div> : utilityLinks}
+          {isMobile ? (
+            <p className="zvezda-menu__caption">
+              {phoneActive != null ? MENU_ITEMS[phoneActive].caption : "\u00a0"}
+            </p>
+          ) : null}
         </div>
       </div>,
       document.body,

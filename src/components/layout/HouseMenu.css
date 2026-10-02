@@ -60,104 +60,236 @@
   cursor: pointer;
 }
 
-/* Phone: editorial list, not photo columns */
+/* Phone: letter roll + photo backdrop */
 .zvezda-menu--phone {
-  background: #0c0a09;
-  color: #f5f0e8;
+  overflow: hidden;
+  background: #fdfcfb;
+  color: #0c0a09;
+  transition: color 0.6s ease;
 }
 
-.zvezda-menu--phone .zvezda-menu__still {
+.zvezda-menu--phone.zvezda-menu--lit {
+  color: #fdfcfb;
+}
+
+.zvezda-menu--phone .zvezda-menu__backdrop {
   position: absolute;
   inset: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
 }
 
-.zvezda-menu--phone .zvezda-menu__still img {
-  width: 100%;
-  height: 100%;
+.zvezda-menu--phone .zvezda-menu__backdrop.is-on {
+  opacity: 1;
+}
+
+.zvezda-menu--phone .zvezda-menu__backdrop-frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.08);
+  transition:
+    opacity 0.8s ease,
+    transform 2.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.zvezda-menu--phone .zvezda-menu__backdrop-frame.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.zvezda-menu--phone .zvezda-menu__backdrop-img {
   object-fit: cover;
-  object-position: center 20%;
 }
 
-.zvezda-menu--phone .zvezda-menu__still-veil {
+.zvezda-menu--phone .zvezda-menu__backdrop-veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(12, 10, 9, 0.55) 0%, rgba(12, 10, 9, 0.82) 100%);
+  background: rgba(12, 10, 9, 0.38);
 }
 
 .zvezda-menu--phone .zvezda-menu__top,
-.zvezda-menu--phone .zvezda-menu__list,
+.zvezda-menu--phone .zvezda-menu__letters,
 .zvezda-menu--phone .zvezda-menu__tools {
   position: relative;
   z-index: 1;
 }
 
-.zvezda-menu--phone .zvezda-menu__close,
-.zvezda-menu--phone .zvezda-menu__tools a,
-.zvezda-menu--phone .zvezda-menu__tools button {
-  color: rgba(245, 240, 232, 0.78);
+.zvezda-menu--phone .zvezda-menu__logo--stack {
+  position: relative;
+  display: block;
 }
 
-.zvezda-menu__list {
+.zvezda-menu--phone .zvezda-menu__logo-paper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.zvezda-menu--phone.zvezda-menu--lit .zvezda-menu__logo-paper {
+  opacity: 1;
+}
+
+.zvezda-menu--phone .zvezda-menu__close,
+.zvezda-menu--phone .zvezda-menu__tools a,
+.zvezda-menu--phone .zvezda-menu__tools button,
+.zvezda-menu--phone .zvezda-menu__caption {
+  color: inherit;
+  transition: color 0.6s ease;
+}
+
+.zvezda-menu--phone .zvezda-menu__letters {
   display: flex;
   flex: 1;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 0.15rem;
-  padding: 0.5rem 1.25rem;
+  gap: 2px;
+  padding: 0 18px;
 }
 
-.zvezda-menu__list-link {
+.zvezda-menu--phone .zvezda-menu__letter-link {
   display: flex;
-  align-items: baseline;
-  gap: 0.9rem;
-  min-height: 52px;
-  color: #f5f0e8;
+  align-items: center;
+  gap: 22px;
+  min-height: 44px;
+  color: inherit;
   text-decoration: none;
+  transition: opacity 0.6s ease;
+}
+
+.zvezda-menu--phone.zvezda-menu--lit .zvezda-menu__letter-link:not(.is-active) {
+  opacity: 0.55;
+}
+
+.zvezda-menu--phone .zvezda-menu__letter-num,
+.zvezda-menu--phone .zvezda-menu__letter-arrow {
   opacity: 0;
-  transform: translateY(16px);
-}
-
-.zvezda-menu--open .zvezda-menu__list-link {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 0.5s ease,
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.zvezda-menu--closing .zvezda-menu__list-link {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.zvezda-menu__list-link span {
-  width: 1.5rem;
   font-family: var(--font-jost), Jost, "Helvetica Neue", sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  color: rgba(245, 240, 232, 0.42);
 }
 
-.zvezda-menu__list-link {
+.zvezda-menu--phone .zvezda-menu__letter-num {
+  width: 1.6rem;
+  flex-shrink: 0;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+}
+
+.zvezda-menu--phone .zvezda-menu__letter-arrow {
+  font-size: 18px;
+  letter-spacing: 0;
+  transform: translateX(-12px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.zvezda-menu--phone .zvezda-menu__letter-link.is-active .zvezda-menu__letter-num,
+.zvezda-menu--phone .zvezda-menu__letter-link.is-active .zvezda-menu__letter-arrow {
+  opacity: 1;
+}
+
+.zvezda-menu--phone .zvezda-menu__letter-link.is-active .zvezda-menu__letter-arrow {
+  transform: translateX(0);
+}
+
+.zvezda-menu--phone .zvezda-roll__word {
+  display: flex;
   font-family: var(--font-section), Italiana, Georgia, serif;
-  font-size: clamp(1.85rem, 9vw, 2.6rem);
-  line-height: 1;
+  font-size: clamp(40px, 11vw, 56px);
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+}
+
+.zvezda-menu--phone .zvezda-roll__mask {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.zvezda-menu--phone .zvezda-roll {
+  position: relative;
+  display: block;
+  will-change: transform;
+  transform: translateY(110%);
+  transition: transform 1s cubic-bezier(0.77, 0, 0.18, 1);
+  transition-delay: calc(0.2s + (var(--row) * 0.08s) + (var(--i) * 0.02s));
+}
+
+.zvezda-menu--phone .zvezda-roll > span:first-child {
+  display: block;
+}
+
+.zvezda-menu--phone .zvezda-roll__dup {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  color: #fdfcfb;
+}
+
+.zvezda-menu--phone.zvezda-menu--open .zvezda-roll {
+  transform: translateY(0);
+}
+
+.zvezda-menu--phone.zvezda-menu--open .zvezda-menu__letter-link.is-active .zvezda-roll {
+  transform: translateY(-100%);
+  transition-duration: 0.5s;
+  transition-delay: calc(var(--i) * 0.025s);
+}
+
+.zvezda-menu--phone.zvezda-menu--closing .zvezda-roll {
+  transform: translateY(110%);
+  transition-duration: 0.5s;
+  transition-delay: 0s;
 }
 
 .zvezda-menu--phone .zvezda-menu__tools {
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 18px 28px;
   opacity: 0;
 }
 
 .zvezda-menu--phone.zvezda-menu--open .zvezda-menu__tools {
   opacity: 1;
-  transition: opacity 0.5s ease 0.35s;
+  transition: opacity 0.8s ease 0.9s;
 }
 
-.zvezda-menu--phone.zvezda-menu--reduced .zvezda-menu__list-link,
+.zvezda-menu--phone.zvezda-menu--closing .zvezda-menu__tools {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.zvezda-menu--phone .zvezda-menu__utils {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px 28px;
+}
+
+.zvezda-menu--phone .zvezda-menu__caption {
+  margin: 0 0 12px;
+  font-family: var(--font-jost), Jost, "Helvetica Neue", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.zvezda-menu--phone.zvezda-menu--reduced .zvezda-roll,
+.zvezda-menu--phone.zvezda-menu--reduced .zvezda-menu__letter-arrow {
+  transform: none;
+  transition: none;
+}
+
+.zvezda-menu--phone.zvezda-menu--reduced .zvezda-menu__backdrop-frame {
+  transform: none;
+  transition: opacity 0.8s ease;
+}
+
 .zvezda-menu--phone.zvezda-menu--reduced .zvezda-menu__tools {
   opacity: 1;
-  transform: none;
   transition: none;
 }
 

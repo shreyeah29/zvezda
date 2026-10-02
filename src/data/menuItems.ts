@@ -1,10 +1,10 @@
 export const MENU_ITEMS = [
-  { label: "Home", href: "/", image: "/assets/menu/home.jpg" },
-  { label: "Collections", href: "/collections", image: "/assets/menu/collections.jpg" },
-  { label: "Shop", href: "/shop", image: "/assets/menu/shop.jpg" },
-  { label: "Custom Order", href: "/custom-order", image: "/assets/menu/custom-order.jpg" },
-  { label: "About", href: "/about", image: "/assets/menu/about.jpg" },
-  { label: "Contact", href: "/contact", image: "/assets/menu/contact.jpg" },
+  { label: "Home", href: "/", image: "/assets/menu/home.jpg", caption: "The house" },
+  { label: "Collections", href: "/collections", image: "/assets/menu/collections.jpg", caption: "Jardin, SS26" },
+  { label: "Shop", href: "/shop", image: "/assets/menu/shop.jpg", caption: "Ready to wear" },
+  { label: "Custom Order", href: "/custom-order", image: "/assets/menu/custom-order.jpg", caption: "Made to measure" },
+  { label: "About", href: "/about", image: "/assets/menu/about.jpg", caption: "The atelier" },
+  { label: "Contact", href: "/contact", image: "/assets/menu/contact.jpg", caption: "Appointments" },
 ] as const;
 
 export type MenuItem = (typeof MENU_ITEMS)[number];
