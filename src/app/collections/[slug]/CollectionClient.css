@@ -128,17 +128,24 @@
 
 .house-collection__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem 1.15rem;
+  grid-template-columns: 1fr;
+  gap: 2rem;
   max-width: 92rem;
   margin: 0 auto;
   padding: 2.25rem 1.25rem 5.5rem;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 640px) {
+  .house-collection__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 1.5rem;
+  }
+}
+
+@media (min-width: 1100px) {
   .house-collection__grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 2.25rem 1.75rem;
+    gap: 2.5rem 2rem;
     padding: 3.5rem 2.75rem 7rem;
   }
 }
@@ -164,14 +171,15 @@
 }
 
 .house-collection__card h2 {
-  margin: 0.85rem 0 0;
-  font-size: 13px;
+  margin: 0.95rem 0 0;
+  font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.01em;
+  line-height: 1.3;
 }
 
 .house-collection__card p {
-  margin: 0.25rem 0 0;
-  font-size: 11px;
-  color: rgba(12, 10, 9, 0.5);
+  margin: 0.35rem 0 0;
+  font-size: 13px;
+  color: rgba(12, 10, 9, 0.55);
 }

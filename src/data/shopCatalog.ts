@@ -722,10 +722,16 @@ export function getShopProduct(slug: string) {
 
 export function getHouseCollectionProducts(slug: string) {
   const house = getHouseCollection(slug);
-  if (!house) return [];
-  return house.productSlugs
-    .map((productSlug) => getShopProduct(productSlug))
-    .filter((product): product is Product => Boolean(product));
+  const inHouse = shopProducts.filter((product) => product.collection === slug);
+  if (!house) return inHouse;
+
+  const rank = new Map(house.productSlugs.map((productSlug, index) => [productSlug, index]));
+  return [...inHouse].sort((a, b) => {
+    const aRank = rank.get(a.slug) ?? Number.MAX_SAFE_INTEGER;
+    const bRank = rank.get(b.slug) ?? Number.MAX_SAFE_INTEGER;
+    if (aRank !== bRank) return aRank - bRank;
+    return a.name.localeCompare(b.name);
+  });
 }
 
 const COLLECTION_FILM_SLUG: Record<string, string> = {

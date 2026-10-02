@@ -112,6 +112,7 @@ export const houseCollections: HouseCollection[] = [
       "daughters-of-spring-green",
       "daughters-of-spring-pink",
       "blush-mirage",
+      "crimson-petal-serenade",
       "conservatory-iv",
       "seraphina-dress",
     ],
