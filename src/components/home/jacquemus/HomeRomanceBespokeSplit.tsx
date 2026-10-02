@@ -15,7 +15,7 @@ export function HomeRomanceBespokeSplit() {
     <section className="jm-collection-feature" aria-label="The Statement">
       <div className="jm-collection-feature__grid">
         <Link
-          href="/products/the-scarlett-heiress-dress"
+          href="/collections/statement"
           className="jm-collection-feature__panel jm-collection-feature__panel--video"
         >
           <video
@@ -34,7 +34,7 @@ export function HomeRomanceBespokeSplit() {
           <span className="jm-caption">The Statement</span>
         </Link>
         <Link
-          href="/products/blush-elan"
+          href="/collections/statement"
           className="jm-collection-feature__panel jm-collection-feature__panel--image"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}

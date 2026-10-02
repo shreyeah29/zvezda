@@ -32,6 +32,7 @@ function getProductRowImages(slug: string, setId: number, primaryImage: string) 
 
 type HomeProductRowProps = {
   cards?: ShopHighlightCard[];
+  href?: string;
   ariaLabel?: string;
   showSectionRule?: boolean;
   showPrice?: boolean;
@@ -39,6 +40,7 @@ type HomeProductRowProps = {
 
 export function HomeProductRow({
   cards = shopHighlightCards,
+  href,
   ariaLabel = "Featured products",
   showSectionRule = true,
   showPrice = true,
@@ -70,14 +72,14 @@ export function HomeProductRow({
                 role="link"
                 tabIndex={0}
                 className="jm-product-row__hit"
-                onClick={() => router.push(`/products/${card.slug}`)}
+                onClick={() => router.push(href ?? `/collections/romance`)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
-                    router.push(`/products/${card.slug}`);
+                    router.push(href ?? `/collections/romance`);
                   }
                 }}
-                aria-label={`View ${product.name}`}
+                aria-label={`Browse ${ariaLabel}`}
               >
                 <div className="jm-product-row__media">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -129,7 +131,8 @@ export function HomeEveningProductRow() {
   return (
     <HomeProductRow
       cards={eveningHighlightCards}
-      ariaLabel="Romance collection products"
+      href="/collections/romance"
+      ariaLabel="Romance collection"
       showPrice={false}
     />
   );
@@ -139,7 +142,8 @@ export function HomeBloomProductRow() {
   return (
     <HomeProductRow
       cards={bloomHighlightCards}
-      ariaLabel="The Statement collection products"
+      href="/collections/statement"
+      ariaLabel="The Statement collection"
       showPrice={false}
     />
   );
@@ -149,7 +153,8 @@ export function HomePinkProductRow() {
   return (
     <HomeProductRow
       cards={pinkHighlightCards}
-      ariaLabel="Pink collection products"
+      href="/collections/romance"
+      ariaLabel="Romance collection"
     />
   );
 }

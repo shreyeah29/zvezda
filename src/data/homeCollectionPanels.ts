@@ -4,17 +4,17 @@ export type HomeCollectionPanel = {
   href: string;
 };
 
-/** Desktop home split under the hero — both Romance, product pages */
+/** Desktop home split under the hero — both open the Romance catalogue */
 export const homeCollectionPanels: HomeCollectionPanel[] = [
   {
     label: "Romance",
     image: "/assets/images/shop/olive-tiered-zephyr-mini-dress/HSP_3876.jpg",
-    href: "/products/olive-tiered-zephyr-mini-dress",
+    href: "/collections/romance",
   },
   {
     label: "Romance",
     image: "/assets/images/shop/jardin-elegance-dress/HSP_4590.jpg",
-    href: "/products/jardin-elegance-dress",
+    href: "/collections/romance",
   },
 ];
 
@@ -23,11 +23,11 @@ export const homeOccasionPanels: HomeCollectionPanel[] = [
   {
     label: "Occasion",
     image: "/assets/images/shop/molten-muse/HSP_5858.jpg",
-    href: "/products/molten-muse",
+    href: "/collections/occasion",
   },
   {
     label: "Occasion",
     image: "/assets/images/products/set-12/HSP_5635.jpg",
-    href: "/products/carmine-ascend",
+    href: "/collections/occasion",
   },
 ];

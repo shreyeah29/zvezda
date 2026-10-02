@@ -134,7 +134,7 @@ const SHOP_LOOKS: Record<
   "verdant-whisper-gown": { colours: ["green"], garmentType: "gown", houseCollection: "statement" },
   "olive-tiered-zephyr-mini-dress": { colours: ["green"], garmentType: "mini", houseCollection: "romance" },
   "blush-mirage": { colours: ["blush"], garmentType: "gown", houseCollection: "romance" },
-  "rosewood-heirloom": { colours: ["pink"], garmentType: "gown", houseCollection: "romance" },
+  "rosewood-heirloom": { colours: ["pink"], garmentType: "gown", houseCollection: "statement" },
   "crimson-petal-serenade": { colours: ["pink"], garmentType: "gown", houseCollection: "romance" },
   "rosalind-jacket-blush-column-jumpsuit": {
     colours: ["blush", "pink"],
@@ -145,7 +145,7 @@ const SHOP_LOOKS: Record<
   "daughters-of-spring-green": { colours: ["green"], garmentType: "dress", houseCollection: "romance" },
   "molten-muse": { colours: ["yellow"], garmentType: "dress", houseCollection: "occasion" },
   "carmine-ascend": { colours: ["red"], garmentType: "gown", houseCollection: "occasion" },
-  "green-pearl-dress": { colours: ["green"], garmentType: "gown", houseCollection: "romance" },
+  "green-pearl-dress": { colours: ["green"], garmentType: "gown", houseCollection: "occasion" },
   "fire-and-ice": { colours: ["blue", "yellow"], garmentType: "gown", houseCollection: "statement" },
   "petal-dress": { colours: ["pink"], garmentType: "gown", houseCollection: "bespoke" },
   "conservatory-iv": { colours: ["green"], garmentType: "gown", houseCollection: "romance" },

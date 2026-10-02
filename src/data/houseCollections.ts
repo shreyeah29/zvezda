@@ -56,6 +56,7 @@ export const houseCollections: HouseCollection[] = [
       "fire-and-ice",
       "verdant-whisper-gown",
       "zeenat",
+      "rosewood-heirloom",
     ],
   },
   {
@@ -85,6 +86,7 @@ export const houseCollections: HouseCollection[] = [
       "carmine-ascend",
       "molten-muse",
       "pearl-tailored-set",
+      "green-pearl-dress",
     ],
   },
   {

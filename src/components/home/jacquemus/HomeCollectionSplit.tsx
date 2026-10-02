@@ -20,7 +20,7 @@ function CollectionSplit({
       <div className="jm-collection-split__grid">
         {panels.map((panel) => (
           <Link
-            key={panel.href}
+            key={panel.image}
             href={panel.href}
             className="jm-collection-split__panel"
           >

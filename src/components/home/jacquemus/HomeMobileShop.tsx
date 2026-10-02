@@ -62,7 +62,7 @@ export function HomeMobileShop() {
           return (
             <MobileShopCard
               key={card.slug}
-              href={`/products/${card.slug}`}
+              href="/collections/statement"
               image={card.image}
               alt={product.name}
               title={product.name}
@@ -129,7 +129,7 @@ function HomeMobileCollectionShop({
           return (
             <MobileShopCard
               key={card.slug}
-              href={`/products/${card.slug}`}
+              href={href}
               image={card.image}
               alt={product.name}
               title={product.name}

@@ -13,7 +13,7 @@ export function HomeRomanceFilm() {
 
   return (
     <section className="jm-home-film" aria-label="Bespoke collection film">
-      <Link href="/products/rosa-imperiale" className="jm-home-film__hit">
+      <Link href="/collections/bespoke" className="jm-home-film__hit">
         <video
           ref={filmRef}
           autoPlay
