@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MiniCart } from "@/components/commerce/MiniCart";
 import { SearchOverlay } from "@/components/layout/SearchOverlay";
 import { FlyToCartLayer, FlyToWishlistLayer } from "@/components/commerce/CommerceAnimations";
+import { HouseMenu } from "@/components/layout/HouseMenu";
 import { useCommerce } from "@/context/CommerceContext";
 import { getLenisInstance } from "@/lib/lenisInstance";
 import { brand } from "@/data/brand";
@@ -122,7 +122,7 @@ export function Navigation() {
 
   if (pathname.startsWith("/atelier")) return null;
 
-  const showHeader = isAbout || headerVisible || cartOpen || searchOpen;
+  const showHeader = isAbout || headerVisible || cartOpen || searchOpen || menuOpen;
   const heroOverlay = hasHeroOverlay && heroOverlayNav;
   const mutedClass = heroOverlay ? "text-white/80 hover:text-white" : "text-black/70 hover:text-black";
   const centreLinks = isAbout ? ABOUT_LINKS : JM_LINKS;
@@ -246,137 +246,16 @@ export function Navigation() {
               </svg>
               {displayCount > 0 && <span className="jm-nav__cart-dot" aria-hidden="true" />}
             </motion.button>
-            <JacquemusMobileNav
-              heroOverlay={heroOverlay}
-              onOpenCart={() => setCartOpen(true)}
-              onOpenSearch={() => setSearchOpen(true)}
+            <HouseMenu
               open={menuOpen}
               onOpenChange={setMenuOpen}
-              includeAbout={isAbout}
+              onOpenCart={() => setCartOpen(true)}
+              onOpenSearch={() => setSearchOpen(true)}
+              lineClass={heroOverlay ? "bg-white/85" : "bg-black/80"}
             />
           </div>
         </div>
       </header>
-    </>
-  );
-}
-
-function JacquemusMobileNav({
-  heroOverlay,
-  onOpenCart,
-  onOpenSearch,
-  open,
-  onOpenChange,
-  includeAbout = false,
-}: {
-  heroOverlay: boolean;
-  onOpenCart: () => void;
-  onOpenSearch: () => void;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  includeAbout?: boolean;
-}) {
-  const [mounted, setMounted] = useState(false);
-  const lineClass = heroOverlay ? "bg-white/85" : "bg-black/80";
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    document.body.classList.add("dg-scroll-lock");
-    return () => document.body.classList.remove("dg-scroll-lock");
-  }, [open]);
-
-  const menuOverlay =
-    mounted &&
-    createPortal(
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            key="jm-mobile-menu"
-            className="jm-mobile-menu"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-          >
-            <div className="jm-mobile-menu__inner">
-              <div className="jm-mobile-menu__top">
-                <button
-                  type="button"
-                  onClick={() => onOpenChange(false)}
-                  className="jm-nav__link jm-mobile-menu__close"
-                >
-                  Close
-                </button>
-              </div>
-              <nav className="jm-mobile-menu__nav" aria-label="Mobile">
-                <button
-                  type="button"
-                  onClick={() => {
-                    onOpenChange(false);
-                    onOpenSearch();
-                  }}
-                  className="jm-mobile-menu__link jm-mobile-menu__link--button"
-                >
-                  Search
-                </button>
-                {[
-                  ...(includeAbout ? ABOUT_LINKS : JM_LINKS),
-                  ...(!includeAbout ? [{ href: "/about", label: "About" }] : []),
-                  { href: "/contact", label: "Contact" },
-                  { href: "/wishlist", label: "Wishlist" },
-                ].map((link) => (
-                  <Link
-                    key={`${link.href}-${link.label}`}
-                    href={link.href}
-                    onClick={() => onOpenChange(false)}
-                    className="jm-mobile-menu__link"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => {
-                    onOpenChange(false);
-                    onOpenCart();
-                  }}
-                  className="jm-mobile-menu__link jm-mobile-menu__link--button"
-                >
-                  Cart
-                </button>
-                <Link
-                  href="/custom-order"
-                  onClick={() => onOpenChange(false)}
-                  className="jm-mobile-menu__link"
-                >
-                  Custom Order
-                </Link>
-              </nav>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>,
-      document.body,
-    );
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => onOpenChange(true)}
-        className="jm-nav__menu-btn"
-        aria-label="Open menu"
-        aria-expanded={open}
-      >
-        <span className={cn("block h-px w-5", lineClass)} />
-        <span className={cn("block h-px w-5", lineClass)} />
-        <span className={cn("block h-px w-5", lineClass)} />
-      </button>
-      {menuOverlay}
     </>
   );
 }
