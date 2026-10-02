@@ -1,9 +1,26 @@
 import { useEffect, useRef } from "react";
 
+function allowAudio(video: HTMLVideoElement) {
+  return video.dataset.allowAudio === "true";
+}
+
+function audioUnlocked(video: HTMLVideoElement) {
+  return video.dataset.audioUnlocked === "true";
+}
+
 function prepare(video: HTMLVideoElement) {
-  video.muted = true;
-  video.defaultMuted = true;
-  video.volume = 0;
+  const keepSound = allowAudio(video) && audioUnlocked(video);
+  if (keepSound) {
+    video.muted = false;
+    video.defaultMuted = false;
+    video.volume = 1;
+    video.removeAttribute("muted");
+  } else {
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = allowAudio(video) ? 1 : 0;
+    video.setAttribute("muted", "");
+  }
   video.autoplay = true;
   video.loop = true;
   video.playsInline = true;
@@ -12,7 +29,6 @@ function prepare(video: HTMLVideoElement) {
   if ("disableRemotePlayback" in video) {
     video.disableRemotePlayback = true;
   }
-  video.setAttribute("muted", "");
   video.setAttribute("autoplay", "");
   video.setAttribute("loop", "");
   video.setAttribute("playsinline", "");

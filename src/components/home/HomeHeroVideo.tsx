@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { videos } from "@/data/brand";
 import { useInlineVideoAutoplay } from "@/hooks/useInlineVideoAutoplay";
 import { useMaxWidth } from "@/hooks/useMaxWidth";
@@ -18,6 +18,46 @@ export function HomeHeroVideo() {
   const videoRef = useInlineVideoAutoplay(heroSrc);
   const sectionRef = useRef<HTMLElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [soundOn, setSoundOn] = useState(false);
+
+  const setHeroSound = useCallback((on: boolean) => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.dataset.allowAudio = "true";
+    if (on) {
+      video.dataset.audioUnlocked = "true";
+      video.muted = false;
+      video.defaultMuted = false;
+      video.volume = 1;
+      video.removeAttribute("muted");
+    } else {
+      video.dataset.audioUnlocked = "false";
+      video.muted = true;
+      video.defaultMuted = true;
+      video.setAttribute("muted", "");
+    }
+    void video.play().catch(() => undefined);
+    setSoundOn(on);
+  }, [videoRef]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) video.dataset.allowAudio = "true";
+
+    const unlock = () => {
+      setHeroSound(true);
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+
+    window.addEventListener("pointerdown", unlock, { passive: true });
+    window.addEventListener("keydown", unlock);
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+  }, [heroSrc, setHeroSound, videoRef]);
 
   return (
     <section
@@ -42,6 +82,7 @@ export function HomeHeroVideo() {
           controls={false}
           disablePictureInPicture
           controlsList="nodownload nofullscreen noremoteplayback"
+          data-allow-audio="true"
           className={`hero-screen__video absolute inset-0 h-full w-full object-cover${
             isMobile ? " hero-screen__video--mobile" : ""
           }`}
@@ -52,6 +93,16 @@ export function HomeHeroVideo() {
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35" />
       </div>
+
+      <button
+        type="button"
+        className="hero-screen__sound"
+        onClick={() => setHeroSound(!soundOn)}
+        aria-pressed={soundOn}
+        aria-label={soundOn ? "Mute hero music" : "Play hero music"}
+      >
+        {soundOn ? "Sound on" : "Sound off"}
+      </button>
 
       <motion.button
         type="button"

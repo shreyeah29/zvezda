@@ -154,6 +154,20 @@
   padding: 0;
 }
 
+.jm-nav__menu-btn {
+  display: inline-flex;
+  min-height: 2.75rem;
+  min-width: 2.45rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 /* Keep cart + icons white on the dark hero even if button UA color wins */
 .jm-nav-header--on-hero .jm-nav__icon,
 .jm-nav-header--on-hero .jm-nav__cart,

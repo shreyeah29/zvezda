@@ -20,11 +20,13 @@ const HEART_PATH =
 const JM_LINKS = [
   { href: "/", label: "Home" },
   { href: "/collections", label: "Collections" },
+  { href: "/shop", label: "Shop" },
 ];
 
 const ABOUT_LINKS = [
   { href: "/", label: "Home" },
   { href: "/collections", label: "Collections" },
+  { href: "/shop", label: "Shop" },
   { href: "/about", label: "About" },
 ];
 
@@ -177,9 +179,6 @@ export function Navigation() {
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-2.5 md:gap-4">
-            <Link href="/shop" className={cn("jm-nav__link jm-nav__shop", mutedClass)}>
-              Shop
-            </Link>
             <button
               type="button"
               onClick={() => {
@@ -326,7 +325,8 @@ function JacquemusMobileNav({
                 </button>
                 {[
                   ...(includeAbout ? ABOUT_LINKS : JM_LINKS),
-                  { href: "/shop", label: "Shop" },
+                  ...(!includeAbout ? [{ href: "/about", label: "About" }] : []),
+                  { href: "/contact", label: "Contact" },
                   { href: "/wishlist", label: "Wishlist" },
                 ].map((link) => (
                   <Link
@@ -368,11 +368,13 @@ function JacquemusMobileNav({
       <button
         type="button"
         onClick={() => onOpenChange(true)}
-        className="inline-flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5 lg:hidden"
+        className="jm-nav__menu-btn"
         aria-label="Open menu"
+        aria-expanded={open}
       >
         <span className={cn("block h-px w-5", lineClass)} />
-        <span className={cn("block h-px w-3.5", lineClass)} />
+        <span className={cn("block h-px w-5", lineClass)} />
+        <span className={cn("block h-px w-5", lineClass)} />
       </button>
       {menuOverlay}
     </>
