@@ -15,7 +15,16 @@ import { getSet, setPhotoPath } from "@/data/sets";
 import { WishlistButton } from "@/components/commerce/CommerceAnimations";
 import "./HomeProductRow.css";
 
-function getProductRowImages(slug: string, setId: number, primaryImage: string) {
+function getProductRowImages(
+  slug: string,
+  setId: number,
+  primaryImage: string,
+  hoverImage?: string,
+) {
+  if (hoverImage) {
+    return { primary: primaryImage, hover: hoverImage };
+  }
+
   const set = getSet(setId);
   if (set) {
     const photos = set.photos.map((photo) => setPhotoPath(set, photo));
@@ -51,7 +60,7 @@ export function HomeProductRow({
     () =>
       cards.map((card) => ({
         slug: card.slug,
-        ...getProductRowImages(card.slug, card.setId, card.image),
+        ...getProductRowImages(card.slug, card.setId, card.image, card.hover),
       })),
     [cards],
   );

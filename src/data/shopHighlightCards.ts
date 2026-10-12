@@ -3,6 +3,7 @@ export type ShopHighlightCard = {
   slug: string;
   title: string;
   image: string;
+  hover?: string;
 };
 
 /** Curated Noir & Ivoire homepage row */
@@ -64,10 +65,11 @@ export const romanceHighlightCards: ShopHighlightCard[] = [
 /** Statement — phone homepage (pink-collection layout) */
 export const statementHighlightCards: ShopHighlightCard[] = [
   {
-    setId: 26,
-    slug: "set-26",
-    title: "Noir sculpted",
-    image: "/assets/images/shop/set-26/statement-grid.png",
+    setId: 10,
+    slug: "velvet-blooms-dress",
+    title: "Velvet blooms dress",
+    image: "/assets/images/shop/velvet-blooms-dress/statement-grid.png",
+    hover: "/assets/images/shop/velvet-blooms-dress/BHA_5556.jpg",
   },
   {
     setId: 110,
@@ -82,10 +84,10 @@ export const statementHighlightCards: ShopHighlightCard[] = [
     image: "/assets/images/shop/starlit-halter-gown/BHA_1933.jpg",
   },
   {
-    setId: 10,
-    slug: "velvet-blooms-dress",
-    title: "Velvet blooms dress",
-    image: "/assets/images/shop/velvet-blooms-dress/BHA_5556.jpg",
+    setId: 26,
+    slug: "set-26",
+    title: "Noir sculpted",
+    image: "/assets/images/shop/set-26/IMG_7329.jpg",
   },
 ];
 
@@ -148,10 +150,11 @@ export const eveningHighlightCards: ShopHighlightCard[] = [
 /** Desktop home — Statement black strip */
 export const bloomHighlightCards: ShopHighlightCard[] = [
   {
-    setId: 26,
-    slug: "set-26",
-    title: "Noir sculpted",
-    image: "/assets/images/shop/set-26/statement-grid.png",
+    setId: 10,
+    slug: "velvet-blooms-dress",
+    title: "Velvet blooms dress",
+    image: "/assets/images/shop/velvet-blooms-dress/statement-grid.png",
+    hover: "/assets/images/shop/velvet-blooms-dress/BHA_5556.jpg",
   },
   {
     setId: 9,

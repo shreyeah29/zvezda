@@ -162,6 +162,9 @@ const SHOP_LOOKS: Record<
   "seraphina-dress": { colours: ["blue"], garmentType: "dress", houseCollection: "romance" },
   "silken-grace": { colours: ["ivory"], garmentType: "gown", houseCollection: "occasion" },
   "opaline-bloom": { colours: ["green", "ivory"], garmentType: "jacket", houseCollection: "occasion" },
+  "the-gilded-muse": { colours: ["black", "champagne"], garmentType: "gown", houseCollection: "statement" },
+  "the-heiress": { colours: ["black", "champagne"], garmentType: "gown", houseCollection: "statement" },
+  "the-ascendant": { colours: ["black"], garmentType: "gown", houseCollection: "statement" },
 };
 
 const drafts: ShopDraft[] = [
@@ -711,6 +714,54 @@ const drafts: ShopDraft[] = [
     ],
     fabric: "Pastel mint tweed",
     care: "Dry clean only",
+  },
+  {
+    id: 145,
+    slug: "the-gilded-muse",
+    name: "The Gilded Muse",
+    photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg", "05.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Bold yet effortlessly elegant, this couture-inspired silhouette celebrates refined craftsmanship through impeccable structure and luxurious detailing. The strapless sweetheart corset features expert boning, sculpted cups, and a sharply defined basque waist, enhanced with intricate Swarovski crystal work and abstract gold metallic embellishments across textured jacquard. The sleek crepe mermaid skirt contours the body before cascading into a dramatic floor-length train, creating a striking silhouette from every angle. Designed for women who appreciate timeless sophistication with a contemporary edge.",
+    craft: [
+      "Strapless sweetheart corset with boning and sculpted cups",
+      "Swarovski crystal work and gold metallic embellishment",
+      "Crepe mermaid skirt with floor-length train",
+    ],
+    fabric: "Jacquard, Swarovski crystals and crepe",
+    video: "/assets/videos/products/the-gilded-muse/gilded-muse.mp4",
+  },
+  {
+    id: 146,
+    slug: "the-heiress",
+    name: "The Heiress",
+    photos: ["01.jpg", "02.jpg", "03.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "A celebration of sculptural design and refined craftsmanship, this couture gown is crafted from richly textured jacquard and finished with exquisite Swarovski crystal embellishments. The structured strapless bustier features meticulously embellished cups framed by elegant gold detailing, creating a striking architectural silhouette. Flowing into an exaggerated voluminous skirt, the design is elevated by sculptural draping and distressed metallic gold accents that add depth, texture, and artistic expression. Dramatic yet sophisticated, this masterpiece is designed for gala evenings, couture events, and moments that demand unforgettable elegance.",
+    craft: [
+      "Structured strapless bustier with crystal-framed cups",
+      "Sculptural draped volume",
+      "Distressed metallic gold jacquard",
+    ],
+    fabric: "Jacquard and Swarovski crystals",
+    video: "/assets/videos/products/the-heiress/heiress.mp4",
+  },
+  {
+    id: 147,
+    slug: "the-ascendant",
+    name: "The Ascendant",
+    photos: ["01.jpg", "02.jpg", "03.jpg", "04.jpg", "05.jpg"],
+    sizeOptions: ["6", "8", "10", "12"],
+    description:
+      "Crafted from fluid crepe, this strapless evening gown embodies modern sophistication through clean lines and sculptural detailing. The structured sweetheart bodice is beautifully enhanced with hand-embroidered three-dimensional gold wing motifs that frame the silhouette with elegance and artistic precision. Designed with a sleek fitted profile, the gown gracefully extends into a subtle train, finished with a delicate metallic scalloped hem that adds a touch of understated luxury. A refined statement piece for galas, formal occasions, and unforgettable celebrations.",
+    craft: [
+      "Hand-embroidered three-dimensional gold wing motifs",
+      "Structured sweetheart bodice",
+      "Subtle train with metallic scalloped hem",
+    ],
+    fabric: "Crepe",
+    video: "/assets/videos/products/the-ascendant/ascendant.mp4",
   },
 ];
 
