@@ -1,11 +1,19 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import localFont from "next/font/local";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { CommerceProvider } from "@/context/CommerceContext";
 import { Navigation } from "@/components/layout/Navigation";
 import { VideoAutoplayBoot } from "@/components/media/VideoAutoplayBoot";
 import { atelierContact, atelierStudio } from "@/data/atelier";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_OG_IMAGE, SITE_TAGLINE, SITE_URL } from "@/lib/site";
+import {
+  canonicalUrl,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_OG_IMAGE,
+  SITE_TAGLINE,
+  SITE_URL,
+} from "@/lib/site";
 import "./globals.css";
 
 const bright = localFont({
@@ -32,44 +40,53 @@ const modernRomance = localFont({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: `${SITE_NAME} — ${SITE_TAGLINE}`,
-  description: SITE_DESCRIPTION,
-  applicationName: SITE_NAME,
-  keywords: [
-    "Zvezda",
-    "Zvezda Atelier",
-    "Zvezda Hyderabad",
-    "luxury fashion Hyderabad",
-    "couture Hyderabad",
-    "Bindu Reddy",
-  ],
-  authors: [{ name: "Bindu Reddy" }],
-  creator: SITE_NAME,
-  publisher: SITE_NAME,
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "en_IN",
-    url: SITE_URL,
-    siteName: SITE_NAME,
+export async function generateMetadata(): Promise<Metadata> {
+  const headerList = await headers();
+  const pathname = headerList.get("x-pathname") ?? "/";
+  const canonical = canonicalUrl(pathname);
+  const isPreview = process.env.VERCEL_ENV === "preview";
+
+  return {
+    metadataBase: new URL(SITE_URL),
     title: `${SITE_NAME} — ${SITE_TAGLINE}`,
     description: SITE_DESCRIPTION,
-    images: [{ url: SITE_OG_IMAGE, alt: "Zvezda Atelier" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
-    description: SITE_DESCRIPTION,
-    images: [SITE_OG_IMAGE],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
-  },
-};
+    applicationName: SITE_NAME,
+    keywords: [
+      "Zvezda",
+      "Zvezda Atelier",
+      "Zvezda Hyderabad",
+      "luxury fashion Hyderabad",
+      "couture Hyderabad",
+      "Bindu Reddy",
+    ],
+    authors: [{ name: "Bindu Reddy" }],
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
+    alternates: { canonical },
+    openGraph: {
+      type: "website",
+      locale: "en_IN",
+      url: canonical,
+      siteName: SITE_NAME,
+      title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+      description: SITE_DESCRIPTION,
+      images: [{ url: SITE_OG_IMAGE, alt: "Zvezda Atelier" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+      description: SITE_DESCRIPTION,
+      images: [SITE_OG_IMAGE],
+    },
+    robots: isPreview
+      ? { index: false, follow: false }
+      : {
+          index: true,
+          follow: true,
+          googleBot: { index: true, follow: true },
+        },
+  };
+}
 
 const jsonLd = {
   "@context": "https://schema.org",

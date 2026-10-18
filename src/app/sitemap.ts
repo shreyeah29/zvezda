@@ -34,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const productSlugs = new Set([...sets.map((set) => set.slug), ...shopProducts.map((product) => product.slug)]);
 
   const pages: MetadataRoute.Sitemap = staticRoutes.map((path) => ({
-    url: `${SITE_URL}${path}`,
+    url: path === "" ? `${SITE_URL}/` : `${SITE_URL}${path}`,
     lastModified,
     changeFrequency: staticFrequency(path),
     priority: staticPriority(path),

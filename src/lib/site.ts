@@ -2,6 +2,12 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.zvezdaatelier.com"
 ).replace(/\/$/, "");
 
+export function canonicalUrl(pathname = "/") {
+  if (!pathname || pathname === "/") return `${SITE_URL}/`;
+  const path = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  return `${SITE_URL}${path}`;
+}
+
 export const SITE_NAME = "Zvezda Atelier";
 export const SITE_TAGLINE = "Where light becomes garment";
 export const SITE_DESCRIPTION =
