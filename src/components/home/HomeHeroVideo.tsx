@@ -8,8 +8,8 @@ import { useMaxWidth } from "@/hooks/useMaxWidth";
 import { Mp4Sources } from "@/components/media/Mp4Sources";
 import "./HomeHeroVideo.css";
 
-const HERO_POSTER_DESKTOP = "/assets/images/shop/olive-tiered-zephyr-mini-dress/HSP_3876.jpg";
-const HERO_POSTER_MOBILE = "/assets/images/products/set-12/HSP_5750.jpg";
+const HERO_POSTER_DESKTOP = "/assets/images/shop/the-gilded-muse/01.jpg";
+const HERO_POSTER_MOBILE = "/assets/images/shop/the-gilded-muse/01.jpg";
 
 export function HomeHeroVideo() {
   const isMobile = useMaxWidth(768);
