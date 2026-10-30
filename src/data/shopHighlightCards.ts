@@ -65,11 +65,10 @@ export const romanceHighlightCards: ShopHighlightCard[] = [
 /** Statement — phone homepage (pink-collection layout) */
 export const statementHighlightCards: ShopHighlightCard[] = [
   {
-    setId: 10,
-    slug: "velvet-blooms-dress",
-    title: "Velvet blooms dress",
-    image: "/assets/images/shop/velvet-blooms-dress/statement-grid.png",
-    hover: "/assets/images/shop/velvet-blooms-dress/BHA_5556.jpg",
+    setId: 145,
+    slug: "the-gilded-muse",
+    title: "The Gilded Muse",
+    image: "/assets/images/shop/the-gilded-muse/01.jpg",
   },
   {
     setId: 110,
