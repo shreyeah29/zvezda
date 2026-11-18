@@ -95,6 +95,7 @@ export function AtelierBook() {
     houseNotes: "",
   });
   const [flash, setFlash] = useState("");
+  const [fileOpen, setFileOpen] = useState(false);
 
   const loadOrders = useCallback(async () => {
     const response = await fetch("/api/atelier/orders", { cache: "no-store" });
@@ -228,6 +229,7 @@ export function AtelierBook() {
     setAuthed(false);
     setOrders([]);
     setSelectedId(null);
+    setFileOpen(false);
   }
 
   async function onSave() {
@@ -339,7 +341,7 @@ export function AtelierBook() {
     : [];
 
   return (
-    <main className="atelier-book">
+    <main className={fileOpen ? "atelier-book atelier-book--file" : "atelier-book"}>
       <header className="atelier-book__top">
         <div className="atelier-book__identity">
           <img src={brand.logo.dark} alt="" className="atelier-book__mark" />
@@ -362,13 +364,16 @@ export function AtelierBook() {
           <button type="button" className="atelier-book__ghost" onClick={() => void loadOrders()}>
             Refresh
           </button>
-          <button type="button" className="atelier-book__ghost" onClick={() => window.print()}>
+          <button type="button" className="atelier-book__ghost atelier-book__ghost--print" onClick={() => window.print()}>
             Print
           </button>
           <button type="button" className="atelier-book__ghost" onClick={onLock}>
             Lock
           </button>
         </div>
+        <button type="button" className="atelier-book__phone-lock" onClick={onLock}>
+          Lock
+        </button>
       </header>
 
       <div className="atelier-book__toolbar">
@@ -386,7 +391,10 @@ export function AtelierBook() {
               key={value}
               type="button"
               className={filter === value ? "is-on" : undefined}
-              onClick={() => setFilter(value)}
+              onClick={() => {
+                setFilter(value);
+                setFileOpen(false);
+              }}
             >
               {label} {count}
             </button>
@@ -417,6 +425,8 @@ export function AtelierBook() {
                   onClick={() => {
                     setFlash("");
                     setSelectedId(order.id);
+                    setFileOpen(true);
+                    window.scrollTo(0, 0);
                   }}
                 >
                   <strong>{order.customer.fullName}</strong>
@@ -429,6 +439,16 @@ export function AtelierBook() {
 
           {selected ? (
             <article className="atelier-book__detail">
+              <button
+                type="button"
+                className="atelier-book__back"
+                onClick={() => {
+                  setFileOpen(false);
+                  window.scrollTo(0, 0);
+                }}
+              >
+                All orders
+              </button>
               <header className="atelier-book__person">
                 <p className="atelier-book__kicker">{TYPE_LABELS[selected.type]}</p>
                 <h2>{selected.customer.fullName}</h2>
