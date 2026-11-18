@@ -76,7 +76,6 @@ function productForPiece(name: string) {
 }
 
 export function AtelierBook() {
-  const [ready, setReady] = useState(false);
   const [authed, setAuthed] = useState(false);
   const [configured, setConfigured] = useState(true);
   const [password, setPassword] = useState("");
@@ -97,6 +96,12 @@ export function AtelierBook() {
   const [flash, setFlash] = useState("");
   const [fileOpen, setFileOpen] = useState(false);
 
+  const openBook = useCallback((payload: { orders?: AtelierOrder[]; remote?: boolean }) => {
+    setOrders(payload.orders ?? []);
+    setRemote(Boolean(payload.remote));
+    setAuthed(true);
+  }, []);
+
   const loadOrders = useCallback(async () => {
     const response = await fetch("/api/atelier/orders", { cache: "no-store" });
     if (response.status === 401) {
@@ -105,30 +110,31 @@ export function AtelierBook() {
     }
     const payload = (await response.json()) as { orders?: AtelierOrder[]; remote?: boolean; error?: string };
     if (!response.ok) throw new Error(payload.error || "The book could not be opened.");
-    setOrders(payload.orders ?? []);
-    setRemote(Boolean(payload.remote));
-    setAuthed(true);
-  }, []);
+    openBook(payload);
+  }, [openBook]);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const session = await fetch("/api/atelier/session", { cache: "no-store" });
-        const payload = (await session.json()) as { authed?: boolean; configured?: boolean };
+        const payload = (await session.json()) as {
+          authed?: boolean;
+          configured?: boolean;
+          orders?: AtelierOrder[];
+          remote?: boolean;
+        };
         if (cancelled) return;
         setConfigured(payload.configured !== false);
-        if (payload.authed) await loadOrders();
+        if (payload.authed) openBook(payload);
       } catch {
         if (!cancelled) setError("The house could not be reached.");
-      } finally {
-        if (!cancelled) setReady(true);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [loadOrders]);
+  }, [openBook]);
 
   const counts = useMemo(
     () => ({
@@ -213,10 +219,14 @@ export function AtelierBook() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
       });
-      const payload = (await response.json()) as { error?: string };
+      const payload = (await response.json()) as {
+        error?: string;
+        orders?: AtelierOrder[];
+        remote?: boolean;
+      };
       if (!response.ok) throw new Error(payload.error || "That password is not right.");
       setPassword("");
-      await loadOrders();
+      openBook(payload);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not unlock.");
     } finally {
@@ -278,14 +288,6 @@ export function AtelierBook() {
     } catch {
       setError(`Could not copy ${label.toLowerCase()}.`);
     }
-  }
-
-  if (!ready) {
-    return (
-      <main className="atelier-book atelier-book--gate">
-        <p className="atelier-book__quiet">Opening the house…</p>
-      </main>
-    );
   }
 
   if (!authed) {

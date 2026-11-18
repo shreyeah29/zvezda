@@ -146,8 +146,15 @@ async function upsertPostgres(sql: Sql, order: AtelierOrder) {
 }
 
 export async function listAtelierOrders(): Promise<AtelierOrder[]> {
-  const sql = await ensureTable();
-  if (sql) return listPostgres(sql);
+  const sql = postgres();
+  if (sql) {
+    try {
+      return await listPostgres(sql);
+    } catch {
+      const ready = await ensureTable();
+      if (ready) return listPostgres(ready);
+    }
+  }
 
   if (redisConfig()) {
     const result = await redisCommand(["GET", KEY]);

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import "@/components/atelier/AtelierBook.css";
 
 export const metadata: Metadata = {
   title: "The house",
