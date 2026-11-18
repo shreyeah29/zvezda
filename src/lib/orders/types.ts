@@ -45,6 +45,8 @@ export type AtelierOrder = {
   amount?: string;
   measurements?: AtelierMeasurements;
   notes?: string;
+  /** Private house remarks — never sent to the client. */
+  houseNotes?: string;
   visitWhen?: string;
   paymentId?: string;
   fulfilment?: "pickup" | "ship";

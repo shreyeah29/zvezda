@@ -24,6 +24,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     fulfilment?: "pickup" | "ship";
     trackingCourier?: string;
     trackingUrl?: string;
+    houseNotes?: string;
   };
 
   const nextStatus = String(body.status ?? current.status);
@@ -37,6 +38,10 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     fulfilment: body.fulfilment ?? current.fulfilment,
     trackingCourier: String(body.trackingCourier ?? current.trackingCourier ?? "").trim() || undefined,
     trackingUrl: String(body.trackingUrl ?? current.trackingUrl ?? "").trim() || undefined,
+    houseNotes:
+      body.houseNotes === undefined
+        ? current.houseNotes
+        : String(body.houseNotes).trim() || undefined,
     updatedAt: new Date().toISOString(),
   };
 
