@@ -291,8 +291,8 @@ export function AtelierBook() {
       <main className="atelier-book atelier-book--gate">
         <form className="atelier-lock" onSubmit={onUnlock}>
           <img src={brand.logo.dark} alt="ZVEZDA Atelier" className="atelier-lock__mark" />
-          <p className="atelier-book__eyebrow">Private</p>
-          <h1>The house</h1>
+          <p className="atelier-book__kicker">Private</p>
+          <h1>House book</h1>
           <p className="atelier-book__lede">
             {configured
               ? "This room is not in the public house. Enter the password to open the order book."
@@ -319,21 +319,42 @@ export function AtelierBook() {
 
   const measures = selected ? measurementRows(selected) : [];
   const willLetter = selected && draft.status !== selected.status && LETTER_STATUSES.has(draft.status);
+  const currentStep = selected ? PIPELINE.indexOf(selected.status) : -1;
+  const facts = selected
+    ? (
+        [
+          ["Email", selected.customer.email, "email"],
+          selected.customer.phone ? ["Phone", selected.customer.phone, "phone"] : null,
+          selected.customer.city ? ["City", selected.customer.city, "text"] : null,
+          selected.customer.address ? ["Address", selected.customer.address, "text"] : null,
+          selected.amount ? ["Amount", selected.amount, "text"] : null,
+          selected.visitWhen ? ["Visit", selected.visitWhen, "text"] : null,
+          selected.paymentId ? ["Payment", selected.paymentId, "text"] : null,
+          ["Received", formatWhen(selected.createdAt), "text"],
+          selected.updatedAt && selected.updatedAt !== selected.createdAt
+            ? ["Updated", formatWhen(selected.updatedAt), "text"]
+            : null,
+        ] as Array<[string, string, "email" | "phone" | "text"] | null>
+      ).filter((row): row is [string, string, "email" | "phone" | "text"] => Boolean(row))
+    : [];
 
   return (
     <main className="atelier-book">
-      <header className="atelier-book__header">
-        <div className="atelier-book__brand">
+      <header className="atelier-book__top">
+        <div className="atelier-book__identity">
           <img src={brand.logo.dark} alt="" className="atelier-book__mark" />
           <div>
-            <p className="atelier-book__eyebrow">Atelier</p>
-            <h1>The house book</h1>
-            <p className="atelier-book__lede">
-              {atelierStudio.city} · {counts.open} open
-              {remote ? " · saved in the house database" : " · local file only"}
-            </p>
+            <p className="atelier-book__kicker">Atelier</p>
+            <h1>House book</h1>
           </div>
         </div>
+        <p className="atelier-book__statusline">
+          {atelierStudio.city}
+          <span />
+          {counts.open} open
+          <span />
+          {remote ? "Database" : "Local file"}
+        </p>
         <div className="atelier-book__tools">
           <Link href="/" className="atelier-book__ghost">
             Site
@@ -367,20 +388,18 @@ export function AtelierBook() {
               className={filter === value ? "is-on" : undefined}
               onClick={() => setFilter(value)}
             >
-              {label}
-              <span>{count}</span>
+              {label} {count}
             </button>
           ))}
         </nav>
-        <label className="atelier-book__search">
-          <span className="atelier-book__eyebrow">Search</span>
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Name, email, order id, piece…"
-          />
-        </label>
+        <input
+          className="atelier-book__search"
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search name, email, id, piece"
+          aria-label="Search orders"
+        />
       </div>
 
       {visible.length === 0 ? (
@@ -388,7 +407,7 @@ export function AtelierBook() {
           {orders.length === 0 ? "The book is empty. New visits and orders will appear here." : "No orders match this view."}
         </p>
       ) : (
-        <div className="atelier-book__grid">
+        <div className="atelier-book__shell">
           <ol className="atelier-book__list">
             {visible.map((order) => (
               <li key={order.id}>
@@ -400,12 +419,9 @@ export function AtelierBook() {
                     setSelectedId(order.id);
                   }}
                 >
-                  <span className="atelier-book__list-id">{order.id}</span>
-                  <span className="atelier-book__list-name">{order.customer.fullName}</span>
-                  <span className="atelier-book__list-meta">
-                    {order.pieces[0]?.name ?? TYPE_LABELS[order.type]}
-                    {order.visitWhen ? ` · ${order.visitWhen}` : ` · ${STATUS_LABELS[order.status]}`}
-                  </span>
+                  <strong>{order.customer.fullName}</strong>
+                  <span>{order.pieces[0]?.name ?? TYPE_LABELS[order.type]}</span>
+                  <em>{STATUS_LABELS[order.status]}</em>
                 </button>
               </li>
             ))}
@@ -413,8 +429,8 @@ export function AtelierBook() {
 
           {selected ? (
             <article className="atelier-book__detail">
-              <header>
-                <p className="atelier-book__eyebrow">{TYPE_LABELS[selected.type]}</p>
+              <header className="atelier-book__person">
+                <p className="atelier-book__kicker">{TYPE_LABELS[selected.type]}</p>
                 <h2>{selected.customer.fullName}</h2>
                 <p className="atelier-book__id">
                   {selected.id}
@@ -425,91 +441,45 @@ export function AtelierBook() {
               </header>
 
               <ol className="atelier-book__pipeline" aria-label="House status">
-                {PIPELINE.filter((status) => status !== "cancelled").map((status) => (
-                  <li key={status} className={PIPELINE.indexOf(status) <= PIPELINE.indexOf(selected.status) ? "is-on" : undefined}>
+                {PIPELINE.map((status) => (
+                  <li key={status} className={currentStep >= 0 && PIPELINE.indexOf(status) <= currentStep ? "is-on" : undefined}>
                     {STATUS_LABELS[status]}
                   </li>
                 ))}
               </ol>
 
-              <dl>
-                <div>
-                  <dt>Email</dt>
-                  <dd>
-                    <a href={`mailto:${selected.customer.email}`}>{selected.customer.email}</a>
-                    <button
-                      type="button"
-                      className="atelier-book__text-btn"
-                      onClick={() => void onCopy("Email", selected.customer.email)}
-                    >
-                      Copy
-                    </button>
-                  </dd>
-                </div>
-                {selected.customer.phone ? (
-                  <div>
-                    <dt>Phone</dt>
+              <dl className="atelier-book__facts">
+                {facts.map(([label, value, kind]) => (
+                  <div key={label}>
+                    <dt>{label}</dt>
                     <dd>
-                      <a href={whatsappHref(selected.customer.phone)} target="_blank" rel="noreferrer">
-                        WhatsApp {selected.customer.phone}
-                      </a>
+                      {kind === "email" ? (
+                        <>
+                          <a href={`mailto:${value}`}>{value}</a>
+                          <button type="button" className="atelier-book__text-btn" onClick={() => void onCopy("Email", value)}>
+                            Copy
+                          </button>
+                        </>
+                      ) : kind === "phone" ? (
+                        <a href={whatsappHref(value)} target="_blank" rel="noreferrer">
+                          WhatsApp {value}
+                        </a>
+                      ) : (
+                        value
+                      )}
                     </dd>
                   </div>
-                ) : null}
-                {selected.customer.city ? (
-                  <div>
-                    <dt>City</dt>
-                    <dd>{selected.customer.city}</dd>
-                  </div>
-                ) : null}
-                {selected.customer.address ? (
-                  <div>
-                    <dt>Address</dt>
-                    <dd>{selected.customer.address}</dd>
-                  </div>
-                ) : null}
-                {selected.amount ? (
-                  <div>
-                    <dt>Amount</dt>
-                    <dd>{selected.amount}</dd>
-                  </div>
-                ) : null}
-                {selected.visitWhen ? (
-                  <div>
-                    <dt>Visit</dt>
-                    <dd>{selected.visitWhen}</dd>
-                  </div>
-                ) : null}
-                {selected.paymentId ? (
-                  <div>
-                    <dt>Payment</dt>
-                    <dd>{selected.paymentId}</dd>
-                  </div>
-                ) : null}
-                <div>
-                  <dt>Received</dt>
-                  <dd>{formatWhen(selected.createdAt)}</dd>
-                </div>
-                {selected.updatedAt && selected.updatedAt !== selected.createdAt ? (
-                  <div>
-                    <dt>Updated</dt>
-                    <dd>{formatWhen(selected.updatedAt)}</dd>
-                  </div>
-                ) : null}
+                ))}
               </dl>
 
-              <section>
+              <section className="atelier-book__block">
                 <h3>Pieces</h3>
                 <ul>
                   {selected.pieces.map((piece, index) => {
                     const product = productForPiece(piece.name);
                     return (
                       <li key={`${piece.name}-${index}`}>
-                        {product ? (
-                          <Link href={`/products/${product.slug}`}>{pieceLine(piece)}</Link>
-                        ) : (
-                          pieceLine(piece)
-                        )}
+                        {product ? <Link href={`/products/${product.slug}`}>{pieceLine(piece)}</Link> : pieceLine(piece)}
                       </li>
                     );
                   })}
@@ -517,7 +487,7 @@ export function AtelierBook() {
               </section>
 
               {measures.length > 0 ? (
-                <section>
+                <section className="atelier-book__block">
                   <h3>Measurements</h3>
                   <ul className="atelier-book__measures">
                     {measures.map(([label, value]) => (
@@ -531,78 +501,82 @@ export function AtelierBook() {
               ) : null}
 
               {selected.notes ? (
-                <section>
+                <section className="atelier-book__block">
                   <h3>Client notes</h3>
                   <pre>{selected.notes}</pre>
                 </section>
               ) : null}
 
-              <section className="atelier-book__status">
+              <section className="atelier-book__desk">
                 <h3>House desk</h3>
-                <label>
-                  Status
-                  <select
-                    value={draft.status}
-                    onChange={(event) => setDraft((current) => ({ ...current, status: event.target.value as AtelierOrderStatus }))}
-                  >
-                    {ATELIER_ORDER_STATUSES.map((status) => (
-                      <option key={status} value={status}>
-                        {STATUS_LABELS[status]}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  Fulfilment
-                  <select
-                    value={draft.fulfilment}
-                    onChange={(event) =>
-                      setDraft((current) => ({
-                        ...current,
-                        fulfilment: event.target.value as "" | "pickup" | "ship",
-                      }))
-                    }
-                  >
-                    <option value="">Not set</option>
-                    <option value="pickup">Studio pickup</option>
-                    <option value="ship">Ship</option>
-                  </select>
-                </label>
-                <label>
-                  Courier
-                  <input
-                    value={draft.trackingCourier}
-                    onChange={(event) => setDraft((current) => ({ ...current, trackingCourier: event.target.value }))}
-                    placeholder="Bluedart, Delhivery…"
-                  />
-                </label>
-                <label>
-                  Tracking link
-                  <input
-                    value={draft.trackingUrl}
-                    onChange={(event) => setDraft((current) => ({ ...current, trackingUrl: event.target.value }))}
-                    placeholder="https://"
-                  />
-                </label>
-                <label className="atelier-book__notes">
-                  House notes
-                  <textarea
-                    value={draft.houseNotes}
-                    onChange={(event) => setDraft((current) => ({ ...current, houseNotes: event.target.value }))}
-                    rows={4}
-                    placeholder="Private to the house. Never sent to the client."
-                  />
-                </label>
+                <div className="atelier-book__fields">
+                  <label>
+                    Status
+                    <select
+                      value={draft.status}
+                      onChange={(event) => setDraft((current) => ({ ...current, status: event.target.value as AtelierOrderStatus }))}
+                    >
+                      {ATELIER_ORDER_STATUSES.map((status) => (
+                        <option key={status} value={status}>
+                          {STATUS_LABELS[status]}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Fulfilment
+                    <select
+                      value={draft.fulfilment}
+                      onChange={(event) =>
+                        setDraft((current) => ({
+                          ...current,
+                          fulfilment: event.target.value as "" | "pickup" | "ship",
+                        }))
+                      }
+                    >
+                      <option value="">Not set</option>
+                      <option value="pickup">Studio pickup</option>
+                      <option value="ship">Ship</option>
+                    </select>
+                  </label>
+                  <label>
+                    Courier
+                    <input
+                      value={draft.trackingCourier}
+                      onChange={(event) => setDraft((current) => ({ ...current, trackingCourier: event.target.value }))}
+                      placeholder="Bluedart, Delhivery…"
+                    />
+                  </label>
+                  <label>
+                    Tracking link
+                    <input
+                      value={draft.trackingUrl}
+                      onChange={(event) => setDraft((current) => ({ ...current, trackingUrl: event.target.value }))}
+                      placeholder="https://"
+                    />
+                  </label>
+                  <label className="atelier-book__notes">
+                    House notes
+                    <textarea
+                      value={draft.houseNotes}
+                      onChange={(event) => setDraft((current) => ({ ...current, houseNotes: event.target.value }))}
+                      rows={4}
+                      placeholder="Private to the house. Never sent to the client."
+                    />
+                  </label>
+                </div>
                 {error ? <p className="atelier-book__error">{error}</p> : null}
                 {flash ? <p className="atelier-book__flash">{flash}</p> : null}
-                <p className="atelier-book__hint">
-                  {willLetter
-                    ? "Saving will email the client the matching house letter."
-                    : "Client letters go out only for In production, Ready, Shipped, and Delivered."}
-                </p>
-                <button type="button" className="atelier-book__save" onClick={onSave} disabled={busy}>
-                  {busy ? "Saving…" : willLetter ? "Save & send letter" : "Save"}
-                </button>
+                <div className="atelier-book__actions">
+                  <p className="atelier-book__hint">
+                    {willLetter
+                      ? "Saving will email the client the matching house letter."
+                      : "Letters send only for In production, Ready, Shipped, and Delivered."}
+                  </p>
+                  <button type="button" className="atelier-book__save" onClick={onSave} disabled={busy}>
+                    {busy ? "Saving…" : willLetter ? "Save & send letter" : "Save"}
+                  </button>
+                </div>
               </section>
             </article>
           ) : null}
