@@ -231,9 +231,10 @@ export function AtelierBook() {
           <h1>Order book</h1>
           <p className="atelier-book__lede">
             Paid, studio visits, and custom work. Changing production, ready, shipped, or delivered
-            sends the client letter. Sample rows are marked so you can try a status without a real
-            client.
-            {!remote ? " This machine is keeping a local file — add Upstash Redis on Vercel so live orders stay." : null}
+            sends the client letter.
+            {remote
+              ? " These rows are saved in the house database."
+              : " This machine is keeping a local file. Add DATABASE_URL (Neon) on Vercel so live orders stay in the house."}
           </p>
         </div>
         <button type="button" className="atelier-book__ghost" onClick={onLock}>

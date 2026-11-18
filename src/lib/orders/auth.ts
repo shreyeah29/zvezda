@@ -11,7 +11,7 @@ export function atelierSecret() {
 export function passwordMatches(input: string) {
   const expected = atelierSecret();
   if (!expected || !input) return false;
-  const left = Buffer.from(input);
+  const left = Buffer.from(input.trim());
   const right = Buffer.from(expected);
   if (left.length !== right.length) return false;
   return timingSafeEqual(left, right);

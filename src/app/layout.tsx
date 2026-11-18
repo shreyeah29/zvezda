@@ -167,12 +167,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Cormorant+Garamond:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Italiana&family=Jost:wght@200;300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap"
           rel="stylesheet"
         />
-        <link
-          rel="preload"
-          as="video"
-          href="/assets/videos/products/desktop/the-gilded-muse/gilded-muse.mp4"
-          type="video/mp4"
-        />
+        {/* Hero film is loaded only on the homepage, not preloaded on every route. */}
       </head>
       <body className="relative h-full min-h-screen bg-ink text-cream antialiased">
         <script
