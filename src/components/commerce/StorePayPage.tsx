@@ -69,10 +69,11 @@ export function StorePayPage() {
   function update<K extends keyof StoreCustomer>(key: K, value: StoreCustomer[K]) {
     setCustomer((current) => ({ ...current, [key]: value }));
     if (key === "notes") return;
+    const field = key as StoreKey;
     setNotes((current) => {
-      if (!current[key]) return current;
+      if (!current[field]) return current;
       const next = { ...current };
-      delete next[key];
+      delete next[field];
       return next;
     });
   }
