@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type InputHTMLAttributes, type SelectHTMLAttributes } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCommerce } from "@/context/CommerceContext";
@@ -23,10 +23,33 @@ const INITIAL: StoreCustomer = {
   notes: "",
 };
 
+type StoreKey = "fullName" | "email" | "phone" | "visitDate" | "visitTime";
+
+function storeFieldNote(customer: StoreCustomer, key: StoreKey) {
+  const value = customer[key].trim();
+  if (!value) return "Please fill this in";
+  if (key === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Please enter a valid email";
+  if (key === "phone" && value.replace(/\D/g, "").length < 10) return "Please enter a valid phone number";
+  if (key === "visitDate" && value < istTodayIso()) return "Please choose a date from today onward";
+  return "";
+}
+
+function storeNotes(customer: StoreCustomer) {
+  return (["fullName", "email", "phone", "visitDate", "visitTime"] as const).reduce(
+    (notes, key) => {
+      const note = storeFieldNote(customer, key);
+      if (note) notes[key] = note;
+      return notes;
+    },
+    {} as Partial<Record<StoreKey, string>>,
+  );
+}
+
 export function StorePayPage() {
   const router = useRouter();
   const { cart, cartSubtotal, clearCart } = useCommerce();
   const [customer, setCustomer] = useState(INITIAL);
+  const [notes, setNotes] = useState<Partial<Record<StoreKey, string>>>({});
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const minVisitDate = istTodayIso();
@@ -45,10 +68,75 @@ export function StorePayPage() {
 
   function update<K extends keyof StoreCustomer>(key: K, value: StoreCustomer[K]) {
     setCustomer((current) => ({ ...current, [key]: value }));
+    if (key === "notes") return;
+    setNotes((current) => {
+      if (!current[key]) return current;
+      const next = { ...current };
+      delete next[key];
+      return next;
+    });
+  }
+
+  function field(key: StoreKey, props: InputHTMLAttributes<HTMLInputElement>) {
+    const miss = notes[key];
+    return (
+      <>
+        <input
+          {...props}
+          id={`store-${key}`}
+          className={miss ? "is-invalid" : undefined}
+          aria-invalid={miss ? true : undefined}
+          aria-describedby={miss ? `store-${key}-note` : undefined}
+          value={customer[key]}
+          onChange={(event) => update(key, event.target.value)}
+        />
+        {miss ? (
+          <p id={`store-${key}-note`} className="checkout-form__miss">
+            {miss}
+          </p>
+        ) : null}
+      </>
+    );
+  }
+
+  function timeSelect(props: SelectHTMLAttributes<HTMLSelectElement> = {}) {
+    const miss = notes.visitTime;
+    return (
+      <>
+        <select
+          {...props}
+          id="store-visitTime"
+          className={miss ? "is-invalid" : undefined}
+          aria-invalid={miss ? true : undefined}
+          aria-describedby={miss ? "store-visitTime-note" : undefined}
+          value={customer.visitTime}
+          onChange={(event) => update("visitTime", event.target.value)}
+        >
+          <option value="">Select a time</option>
+          {STORE_VISIT_SLOTS.map((slot) => (
+            <option key={slot.value} value={slot.value}>
+              {slot.label}
+            </option>
+          ))}
+        </select>
+        {miss ? (
+          <p id="store-visitTime-note" className="checkout-form__miss">
+            {miss}
+          </p>
+        ) : null}
+      </>
+    );
   }
 
   async function reserve() {
     if (busy || cart.length === 0) return;
+    const nextNotes = storeNotes(customer);
+    setNotes(nextNotes);
+    if (Object.keys(nextNotes).length > 0) {
+      const first = (Object.keys(nextNotes) as StoreKey[])[0];
+      document.getElementById(`store-${first}`)?.focus();
+      return;
+    }
     setError("");
     setBusy(true);
 
@@ -128,68 +216,35 @@ export function StorePayPage() {
             <div className="checkout-page__grid">
               <form
                 className="checkout-form"
+                noValidate
                 onSubmit={(event) => {
                   event.preventDefault();
                   void reserve();
                 }}
               >
                 <h2>Your details</h2>
-                <label>
+                <label htmlFor="store-fullName">
                   Full name
-                  <input
-                    required
-                    autoComplete="name"
-                    value={customer.fullName}
-                    onChange={(event) => update("fullName", event.target.value)}
-                  />
+                  {field("fullName", { autoComplete: "name" })}
                 </label>
                 <div className="checkout-form__row">
-                  <label>
+                  <label htmlFor="store-email">
                     Email
-                    <input
-                      required
-                      type="email"
-                      autoComplete="email"
-                      value={customer.email}
-                      onChange={(event) => update("email", event.target.value)}
-                    />
+                    {field("email", { type: "email", autoComplete: "email" })}
                   </label>
-                  <label>
+                  <label htmlFor="store-phone">
                     Phone
-                    <input
-                      required
-                      type="tel"
-                      autoComplete="tel"
-                      value={customer.phone}
-                      onChange={(event) => update("phone", event.target.value)}
-                    />
+                    {field("phone", { type: "tel", autoComplete: "tel" })}
                   </label>
                 </div>
                 <div className="checkout-form__row">
-                  <label>
+                  <label htmlFor="store-visitDate">
                     Visit date
-                    <input
-                      required
-                      type="date"
-                      min={minVisitDate}
-                      value={customer.visitDate}
-                      onChange={(event) => update("visitDate", event.target.value)}
-                    />
+                    {field("visitDate", { type: "date", min: minVisitDate })}
                   </label>
-                  <label>
+                  <label htmlFor="store-visitTime">
                     Visit time
-                    <select
-                      required
-                      value={customer.visitTime}
-                      onChange={(event) => update("visitTime", event.target.value)}
-                    >
-                      <option value="">Select a time</option>
-                      {STORE_VISIT_SLOTS.map((slot) => (
-                        <option key={slot.value} value={slot.value}>
-                          {slot.label}
-                        </option>
-                      ))}
-                    </select>
+                    {timeSelect()}
                   </label>
                 </div>
                 <p className="checkout-form__hint">Open 11:00 am – 7:00 pm IST.</p>

@@ -111,6 +111,23 @@
   outline-offset: 2px;
 }
 
+.checkout-form input.is-invalid,
+.checkout-form select.is-invalid {
+  border-color: #8b1a2b;
+}
+
+.checkout-form input.is-invalid:focus,
+.checkout-form select.is-invalid:focus {
+  outline-color: #8b1a2b;
+}
+
+.checkout-form__miss {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: #8b1a2b;
+}
+
 .checkout-form__hint {
   margin: -0.25rem 0 0;
   font-size: 11px;

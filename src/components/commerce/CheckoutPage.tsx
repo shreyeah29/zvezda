@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type InputHTMLAttributes } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCommerce } from "@/context/CommerceContext";
@@ -35,10 +35,32 @@ const INITIAL_CUSTOMER: CheckoutCustomer = {
   country: "India",
 };
 
+type CustomerKey = keyof CheckoutCustomer;
+
+function customerFieldNote(customer: CheckoutCustomer, key: CustomerKey) {
+  const value = customer[key].trim();
+  if (!value) return "Please fill this in";
+  if (key === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Please enter a valid email";
+  if (key === "phone" && value.replace(/\D/g, "").length < 10) return "Please enter a valid phone number";
+  return "";
+}
+
+function customerNotes(customer: CheckoutCustomer) {
+  return (Object.keys(customer) as CustomerKey[]).reduce(
+    (notes, key) => {
+      const note = customerFieldNote(customer, key);
+      if (note) notes[key] = note;
+      return notes;
+    },
+    {} as Partial<Record<CustomerKey, string>>,
+  );
+}
+
 export function CheckoutPage() {
   const router = useRouter();
   const { cart, cartSubtotal, clearCart } = useCommerce();
   const [customer, setCustomer] = useState(INITIAL_CUSTOMER);
+  const [notes, setNotes] = useState<Partial<Record<CustomerKey, string>>>({});
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -58,12 +80,47 @@ export function CheckoutPage() {
   const payable = blocked.length === 0 && lines.length > 0;
   const currency = lines[0]?.product.currency ?? "INR";
 
-  function update<K extends keyof CheckoutCustomer>(key: K, value: CheckoutCustomer[K]) {
+  function update<K extends CustomerKey>(key: K, value: CheckoutCustomer[K]) {
     setCustomer((current) => ({ ...current, [key]: value }));
+    setNotes((current) => {
+      if (!current[key]) return current;
+      const next = { ...current };
+      delete next[key];
+      return next;
+    });
+  }
+
+  function field(key: CustomerKey, props: InputHTMLAttributes<HTMLInputElement>) {
+    const miss = notes[key];
+    return (
+      <>
+        <input
+          {...props}
+          id={`checkout-${key}`}
+          className={miss ? "is-invalid" : undefined}
+          aria-invalid={miss ? true : undefined}
+          aria-describedby={miss ? `checkout-${key}-note` : undefined}
+          value={customer[key]}
+          onChange={(event) => update(key, event.target.value)}
+        />
+        {miss ? (
+          <p id={`checkout-${key}-note`} className="checkout-form__miss">
+            {miss}
+          </p>
+        ) : null}
+      </>
+    );
   }
 
   async function pay() {
     if (!payable || busy) return;
+    const nextNotes = customerNotes(customer);
+    setNotes(nextNotes);
+    if (Object.keys(nextNotes).length > 0) {
+      const first = (Object.keys(nextNotes) as CustomerKey[])[0];
+      document.getElementById(`checkout-${first}`)?.focus();
+      return;
+    }
     setError("");
     setBusy(true);
 
@@ -185,80 +242,44 @@ export function CheckoutPage() {
             <div className="checkout-page__grid">
               <form
                 className="checkout-form"
+                noValidate
                 onSubmit={(event) => {
                   event.preventDefault();
                   void pay();
                 }}
               >
                 <h2>Delivery</h2>
-                <label>
+                <label htmlFor="checkout-fullName">
                   Full name
-                  <input
-                    required
-                    autoComplete="name"
-                    value={customer.fullName}
-                    onChange={(event) => update("fullName", event.target.value)}
-                  />
+                  {field("fullName", { autoComplete: "name" })}
                 </label>
                 <div className="checkout-form__row">
-                  <label>
+                  <label htmlFor="checkout-email">
                     Email
-                    <input
-                      required
-                      type="email"
-                      autoComplete="email"
-                      value={customer.email}
-                      onChange={(event) => update("email", event.target.value)}
-                    />
+                    {field("email", { type: "email", autoComplete: "email" })}
                   </label>
-                  <label>
+                  <label htmlFor="checkout-phone">
                     Phone
-                    <input
-                      required
-                      type="tel"
-                      autoComplete="tel"
-                      value={customer.phone}
-                      onChange={(event) => update("phone", event.target.value)}
-                    />
+                    {field("phone", { type: "tel", autoComplete: "tel" })}
                   </label>
                 </div>
-                <label>
+                <label htmlFor="checkout-address">
                   Address
-                  <input
-                    required
-                    autoComplete="street-address"
-                    value={customer.address}
-                    onChange={(event) => update("address", event.target.value)}
-                  />
+                  {field("address", { autoComplete: "street-address" })}
                 </label>
                 <div className="checkout-form__row">
-                  <label>
+                  <label htmlFor="checkout-city">
                     City
-                    <input
-                      required
-                      autoComplete="address-level2"
-                      value={customer.city}
-                      onChange={(event) => update("city", event.target.value)}
-                    />
+                    {field("city", { autoComplete: "address-level2" })}
                   </label>
-                  <label>
+                  <label htmlFor="checkout-pincode">
                     PIN code
-                    <input
-                      required
-                      autoComplete="postal-code"
-                      value={customer.pincode}
-                      onChange={(event) => update("pincode", event.target.value)}
-                    />
+                    {field("pincode", { autoComplete: "postal-code" })}
                   </label>
                 </div>
-                <label>
+                <label htmlFor="checkout-country">
                   Country
-                  <input
-                    required
-                    autoComplete="country-name"
-                    value={customer.country}
-                    onChange={(event) => update("country", event.target.value)}
-                  />
+                  {field("country", { autoComplete: "country-name" })}
                 </label>
 
                 {blocked.length > 0 && (

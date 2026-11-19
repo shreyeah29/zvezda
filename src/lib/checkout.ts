@@ -139,9 +139,9 @@ export function validateCustomer(input: Partial<CheckoutCustomer>): CheckoutCust
   const address = String(input.address ?? "").trim();
   const city = String(input.city ?? "").trim();
   const pincode = String(input.pincode ?? "").trim();
-  const country = String(input.country ?? "India").trim() || "India";
+  const country = String(input.country ?? "").trim();
 
-  if (!fullName || !email || !phone || !address || !city || !pincode) {
+  if (!fullName || !email || !phone || !address || !city || !pincode || !country) {
     throw new Error("Please complete your delivery details.");
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
