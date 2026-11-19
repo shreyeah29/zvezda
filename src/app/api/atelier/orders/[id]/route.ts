@@ -9,7 +9,7 @@ function isStatus(value: string): value is AtelierOrderStatus {
 }
 
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
-  if (!(await isAtelierAuthed())) {
+  if (!isAtelierAuthed(request)) {
     return NextResponse.json({ error: "Locked." }, { status: 401 });
   }
 

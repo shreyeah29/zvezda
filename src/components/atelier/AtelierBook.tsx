@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ATELIER_ORDER_STATUSES,
@@ -95,6 +95,11 @@ export function AtelierBook() {
   });
   const [flash, setFlash] = useState("");
   const [fileOpen, setFileOpen] = useState(false);
+  const houseKey = useRef("");
+
+  function houseHeaders(headers: HeadersInit = {}): HeadersInit {
+    return { ...headers, "x-atelier-password": houseKey.current };
+  }
 
   const openBook = useCallback((payload: { orders?: AtelierOrder[]; remote?: boolean }) => {
     setOrders(payload.orders ?? []);
@@ -103,8 +108,12 @@ export function AtelierBook() {
   }, []);
 
   const loadOrders = useCallback(async () => {
-    const response = await fetch("/api/atelier/orders", { cache: "no-store" });
+    const response = await fetch("/api/atelier/orders", {
+      cache: "no-store",
+      headers: houseHeaders(),
+    });
     if (response.status === 401) {
+      houseKey.current = "";
       setAuthed(false);
       return;
     }
@@ -225,6 +234,7 @@ export function AtelierBook() {
         remote?: boolean;
       };
       if (!response.ok) throw new Error(payload.error || "That password is not right.");
+      houseKey.current = password.trim();
       setPassword("");
       openBook(payload);
     } catch (caught) {
@@ -235,6 +245,7 @@ export function AtelierBook() {
   }
 
   async function onLock() {
+    houseKey.current = "";
     await fetch("/api/atelier/session", { method: "DELETE" });
     setAuthed(false);
     setOrders([]);
@@ -251,7 +262,7 @@ export function AtelierBook() {
     try {
       const response = await fetch(`/api/atelier/orders/${encodeURIComponent(selected.id)}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: houseHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           status: draft.status,
           fulfilment: draft.fulfilment || undefined,

@@ -1,13 +1,5 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import {
-  ATELIER_COOKIE,
-  atelierSecret,
-  isAtelierAuthed,
-  makeSessionValue,
-  passwordMatches,
-  sessionCookieOptions,
-} from "@/lib/orders/auth";
+import { atelierSecret, clearAtelierCookie, passwordMatches } from "@/lib/orders/auth";
 import { hasRemoteOrderStore, loadHouseOrders } from "@/lib/orders/store";
 
 async function bookPayload(authed: boolean) {
@@ -24,10 +16,12 @@ async function bookPayload(authed: boolean) {
 }
 
 export async function GET() {
-  return NextResponse.json(await bookPayload(await isAtelierAuthed()));
+  await clearAtelierCookie();
+  return NextResponse.json(await bookPayload(false));
 }
 
 export async function POST(request: Request) {
+  await clearAtelierCookie();
   if (!atelierSecret()) {
     return NextResponse.json({ error: "The house lock is not configured." }, { status: 503 });
   }
@@ -37,13 +31,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "That password is not right." }, { status: 401 });
   }
 
-  const jar = await cookies();
-  jar.set(ATELIER_COOKIE, makeSessionValue(), sessionCookieOptions());
   return NextResponse.json(await bookPayload(true));
 }
 
 export async function DELETE() {
-  const jar = await cookies();
-  jar.set(ATELIER_COOKIE, "", { ...sessionCookieOptions(), maxAge: 0 });
+  await clearAtelierCookie();
   return NextResponse.json({ ok: true });
 }
